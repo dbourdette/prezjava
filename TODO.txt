@@ -1,0 +1,20 @@
+Tout mettre sur github ?
+
+Jour 1 : suivre un projet tout au long de la journée
+démarrer avec mvn archetype ?
+
+Jour 2
+
+Partie 1
+exemples de html : formulaires, tables, listes, layouts...
+
+TP : passer d'une image a un template html
+
+Partie 2
+partir from scratch avec tous les TP
+explications sur les classes, interfaces, packages
+
+tomcat : redémarrage tomcat si modif classe et non jsp
+
+TP : persistance avec hibernate et hsql
+
