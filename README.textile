@@ -4,7 +4,7 @@ h1. Présentation serverside java
 
 h2. TODO
 
-Jour 1 : suivre un projet tout au long de la journ�d�rrer avec mvn archetype ?
+Jour 1 : suivre un projet tout au long de la journée démarrer avec mvn archetype ?
 
 Jour 2
 
@@ -17,6 +17,6 @@ Partie 2
 partir from scratch avec tous les TP
 explications sur les classes, interfaces, packages
 
-tomcat : red�rrage tomcat si modif classe et non jsp
+tomcat : redémarrage tomcat si modif classe et non jsp
 
 TP : persistance avec hibernate et hsql
