@@ -1,0 +1,8 @@
+
+partir from scratch avec tous les TP
+
+explications sur les classes, interfaces, packages
+
+tomcat : redémarrage tomcat si modif classe et non jsp
+
+TP : persistance avec hibernate et hsql
