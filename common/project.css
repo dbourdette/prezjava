@@ -1,0 +1,48 @@
+
+body {
+	background-color: #778;
+}
+
+#project {
+	width:840px;
+	margin:10px auto;
+	padding:10px;
+	border-bottom-left-radius: 0px 0px;
+	border-bottom-right-radius: 20px 20px;
+	border-top-left-radius: 20px 20px;
+	border-top-right-radius: 0px 0px;
+	-moz-border-radius:0 20px 0 20px;
+	background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#BBD), to(#e5e6ff));
+	background: -moz-linear-gradient(center bottom , #BBD, #e5e6ff) repeat scroll 0 0 transparent;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 5px 8px;
+	border: 2px solid #AAA;
+}
+
+#project h1 {
+	font-size:30px;
+}
+
+#project h2 {
+	font-size:20px;
+	font-weight: normal;
+	width:840px;
+	border-bottom: 1px #AAA solid;
+}
+
+#project h3 {
+	font-size:16px;
+	font-weight: normal;
+	width:420px;
+	border-bottom: 1px #AAA solid;
+}
+
+#project button {
+	font-size:16px;
+	margin:0px;
+	padding:2px;
+}
+
+#project canvas.blackboard {
+	background-color: black;
+	margin:5px 0px;
+}

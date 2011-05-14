@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Droid Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Droid Sans'), local('DroidSans'), url('http://themes.googleusercontent.com/font?kit=rS9BT6-asrfjpkcV3DXf__esZW2xOQ-xsNqO47m55DA') format('truetype');
+}
+@font-face {
+  font-family: 'Droid Sans Mono';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Droid Sans Mono'), local('DroidSansMono'), url('http://themes.googleusercontent.com/font?kit=ns-m2xQYezAtqh7ai59hJcwD6PD0c3_abh9zHKQtbGU') format('truetype');
+}
