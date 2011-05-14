@@ -31,21 +31,21 @@ img.logo {
 }
 
 p.warning {
-	background-image:url("warning.png");
+	background-image:url("../img/warning.png");
 	background-repeat:no-repeat;
 	background-position:left;
 	padding-left:20px
 }
 
 a.external {
-	background-image:url("external-link.png");
+	background-image:url("../img/external-link.png");
 	background-repeat:no-repeat;
 	background-position:right;
 	padding-right:15px
 }
 
 a.project {
-	background-image:url("cog.png");
+	background-image:url("../img/cog.png");
 	background-repeat:no-repeat;
 	background-position:0 0;
 	padding-left:20px
