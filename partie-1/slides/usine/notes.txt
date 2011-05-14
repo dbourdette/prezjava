@@ -1,0 +1,2 @@
+pipe logiciel : vcs, integration continue (tests : unit, perf, ui), repo, deploy, monitoring
+process
