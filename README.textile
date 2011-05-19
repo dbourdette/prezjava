@@ -1,25 +1,39 @@
 h1. "L'usine logicielle : pratiques et outils":http://dbourdette.github.com/prezjava/partie-1/slides
 
 h2. Usine logicielle
+
 h2. Le Language java et jee
+
 h2. Le build (maven)
+
 h2. L'environnement de développement (eclipse)
+
 h2. Les librairies et les frameworks (spring, hibernate, junit...)
+
 h2. L'intégration continue (jenkins)
 
 h1. "Architecture logicielle":http://dbourdette.github.com/prezjava/partie-2/slides
 
 h2. Développement pas les tests : junit
+
 h2. L'injection de dépendances : spring
+
 h2. Base de données et persistance : hibernate
+
 h2. Aspect oriented programming
 
 h1. "Architecture des applications web":http://dbourdette.github.com/prezjava/partie-3/slides
 
 h2. interface http
+
 h2. Architecture des serveurs
+
 h2. Conteneurs de servlet (tomcat)
+
 h2. Servlets, jsp et el
+
 h2. Frameworks MVC2 (spring MVC)
+
 h2. Bases de données orientées documents
+
 h2. web services
