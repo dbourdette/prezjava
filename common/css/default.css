@@ -72,10 +72,10 @@ body {
 }
 
 .slide .counter {
-  color: #999999;
+  color: #222;
   position: absolute;
   left: 20px;
-  bottom: 20px;
+  bottom: 10px;
   display: block;
   font-size: 12px;
 }

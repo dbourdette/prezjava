@@ -1,9 +1,10 @@
 language objet
 language type
-language compilŽ (byecode)
+language compilï¿½ (byecode)
 language portable
 class, interface, enum, annotation
 stack trace
 jee
 conteneurs
 historique du langage et projet coin
+Garbage Collection (heap, perm gen...)

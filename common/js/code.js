@@ -334,18 +334,6 @@ $(document).ready(function() {
         link.disabled = !(link.disabled);
         sessionStorage['highlightOn'] = !link.disabled;
       },
-      changeTheme: function() {
-        var linkEls = query('link.theme');
-        var sheetIndex = 0;
-        linkEls.forEach(function(stylesheet, i) {
-          if (!stylesheet.disabled) {
-            sheetIndex = i;
-          }
-        });
-        linkEls[sheetIndex].disabled = true;
-        linkEls[(sheetIndex + 1) % linkEls.length].disabled = false;
-        sessionStorage['theme'] = linkEls[(sheetIndex + 1) % linkEls.length].href;
-      },
       handleKeys: function(e) {
         
         if (/^(input|textarea)$/i.test(e.target.nodeName) || e.target.isContentEditable) {
@@ -364,8 +352,6 @@ $(document).ready(function() {
             this.switch3D(); break;
           case 72: // H
             this.toggleHightlight(); break;
-          case 84: // T
-            this.changeTheme(); break;
         }
       },
       _touchStartX: 0,
