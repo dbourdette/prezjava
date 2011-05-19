@@ -1,0 +1,9 @@
+language objet
+language type
+language compilé (byecode)
+language portable
+class, interface, enum, annotation
+stack trace
+jee
+conteneurs
+historique du langage et projet coin

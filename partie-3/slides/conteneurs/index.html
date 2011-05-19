@@ -1,0 +1,783 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	    <title>Les conteneurs jee</title>
+	    
+		<link href="../static/css.css" rel="stylesheet" type="text/css">
+	    <link id="prettify-link" href="../static/prettify.css" rel="stylesheet" disabled="">
+	    <link href="../static/moon.css" class="theme" rel="stylesheet">
+	    <link href="../static/sand.css" class="theme" rel="stylesheet">
+	    <link href="../static/sea_wave.css" class="theme" rel="stylesheet">
+	    <link href="../static/default.css" class="theme" rel="stylesheet">
+	  	
+	    <link href="../static/dev.css" class="theme" rel="stylesheet">
+	    
+	    <script src="../static/jquery/jquery-1.4.4.min.js"></script>
+	    <script src="../static/jquery/jquery.xcolor.js"></script>
+	    <script src="../static/jquery/jquery.validate.js"></script>
+	    <link type="text/css" href="../static/jquery/smoothness/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
+	    <script src="../static/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+	    <script type="text/javascript">
+	    	jQuery.fn.outerHTML = function(s) {
+	  		return (s)
+	  		? this.before(s).remove()
+	  		: jQuery("<p>").append(this.eq(0).clone()).html();
+	  		}
+	    </script>
+	    
+	    <script src="../static/code.js"></script>
+	    <script src="../static/prettify.js" onload="prettyPrint();"></script>
+	    <script src="../static/js"></script>
+   		<script src="../static/main.js" type="text/javascript"></script>
+  	</head>
+  	<body>
+    <div class="presentation">
+      <div id="presentation-counter">Chargement...</div>
+      <div style="display: block;" class="slides">
+      
+	      <div class="slide">
+			<style>
+			  #landing-slide p {
+			    font-size: 35px;
+			  }
+			</style>
+			<section id="landing-slide" class="middle">
+			  <p>Les conteneurs jee</p>
+			</section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Les serveurs jee</header>
+	        <section>
+	        	<p>Un serveur jee est un serveur répondant aux spécifications jee.</p>
+	        	<p>Ces spécifications définissent des services et des apis simplifiant le développement d'applications : on parle d'<b>environnements managés</b>.</p>
+	        	<img alt="" src="images/jee-container.png" width="300px" style="margin:0 250px;"/>
+	          	<p>D'un point de vue interne, les serveurs d'application sont des eco-systèmes riches :</p>
+	          	<ul>
+	          		<li>Conteneurs de composants : servlets, portlets et ejb</li>
+	          		<li>Fournisseurs de services : JPA, JMS, JDBC, JNDI, JMX...</li>
+	          		<li>Technologies de rendu : fichiers jsp, custom tags et expression language</li>
+	          	</ul>
+	          	<p>La liste complète des <a href="http://www.oracle.com/technetwork/java/javaee/tech/index.html" class="external" target="_blank">spécifications jee 6</a> est disponible sur le site d'oracle.</p>
+	        </section>
+	        <p class="source">http://fr.wikipedia.org/wiki/Java_EE</p>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Historique</header>
+	        <section>
+	        	<p>Voici les principales dates clées pour jee.</p>
+	        	<ul>
+	        		<li>J2EE 1.2 (1999) : servlets, jsp, EJBs (1.1), JMS, RMI
+	        		<li>J2EE 1.3 (2001) : EJBs (2.0 CMP), JCA
+	        		<li>J2EE 1.4 (2003) : EJBs (2.1 MDB), Web services, JAX-RPC, Deployment Specification
+	        		<li>JEE 5 (2006) : EJB (3.0 annotations), JPA, Annotations, JSF, JAX-WS
+	        		<li>JEE 6 (2009) : Profil web, EJB (3.1 singletons, lite, asynchronous), JAX-RS
+	        	</ul>
+	        	<p>La liste des technologies est beaucoup plus longue que ce résumé rapide.</p>
+	        	<p>Plus généralement, l'évolution de jee peut être vu comme :</p>
+	        	<ul>
+	        		<li>Une base solide mais controversée (EJBs) en 2000
+	        		<li>Une évolution d'un monolithe vers une galaxie de services (ex CMP -> JPA)
+	        		<li>Le passage du tout xml vers les annotations depuis 2006
+	        	</ul>
+	        	<p>Aujourd'hui, jee a corrigé beaucoup de ses défauts et essaye d'allier entreprise et simplicité.</p>
+	        </section>
+	        <p class="source">http://en.wikipedia.org/wiki/Java_EE_version_history</p>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Environnements managés</header>
+	        <section>
+	        	<p>La philosophie des serveurs jee est de simplifier le développement.</p>
+	        	<p>Les composants évoluent donc dans un <b>environnement managé</b> où les tâches ardues sont gérées par le conteneur.</p>
+	        	<p>Au lieu d'écrire du code afin de réaliser une opération, on demande au conteneur de la prendre en charge.</p>
+	        	<p style="margin-bottom: 0px;">Par exemple, le conteneur prend à sa charge une bonne partie de la relation aux bases de données :</p>
+	        	<ul>
+	        		<li><b>Configuration</b> de la connexion
+	        		<li>Gestion d'un <b>pool de connexion</b> afin d'optimiser la consommation de ressources
+	        		<li>Gestion des <b>transactions</b> (commit / rollback)
+	        	</ul>
+	        	<p>En théorie, il ne reste au composant qu'a s'interesser au code métier.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Les conteneurs jee</header>
+	        <section>
+	        	<p>Il existe 2 types de conteneurs jee.</p>
+	        	<img alt="" src="images/jee-containers.png" width="500px" style="margin:0 100px">
+	        	<ul>
+	        		<li>les <b>conteneur de servlets</b> : le minimum afin de faire des applications web
+	        		<li>les <b>serveur d'application</b> : ils implémentent la totalité des spécifications
+	        	</ul>
+	        	<p>Il faut donc choisir en fonction des besoins de l'application.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Quelques serveurs</header>
+	        <section>
+	        	<p>Voici quelques serveurs existants.</p>
+	        	<p>Conteneurs de servlets</p>
+	        	<ul>
+	        		<li>tomcat
+	        		<li>jetty
+	        		<li>resin
+	        	</ul>
+	        	<p>Conteneurs d'applications</p>
+	        	<ul>
+	        		<li>glassfish
+	        		<li>weblogic
+	        		<li>websphere
+	        		<li>jboss
+	        	</ul>
+	        </section>
+	        <p class="source">http://www.servlets.com/engines/</p>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Les composants jee</header>
+	        <section>
+	        	<p>Voici quelques types de composants.</p>
+	        	<table class="refTable">
+	        		<thead>
+	        			<tr>
+	        				<td>nom</td>
+	        				<td>description</td>
+	        			</tr>
+	        		</thead>
+	        		<tr>
+	        			<td>Servlets</td>
+	        			<td>Le composant pour la gestion des requêtes http</td>
+	        		</tr>
+	        		<tr>
+	        			<td width="250px">Enterprise jave beans (EJBs)</td>
+	        			<td>Les composants métier : services, modèle de données et messages asynchrones</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Java server pages (JSPs)</td>
+	        			<td>Le moteur de templating afin de créer les pages HTML</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Portlets</td>
+	        			<td>Les composants gérants des fragments (widgets) de page web dans un moteur de portlets</td>
+	        		</tr>
+	        	</table>
+	        	<p>Les composants sont des classes java qui adhèrent à une interface définissant un <b>cycle de vie</b>.<p>
+	        	<pre>
+public void init() {...}
+
+public void doGet() {...}
+
+public void destroy() {...}</pre>
+	        	<p>Les spécifications récentes ont levé cette rigidité et les composants évoluent vers plus de flexibilité (annotations / injection de dépendances).</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<style>
+	      		#packagings tbody td {
+	      			text-align:left;
+	      		}
+	      	</style>
+	      	<header>Packaging</header>
+	        <section>
+	        	<p>Un <b>package</b> est zip contenant toutes les ressources d'un module : lib, appli web...</p>
+	        	<p>Il existe 3 formes majoritaires de packaging en java.</p>
+	        	<table class="refTable" id="packagings">
+	        		<thead>
+	        			<tr>
+	        				<td>nom</td>
+	        				<td>extension</td>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+		        		<tr>
+		        			<td>Les librairies</td>
+		        			<td>.jar</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2">Modules réutilisables (avec possibilité de définir des ejbs dans le META-INT/ejb-jar.xml).</td>
+		        		</tr>
+		        		<tr>
+		        			<td>Les applications web</td>
+		        			<td>.war</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2">servlets et jsp avec un descripteur de déploiement WEB-INF/web.xml.</td>
+		        		</tr>
+		        		<tr>
+		        			<td>Les applications entreprise</td>
+		        			<td>.ear</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2">ejb avec un descripteur de déploiement META-INF/application.xml.</td>
+		        		</tr>
+		        	</tbody>
+	        	</table>
+	        	<p>Des descripteurs supplémentaires permettent de gérer certains aspects transverses, comme par exemple l'interaction avec la base données relationnelle via le <b>persistence.xml</b> (JPA)</p>
+	          	<p>Les containers jee fournissent une solution flexible et complète mais complexe et difficile à appréhender au départ.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Arborescence d'un war</header>
+	        <section>
+	        	<p>Un war (<b>web application archive</b>) est un zip contenant une application web.</p>
+	        	<img alt="" src="images/war-layout.png" style="float:left;width:350px;margin:0 10px;">
+	        	<p><br>Le répertoire <b>WEB-INF</b> est un répertoire protégé.<br>
+	        	Ses fichiers ne sont pas accessibles directement.</p>
+	        	<ul>
+	        		<li>classes : les classes java du projet
+	        		<li>lib : les librairies externes
+	        		<li>jsp : les fichiers jsp
+	        		<li>tags : des morceaux de jsp réutilisables
+	        		<li>tld : des descripteur de tags
+	        		<li>web.xml : le descripteur de déploiement
+	        		<li>à la racine : les fichiers web accessibles
+	        	</ul>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Architecture 3 tiers jee</header>
+	        <section>
+	        	<p>Le monde jee a longtemps été un parangon de l'architecture 3 tiers.</p>
+	        	<img alt="" src="images/3-tiers-jee.png" width="600px" style="margin:0 100px;">
+	        	<p>La répartition des rôles est franche :</p>
+	        	<ul>
+	        		<li>Les servlets recoivent les requêtes http
+	        		<li>Les ejb implémentent les problématiques métier
+	        		<li>La base assure la persistance des données
+	        		<li>Les jsp formattent la réponse
+	        	</ul>
+	        	<p>C'est un modèle lourd à mettre en place qui à largement perdu en populatité.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Le protocole HTTP en objets</header>
+	        <section>
+		       <p>Les objets centraux du package <b>javax.servlet.http</b> sont une correspondance directe des concepts et protocoles.</p>
+		       <table class="refTable">
+	         		<thead>
+	        			<tr>
+	        				<td>classe</td>
+	        				<td>utilisation</td>
+	        			</tr>
+	        		</thead>
+	        		<colgroup style="width:200px;">
+	        		<tr>
+	        			<td>HttpServletRequest</td>
+	        			<td>La requête HTTP : path, paramètres, body...</td>
+	        		</tr>
+	        		<tr>
+	        			<td>HttpServletResponse</td>
+	        			<td>La réponse HTTP : écriture de la réponse, des headers, des cookies...</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Cookie</td>
+	        			<td>Une paire clé / valeur (+ maxAge, path, domain, secure).</td>
+	        		</tr>
+	        	</table>
+	        	<p>Et les composants jee qui les manipulent.</p>
+	        	<table class="refTable">
+	         		<thead>
+	        			<tr>
+	        				<td>classe</td>
+	        				<td>utilisation</td>
+	        			</tr>
+	        		</thead>
+	        		<colgroup style="width:200px;">
+	        		<tr>
+	        			<td>HttpServletContext</td>
+	        			<td>Le context d'éxecution des servlets contenant la configuration.</td>
+	        		</tr>
+	        		<tr>
+	        			<td>HttpServlet</td>
+	        			<td>Le composant de base capable de gérer des requêtes et de générer une réponse.</td>
+	        		</tr>
+	        		<tr>
+	        			<td>HttpSession</td>
+	        			<td>Une session afin de stoquer des données. Le suivi de la session se fait via un cookie jsessionid.</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Filter</td>
+	        			<td>La possibilité d'intercepter les requêtes avant qu'elle arrivent aux servlets.</td>
+	        		</tr>
+	        	</table>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Les servlets</header>
+	        <section>
+	        	<p>L'api de la classe HttpServlet possède les méthodes suivantes</p>
+	        	<pre>
+init(ServletConfig config)
+
+destroy()
+
+doGet(HttpServletRequest req, HttpServletResponse resp)
+
+doPost(HttpServletRequest req, HttpServletResponse resp)
+
+doPut(HttpServletRequest req, HttpServletResponse resp)
+
+doDelete(HttpServletRequest req, HttpServletResponse resp)
+ 
+doHead(HttpServletRequest req, HttpServletResponse resp)
+
+doOptions(HttpServletRequest req, HttpServletResponse resp)
+
+doTrace(HttpServletRequest req, HttpServletResponse resp)</pre>
+				<p>La servlet propose un mapping complet des méthodes HTTP.</p>
+				<p>En pratique, seuls doGet et doPost servent généralement.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Redirect vs Forward</header>
+	        <section>
+	        	<p>Une servlet peut écrire dans la réponse et redonner la main au conteneur qui va finir la négociation avec le client.</p>
+	        	<p>Si la servlet souhaite passer la main à un autre composant, il existe 2 méthodes :</p>
+	        	<ul>
+	        		<li>Redirect : le serveur rend la main au client en lui envoyant un code 301 ou 302 afin que le client fasse une autre requête vers une autre url.
+	        		<li>Forward : la servlet passe la main à un autre composant en interne du serveur sans que le client puisse le voir.
+	        	</ul>
+	        	<p>Le forward sert notamment lorsqu'une servlet souhaite passer la main à un fichier jsp.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Les fichiers jsp</header>
+	        <section>
+	         	<p>Les fichiers jsp sont le moteur de templating des conteneurs de servlets.</p>
+	          	<pre>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+   &lt;head&gt;&lt;/head&gt;
+   &lt;body&gt;
+      Hello ${name} !&lt;br&gt;
+      Hello &lt%=name%&gt; !&lt;br&gt;
+   &lt;/body&gt;
+&lt;/html&gt;</pre>
+				<p>Ils disposent de mécaniques puissantes afin de créer le rendu html pour une page web.</p>
+				<p>Ils peuvent également générer n'importe quel type de contenu textuel, comme du XML par exemple.</p>
+				<p>Les jsp sont compilées en servlet au moment de leur interprétation, avant d'être exécutées.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Les directives jsp</header>
+	        <section>
+	        	<p>Les directives contrôlent la manière dont le compilateur doit générer la servlet.</p>
+	        	<p>Le format d'une directive est le suivant.</p>
+	            <pre>&lt;%@ directive { attribut="valeur" } %&gt;</pre>
+	            <p>Par exemple afin de contrôler le mime type et l'encoding de la page.</p>
+	            <pre>&lt;%@ page language="java" contentType="text/html; charset=UTF-8"
+	            				 pageEncoding="UTF-8"%&gt;</pre>
+	           	<p>Ou bien l'inclusion d'un autre fichier.</p>
+	           	<pre>&lt;%@ include file="autre_fichier.jsp" %&gt;</pre>
+	        </section>
+	        <p class="source">http://fr.wikipedia.org/wiki/JavaServer_Pages</p>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Les actions jsp</header>
+	        <section>
+	        	<p>Les actions JSP sont des balises qui appellent des fonctions sur serveur HTTP</p>
+	        	<p>Le format d'une action est le suivant.</p>
+	        	<pre>&lt;jsp:action { attribut="valeur" } /&gt;</pre>
+	        	<p>Par exemple, un include s'écrit comme suit.</p>
+	        	<pre>
+&lt;jsp:include page="autre_fichier.jsp" &gt;
+   &lt;jsp:param name="monParam" value="valeur" /&gt;
+&lt;/jsp:include&gt;</pre>
+				<p>En pratique, les actions sont peu utilisées car il existe des mécanismes plus puissants.</p>
+	        </section>
+	        <p class="source">http://fr.wikipedia.org/wiki/JavaServer_Pages</p>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Variables implicites</header>
+	        <section>
+	        	<p>Les variables implicites sont des variables qui sont présentes dans toutes les jsp.</p>
+	        	<p>En voici quelques unes</p>
+	        	<ul>
+	        		<li><b>out</b> : le JSPWriter utilisé pour envoyer la réponse HTTP au client
+	        		<li><b>page</b> : la Servlet elle même
+	        		<li><b>pageContext</b> : les données associées à la page entière
+	        		<li><b>request</b> : la requête
+	        		<li><b>response</b> : la réponse
+	        		<li><b>session</b> : la session
+	        		<li><b>cookie</b> : les cookies
+	        		<li><b>header</b> : tous les headers
+	        		<li><b>param</b> : tous paramètres
+	        	</ul>
+	        	<p>Il est rare d'avoir recours à ces variable car, soit leur usage relève davantage du rôle de la servlet, soit il est existe de meilleurs façons de faire.</p>
+	        </section>
+	        <p class="source">http://java.sun.com/developer/technicalArticles/javaserverpages/JSP20/</p>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Expression language</header>
+	        <section>
+	        	<p>C'est une notation simple et puissante utilisable partout dans les jsp.</p>
+	        	<pre>${expression}</pre>
+	        	<p>Elle permet d'aller chercher des valeurs en parcourant tous les scopes (page, request, session et application) et d'effectuer des opérations.</p>
+	         	<p>L'expression suivante</p>
+	         	<pre>${cart.items[2].name}</pre>
+	         	<p>Synthétise un appel qui pourrait être écrit comme suit</p>
+	         	<pre>Cart cart = (Cart) request.getSession().getAttribute("cart");
+	         	
+String name = cart.getItems().get(2).getName();
+
+response.getWriter().write(name);</pre>
+	        </section>
+	        <p class="source">http://download.oracle.com/javaee/1.4/tutorial/doc/JSPIntro7.html</p>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Custom tags et fonctions</header>
+	        <section>
+	        	<p>Un custom tag est un nouvel élément du language que l'on peut soi même définir.</p>
+	        	<p>Afin de pouvoir l'utiliser, il suffit d'utiliser la directive taglib suivante.</p>
+	        	<pre>&lt;%@ taglib uri="/WEB-INF/tld/mataglib.tld" prefix="mataglib" %&gt;</pre>
+	        	<p>Une taglib peut contenir des tags et des fonctions.</p>
+	        	<p>Les tags, selon le besoin, peuvent être implémentés par des classes java ou bien des fichiers tag.</p>
+	        	<p>Voici un exemple d'appel à un tag.</p>
+	        	<pre>&lt;mataglib:faituntruc att1="valeur1" att2="valeur2" &gt;</pre>
+	        	<p>Et une fonction.</p>
+	        	<pre>${mataglib:faitca("valeur1")}</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Jstl</header>
+	        <section>
+	        	<p>La java standard tag library est la librairie de tag la plus utilisée.</p>
+	        	<p>Elle contient 4 taglibs et un ensemble de fonctions:</p>
+	        	<ul>
+	        		<li>&lt;c:/&gt; : la taglib essentielle avec le contrôle de flot
+	        	</ul>
+	        	<pre>&lt;c:if test="${empty param['name']}"&gt;Nom inconnu&lt;/c:if&gt;</pre>
+				<ul>
+	        		<li>&lt;fmt:/&gt; : le fomattage
+	        	</ul>
+	        	<pre>&lt;fmt:formatDate value="${date}" pattern="dd/MM/yyyy"/c:if&gt;</pre>
+	        	<ul>
+	        		<li>&lt;sql:/&gt; : l'accès aux bases de données
+	        		<li>&lt;x:/&gt; : le parsing xml
+	        		<li>${fn:} : la manipulation de chaînes de charactères
+	        	</ul>
+	        	<pre>${fn:escapeXml("les &lt;balises&gt; xml &amp; html")}
+retournera "les &amp;lt;balises&amp;gt; xml &amp;amp; html"</pre>
+	        </section>
+	        <p class="source">http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/</p>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Application web jee</header>
+	        <section>
+	        	<p style="font-size: 26px;margin:20px 0 0 20px;">Talk is cheap. Show me the code</a></p>
+	          	<p style="float:right;margin:0 20px 0 0;"><i>Linus Torvalds</i></p>
+	          	<p><br><br></p>
+	          	<p>Un squelette du projet est disponible dans le répertoire <a href="projets/jee/index.html" class="project" target="_blank">projets/jee</a>.</p>
+	        	<p>Nous utilisons <a href="http://eclipse.org" class="external" target="_blank">eclipse</a> comme IDE.</p>
+	        	<p>Nous utilisons <a href="http://tomcat.apache.org" class="external" target="_blank">tomcat</a> comme conteneur de servlets.</p>
+	        	<p><br><br></p>
+	        	<p>Nous allons décrire les principaux composants et APIs des conteneurs de servlets dans les slides suivants.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Persitence</header>
+	        <section>
+	        	<p>La correspondance entre un modèle de données objet et une base de données relationnelle est mécanique complexe.</p>
+	        	<p>Les solutions <b>ORM</b> (Object Relationnal Mapping) aide à gérer ce problème d'impédance.</p>
+	        	<p>Jee propose 2 éléments pour réaliser ce travail.</p>
+	        	<ul>
+	        		<li>Les <b>entity beans</b> : le modèle de données
+	        		<li><b>JPA</b> (java persistence api) : l'API qui permet d'échanger avec la base 
+	        	</ul>
+	        	<p>A sa base, l'api JPA gère les problématique <b>CRUD</b> en s'appuyant sur la force des bases de données relationlles, le <b>SQL</b> :</p> 
+	        	<ul>
+	        		<li><b>C</b>reate : persitence d'une entité 
+	        		<li><b>R</b>equest : recherche d'entités
+	        		<li><b>U</b>pdate : mise à jour d'entités
+	        		<li><b>D</b>elete : suppression d'entités
+	        	</ul>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>JPA</header>
+	        <section>
+	        	<p>Voici un exemple de l'utilisation de jpa en envirronement non managé.</p>
+	        	<pre>
+<span class="comment">// chargement de la définition de la persistence unit depuis persistence.xml</span>
+EntityManagerFactory emf = Persitence.createEntityManagerFactory("test-db");
+EntityManager em = emf.createEntityManager();
+EntityTransaction tx = em.getTransaction();
+
+<span class="comment">// Création de l'entité</span>
+Person person = new Person();
+person.setFirstname("Steven");
+person.setLastname("Seagal");
+
+<span class="comment">// Ecriture en base</span>
+tx.begin();
+em.persist(person);
+tx.commit();
+
+<span class="comment">// Libération des ressources</span>
+em.close();
+emf.close();</pre>
+	        	<p>Nous verrons un peu plus tard la définition d'une entité.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>persistence.xml</header>
+	        <section>
+	        	<p>Le fichier persitence.xml ressemble à l'exemple suivant.</p>
+	        	<pre>
+&lt;persistence ...&gt;
+ &lt;persistence-unit name="test-db" transaction-type="RESOURCE_LOCAL"&gt;
+  &lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
+  &lt;class&gt;<b>fr.prez.Person</b>&lt;/class&gt;
+  &lt;properties&gt;
+  &lt;property name="hibernate.dialect"
+    value="<b>org.hibernate.dialect.HSQLDialect</b>"/&gt;
+  &lt;property name="hibernate.hbm2ddl.auto" value="update"/&gt;
+  &lt;property name="hibernate.connection.driver_class"
+    value="org.hsqldb.jdbcDriver"/&gt;
+  &lt;property name="hibernate.connection.username" value="sa"/&gt;
+  &lt;property name="hibernate.connection.password" value=""/&gt;
+  &lt;property name="hibernate.connection.url"
+    value="<b>jdbc:hsqldb:hsql://localhost/testdb</b>"/&gt;
+  &lt;/properties&gt;
+ &lt;/persistence-unit&gt;
+&lt;/persistence&gt;</pre>
+	        	<p>Dans cet exemple, nous utilisons hibernate avec hsql (base de données embarquée).</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Les EJBs</header>
+	        <section>
+	         	<p>Les <b>enterprise java beans</b> sont au coeur des serveurs d'application : ils composent les couches métier de l'application.</p>
+	         	<p>La version 3.1 (jee 6) facilite énormément la programmation entreprise de java.</p>
+	         	<p>Une conteneur d'EJBs propose de nombreux services :</p>
+	         	<ul>
+	         		<li><b>Cycle de vie</b> : gestion d'un cycle de vie pour les composants
+	         		<li><b>Injection de dépendances</b> : aide à la constuction de l'application
+	         		<li><b>Intercepteurs</b> : factorisation du code transverse
+	         		<li><b>Pooling</b> : pool d'objets afin de gérer la concurrence 
+	         		<li><b>Transactions</b> : prise en main des transactions
+	         		<li><b>Appels asynchrones</b> : possiblité de déclencher des traitements asynchrones
+	         		<li><b>Sécurité</b> : utilisateurs et rôles
+	         		<li><b>Communication distante</b> : facilitation des appels à des services distants
+	         		<li><b>Messaging</b> : envoi et consommation de messages
+	         	</ul>
+	         	<p>Nous allons voir les types d'EJB disponibles en version 3.1 et quelques unes de leur possibilités.</p>  
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>@Entity</header>
+	        <section>
+	         	<p>Les beans entités représente le domaine métier de l'application et sont au coeur de la persitence avec la base de données.</p>
+	         	<pre>
+@Entity
+@NamedQuery(name = "findAllPersons", query = "select p from Person p")
+public class Person {
+   @Id
+   @Generated
+   private Long id;
+   
+   private String firstname;
+   
+   private String lastname;
+   
+   @Column(length = 1000)
+   private String comments;
+   
+   <span class="comment">// ... getters and setters</span>
+}</pre>  
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>@Stateless</header>
+	        <section>
+	         	<p>Les beans de session sans état servent à implémenter la logique métier et la persistence.</p>
+	         	<pre>
+@Stateless
+public class PersonService {
+   @PersitenceContext(unitName = "demoPU")
+   private EntityManager entityManager;
+   
+   public void save(Person person) {
+      em.persit(person);
+   }
+   
+   public List&lt;Person&gt; findBooks() {
+      return em.createNamedQuery("findAllPersons").getResultList();
+   }
+   
+   public String getFullname(Person person) {
+      return person.getFirstname() + " " + person.getLastname();
+   }
+}
+</pre>  
+				<p>Les beans @Stateless sont gérés dans un pool.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>@Singleton</header>
+	        <section>
+	         	<p>Les beans de session sans état singleton font exactement comme les beans @Stateless sauf qu'ils ne sont pas gérés en pool.</p>
+	         	<pre>
+@Singleton
+public class PersonService {
+   @PersitenceContext(unitName = "demoPU")
+   private EntityManager entityManager;
+   
+   public void save(Person person) {
+      entityManager.persit(person);
+   }
+   
+   public List&lt;Person&gt; findBooks() {
+      return entityManager.createNamedQuery("findAllPersons").getResultList();
+   }
+   
+   public String getFullname(Person person) {
+      return person.getFirstname() + " " + person.getLastname();
+   }
+}
+</pre>  
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>@Stateful</header>
+	        <section>
+	         	<p>Les beans de session avec état gardent leur état entre les appels.</p>
+	         	<pre>
+@Stateful
+@StatefulTimeout(30000)
+public class ShoppingCart {
+	private List&lt;Item&lt; items = new ArrayList&lt;Item&lt;();
+	
+	public void add(Item item) { items.add(item); }
+	
+	public void remove(Item item) { items.remove(item); }
+	
+	public float total(Item item) {
+		float total = 0f;
+	
+		for (Item item : items) { total += item.getprice(); }
+		
+		return total;
+	}
+}
+</pre>  
+				<p>A cause de leur propriété, ces beans sont parfois appelé beans conversationnels.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Et encore des annotations</header>
+	        <section>
+	        	<p>Il est possible de rendre l'exécution de certaines méthodes asynchrone.</p>
+	        	<pre>
+@Asynchronous
+public void processYearReport() {
+	<span class="comment">// analyser toutes les données de l'année</span>
+	
+	<span class="comment">// sauver le résultat en base</span>
+}
+</pre>
+	        	<p>Ou de planifier l'exécution de méthodes.</p>
+	        	<pre>
+@Schedule(minute = "0/5")
+public void refreshCache() {
+	<span class="comment">// mettre à jour les caches</span>
+}
+</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Le reste des services</header>
+	        <section>
+	        	<ul>
+	        		<li>JAX-WS : les services SOAP
+	        		<li>JAX-RX : les servcies REST
+	        		<li>JAXB : binding java - xml
+	        		<li>JDBC : java database connectivity
+	        		<li>JMS : java messaging service
+	        		<li>JSF : java server faces
+	        		<li>Bean validation : annotations pour la validation
+	        		<li>javaMail : envoi et réception de mail
+	        		<li>JMX : standardisation du management des applications
+	        	</ul>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Forces et faiblesses des serveurs jee</header>
+	        <section>
+	        	<p>Les spécifications jee sont riches</p>
+	        	<ul>
+		          	<li>Servlets et jsp forment un couple extrêmement puissant
+		          	<li>Les EJBs permettent de définir des composants business distribuables et réutilisables
+		          	<li>La liste des services est longue et complète 
+		        </ul>
+	          	<p>Mais</p>
+		       	<ul>
+			       	<li>Les premiers pas sont difficiles
+			       	<li>La configuration est très verbeuse
+			       	<li>Il faut un serveur d'application afin de profiter de toutes les possibilités
+		       	</ul>
+		       	<p>En 10 ans, jee a su évoluer et combler une partie de ses faiblesses afin de se rendre plus accesible.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>A lire</header>
+	        <section>
+	        	<p>Le livre de référence sur jee 6 de Antonio Goncalves</p>
+	        	<div style="margin:100px 150px;">
+	        	<img alt="" src="images/jee6-goncalves.gif" width="200px;" style="float:left;margin:10px 20px;">
+	        	<ul>
+	        		<li>Historique jee
+	        		<li>Persistance
+	        		<li>Entreprise Java Beans (EJB)
+	        		<li>Transactions
+	        		<li>Sécurité
+	        		<li>Java Server Faces (JSF)
+	        		<li>Java Server Pages (JSP)
+	        		<li>Java Messaging Service (JMS)
+	        		<li>Web services (SOAP et REST)
+	        	</ul>
+	        	</div>
+	        </section>
+	      </div>
+	     
+	  </div>
+      <!-- slides -->
+
+    </div> <!-- presentation -->
+    
+  	</body>
+</html>

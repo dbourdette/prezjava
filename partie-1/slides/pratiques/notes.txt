@@ -1,0 +1,3 @@
+pipe logiciel : ticketing, vcs, build, integration continue (tests : unit, perf, ui), repo, deploy, monitoring
+définir tous les éléments et prendre des exemples (jenkins, eclipse, mayen, nexus...)
+process

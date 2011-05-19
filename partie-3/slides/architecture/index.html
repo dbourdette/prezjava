@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	    <title>Architecture des serveurs</title>
+	    
+		<link href="../static/css.css" rel="stylesheet" type="text/css">
+	    <link id="prettify-link" href="../static/prettify.css" rel="stylesheet" disabled="">
+	    <link href="../static/moon.css" class="theme" rel="stylesheet">
+	    <link href="../static/sand.css" class="theme" rel="stylesheet">
+	    <link href="../static/sea_wave.css" class="theme" rel="stylesheet">
+	    <link href="../static/default.css" class="theme" rel="stylesheet">
+	  	
+	    <link href="../static/dev.css" class="theme" rel="stylesheet">
+	    
+	    <script src="../static/jquery/jquery-1.4.4.min.js"></script>
+	    <script src="../static/jquery/jquery.xcolor.js"></script>
+	    <script src="../static/jquery/jquery.validate.js"></script>
+	    <link type="text/css" href="../static/jquery/smoothness/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
+	    <script src="../static/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+	    <script type="text/javascript">
+	    	jQuery.fn.outerHTML = function(s) {
+	  		return (s)
+	  		? this.before(s).remove()
+	  		: jQuery("<p>").append(this.eq(0).clone()).html();
+	  		}
+	    </script>
+	    
+	    <script src="../static/code.js"></script>
+	    <script src="../static/prettify.js" onload="prettyPrint();"></script>
+	    <script src="../static/js"></script>
+   		<script src="../static/main.js" type="text/javascript"></script>
+  	</head>
+  	<body>
+    <div class="presentation">
+      <div id="presentation-counter">Chargement...</div>
+      <div style="display: block;" class="slides">
+      
+	      <div class="slide">
+			<style>
+			  #landing-slide p {
+			    font-size: 35px;
+			  }
+			</style>
+			<section id="landing-slide" class="middle">
+			  <p>Architecture des serveurs</p>
+			</section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Les composants</header>
+	        <section>
+				<p>Les objets au sein d'un serveur forment un <b>graphe d'objets</b> qui collaborent afin de traiter les requêtes.</p>
+				<img alt="" src="images/server-architecture.png" style="width:500px;margin:0 150px;">
+				<p>Chaque requête traverse donc un ou plusieurs de ces objets qui collaborent afin de générer une réponse.</p> 
+				<p>Ces objets structurants du serveur sont appelés <b>composants</b>.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>L'architecture en couches</header>
+	        <section>
+	        	<p>Les composants sont souvent regroupés en ensembles logiques formant des <b>couches</b>.</p>
+	        	<img alt="" src="images/layered-architecture.png" style="width:500px;margin:0 150px;">
+	        	<p>Le nom et le nombre des couches peut varier en fonction du besoin et des technologies, mais la forme canonique en comporte 3 :</p>
+	        	<ul>
+	        		<li>la couche de <b>présentation</b>
+	        		<li>la couche de <b>logique métier</b>
+	        		<li>la couche de <b>données</b>
+	        	</ul>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>L'architecture en couches (bis)</header>
+	        <section>
+	        	<img alt="" src="images/decoupling.jpg" height="550" style="margin:0 200px;">
+	        </section>
+	        <p class="source">http://geekandpoke.typepad.com/geekandpoke/</p>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>L'architecture en tiers</header>
+	        <section>
+	        	<p>Il est même possible de packager et déployer chaque couche indépendamment.</p> 
+	        	<p>on parle alors davantage de <b>tiers</b> plutôt que de couches.</p>
+	        	<p>La répartition canonique présentation / métier / données est appelé <b><a href="http://fr.wikipedia.org/wiki/Architecture_trois_tiers" class="external" target="_blank">architecture 3 tiers</a></b>.</p>
+	          	<img alt="" src="images/3-tiers.png" width="600px" style="margin:0 100px;">
+	          	<p>Cette répartition autorise même de déployer chaque tiers dans un environnement différent.</p>
+	          	<p>Cette flexibilité vient avec un coût supplémentaire lors de la conception et de l'exploitation.</p>
+	          	<p style="font-size: 26px;margin:0 0 0 20px;">Hence, we get to my First Law of Distributed Object Design:<br> <a href="http://www.drdobbs.com/184414966" class="external" target="_blank">Don’t distribute your objects!</a></p>
+	          	<p style="float:right;margin:0 20px 0 0;"><i>Martin Fowler</i></p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Bases de données</header>
+	        <section>
+	        	<p>Les bases de données assure la persistance et la longévité des données.</p>
+	        	<p>Les propriétés essentielles des bases de données sont regroupées sous l'acronyme <b>ACID</b> :</p>
+	        	<ul>
+	        		<li><b>Atomicité</b> : toute transaction doit s'éxécuter totalement ou pas du tout
+	        		<li><b>Consistance</b> : la base assure sa propre intégrité
+	        		<li><b>Isolation</b> : la base gère la concurrence entre les transactions
+	        		<li><b>Durabilité</b> : la base assure la pérennité des données
+	        	</ul>
+	        	<p>Il est parfois compliqué de discuter avec une base de données mais il est difficile de se passer de ses services.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Types de bases de données</header>
+	        <section>
+	        	<p>Il existe différents types de base de données :</p>
+	        	<ul>
+	        		<li><b>relationnelles</b> : tables de données avec des relations entres elles (clés distantes).
+	        		<li><b>hierarchiques</b> : les données sont stoquées dans une structure arborescente.
+	        		<li><b>orientées objets</b> : visent à faciliter le passage objets &lt;-&gt; stockage.
+	        		<li><b>XML</b> : stoquage et interrogation native en XML.
+	        		<li><b>orientées documents</b> : stoquage d'objets avec des propriétés complexes.
+	        	</ul>
+	        	<p>les charges grandissantes et la flexibilité recherchée ont poussé certaines de ces solutions hors de la compétition.</p>
+	        	<p>Les bases des données orientées documents offrent des perspectives sur le web bien plus grandes que ses prédécesseurs.</p>  
+	        	<p>C'est la mouvance <b><a href="http://fr.wikipedia.org/wiki/NoSQL" class="external" target="_blank">NoSQL</a></b> qui est en cours avec des solutions comme mongoDB, cassandra et solr.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Topologies</header>
+	        <section>
+	        	<p>La topologie de réseau est l'organisation des serveurs au sein d'un ensemble.</p>
+	        	<p>Le but d'une bonne topologie est la tenue en charge et la faible consommation de ressources.</p>
+	        	<img alt="" src="images/scalabilite.png" width="500px" style="margin:0 130px;">
+	        	<p>Ajouter des serveurs n'est pas toujours possible. Une architecture qui le permet est <b>scalable horizontalement</b>.</p>
+	        	<p>Dans le cas où cela n'est pas possible, une autre solution est la <b>scalabilité verticale</b> (ajout de ressources sur le serveur) qui offre de bien moins bons gains.</p>
+	        	<p>Il n'y a pas de solution unique à la tenue en charche : des sites comme twitter ou facebook ont du inventer leur propres techniques.</p>
+	        	<p>Nous allons voir quelques exemples et techniques afin d'augmenter la tenue en charge.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Topologie canonique</header>
+	        <section>
+	        	<p>C'est la forme de base avec un serveur et une base de données.</p>
+	        	<img alt="" src="images/topologie-canonique.png" width="300px" style="margin:0 260px;">
+	        	<p>C'est généralement le point de départ pour un service avec un petit volume d'opérations.</p>
+	        	<table class="proscons">
+	        		<thead>
+	        			<tr>
+	        				<td>pour</td>
+	        				<td>contre</td>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+		        		<tr>
+		        			<td>
+		        				<ul>
+		        					<li>Simple à mettre en place
+		        				</ul>
+		        			</td>
+		        			<td>
+		        				<ul>
+		        					<li>Aucune scalabilité horizontale possible
+		        				</ul>
+		        			</td>
+		        		</tr>
+	        		</tbody>
+	        	</table>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Clustering / load balancing</header>
+	        <section>
+	        	<p>Le <b>load balancing</b> permet de répartir la charge entre les noeuds d'un <b>cluster</b> sans que le client en ait conscience.</p>
+	        	<p>La <b>haute disponibilité</b> est la qualité d'un cluster à continuer de répondre correctement en cas de panne d'une partie des serveurs.</p>
+	        	<img alt="" src="images/load-balancing.png" width="420px" style="margin:0 180px;">
+	        	<table class="proscons">
+	        		<thead>
+	        			<tr>
+	        				<td>pour</td>
+	        				<td>contre</td>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+		        		<tr>
+		        			<td>
+		        				<ul>
+		        					<li>On peut augmenter le nombre de serveurs tant que le load balancer le supporte
+		        				</ul>
+		        			</td>
+		        			<td>
+		        				<ul>
+		        					<li>La gestion de session est plus compliquée
+		        				</ul>
+		        			</td>
+		        		</tr>
+	        		</tbody>
+	        	</table>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Sharding</header>
+	        <section>
+	        	<p>Le sharding de base est une segmentation horizontale des données.</p>
+	        	<img alt="" src="images/shards.png" width="520px" style="margin:0 160px;">
+	        	<p>Chaque shard acceuille le même modèle de données mais un segment différent.</p>
+	        	<p>Un exemple de <b>segmentation</b> : les identifiants pairs et impairs.</p>
+	        	<table class="proscons">
+	        		<thead>
+	        			<tr>
+	        				<td>pour</td>
+	        				<td>contre</td>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+		        		<tr>
+		        			<td>
+		        				<ul>
+		        					<li>Chaque base ne prend qu'une partie de la charge
+		        					<li>Les index sont moins gros
+		        					<li>Les bases peuvent être sur plusieurs machines
+		        				</ul>
+		        			</td>
+		        			<td>
+		        				<ul>
+		        					<li>Il n'est pas toujours possible de définir une règle de segmentation perenne
+		        					<li>La réconciliation de données entre les bases est difficile
+		        				</ul>
+		        			</td>
+		        		</tr>
+	        		</tbody>
+	        	</table>
+	        </section>
+	        <p class="source">http://en.wikipedia.org/wiki/Shard_(database_architecture)</p>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Read only slaves</header>
+	        <section>
+	        	<p>Dans ce mode, seul une base est utilisée pour l'écriture.</p>
+	        	<img alt="" src="images/read-only-slave.png" width="400px" style="margin:0 200px;">
+	        	<p>Les bases esclaves sont mise à jour en continu par réplication des modifications qui surviennent sur le maitre.</p>
+	        	<table class="proscons">
+	        		<thead>
+	        			<tr>
+	        				<td>pour</td>
+	        				<td>contre</td>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+		        		<tr>
+		        			<td>
+		        				<ul>
+		        					<li>La capacité en lecture augmente en fonction du nombre d'esclaves
+		        					<li>Beaucoup de bases supportent ce mode
+		        				</ul>
+		        			</td>
+		        			<td>
+		        				<ul>
+		        					<li>Les esclaves ont un temps de retard par rapport au master
+		        					<li>Cela ne résoud pas la montée en charge en écriture
+		        				</ul>
+		        			</td>
+		        		</tr>
+	        		</tbody>
+	        	</table>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Traitemens asynchrones</header>
+	        <section>
+	        	<p>Le serveur envoie des messages et est capable de répondre rapidement.</p>
+	        	<img alt="" src="images/messaging.png" width="520px" style="margin:0 160px;">
+	        	<table class="proscons">
+	        		<thead>
+	        			<tr>
+	        				<td>pour</td>
+	        				<td>contre</td>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+		        		<tr>
+		        			<td>
+		        				<ul>
+		        					<li>Réponse rapide du serveur
+		        					<li>Distribution des traitements
+		        					<li>Faible couplage entre les serveurs
+		        				</ul>
+		        			</td>
+		        			<td>
+		        				<ul>
+		        					<li>Le serveur répond avant d'avoir eu le résultat des traitements
+		        				</ul>
+		        			</td>
+		        		</tr>
+	        		</tbody>
+	        	</table>
+	        </section>
+	      </div>
+	  </div>
+	
+      <div class="slide">
+      	<header>A lire</header>
+        <section>
+        	<p>Une bonne partie des patterns aujourd'hui en place dans les serveurs et les frameworks.</p>
+        	<img alt="" src="images/enterprise-patterns-fowler.jpg" style="margin:0 250px;">
+        	<p>Patterns of Enterprise Application Architecture / Martin Fowler</p>
+        </section>
+      </div>
+      <!-- slides -->
+
+    </div> <!-- presentation -->
+    
+  	</body>
+  </html>

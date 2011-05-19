@@ -1,0 +1,399 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	    <title>Les conteneurs légers</title>
+	    
+		<link href="../static/css.css" rel="stylesheet" type="text/css">
+	    <link id="prettify-link" href="../static/prettify.css" rel="stylesheet" disabled="">
+	    <link href="../static/moon.css" class="theme" rel="stylesheet">
+	    <link href="../static/sand.css" class="theme" rel="stylesheet">
+	    <link href="../static/sea_wave.css" class="theme" rel="stylesheet">
+	    <link href="../static/default.css" class="theme" rel="stylesheet">
+	  	
+	    <link href="../static/dev.css" class="theme" rel="stylesheet">
+	    
+	    <script src="../static/jquery/jquery-1.4.4.min.js"></script>
+	    <script src="../static/jquery/jquery.xcolor.js"></script>
+	    <script src="../static/jquery/jquery.validate.js"></script>
+	    <link type="text/css" href="../static/jquery/smoothness/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
+	    <script src="../static/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+	    <script type="text/javascript">
+	    	jQuery.fn.outerHTML = function(s) {
+	  		return (s)
+	  		? this.before(s).remove()
+	  		: jQuery("<p>").append(this.eq(0).clone()).html();
+	  		}
+	    </script>
+	    
+	    <script src="../static/code.js"></script>
+	    <script src="../static/prettify.js" onload="prettyPrint();"></script>
+	    <script src="../static/js"></script>
+   		<script src="../static/main.js" type="text/javascript"></script>
+  	</head>
+  	<body>
+    <div class="presentation">
+      <div id="presentation-counter">Chargement...</div>
+      <div style="display: block;" class="slides">
+      
+	      <div class="slide">
+			<style>
+			  #landing-slide p {
+			    font-size: 35px;
+			  }
+			</style>
+			<section id="landing-slide" class="middle">
+			  <p>Les conteneurs légers</p>
+			</section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Définition</header>
+	        <section>
+	        	<p>Les conteneurs légers sont apparus vers 2003 en réponse au monolithisme et à la complexité des conteneurs jee.</p>
+	        	<p>Il ne viennent pas remplacer les conteneurs jee mais en simplifier l'usage :</p>
+	        	<ul>
+	        		<li>Une mise en place simple
+	        		<li>La possibilité de fonctionner en dehors d'un serveur d'application
+	        		<li>Pas de contraintes d'interface sur les objets managés
+	        		<li>Une empreinte mémoire faible
+	        		<li>Un temps de démarrage court
+	        	</ul>
+	        	<p>Les conteneurs léger les plus connus sont : <b>spring framework</b>, <b>picocontainer</b> et <b>guice</b>.</p>        	
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>POJOs</header>
+	        <section>
+	        	<p>Les conteneurs légers glorifient les Plain Old Java Objects (<b>POJOs</b>) par opposition aux beans entreprise imposés par les conteneurs jee.</p>
+	        	<p style="font-size: 26px;margin:20px 0 0 20px;">Nous nous sommes demandés pourquoi tout le monde était autant contre l'utilisation d'objets simples dans leurs systèmes et nous avons conclu que c'était parce que ces objets simples n'avaient pas un nom sympa. Alors, on leur en a donné un et ça a pris tout de suite</a></p>
+	          	<p style="float:right;margin:10px 20px 0 0px;"><i>Martin Fowler, Rebecca Parsons et Josh MacKenzie</i></p>
+	          	<div style="clear:both;"></div>
+	        	<p>Ce n'est pas une idée neuve, mais une industrialisation de bonnes pratiques de conception objet.</p>
+	        	<p>Aujourd'hui, les spécifications jee ont adopté une posture similaire et faire des EJBs n'a plus rien à voir avec les pratiques de cette époque.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Inversion of control</header>
+	        <section>
+	        	<p>Tous les conteneurs légers sont basés sur le principe de l'<b>inversion of control</b> (IoC).</p>
+	        	<p>Le but de ce pattern est de simplifier la gestion de dépendances entre les objets : 
+	        	le conteneur sert de banque de composants et distibue des références à ceux qui en ont besoin.</p>
+	        	<p>Le code suivant est un exemple de mauvaise gestion de dépendance.</p>
+	        	<pre>
+public class MonService {
+   private DBService database;
+
+   public MonService() {
+      <span class="comment">// le service instancie et configure lui même la connexion</span>
+      this.database = new DBService(<span class="comment">/* configuration de la connexion */</span>); 
+   }
+   
+   ...
+}</pre>
+	        	<p>La collaboration entre les composants est simplifiée et chaque composant se concentre alors sur sa valeur ajoutée au sein du graphe d'objet.</p>
+	        </section>
+	        <p class="source">http://martinfowler.com/articles/injection.html</p>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Inversion of control</header>
+	        <section>
+	        	<p>Il existe plusieurs techniques afin de mettre en place l'IOC.</p>
+	        	<img alt="" src="images/ioc.png" width="500px" style="margin:0 150px;">
+	        	<ul>
+	        		<li>Le <b>service locator</b> permet d'obtenir une référence vers un autre objet grâce à un registre
+	        		<li>L'<b>injection par constructeur</b> apporte les dépendances lors de l'appel au constructeur
+	        		<li>L'<b>injection par setter</b> apporte les dépendances en utilisant les accesseurs (setters)
+	        	</ul>
+	        	<p>Le framework spring supporte les 2 modes d'injections mais en réalité encourage fortement l'injection par setter.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>L'injection de dépendances</header>
+	        <section>
+	        	<p>Avec de l'injection de dépendances, le code précédent peut être simplifié.</p>
+	        	<ul>
+	        		<li>Injection par constructeur
+	        	</ul>
+	        	<pre>
+public class MonService {
+   private DBService engine;
+
+   public MonService(DBService database) {this.database = database;}
+}</pre>
+				<ul>
+	        		<li>Injection par setter
+	        	</ul>
+	        	<pre>
+public class MonService {
+   private DBService database;
+
+   public void setDatabase(DBService database) {this.database = database;}
+}</pre>
+	        	<p>Chaque composant gagne en indépendance et cela facilite l'écriture des <b>tests unitaires</b>.</p> 
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Spring framework</header>
+	        <section>
+	        	<p><a href="http://www.springsource.org/" target="_blank" class="external">Spring</a> est un conteneur léger par injection de dépendances.</p>
+	        	<img alt="" src="images/spring-overview.png" width="500px" style="margin:0 150px;">
+	        	<p>En plus de l'IoC, Il propose une forte intégration avec les services jee.</p>
+	        </section>
+	        <p class="source">http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/overview.html</p>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Démarrage d'un contexte spring</header>
+	        <section>
+	        	<p>La configuration canonique de spring se fait via un fichier xml contenant des beans.</p>
+	        	<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans&gt;
+
+  &lt;bean id="..." class="..."&gt;
+    &lt;!-- configuration du bean ici --&gt;
+  &lt;/bean&gt;
+  
+  &lt;!-- plus de beans ici --&gt;
+
+&lt;/beans&gt;</pre>
+				<p>Qui peut être chargé avec le code suivant</p>
+				<pre>
+ApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");</pre>
+    			<p>L'injection des liens entre les beans est appelée <b>wiring</b>.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Des beans spring</header>
+	        <section>
+	        	<p>Imaginons deux services qui collaborent.</p>
+	        	<pre>
+public interface ServiceA {
+   public void doSomethingUseful();
+}
+	        	
+public class ServiceAImpl implements ServiceA {
+   public void doSomethingUseful() { ... }
+}
+
+public class ServiceB {
+   private ServiceA serviceA;
+   public void setServiceA(ServiceA serviceA) {this.serviceA = serviceA;}
+   public void call() { serviceA.doSomethingUseful(); }
+}</pre>
+				<p>Voici la configuration spring nécessaire.</p>
+				<pre>
+&lt;bean id="serviceA" class="x.y.z.ServiceAImpl" /&gt;
+
+&lt;bean id="serviceB" class="x.y.z.ServiceB"&gt;
+    &lt;property name="serviceA" ref="serviceA"&gt;
+&lt;/bean&gt;</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>@Inject</header>
+	        <section>
+	        	<p>Il existe une alternative avec des annotations afin d'injecter les dépendances.</p>
+				<pre>
+public class ServiceB {
+   <b>@Inject</b>
+   private ServiceA serviceA;
+   
+   public void call() { serviceA.doSomethingUseful(); }
+}</pre>
+	        	<p>Avec le contexte suivant.</p>
+	        	<pre>
+&lt;context:annotation-config/&gt; <span class="comment">&lt;!-- active les annotations --&gt;</span>
+
+&lt;bean id="serviceA" class="x.y.z.ServiceAImpl" /&gt;
+
+&lt;bean id="serviceB" class="x.y.z.ServiceB" /&gt;
+</pre>
+				<p>@Inject est le standard jee, spring supporte aussi sa propre annotation @Autowired et une autre annotation standard @Resource.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>@Component</header>
+	        <section>
+	        	<p>On peut aussi demander à spring de chercher les composants dans le classpath.</p>
+	        	<pre>
+&lt;context:annotation-config/&gt; <span class="comment">&lt;!-- active les annotations --&gt;</span> 
+&lt;context:component-scan base-package="x.y.z"/&gt; <span class="comment">&lt;!--scan le package x.y.z--&gt;</span>
+</pre>
+
+				<p>Les composants doivent juste être annotés</p> 
+				<pre>
+<b>@Service</b>	        	
+public class ServiceAImpl implements ServiceA {
+   public void doSomethingUseful() { ... }
+}
+
+<b>@Service</b>	
+public class ServiceB {
+   @Inject
+   private ServiceA serviceA;
+   
+   public void call() { serviceA.doSomethingUseful(); }
+}</pre>
+	        	<p>Les @Component peuvent être des @Service, @Repository ou bien des @Controller.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<header>Projet spring</header>
+	        <section>
+	        	<p>Un squelette du projet est disponible dans le répertoire <a href="projets/ioc/index.html" class="project" target="_blank">projets/ioc</a>.</p>
+	        	<p>Nous utilisons <a href="http://eclipse.org" class="external" target="_blank">eclipse</a> comme IDE.</p>
+	        	<p>Nous utilisons <a href="http://lucene.apache.org/solr/" class="external" target="_blank">solr</a> comme moteur de recherche et base de données orientée document.</p>
+	        	<p><br><br></p>
+	        	<p>Nous allons construire une base de moteur de recherche web.</p>
+	        </section>
+	      </div>
+	        
+	      
+	      <div class="slide">
+	        <header>AOP Proxies</header>
+	        <section>
+	        	<p>Lors du wiring, spring peut intercaler des classes entre l'appelant et la cible.</p>
+	        	<img alt="" src="images/aop-proxy.png" width="500px" style="margin:0 150px;">
+	        	<p>Cette approche est appelée <b>Aspect Oriented Programming</b> et peut être mis en place de plusieurs façons :</p>
+	        	<ul>
+	        		<li>Création d'un <b>proxy dynamique</b> : création d'une classe à partir d'un interface (jdk)
+	        		<li>à la <b>compilation</b> : les aspects sont ajoutés au moment de la compilation
+	        		<li>au <b>chargement</b> : les aspects sont ajoutés au moment du démarrage de l'application.
+	        	</ul>
+	        	<p>C'est particulièrement utile afin de factoriser des traitements <b>orthogonaux</b> au code métier.</p>
+	        	<p>La nomenclature de l'AOP est complexe : advice, crosscuting, join point, point cut..., mais le principe reste simple : exécuter du code entre l'appelant et l'objet cible.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Gestion de transaction</header>
+	        <section>
+	        	<p>Le gestion des resources liées aux transactions est lourde à manipuler.</p>
+	        	<pre>
+public void doSomethingUseful() {
+  Connection con = null;
+  
+  try {
+    con = dataSource.getConnection();
+    con.setAutoCommit(false); <span class="comment">// Activer les transactions</span>
+    
+    <b>stmt = con.createStatement();
+    stmt.executeUpdate("update my_table set stock = 3 where id = 15");</b>
+    
+    con.commit(); <span class="comment">// Commit de la transaction</span>
+  } catch (Exception e) {
+    <span class="comment">// Rollback de la transaction en cas d'erreur</span>
+    if (con != null) { con.rollback(); } 
+  } finally {
+    <span class="comment">// Libération des ressources</span>
+    if (con != null) { con.close(); }
+  }
+}</pre>	        	
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>@Transactional</header>
+	        <section>
+	        	<p>Grâce à l'AOP et un gestionnaire de transaction, on peut simplifier le code précédent.</p>
+	        	<pre>
+<b>@Transactional</b>
+public void doSomethingUseful() {
+  Connection conn = DataSourceUtils.getConnection(dataSource);
+	
+  stmt = con.createStatement();
+  stmt.executeUpdate("update my_table set stock = 3 where id = 15");
+}</pre>
+	        	<p>Avec la configuration suivante</p>
+	        	<pre>
+<span class="comment">&lt;!-- activer les annotations @Transactional --&gt;</span>
+&lt;tx:annotation-driven transaction-manager="txManager"/&gt;
+
+<span class="comment">&lt;!-- le gestionnaire de transaction --&gt;</span>
+&lt;bean id="txManager"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;
+   <span class="comment">&lt;!-- la dataSource est définie ailleurs --&gt;</span>
+   &lt;property name="dataSource" ref="dataSource"/&gt;
+&lt;/bean&gt;</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Déclarer son propre aspect</header>
+	        <section>
+	        	<p>La détection d'aspects est activée avec la configuration suivante.</p>
+	        	<pre>&lt;aop:aspectj-autoproxy/&gt;</pre>
+	        	<p>Et pour Créer un aspect afin d'afficher le temps de calcul de chaque méthode.</p>
+	        	<pre>
+@Aspect
+@Component
+public class TraceAspect {
+   @Around("within(fr.prez.ioc..*)")
+   public Object trace(ProceedingJoinPoint pjp) throws Throwable {
+      long t1 = System.currentTimeMillis();
+
+      <b>Object value = pjp.proceed()</b>;
+      
+      long t2 = System.currentTimeMillis();
+      
+      System.out.println("Executed " + pjp.getSignature() + " in " + 
+         (t2 - t1) + "ms");
+      
+      return value;
+   }
+}</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Autres services</header>
+	        <section>
+	        	<p>Spring c'est un conteneur léger mais aussi une boite à outils.</p>
+	        	<ul>
+	        		<li>Accès aux données : support pour les <b>ORM</b> et jdbc
+	        		<li>Mapping Objet - Xml (<b>OXM</b>) : support pour JAXB, Castor, XMLBeans, JiBX et XStream
+	        		<li>Framework <b>MVC 2</b> et Portlets
+	        		<li><b>Remoting</b> : RMI, HTTP, REST, Burlap, Hessian...
+	        		<li>Intégration avec les <b>EJBs</b>
+	        		<li><b>Message Driven Beans</b> et envoi de messages <b>JMS</b>
+	        		<li>Simplification de <b>JMX</b>
+	        		<li>Envoi d'<b>email</b>
+	        		<li>Simples <b>schedulers</b> et support pour <b>Quartz</b>
+	        		<li>Et biens d'autres au travers de modules...
+	        	</ul>
+	        	<p>L'étendue de ses capacités a porté spring bien au-delà d'un framework IOC.</p>
+	        	<p>Il est donc difficilement comparable à d'autres framework IOC.</p>
+	        	<p>Spring est davantage une alternative à la façon de faire du composant jee en entreprise.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>A Lire</header>
+	        <section>
+	        	<p>La philosophie derrière spring et conteneurs légers.</p>
+	        	<img alt="" src="images/jee-without-ejb-johnson.jpg" width="250px" style="margin:0 250px;">
+	        	<p>Expert One-on-One J2EE Development without EJB / Rod Johnson &amp; Juergen Hoeller</p>
+	        	<p>Et la <a href="http://www.springsource.org/documentation" class="external" target="_blank">documentation spring</a></p>
+	        </section>
+	      </div>
+	     
+	  </div>
+      <!-- slides -->
+
+    </div> <!-- presentation -->
+    
+  	</body>
+  </html>

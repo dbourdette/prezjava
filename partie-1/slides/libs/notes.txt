@@ -1,0 +1,3 @@
+communauté = force de java
+les libs jTruc
+quelques librairies : sprint, hibernate, junit

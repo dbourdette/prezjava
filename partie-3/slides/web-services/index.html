@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	    <title>Web services</title>
+	    
+		<link href="../static/css.css" rel="stylesheet" type="text/css">
+	    <link id="prettify-link" href="../static/prettify.css" rel="stylesheet" disabled="">
+	    <link href="../static/moon.css" class="theme" rel="stylesheet">
+	    <link href="../static/sand.css" class="theme" rel="stylesheet">
+	    <link href="../static/sea_wave.css" class="theme" rel="stylesheet">
+	    <link href="../static/default.css" class="theme" rel="stylesheet">
+	  	
+	    <link href="../static/dev.css" class="theme" rel="stylesheet">
+	    
+	    <script src="../static/jquery/jquery-1.4.4.min.js"></script>
+	    <script src="../static/jquery/jquery.xcolor.js"></script>
+	    <script src="../static/jquery/jquery.validate.js"></script>
+	    <link type="text/css" href="../static/jquery/smoothness/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
+	    <script src="../static/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+	    <script type="text/javascript">
+	    	jQuery.fn.outerHTML = function(s) {
+	  		return (s)
+	  		? this.before(s).remove()
+	  		: jQuery("<p>").append(this.eq(0).clone()).html();
+	  		}
+	    </script>
+	    
+	    <script src="../static/code.js"></script>
+	    <script src="../static/prettify.js" onload="prettyPrint();"></script>
+	    <script src="../static/js"></script>
+   		<script src="../static/main.js" type="text/javascript"></script>
+  	</head>
+  	<body>
+    <div class="presentation">
+      <div id="presentation-counter">Chargement...</div>
+      <div style="display: block;" class="slides">
+      
+	      <div class="slide">
+			<style>
+			  #landing-slide p {
+			    font-size: 35px;
+			  }
+			</style>
+			<section id="landing-slide" class="middle">
+			  <p>Web services</p>
+			</section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Définition</header>
+	        <section>
+	        	<p>Un service web possède les caratéristiques suivantes.</p>
+	        	<ul>
+	        		<li><b>service</b> : il peut être utilisé par des processus informatiques
+	        		<li><b>web</b> : il utilise le protocole HTTP
+	        	</ul>
+	        	<p>Le services web peuvent se diviser en 2 groupes.</p>
+	        	<img alt="" src="images/web-services.png" width="450px" style="margin:0 180px">
+	        	<ul>
+	        		<li><b>RPC</b> (Remote Procedure Call) est l'appel d'une méthode distante comme si elle était locale.
+	        		<li><b>REST</b> (Representational State Transfer) est un modèle de conception qui repose intégralement sur le HTTP.
+	        	</ul>
+	        </section>
+	        <p class="source">http://www.clever-age.com/veille/clever-link/soap-vs.-rest-choisir-la-bonne-architecture-web-services.html</p>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>XML-RPC</header>
+	        <section>
+	        	<p>XML-RPC est un protocole RPC permettant à des processus s'exécutant dans des environnements différents de faire des appels de méthodes à travers un réseau.</p>
+	        	<p>Les processus d'invocation repose sur le protocole HTTP pour le transport et le XML pour le codage des données.</p>
+	        	<p>XML-RPC est l'ancêtre de SOAP.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>SOAP</header>
+	        <section>
+	        	<p>SOAP est un mécanisme RPC basés sur 3 technologies.</p>
+	        	<ul>
+	        		<li><b>SAOP</b> (Simple Object Access Protocol) : le protocole d'échange
+	        		<li><b>WSDL</b> (Web Service Description Language) : descripteur d'un service SAOP, permet de générer un client
+	        		<li>UDDI (Universal Description Discovery and Integration) : un mécanisme d'annuaire
+	        	</ul>
+	        	<img alt="" src="images/soap-message.png" width="200px" style="margin:10px 20px;float:left">
+	        	<p>Un message SAOP</p>
+	        	<ul>
+	        		<li>enveloppe : contient le header et le body
+	        		<li>header : informations permettant son acheminement
+	        		<li>body : le contenu du message
+	        	</ul>
+	        	<div style="clear:both;"></div>
+	        	<p><b>SOAP</b> peut s'appuyer sur le HTTP comme couche de transport.</p>
+	        	<p>Une des motivations initiales est l'<b>interopérabilité</b> entre les plateformes et les languages.</p>
+	        	<p>La mise en place d'un service SOAP est relativement complexe.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Un exemple de service SOAP</header>
+	        <section>
+	        	<p>Une requête</p>
+	        	<pre>
+POST /InStock HTTP/1.1
+Host: www.example.org
+Content-Type: application/soap+xml; charset=utf-8
+Content-Length: nnn
+
+&lt;?xml version="1.0"?&gt;
+&lt;soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope"
+   soap:encodingStyle="http://www.w3.org/2001/12/soap-encoding"&gt;
+
+  &lt;soap:Body xmlns:m="http://www.example.org/stock"&gt;
+    &lt;m:GetStockPrice&gt;
+      &lt;m:StockName&gt;IBM&lt;/m:StockName&gt;
+    &lt;/m:GetStockPrice&gt;
+  &lt;/soap:Body&gt;
+
+&lt;/soap:Envelope&gt;</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Un exemple de service SOAP</header>
+	        <section>
+				<p>Une réponse</p>
+				<pre>
+HTTP/1.1 200 OK
+Content-Type: application/soap+xml; charset=utf-8
+Content-Length: nnn
+
+&lt;?xml version="1.0"?&gt;
+&lt;soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope"
+   soap:encodingStyle="http://www.w3.org/2001/12/soap-encoding"&gt;
+
+  &lt;soap:Body xmlns:m="http://www.example.org/stock"&gt;
+    &lt;m:GetStockPriceResponse&gt;
+      &lt;m:Price&gt;34.5&lt;/m:Price&gt;
+    &lt;/m:GetStockPriceResponse&gt;
+  &lt;/soap:Body&gt;
+
+&lt;/soap:Envelope&gt;</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>REST</header>
+	        <section>
+	        	<p>Un service REST est un service web qui repose intensivement sur le protocole HTTP.</p>
+				<ul>
+					<li>La <b>méthode</b> HTTP (GET, PUT, DELETE, HEAD...) indique le type d'action
+					<li>L'<b>uri</b> (ex : /books/all) désigne la ressource
+					<li>Les <b>headers</b> de la requête influent sur le traitement (ex : Authorization)
+					<li>Le <b>corps de la requête</b> contient les données
+					<li>Le <b>code de retour</b> synthétise le résultat de l'éxécution
+					<li>Les <b>headers</b> de la réponse sont exploités (ex : Last-Modified)
+					<li>Le <b>corps de la réponse</b> contient les données en retour
+				</ul>
+				<p>Contrairement a SOAP, REST est une bonne façon de designer un web service et non une spécification.</p>
+				<p>Le corps de la réponse peut être de n'importe quel format (HTML, JSON...) mais c'est généralement le XML qui assure la plus grande interopérabilité</p>
+				<p>Comme pour SOAP, on retrouve une enveloppe, un header et un body sauf que pour les services REST, cette répartition est indissociable du protocole HTTP.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>les 3 niveaux du REST</header>
+	        <section>
+	        	<p>Les services REST proposant tous la même interface, on dit qu'il ont une interface uniforme.</p>
+	        	<p>Le niveau établit une clasification en fonction du dégré d'impléméntation de cette interface.</p>
+	        	<ul>
+	        		<li>Le niveau 1 : utilisation des URIs comme addressage du service
+	        		<li>Le niveau 2 : respect des verbes HTTP (GET, PUT, POST, DELETE, HEAD)
+	        		<li>Le niveau 3 : navigation hypertexte (liens) et hypermédia (médias) 
+	        	</ul>
+	        	<table style="width:300px;margin:20px 250px;text-align: center;">
+	        		<tr>
+	        			<td style="background-color: #85F287;padding:5px;">HTML</td>
+	        		</tr>
+	        		<tr>
+	        			<td style="background-color: #F2FF80;padding:5px;">HTTP</td>
+	        		</tr>
+	        		<tr>
+	        			<td style="background-color: #7AEBEB;padding:5px;">URI</td>
+	        		</tr>
+	        	</table>
+	        	<p>REST est donc du web semantique pour les clients non humains.</p>
+	        </section>
+	        <p class="source">http://www.crummy.com/writing/speaking/2008-QCon/act3.html</p>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Un exemple de service REST</header>
+	        <section>
+	        	<p>Le service <b>Amazon S3</b> (Simple Storage Service) propose des APIs <a href="http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?APIRest.html" class="external" target="_blank">REST</a> et <a href="http://docs.amazonwebservices.com/AmazonS3/latest/API/APISoap.html" class="external" target="_blank">SOAP</a>.</p>
+	        	<p>Le service S3 permet de générer des conteneurs (<b>buckets</b>) et des données (<b>objects</b>)</p>
+	        	<table class="refTable">
+	        		<tr style="text-align: center;">
+	        			<td></td>
+	        			<td>GET</td>
+	        			<td>HEAD</td>
+	        			<td>PUT</td>
+	        			<td>DELETE</td>
+	        		</tr>
+	        		<tr>
+	        			<td width="230px;">La liste des buckets</td>
+	        			<td>Liste des buckets</td>
+	        			<td></td>
+	        			<td></td>
+	        			<td></td>
+	        		</tr>
+	        		<tr>
+	        			<td>Un bucket (/{bucket})</td>
+	        			<td>Liste des objet dans un bucket</td>
+	        			<td></td>
+	        			<td>Création du bucket</td>
+	        			<td>Suppression du bucket</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Un objet (/{bucket}/{objet})</td>
+	        			<td>Les valeurs de l'objet et ses metadata</td>
+	        			<td>Les metadata de l'objet</td>
+	        			<td>Mise à jour de l'objet</td>
+	        			<td>Suppression de l'objet</td>
+	        		</tr>
+	        	</table>
+	        	<p>Le service S3 respecte et exploite le protocole HTTP.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Un exemple de service REST</header>
+	        <section>
+				<p>Une création de bucket</p>
+				<pre>
+<b>PUT /mybucket</b> HTTP/1.1
+Content-Length: 0
+User-Agent: jClientUpload
+Host: s3.amazonaws.com
+Date: Sun, 05 Aug 2007 15:33:59 GMT
+Authorization: AWS 15B4D3461F177624206A:YFhSWKDg3qDnGbV7JCnkfdz/IHY=
+</pre>
+				<p>La réponse</p>
+				<pre>
+HTTP/1.1 <b>200 OK</b>
+x-amz-id-2: tILPE8NBqoQ2Xn9BaddGf/YlLCSiwrKP+OQOpbi5zazMQ3pC56KQgGk
+x-amz-request-id: 676918167DFF7F8C
+Date: Sun, 05 Aug 2007 15:30:28 GMT
+Location: <b>/mybucket</b>
+Content-Length: 0
+Server: AmazonS3</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Un exemple de service REST</header>
+	        <section>
+				<p>Une réponse avec une erreur</p>
+				<pre>
+HTTP/1.1 <b>409 Conflict</b>
+x-amz-request-id: 64202856E5A76A9D
+x-amz-id-2: cUKZpqUBR/RuwDVq+3vsO9mMNvdvlh+Xt1dEaW5MJZiL
+Content-Type: <b>application/xml</b>
+Transfer-Encoding: chunked
+Date: Sun, 05 Aug 2007 15:57:11 GMT
+Server: AmazonS3
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Error&gt;
+  &lt;Code&gt;BucketAlreadyExists&lt;/Code&gt;
+  &lt;Message&gt;The named bucket you tried to create already exists&lt;/Message&gt;
+  &lt;RequestId&gt;64202856E5A76A9D&lt;/RequestId&gt;
+  &lt;BucketName&gt;mybucket&lt;/BucketName&gt;
+  &lt;HostId&gt;cUKZpqUBR/RuwDVq+3vsO9mMNvdvlh+Xt1dEaW5MJZiL&lt;/HostId&gt;
+&lt;/Error&gt;</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>A lire</header>
+	        <section>
+	        	<p>RESTful web services</p>
+	        	<img alt="" src="images/restful-web-services.gif" style="margin:10px 300px;">
+	        	<p>Leonard Richardson et Sam Ruby</p>
+	        </section>
+	      </div>
+	     
+	  </div>
+      <!-- slides -->
+
+    </div> <!-- presentation -->
+    
+  	</body>
+  </html>

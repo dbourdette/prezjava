@@ -1,0 +1,3 @@
+Une pratique issue de l'agilitŽ maintenant trs rŽpandue.
+If it hurts, do it more often (Kent Beck)
+-> cloudbees ?

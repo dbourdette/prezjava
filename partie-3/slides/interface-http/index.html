@@ -1,0 +1,540 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	    <title>L'interface HTTP</title>
+	    
+		<link href="../static/css.css" rel="stylesheet" type="text/css">
+	    <link id="prettify-link" href="../static/prettify.css" rel="stylesheet" disabled="">
+	    <link href="../static/moon.css" class="theme" rel="stylesheet">
+	    <link href="../static/sand.css" class="theme" rel="stylesheet">
+	    <link href="../static/sea_wave.css" class="theme" rel="stylesheet">
+	    <link href="../static/default.css" class="theme" rel="stylesheet">
+	  	
+	    <link href="../static/dev.css" class="theme" rel="stylesheet">
+	    
+	    <script src="../static/jquery/jquery-1.4.4.min.js"></script>
+	    <script src="../static/jquery/jquery.xcolor.js"></script>
+	    <script src="../static/jquery/jquery.validate.js"></script>
+	    <link type="text/css" href="../static/jquery/smoothness/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
+	    <script src="../static/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+	    <script type="text/javascript">
+	    	jQuery.fn.outerHTML = function(s) {
+	  		return (s)
+	  		? this.before(s).remove()
+	  		: jQuery("<p>").append(this.eq(0).clone()).html();
+	  		}
+	    </script>
+	    
+	    <script src="../static/code.js"></script>
+	    <script src="../static/prettify.js" onload="prettyPrint();"></script>
+	    <script src="../static/js"></script>
+   		<script src="../static/main.js" type="text/javascript"></script>
+  	</head>
+  	<body>
+    <div class="presentation">
+      <div id="presentation-counter">Chargement...</div>
+      <div style="display: block;" class="slides">
+      
+	      <div class="slide">
+			<style>
+			  #landing-slide p {
+			    font-size: 35px;
+			  }
+			</style>
+			<section id="landing-slide" class="middle">
+			  <p>L'interface HTTP</p>
+			</section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Requêtes et Réponses HTTP</header>
+	        <section>
+				<p>Un serveur HTTP traite des requêtes entrantes et génère des réponses.</p>
+				<img alt="" src="images/requete-http.png" width="600" style="margin:0 120px" />
+				<p>Il permet de transférer tous types de données classifiés en <b><a href="http://fr.wikipedia.org/wiki/Type_MIME" class="external" target="_blank">types mime</a></b> (text/html, audio/mpeg, application/json...)</p>
+				<p>Dans le cas de contenus textes, l'<b>encoding</b> est très important.</p>
+				<p>Le protocole HTTP est un protocole <b>sans état</b> (non connecté).<br>
+				Les serveurs http dynamiques palie à ce manque via la gestion de sessions.</p>
+				<p>Par défaut, un serveur HTTP répond sur le <b>port 80</b>.</p>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Curl, wget et consoles web</header>
+	        <section>
+				<p>En dehors des browsers web, il existe de nombreux outils et librairies afin de forger des requêtes http.</p>
+				<ul>
+					<li><a href="http://fr.wikipedia.org/wiki/Wget" class="external" target="_blank">wget</a> permet de faire un GET sur une url.
+				</ul>
+				<pre>wget http://www.exemple.fr/</pre>
+				<ul>
+					<li><a href="http://fr.wikipedia.org/wiki/CURL" class="external" target="_blank">culr</a> est beaucoup plus flexible et supporte toutes les méthodes HTTP
+				</ul>
+				<pre>curl http://www.exemple.fr/</pre>
+				<p>La liste des librairies clientes serait impossible à maintenir.</p>
+				<p>Les consoles de navigateurs web (ou les extensions comme firebug) permettent de voir passer ces requêtes et ces réponses HTTP.</p>
+	        </section>
+	      </div>
+	       
+	      <div class="slide">
+	        <header>Une requête HTTP</header>
+	        <section>
+	        	<p></p>
+	        	<div>Une requête HTTP contient :</div>
+	        	<ul>
+	        		<li>une ligne de requête : composé d'une <b>méthode</b>, le <b>chemin</b> et la version du protocole.
+	        		<li>des <b>en-têtes</b> : des clés / valeurs donnant des indications supplémentaires.
+	        		<li>un <b>corps</b> : des blocs de données supplémentaires utiles pour envoyer du contenu.
+	        	</ul>
+				<p>Par exemple, dans le cas d'une requête vers http://www.rtl.fr/actualites</p>
+				<pre>
+GET /actualites HTTP/1.1
+Host: www.rtl.fr
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; fr; rv:1.9.2.12)
+            Gecko/20101026 Firefox/3.6.12
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://www.rtl.fr/
+...</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	      	<style>
+	      		#httpMethods td:nth-child(3), #httpMethods td:nth-child(4) {
+	      			text-align: center;
+	      		}
+	      	</style>
+	      	<header>Les méthodes HTTP</header>
+	        <section>
+	        	<p>La <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html" class="external" target="_blank">méthode</a> indique le type d'action souhaité. Les plus courantes sont <b>GET</b> et <b>POST</b>.</p>
+	        	<table id="httpMethods" class="refTable">
+	        		<thead>
+	        			<tr>
+	        				<td>méthode</td>
+	        				<td>description</td>
+	        				<td>sûre</td>
+	        				<td><a href="http://en.wikipedia.org/wiki/Idempotence" class="external" target="_blank">idempotente</a></td>
+	        			</tr>
+	        		</thead>
+	        		<tr>
+	        			<td>GET</td>
+	        			<td>Le client demande une ressource.</td>
+	        			<td><img src="images/ok.png" /></td>
+	        			<td><img src="images/ok.png" /></td>
+	        		</tr>
+	        		<tr>
+	        			<td>POST</td>
+	        			<td>Une ressource est envoyée au serveur.</td>
+	        			<td><img src="images/no.png" /></td>
+	        			<td><img src="images/no.png" /></td>
+	        		</tr>
+	        		<tr>
+	        			<td>PUT</td>
+	        			<td>Permet de remplacer ou d'ajouter une ressource sur le serveur.</td>
+	        			<td><img src="images/no.png" /></td>
+	        			<td><img src="images/ok.png" /></td>
+	        		</tr>
+	        		<tr>
+	        			<td>DELETE</td>
+	        			<td>Permet de supprimer une ressource du serveur.</td>
+	        			<td><img src="images/no.png" /></td>
+	        			<td><img src="images/ok.png" /></td>
+	        		</tr>
+	        		<tr>
+	        			<td>HEAD</td>
+	        			<td>Le client demande des informations sur la ressource, sans demander la ressource elle-même.</td>
+	        			<td><img src="images/ok.png" /></td>
+	        			<td><img src="images/ok.png" /></td>
+	        		</tr>
+	        		<tr>
+	        			<td>OPTIONS</td>
+	        			<td>Permet d'obtenir les options de communication d'une ressource ou du serveur en général.</td>
+	        			<td></td>
+	        			<td><img src="images/ok.png" /></td>
+	        		</tr>
+	        		<tr>
+	        			<td>TRACE</td>
+	        			<td>Le client demande au serveur de retourner ce qu'il a reçu, dans le but de tester et effectuer un diagnostic sur la connexion.</td>
+	        			<td></td>
+	        			<td><img src="images/ok.png" /></td>
+	        		</tr>
+	        	</table>
+				<p>Certains protocoles, comment par exemple <a href="http://fr.wikipedia.org/wiki/WebDAV" class="external" target="_blank">WebDAV</a>, propose des extensions pour ces méthodes.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Quelques headers HTTP</header>
+	        <section>
+	        	<p>Voici quelques <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields" class="external" target="_blank">headers HTTP</a> parmis les principaux pour les requêtes.</p>
+				<table class="refTable">
+					<colgroup>
+						<col width="180px"></col>
+						<col ></col>
+						<col width="220px" style="text-align: left;"></col>
+					</colgroup>
+	        		<thead>
+	        			<tr>
+	        				<td>header</td>
+	        				<td>description</td>
+	        				<td>exemple</td>
+	        			</tr>
+	        		</thead>
+	        		<tr>
+	        			<td>Host</td>
+	        			<td>Le domaine vers lequel est fait la requête</td>
+	        			<td>Host: www.rtl.fr</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Referer</td>
+	        			<td>Adresse de la page web précédent cette requête.</td>
+	        			<td>Referer: http://www.rtl.fr</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Accept</td>
+	        			<td>Types de contenu acceptés par le navigateur</td>
+	        			<td>Accept: text/plain</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Accept-Charset</td>
+	        			<td>Jeux de caractères acceptés par le navigateur</td>
+	        			<td>Accept-Charset: utf-8</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Accept-Language</td>
+	        			<td>Language acceptés par le navigateur</td>
+	        			<td>Accept-Language: fr-fr</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Connection</td>
+	        			<td>Mode de connexion souhaité par le client</td>
+	        			<td>Connection: keep-alive</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Cookie</td>
+	        			<td>Cookies valable pour le domaine de la requête</td>
+	        			<td>Cookie: name=value;</td>
+	        		</tr>
+	        	</table>
+	        	<p>La liste des headers standards est longue et <b>peut être étendue</b>.</p>
+	        	<p>Ces headers accompagnent la requête tout au long de son voyage sur le réseau.</p>
+	        	<p>Certains équipements intermédaires peuvent donc lire et modifier ces headers en fonction de leur rôle.</p>	        	
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Une réponse HTTP</header>
+	        <section>
+	        	<div>Une réponse HTTP contient :</div>
+	        	<ul>
+	        		<li>une ligne de statut : la version du protocole, le <b>code de retour</b> avec son libellé associé.
+	        		<li>des <b>en-têtes</b> : des clés / valeurs donnant des indications supplémentaires.
+	        		<li>un <b>corps</b> : le document demandé.
+	        	</ul>
+				<p>Par exemple, en masquant une partie du corps.</p>
+<pre>
+HTTP/1.1 200 OK
+Content-Type: text/html;charset=UTF-8
+Content-Language: fr-FR
+Content-Length: 57366
+Date: Wed, 03 Nov 2010 21:42:30 GMT
+Connection: keep-alive
+
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr"&gt;
+   &lt;head&gt;…&lt;/head&gt;
+   &lt;body&gt;
+      …
+   &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Le code de retour</header>
+	        <section>
+	        	<p>Il est le résultat synthétique de la réponse.</p>
+	        	<table class="refTable">
+	        		<thead>
+	        			<tr>
+	        				<td>code</td>
+	        				<td>signification</td>
+	        				<td>description</td>
+	        			</tr>
+	        		</thead>
+	        		<tr>
+	        			<td>2xx</td>
+	        			<td>Succès</td>
+	        			<td>Tous les codes de succès</td>
+	        		</tr>
+	        		<tr>
+	        			<td>200</td>
+	        			<td>OK</td>
+	        			<td>Le corps contient le document demandé</td>
+	        		</tr>
+	        		<tr>
+	        			<td>3xx</td>
+	        			<td>Redirection</td>
+	        			<td>Le client est rédirigé</td>
+	        		</tr>
+	        		<tr>
+	        			<td>301</td>
+	        			<td>Move permanently</td>
+	        			<td>Document déplacé de façon permanente</td>
+	        		</tr>
+	        		<tr>
+	        			<td>302</td>
+	        			<td>Found (Moved temporarly)</td>
+	        			<td>Document déplacé de façon temporaire</td>
+	        		</tr>
+	        		<tr>
+	        			<td>304</td>
+	        			<td>Not modified</td>
+	        			<td>Document non modifié depuis la dernière requête</td>
+	        		</tr>
+	        		<tr>
+	        			<td>4xx</td>
+	        			<td>Erreur du client</td>
+	        			<td>La requête ne peut aboutir à cause du client</td>
+	        		</tr>
+	        		<tr>
+	        			<td>400</td>
+	        			<td>Bad Request</td>
+	        			<td>La syntaxe de la requête est erronée</td>
+	        		</tr>
+	        		<tr>
+	        			<td>401</td>
+	        			<td>Unauthorized</td>
+	        			<td>Une authentification est nécessaire</td>
+	        		</tr>
+	        		<tr>
+	        			<td>404</td>
+	        			<td>Not found</td>
+	        			<td>Document non trouvé</td>
+	        		</tr>
+	        		<tr>
+	        			<td>5xx</td>
+	        			<td>Erreur du serveur</td>
+	        			<td>Le serveur n'a pu répondre correctement</td>
+	        		</tr>
+	        		<tr>
+	        			<td>500</td>
+	        			<td>Internal server error</td>
+	        			<td>Erreur interne du serveur</td>
+	        		</tr>
+	        	</table>
+	        	<p>Les codes les plus utilisés sont 200, 301, 302, 404 et 500.</p>
+	        </section>
+	        <p class="source">http://fr.wikipedia.org/wiki/Liste_des_codes_HTTP</p>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Quelques headers HTTP</header>
+	        <section>
+	        	<p>Voici quelques <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields" class="external" target="_blank">headers HTTP</a> parmis les principaux pour les réponses.</p>
+	        	<table class="refTable">
+					<colgroup>
+						<col width="160px"></col>
+						<col ></col>
+						<col width="320px" style="text-align: left;"></col>
+					</colgroup>
+	        		<thead>
+	        			<tr>
+	        				<td>header</td>
+	        				<td>description</td>
+	        				<td>exemple</td>
+	        			</tr>
+	        		</thead>
+	        		<tr>
+	        			<td>Content-Type</td>
+	        			<td>Le type mime de ce document</td>
+	        			<td>Content-Type: text/html; charset=utf-8</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Content-Language</td>
+	        			<td>Le language du document</td>
+	        			<td>Content-Language: fr-FR</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Content-Length</td>
+	        			<td>La taille du document en octets</td>
+	        			<td>Content-Length: 348</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Date</td>
+	        			<td>La date d'émission de la réponse</td>
+	        			<td>Date: Tue, 15 Nov 1994 08:12:31 GMT</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Age</td>
+	        			<td>Le document est en cache dans un proxy depuis ce temps</td>
+	        			<td>Age: 12</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Set-Cookie</td>
+	        			<td>Ajoute un cookie sur le client</td>
+	        			<td>Set-Cookie: UserID=JohnDoe; Max-Age=3600; Version=1</td>
+	        		</tr>
+	        	</table>
+	        	<p>Ce n'est pas une liste fermée et il existe beaucoup de headers non standard.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Le header Cache-Control</header>
+	        <section>
+	        	<p>Le calcul de la réponse sur un serveur peut être une opération coûteuse en temps ou en cpu.</p>
+	        	<p>Le header Cache-Control permet de piloter le navigateur et les caches intermédiaires.</p>
+	        	<table class="refTable">
+					<colgroup>
+						<col width="160px"></col>
+						<col ></col>
+						<col width="260px" style="text-align: left;"></col>
+					</colgroup>
+	        		<tr>
+	        			<td>Cache-Control</td>
+	        			<td>Indique comment ce document peut être caché</td>
+	        			<td>Cache-Control: max-age=600</td>
+	        		</tr>
+	        	</table>
+	        	<p>Les valeurs possibles sont : <b>no-cache</b>, <b>max-age</b>, no-store, max-stale, no-transform, min-fresh, min-vers, only-if-cached</p>
+	        	<p>Il est donc possible de jouer entre fraîcheur de l'information et performance afin d'offrir le meilleur service.</p>
+	        	<p>Par exemple <a href="http://en.wikipedia.org/wiki/Varnish_(software)" class="external" target="_black">Varnish</a> est un accélérateur HTTP (proxy cache) qui peut être configuré afin de cacher les document en fonction de ce header.</p>
+	        </section>
+	        <p class="source">http://tools.ietf.org/html/rfc2616#section-14.9</p>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>La génération de réponse</header>
+	        <section>
+	          	<p>Le fonctionnement canonique d'un serveur http est de déclencher un traitement pour chaque requête entrante.</p>
+	        	<img alt="" src="images/server-internals.png" width="600px;" style="margin:0 100px">
+	        	<p>Un processus ou un thread accompagne la requête jusqu'a la sortie.</p>
+	        	<p>Une file d'attente permet de gérer le surplus de requêtes.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Les cookies</header>
+	        <section>
+	        	<p>Un cookie est un couple clé / valeur stoqué par le navigateur. Il a une date d'expiration et n'est valide que pour un domaine.</p>
+	        	<p>L'ensemble des cookies est envoyé vers le serveur à chaque requête dans les headers HTTP.</p>
+	        	<pre>
+Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103; 
+  __utmz=106559260.1286524216.97.23.utmcsr=aka-cdn-ns.adtech.de|
+  utmccn=(referral)| utmcmd=referral|
+  utmcct=/apps/473/Ad5619673St3Sz16Sq4877733V6Id3/prehome.html;
+  vote-5936897977="28032010 184806";
+  ebNewBandWidth_.www.rtl.fr=3125%3A1285104481937;
+  vote-5937543368="06042010 231510";
+  ebNewBandWidth_.rtl.fr=2839%3A1278879961472;
+  vote-5937621514="14042010 221016";
+  vote-5953180085="02102010 180702"
+	        	</pre>
+	        	<p>Le serveur envoie des cookies au navigateur grâce au header HTTP Set-Cookie.</p>
+	        	<p>Les cookies pouvant être lu par un tiers (<a href="http://fr.wikipedia.org/wiki/Attaque_de_l%27homme_du_milieu" class="external" target="_blank">man in the middle</a>), il ne faut pas y stoquer d'information sensibles.</p>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>La gestion de sessions</header>
+	        <section>
+	        	<p>Le protocole HTTP étant sans état, ce sont les cookies qui sont généralement utilisés afin gérer le suivi d'état entre les requêtes.</p>
+	        	<p>Afin de pouvoir retrouver la bonne session pour chaque client, le serveur écrit un cookie dans lequel il note l'identifiant de la session.</p>
+	        	<p>Dans le cas des serveurs jee, le nom du cookie est jsessionid</p>
+	        	<pre>JSESSIONID=2E58EE7BCFCE2CC2139D2ACB73327DB4</pre>
+	        </section>
+	      </div>
+	      
+	      <div class="slide">
+	        <header>Principaux serveurs web</header>
+	        <section>
+	        	<p>La liste des serveurs web est en perpétuelle évolution, en voici quelques uns.</p>
+	        	<table class="refTable">
+					<thead>
+	        			<tr>
+	        				<td>nom</td>
+	        				<td>description</td>
+	        				<td>languages</td>
+	        			</tr>
+	        		</thead>
+	        		<tr>
+	        			<td>Apache</td>
+	        			<td>Apache Software Foundation</td>
+	        			<td>Languages de scripting via modules</td>
+	        		</tr>
+					<tr>
+	        			<td>nginx</td>
+	        			<td>open source</td>
+	        			<td>serveur HTTP and reverse proxy</td>
+	        		</tr>
+					<tr>
+	        			<td>IIS</td>
+	        			<td>Microsoft</td>
+	        			<td>.NET</td>
+	        		</tr>
+					<tr>
+	        			<td>Glassfish</td>
+	        			<td>Oracle</td>
+	        			<td>Java</td>
+	        		</tr>
+					<tr>
+	        			<td>Tomcat</td>
+	        			<td>Apache Software Foundation</td>
+	        			<td>Java</td>
+	        		</tr>
+					<tr>
+	        			<td>Websphere</td>
+	        			<td>IBM</td>
+	        			<td>Java</td>
+	        		</tr>
+					<tr>
+	        			<td>Weblogic</td>
+	        			<td>BEA</td>
+	        			<td>Java</td>
+	        		</tr>
+					<tr>
+	        			<td>Jetty</td>
+	        			<td>Eclipse Foundation</td>
+	        			<td>Java</td>
+	        		</tr>
+					<tr>
+	        			<td>Zope</td>
+	        			<td>Zope Corporation</td>
+	        			<td>Python</td>
+	        		</tr>
+					<tr>
+	        			<td>WebROaR</td>
+	        			<td>Ruby application server</td>
+	        			<td>Ruby</td>
+	        		</tr>
+					<tr>
+	        			<td>Phusion Passenger</td>
+	        			<td>Mod pour apache et nginx</td>
+	        			<td>Ruby</td>
+	        		</tr>
+					<tr>
+	        			<td>Mongrel</td>
+	        			<td>-</td>
+	        			<td>Ruby</td>
+	        		</tr>
+	        	</table>
+	        </section>
+	        <p class="source">http://en.wikipedia.org/wiki/Comparison_of_web_servers</p>
+	      </div>
+	  </div>
+      <!-- slides -->
+
+    </div> <!-- presentation -->
+    
+  	</body>
+  </html>
