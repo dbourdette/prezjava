@@ -38,16 +38,62 @@
 			</div>
 
 			<div class="slide">
-				<header>Le pipe</header>
+				<header>Le processus de développement</header>
 				<section>
-					<p></p>
+					<p>La construction de logiciel en entreprise peut s'apparenter à une chaîne de montage.</p>
+					<p>C'est une succession d'activités qui mènent aux serveurs de production.</p>
+					<p>Généralement, on peut découper cette chaîne en 3 parties.</p>
+					<img style="margin-left:100px;" src="img/ask-dev-run.png" width="600px"/>
+					<p>En pratique, cela peut prendre la forme d'un V, d'une cascade, d'une spirale ou bien d'itérations courtes selon la méthodologie suivie.</p>
+					<p>Nous nous intéresserons principalement à l'étape développement.</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Les outils du pipe</header>
+				<header>Les outils du développement</header>
 				<section>
-					<p></p>
+					<p>Voici une vision globale des outils pouvant participant à l'activité de développement.</p>
+					<img style="margin-left:50px;" src="img/development.png" width="700px"/>
+					<p>L'écriture du code source se fait à l'aide d'un <b>IDE</b>. Nous utiliserons eclipse. Netbeans et intellij sont d'autres IDE très complets.</p>
+					<p>Pour le <b>versionning</b>, subversion est l'outils le plus utilisé. Cependant, git (notamment via github) gagne rapidement en popularité.</p>
+					<p>Un <b>outil de build</b> a pour but la création du produit final à partir du code source. L'outil de build classique pour java est maven. Des alternatives sont ant, ivy ou gradle.</p>
+					<p>Le <b>repository</b> (dépot en français) permet de stoquer les builds. Nexus et artifactory sont des solutions qui s'intègrent parfaitement avec maven.</p>
+					<p>Nous nous intéresserons à l'écriture du code et au build.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>L'intégration continue</header>
+				<section>
+					<p>
+						L'<b>intégration continue</b> est un pratique qui vise à tester le bon déroulement des builds aussi souvent que possible :
+						potentiellement après chaque commit.
+					</p>
+					<p>Cela permet :</p>
+					<ul>
+						<li>D'être informé d'un problème le plus tôt possible.
+						<li>D'éviter les effets big bang de fin de projet. 
+					</ul>
+					<p>En plus du build, ce processus automatisé est aussi l'occassion de générer des rapports sur le code afin d'en améliorer la qualité.</p>
+					<p>L'outils open source de référence est jenkins</p>
+					<p>Des plugins ou outils complémentaires comment pmd ou sonar permettent d'obtenir des métriques sur le code.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>As a service</header>
+				<section>
+					<p>Avec la standardisation des outils et l'apparition des offres de type cloud, il existe des solutions <b>SAAS</b> pour le développement.</p>
+					<p>Pour le versionning, il est existe des solutions comme assembla ou github.</p>
+					<p>Pour le build, <a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a> propose une solution d'intégration continue avec jenkins.</p>
+					<p>Pour les repository</p>
+					<p>Coté hébergement (<b>PAAS</b>), il existe aussi de nombreuses solutions :</p>
+					<ul>
+						<li><a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a>
+						<li>google app engine
+						<li>spring cloud vmware
+						<li>...
+					</ul>
 				</section>
 			</div>
 
