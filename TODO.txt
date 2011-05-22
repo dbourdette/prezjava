@@ -1,6 +1,4 @@
 
-project background
-
 eclipse tp
 
 m.google is undefined

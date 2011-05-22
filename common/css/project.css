@@ -1,8 +1,6 @@
 
 body {
     background-color: #778;
-    background-image: -moz-radial-gradient(center center, rgb(133,143,179) 60%, rgb(46,80,148) 130%);
-	background-image: -webkit-radial-gradient(center center, rgb(133,143,179) 60%, rgb(46,80,148) 130%);
 }
 
 #project {
