@@ -1,16 +1,16 @@
 h1. "L'usine logicielle : pratiques et outils":http://dbourdette.github.com/prezjava/partie-1/slides
 
-* Usine logicielle
+* Pratiques
 
-* Le Language java et jee
+* L'IDE : eclipse
 
-* Le build (maven)
+* L'outils de build : maven
 
-* L'environnement de développement (eclipse)
+* L'intégration continue : jenkins
 
-* Les librairies et les frameworks (spring, hibernate, junit...)
+* Le Langage : java et jee
 
-* L'intégration continue (jenkins)
+* Les librairies et les frameworks : spring, hibernate, junit
 
 h1. "Architecture logicielle":http://dbourdette.github.com/prezjava/partie-2/slides
 

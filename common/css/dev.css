@@ -4,6 +4,10 @@
 	background-image: -webkit-radial-gradient(center center, rgb(133,143,179) 60%, rgb(46,80,148) 130%);
 }
 
+#landing-slide p {
+    font-size: 35px;
+}
+
 .slide {
 	font-size:20px;
 	border: 1px #284B7E solid;
