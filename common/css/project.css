@@ -1,6 +1,8 @@
 
 body {
-	background-color: #778;
+    background-color: #778;
+    background-image: -moz-radial-gradient(center center, rgb(133,143,179) 60%, rgb(46,80,148) 130%);
+	background-image: -webkit-radial-gradient(center center, rgb(133,143,179) 60%, rgb(46,80,148) 130%);
 }
 
 #project {
@@ -11,11 +13,12 @@ body {
 	border-bottom-right-radius: 20px 20px;
 	border-top-left-radius: 20px 20px;
 	border-top-right-radius: 0px 0px;
+    border: 1px #284B7E solid;
 	-moz-border-radius:0 20px 0 20px;
-	background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#BBD), to(#e5e6ff));
-	background: -moz-linear-gradient(center bottom , #BBD, #e5e6ff) repeat scroll 0 0 transparent;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 5px 8px;
-	border: 2px solid #AAA;
+    font-size:20px;
+	background-image: -moz-linear-gradient(center top, rgb(228,235,245) 50%, rgb(100,136,176) 120%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%, rgb(228,235,245)), color-stop(120%, rgb(100,136,176)));
 }
 
 #project h1 {
