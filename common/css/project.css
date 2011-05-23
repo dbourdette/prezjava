@@ -3,6 +3,10 @@ body {
     background-color: #778;
 }
 
+.presentation {
+    height:auto;
+}
+
 #project {
 	width:840px;
 	margin:10px auto;

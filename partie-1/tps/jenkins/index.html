@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Jenkins</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/main.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="presentation">
+    <div id="project">
+        <h1><img src="img/jenkins_logo.png" width="398" height="128" alt="Jenkins"/></h1>
+
+        <p>Jenkins est un serveur d'intégration continue open source créé par Kohsuke Kawaguchi.</p>
+
+        <p>Il dispose d'un très grand nombre de plugins et s'intègre nativement avec maven.</p>
+
+        <h2>Installation</h2>
+
+        <p>Il faut télécharger le .war depuis le <a href="https://wiki.jenkins-ci.org" class="external">site de jenkins</a></p>
+
+        <p>Une fois téléchargé, il suffit de le lancer:</p>
+        <pre>java -jar jenkins.war</pre>
+
+        <p>Par défaut, jenkins se lance sur le port 8080.<br>Afin de le lancer sur un autre port il suffit d'utiliser l'option --httpPort</p>
+        <pre>java -jar jenkins.war --httpPort=8081 --ajp13Port=8082</pre>
+
+        <p>AJP est un protocole alternatif à HTTP.</p>
+
+        <p>Ce qui donne la sortie suivante</p>
+        <pre>
+Running from: /Applications/Jenkins/jenkins.war
+webroot: $user.home/.jenkins
+[Winstone 2011/05/23 16:45:46] - Beginning extraction from war file
+hudson home directory: /Users/bourdette/.jenkins found at: $user.home/.jenkins
+Using one-time self-signed certificate
+[Winstone 2011/05/23 16:45:49] - HTTP Listener started: port=8081
+[Winstone 2011/05/23 16:45:49] - AJP13 Listener started: port=8082
+[Winstone 2011/05/23 16:45:49] - Winstone Servlet Engine v0.9.10 running:...
+23 mai 2011 16:45:49 hudson.model.Hudson$5 onAttained
+INFO: Started initialization
+23 mai 2011 16:45:49 hudson.model.Hudson$5 onAttained
+INFO: Listed all plugins
+23 mai 2011 16:45:49 hudson.model.Hudson$5 onAttained
+INFO: Prepared all plugins
+23 mai 2011 16:45:49 hudson.model.Hudson$5 onAttained
+INFO: Started all plugins
+23 mai 2011 16:45:49 hudson.model.Hudson$5 onAttained
+INFO: Augmented all extensions
+23 mai 2011 16:45:49 hudson.model.Hudson$5 onAttained
+INFO: Loaded all jobs
+23 mai 2011 16:45:50 hudson.model.Hudson$5 onAttained
+INFO: Completed initialization
+23 mai 2011 16:45:50 hudson.TcpSlaveAgentListener &lt;init&gt;
+INFO: JNLP slave agent listener started on TCP port 54703
+        </pre>
+
+        <p>Jenkins tourne et sa configuration est dans $user.home/.jenkins</p>
+
+        <h2>Ajout d'un job</h2>
+
+        <h2>Exécution du job</h2>
+
+        <h2>Détection d'une modification</h2>
+    </div>
+</div>
+</body>
+</html>

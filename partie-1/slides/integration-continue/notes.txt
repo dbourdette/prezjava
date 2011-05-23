@@ -1,3 +1,2 @@
-Une pratique issue de l'agilitŽ maintenant trs rŽpandue.
-If it hurts, do it more often (Kent Beck)
+Une pratique issue de l'agilitï¿½ maintenant trï¿½s rï¿½pandue.
 -> cloudbees ?
