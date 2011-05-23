@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	<title>Test unitaires</title>
+
+	<link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+	<link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+	<link href="../../../common/css/moon.css" class="theme" rel="stylesheet">
+	<link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+	<link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+
+	<script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
+	<script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+
+	<script src="../../../common/js/code.js"></script>
+	<script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/main.js" type="text/javascript"></script>
+</head>
+<body>
+	<div class="presentation">
+		<div id="presentation-counter">Chargement...</div>
+
+		<div style="display: block;" class="slides">
+
+			<div class="slide">
+				<section id="landing-slide" class="middle">
+					<p>Test unitaires</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Le développement par les tests</header>
+				<section>
+					<p>C'est une pratique qui consiste à écrire du code client avant d'écrire le code de l'application.</p>
+                    <p>En anglais, on appelle cela le Test Driven ou le Test First development.</p>
+                    <p>C'est une pratique essentielle du développement agile.</p>
+                    <p>En se plaçant d'un point de vue externe à l'application, les tests permettent :</p>
+                    <ul>
+                        <li>D'offrir une interface simple et efficace.</li>
+                        <li>De faciliter la conception en se plaçant coté appelant.</li>
+                        <li>De valider le fonctionnement de chaque morceau de l'application.</li>
+                        <li>De modifier le code en s'assurant que rien n'est cassé.</li>
+                    </ul>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Le cycle d'ajout de fonctionnalités</header>
+				<section>
+					<p>En développant pas les tests, on applique toujours la même méthode :</p>
+                    <ul>
+                        <li>Ecrire un test qui ne passe pas et qui exige l'ajout d'une fonctionnalité utile : red light pattern.</li>
+                        <li>Ecrire le morceau de code le plus simple possible qui fasse passer le test : green light pattern.</li>
+                        <li>Améliorer le code tout en gardant les tests verts : refactoring.</li>
+                    </ul>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Quelques pense-bêtes</header>
+				<section>
+					<p>Don't Repeat Yourself (DRy) : la duplication de code est l'un des pires enemis de la qualité de code.</p>
+                    <p>keep it simple : la meilleure solution est la solution la plus simple parmis les solutions possibles.</p>
+                    <p>Law of demeter ?</p>
+                    <p>...</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>xUnit</header>
+				<section>
+					<p>Framework de Kent beck et Ward Cunningham.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<section>
+					<p>Livre Kent Beck.</p>
+				</section>
+			</div>
+
+		</div> <!-- slides -->
+	</div> <!-- presentation -->
+</body>
+</html>
