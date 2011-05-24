@@ -18,15 +18,188 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>Maven</h1>
+        <h1><img src="img/maven.gif" width="462" height="106" alt="maven"/></h1>
 
         <h2>Principes</h2>
 
+        <p>Maven est un outils de build : il transforme le code source en un artefact logiciel.</p>
+
+        <p>Généralement les artefacts sont des librairies (.jar) ou des applications web (.war).</p>
+
+        <p>La particularité de maven est de gérer des repository de lirairies afin de facilité la gestion de dépendances entre les artefacts.</p>
+
+        <p>Lors du build, maven va donc aller chercher toutes les dépendances, compiler le code, exécuter les tests et générer l'artefact.</p>
+
+        <p>Un projet est entièrement décrit dans un fichier pom.xml (Project Object Model) à sa racine.</p>
+
+        <h2>Installation</h2>
+
+        <p>La <a href="http://maven.apache.org/download.html" class="external">dernière version de maven 3.x</a> est disponible sur le site de maven</p>
+
+        <p>Il faut télécharger et installer maven en local. Voici l'extrait de la <a href="http://maven.apache.org/download.html#Installation" class="external">documentation maven</a> :</p>
+
+        <ol style="font-size: 14px;">
+            <li>Extract the distribution archive, i.e. apache-maven-3.0.3-bin.tar.gz to the directory you wish to install Maven 3.0.3. These instructions assume you chose /usr/local/apache-maven. The subdirectory apache-maven-3.0.3 will be created from the archive.</li>
+            <li>In a command terminal, add the M2_HOME environment variable, e.g. export M2_HOME=/usr/local/apache-maven/apache-maven-3.0.3.</li>
+            <li>Add the M2 environment variable, e.g. export M2=$M2_HOME/bin.</li>
+            <li>Optional: Add the MAVEN_OPTS environment variable to specify JVM properties, e.g. export MAVEN_OPTS="-Xms256m -Xmx512m". This environment variable can be used to supply extra options to Maven.</li>
+            <li>Add M2 environment variable to your path, e.g. export PATH=$M2:$PATH.</li>
+            <li>Make sure that JAVA_HOME is set to the location of your JDK, e.g. export JAVA_HOME=/usr/java/jdk1.5.0_02 and that $JAVA_HOME/bin is in your PATH environment variable.</li>
+            <li>Run mvn --version to verify that it is correctly installed.</li>
+        </ol>
+
+        <pre>
+Apache Maven 2.1.0 (r755702; 2009-03-18 20:10:27+0100)
+Java version: 1.6.0_20
+Java home: /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
+Default locale: fr_FR, platform encoding: MacRoman
+OS name: "mac os x" version: "10.6.4" arch: "x86_64" Family: "mac"</pre>
+
         <h2>10 minutes test</h2>
+
+        <p>Nous allons maintenant créer un projet maven.</p>
+        <p>Pour cela, il suffit de se positionner dans le répertoire qui va contenir le projet et d'exécuter :</p>
+
+        <pre>
+mvn archetype:generate -DgroupId=edu.ecm.blog -DartifactId=blog -DarchetypeArtifactId=maven-archetype-quickstart</pre>
+
+        <p>Pour la version, on garde la valeur par défaut : 1.0-SNAPSHOT</p>
+
+        <p>Le répertoire blog a été créé et il contient la structure suivante :</p>
+
+        <pre>
+pom.xml
+src
+|--main
+|  |--java
+|     |--edu
+|       |--ecm
+|         |--blog
+|           |--App.java
+|--test
+|  |--java
+|     |--edu
+|       |--ecm
+|         |--blog
+|           |--AppTest.java
+
+        </pre>
+
+        <p>Cette structure se réfère à la <a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html" class="external">convention de repertoires maven</a></p>
+
+        <p>Nous aurions pu tout à créer ces répertoires et le pom.xml à la main.</p>
+
+        <p>Le pom.xml contient la description du projet :</p>
+
+        <pre>&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;edu.ecm.blog&lt;/groupId&gt;
+  &lt;artifactId&gt;blog&lt;/artifactId&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;blog&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;junit&lt;/groupId&gt;
+      &lt;artifactId&gt;junit&lt;/artifactId&gt;
+      &lt;version&gt;3.8.1&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+
+        <p>En résumé, notre application blog en version 1.0-SNAPSHOT sera compilé en librairie jar. Elle utilise la librairie junit 3.8.1.</p>
+
+        <p>La classe App.java contient le code suivant :</p>
+
+        <pre>package edu.ecm.blog;
+
+/**
+ * Hello world!
+ *
+ */
+public class App
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+}</pre>
+
+        <p>La classe AppTest contient des test inutiles mais qui vont nous permettre de vérifier la bonne exécution du build.</p>
+
+        <p>On peut alors lancer le build.</p>
+
+        <pre>&gt; <b>mvn package</b>
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building blog
+[INFO]    task-segment: [package]
+[INFO] ------------------------------------------------------------------------
+[INFO] [resources:resources]
+[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /Users/bourdette/idea-projects-perso/blog/src/main/resources
+[INFO] [compiler:compile]
+[INFO] Compiling 1 source file to /Users/bourdette/idea-projects-perso/blog/target/classes
+[INFO] [resources:testResources]
+[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /Users/bourdette/idea-projects-perso/blog/src/test/resources
+[INFO] [compiler:testCompile]
+[INFO] Compiling 1 source file to /Users/bourdette/idea-projects-perso/blog/target/test-classes
+[INFO] [surefire:test]
+[INFO] Surefire report directory: /Users/bourdette/idea-projects-perso/blog/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running edu.ecm.blog.AppTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] [jar:jar]
+[INFO] Building jar: /Users/bourdette/idea-projects-perso/blog/target/blog-1.0-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 4 seconds
+[INFO] Finished at: Tue May 24 17:00:00 CEST 2011
+[INFO] Final Memory: 21M/505M
+[INFO] ------------------------------------------------------------------------</pre>
+
+        <p>Tout compile et les tests passent. Le répertoire target contient le résultat du build.</p>
+
+        <p>Lors de la première exécution, le téléchargement de ressources prend un peu de temps.</p>
+
+        <h2>lifecycles</h2>
+
+        <p>mvn package est la commande de base qui permet de passer par toutes les étapes du lifecycle package : il construit le package.</p>
+
+        <p>Il est existe d'autres lifecycle comme mvn clean ou mvn site.</p>
+
+        <h2>Le repository local</h2>
+
+        <p>A chaque fois que le build requiert une librairie, maven la télécharge dans le repository local avant de l'utiliser. C'est une sorte de cache local des dépendances.</p>
+
+        <p>Il contient les librairies qui servent à l'application mais aussi les plugins de maven.</p>
+
+        <p>Ce repository est accessible dans ~/.m2/repository. Il y a une structure de répertoires avec toutes les librairies.</p>
+
+        <p>Par défaut, maven télécharge ses librairies à partir de http://repo1.maven.org.</p>
 
         <h2>settings.xml</h2>
 
+        <p>Avec notre installation, maven utilise les réglages par défaut. Il est possible de changer cela en éditant le fichier ~/.m2/settings.xml</p>
+
+        <p>C'est notamment dans ce fichier que l'on peut rajouter des repositories et des proxy http.</p>
+
         <h2>mvn eclipse:eclipse</h2>
+
+        <p>Cette commande permet de générer le projet eclipse et donc d'ouvrir naturellement ce projet dans eclipse.</p>
     </div>
 </div>
 </body>
