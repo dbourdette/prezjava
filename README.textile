@@ -24,7 +24,7 @@ h1. "Architecture logicielle":http://dbourdette.github.com/prezjava/partie-2/sli
 
 h1. "Architecture des applications web":http://dbourdette.github.com/prezjava/partie-3/slides
 
-* interface http
+* Interface http
 
 * Architecture des serveurs
 
@@ -36,4 +36,4 @@ h1. "Architecture des applications web":http://dbourdette.github.com/prezjava/pa
 
 * Bases de données orientées documents
 
-* web services
+* Web services
