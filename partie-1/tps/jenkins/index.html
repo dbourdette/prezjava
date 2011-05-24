@@ -35,6 +35,8 @@
         <pre>java -jar jenkins.war --httpPort=8081 --ajp13Port=8082</pre>
 
         <p>AJP est un protocole alternatif à HTTP.</p>
+        <p>Les options de jenkins sont disponibles dans la <a href="https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins" class="external">documentation</a>
+            et notamment dans la partie <a href="https://wiki.jenkins-ci.org/display/JENKINS/Starting+and+Accessing+Jenkins" class="external">démarrage de jenkins</a></p>
 
         <p>Ce qui donne la sortie suivante</p>
         <pre>
@@ -66,11 +68,64 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
         <p>Jenkins tourne et sa configuration est dans $user.home/.jenkins</p>
 
+        <img src="img/jenkin-ui.png" style="margin: 10px 50px;" />
+
+        <h2>Ajout d'un plugin</h2>
+
+        <p>Afin de pouvoir récupérer notre projet sur github, nous allons installer le plugin nécessaire.</p>
+        <p>Les plugins sont accessibles via Administrer Jenkins > Gestion des plugins > Disponibles.</p>
+        <p>Il faut installer le plugin github.</p>
+
+        <img src="img/jenkins-github.png" width="840px" style="margin: 10px 0px;"/>
+
+        <h2>Configuration de maven</h2>
+
+        <p>Afin que jenkins puisse exécuter le build, il a besoin de savoir où est installé maven.</p>
+        <p>La configuration est accessible via Administrer Jenkins > Configurer le système.</p>
+
+        <img src="img/jenkins-maven.png" width="840px" style="margin: 10px 0px;" />
+
+        <p>Il faut ajouter maven en configurant le MAVEN_HOME.</p>
+
         <h2>Ajout d'un job</h2>
+
+        <p>Depuis la home de jenkins, on ajoute un job "presentation-jenkins" de type maven2.</p>
+
+        <p>La configuration du repository github est git@github.com:dbourdette/prezjava-jenkins.git.</p>
+
+        <img src="img/jenkins-github-repo.png" width="840px" style="margin: 10px 0px;" />
+
+        <p>Tous les autres paramètres sont a laisser inchangés.</p>
 
         <h2>Exécution du job</h2>
 
+        <p>Depuis la home de jenkins, il est maintenant possible de lancer manuellement le job.</p>
+
+        <img src="img/jenkins-job.png" style="margin: 10px 50px;" />
+
+        <p>Une fois le job exécuté, il est possible de naviguer et d'obtenir des informations sur le build.</p>
+
         <h2>Détection d'une modification</h2>
+
+        <p>Dans l'optique de l'intégration continue, on a souvent la configuration suivante :</p>
+        <ul>
+            <li>Un job qui fait le build à chaque commit</li>
+            <li>Un job quotidien qui génère les rapports plus lourds</li>
+        </ul>
+
+        <p>Il nous faut changer la configuration du job afin qu'il scrute le repository.</p>
+
+        <img src="img/jenkins-cron.png" width="840px" style="margin: 10px 0px;" />
+
+        <p>Jenkins est maintenant configuré pour exécuter le build à chaque modifications.</p>
+
+        <p>Nous allons faire une modification dans le répository github et voir que jenkins relance le build.</p>
+
+        <h2>Jenkins dans l'usine logicielle</h2>
+
+        <p>Les capacités de Jenkins sont bien plus grandes que ce court exemple mais la configuration reste simple et rapide.</p>
+
+        <p>Grâce aux plugins il est possible de faire communiquer Jenkins avec d'autres éléments de l'usine logicielle.</p>
     </div>
 </div>
 </body>
