@@ -2,7 +2,7 @@ language objet
 language type
 language compil� (byecode)
 language portable
-class, interface, enum, annotation
+packages, class, interface, enum, annotation
 stack trace
 jee
 conteneurs
