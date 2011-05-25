@@ -3,6 +3,12 @@ eclipse tp
 
 m.google is undefined
 
+usine logicielle -> forge logicielle
+
+fichier index.html dans les tps
+
+lien external en target _blank
+
 
 partir from scratch avec tous les TP
 
