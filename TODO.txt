@@ -1,9 +1,5 @@
 
-eclipse tp
-
 m.google is undefined
-
-usine logicielle -> forge logicielle
 
 fichier index.html dans les tps
 

@@ -1,4 +1,4 @@
-h1. "L'usine logicielle : pratiques et outils":http://dbourdette.github.com/prezjava/partie-1/slides
+h1. "La forge logicielle : pratiques et outils":http://dbourdette.github.com/prezjava/partie-1/slides
 
 * Pratiques
 
