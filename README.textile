@@ -1,16 +1,18 @@
 h1. "La forge logicielle : pratiques et outils":http://dbourdette.github.com/prezjava/partie-1/slides
 
-* Pratiques
+* "Pratiques":http://dbourdette.github.com/prezjava/partie-1/slides/pratiques/index.html
 
-* L'IDE : eclipse
+* "L'IDE : eclipse":http://dbourdette.github.com/prezjava/partie-1/slides/ide/index.html
 
-* L'outils de build : maven
+* "L'outils de build : maven":http://dbourdette.github.com/prezjava/partie-1/slides/build/index.html
 
-* L'intégration continue : jenkins
+* "La gestion des sources":http://dbourdette.github.com/prezjava/partie-1/slides/vcs/index.html
 
-* Le Langage : java et jee
+* "L'intégration continue : jenkins":http://dbourdette.github.com/prezjava/partie-1/slides/integration-continue/index.html
 
-* Les librairies et les frameworks : spring, hibernate, junit
+* "Le Langage java":http://dbourdette.github.com/prezjava/partie-1/slides/langage/index.html
+
+* "Les librairies et les frameworks : spring, hibernate, junit":http://dbourdette.github.com/prezjava/partie-1/slides/libs/index.html
 
 h1. "Architecture logicielle":http://dbourdette.github.com/prezjava/partie-2/slides
 
@@ -33,6 +35,8 @@ h1. "Architecture des applications web":http://dbourdette.github.com/prezjava/pa
 * Servlets, jsp et el
 
 * Frameworks MVC2 (spring MVC)
+
+* java ee
 
 * Bases de données orientées documents
 
