@@ -1,5 +1,0 @@
-cr�ation d'artefacts
-ant / maven
-repositories
-tests : unit, perf, ui
--> tp

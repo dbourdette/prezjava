@@ -33,25 +33,22 @@
             <div class="slide">
                 <header>Qualités d'un outils de build</header>
                 <section>
-                    <p>ligne de commande.</p>
-                    <p>tests unitaire (+ profiles ui, intégration...)</p>
+                    <p>Un outils de build est du code dont le but est de construire le livrable.</p>
+                    <p>Il doit pouvoir s'exécuter en un seule ligne de commande et produire le livrable.</p>
+                    <p>Idéalement, il exécute les jeux de tests et produit des rapports de build.</p>
                 </section>
             </div>
 
             <div class="slide">
-                <header>Principaux outils</header>
+                <header>Principaux outils pour java</header>
                 <section>
-                    <p>make, ant, maven, ivy, gradle.</p>
-                </section>
-            </div>
-
-            <div class="slide">
-                <header>Maven</header>
-                <section>
-                    <p>repositories.</p>
-                    <p>release.</p>
-                    <p>intégration avec eclipse.</p>
-                    <p>tp maven.</p>
+                    <p>Voici les principaux outils de build qui peuvent être utiliser pour les projets java.</p>
+                    <ul>
+                        <li>ant : le premier outils de build en java pour java. Il utilise un style impératif comme make. Le script de build est une liste de commandes en xml.</li>
+                        <li>maven : un outils de build qui utilise un style déclaratif. Sa force réside dans sa gestion des dépendances et son intégration dans la chaîne de montage logicielle.</li>
+                        <li>ivy : pas vraiment un outils de build mais plutôt un gestionnaire de dépendances.</li>
+                        <li>gradle : assez proche de maven car c'est une approche déclarative. Plus moderne, il repose sur un DSL et est plus flexible. Il est cependance moins répendu et donc moins supporté pas les logiciels tiers.</li>
+                    </ul>
                 </section>
             </div>
 
