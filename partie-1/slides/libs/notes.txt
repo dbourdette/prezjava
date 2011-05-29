@@ -1,3 +1,4 @@
-communaut = force de java
+communautï¿½ = force de java
 les libs jTruc
 quelques librairies : sprint, hibernate, junit
+ajouter une lib avec maven

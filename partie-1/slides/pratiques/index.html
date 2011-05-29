@@ -75,19 +75,40 @@
 			</div>
 
 			<div class="slide">
-				<header>As a service</header>
+				<header>Le déploiement continu</header>
+				<section>
+                    <p>Le déploiement continu est une extension de l'intégration continue : en plus d'intégrer régulièrement, on déploit en production régulièrement.</p>
+					<p>Voici la chaîne en place chez RTL net :</p>
+                    <img src="img/continuous-deployment.png" style="margin: 0 130px;">
+                    <ul>
+                        <li>Les demandes sont faites sous jira</li>
+                        <li>Les développeurs répondent aux demandes en développant</li>
+                        <li>Jenkins s'occupe de l'intégration continu</li>
+                        <li>Rundeck déploit en production quand une version est prête</li>
+                    </ul>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>As A Service</header>
 				<section>
 					<p>Avec la standardisation des outils et l'apparition des offres de type cloud, il existe des solutions <b>SAAS</b> pour le développement.</p>
 					<p>Pour le versionning, il est existe des solutions comme assembla ou github.</p>
-					<p>Pour le build, <a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a> propose une solution d'intégration continue avec jenkins.</p>
-					<p>Pour les repository</p>
+					<p>Pour le build, <a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a> par exemple propose une solution d'intégration continue avec jenkins.</p>
 					<p>Coté hébergement (<b>PAAS</b>), il existe aussi de nombreuses solutions :</p>
 					<ul>
-						<li><a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a>
-						<li>google app engine
-						<li>spring cloud vmware
-						<li>...
+						<li><a href="http://code.google.com/appengine/" class="external" target="_blank">Google App Engine</a></li>
+						<li><a href="http://www.cloudfoundry.com/" class="external" target="_blank">Cloud Foundry</a></li>
+                        <li><a href="http://www.cloudbees.com/" target="_blank" class="external">Cloudbees</a></li>
 					</ul>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Resources</header>
+				<section>
+					<p><a href="http://jenkins-ci.org/" class="external" target="_blank">Jenkins</a></p>
+                    <p><a href="http://www.amazon.com/Continuous-Delivery-Deployment-Automation-Addison-Wesley/dp/0321601912" class="external" target="_blank">Continuous Delivery</a> : Reliable Software Releases through Build, Test, and Deployment Automation</p>
 				</section>
 			</div>
 

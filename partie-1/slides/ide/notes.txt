@@ -1,5 +1,0 @@
-integrated development environment
-eclipse / netbeans / intellij
-workspace, perspectives et vues
-plugins
--> tp
