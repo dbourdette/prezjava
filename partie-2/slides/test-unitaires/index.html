@@ -35,7 +35,7 @@
 				<header>Le développement par les tests</header>
 				<section>
 					<p>C'est une pratique qui consiste à écrire du code client avant d'écrire le code de l'application.</p>
-                    <p>En anglais, on appelle cela le Test Driven ou le Test First development.</p>
+                    <p>En anglais, on appelle cela le Test Driven Development (TDD) ou le Test First Development.</p>
                     <p>C'est une pratique essentielle du développement agile.</p>
                     <p>En se plaçant d'un point de vue externe à l'application, les tests permettent :</p>
                     <ul>
@@ -44,6 +44,8 @@
                         <li>De valider le fonctionnement de chaque morceau de l'application.</li>
                         <li>De modifier le code en s'assurant que rien n'est cassé.</li>
                     </ul>
+                    <p>L'ensemble des tests unitaires en place pour un projet est appelé <b>la suite de tests</b>.</p>
+                    <p>Elle doit pour s'exécuter complètement et rapidement aussi souvent que possible, généralement à chaque build.</p>
 				</section>
 			</div>
 
@@ -56,29 +58,68 @@
                         <li>Ecrire le morceau de code le plus simple possible qui fasse passer le test : green light pattern.</li>
                         <li>Améliorer le code tout en gardant les tests verts : refactoring.</li>
                     </ul>
+                    <p>On répète ce cycle jusqu'a obtenir le niveau de fonctionnalités souhaité.</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Quelques pense-bêtes</header>
+				<header>Quelques règles de vie</header>
 				<section>
-					<p>Don't Repeat Yourself (DRy) : la duplication de code est l'un des pires enemis de la qualité de code.</p>
-                    <p>keep it simple : la meilleure solution est la solution la plus simple parmis les solutions possibles.</p>
-                    <p>Law of demeter ?</p>
-                    <p>...</p>
+                    <p>Voici quelques principes que le TDD aide a atteindre.</p>
+                    <ul>
+                        <li>Don't Repeat Yourself (DRY) : la duplication de code est l'un des pires enemis de la qualité de code.</li>
+                        <li>Keep it simple / Simple is beautiful : la meilleure solution est la solution la plus simple parmis les solutions possibles.</li>
+                        <li>Law of demeter : une classe ne doit appeler que lui même et ses proches collaborateurs.</li>
+                    </ul>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>xUnit</header>
 				<section>
-					<p>Framework de Kent beck et Ward Cunningham.</p>
+                    <p>Contrairement à d'autres domaines, il existe peu de librairies de test unitaires.</p>
+                    <p>La famille des xUnit (JUnit pour java) initié par Kent beck et Erich Gamma est la plus répendue</p>
+					<p>Ecrire un test unitaire consiste à faire un appel de méthode et à tester le résultat au travers d'une série d'assertions.</p>
+                    <pre>public class PersonTest {
+   @Test
+   public void fullname() {
+      Person person = new Person("John", "Doe");
+
+      Assert.assertEquals("fullname is incorrect", person.getFullname(), "John Doe");
+   }
+}</pre>
+                    <p>Une fois en place, son exécution garantie que la méthode couverte respecte toujours son contrat malgrès les évolutions futures.</p>
 				</section>
 			</div>
 
 			<div class="slide">
+				<header>La maintenance</header>
 				<section>
-					<p>Livre Kent Beck.</p>
+                    <p>Lorsque l'on constate un bug en production, le premier réflexe est d'arriver à le reproduire systématiquement.</p>
+                    <p>La meilleure méthode possible est l'écriture d'un test unitaire.</p>
+                    <p>On repart alors sur le cycle classique : red light -> green light -> refactoring.</p>
+                    <p>Une fois en place, le test garanti que le bug ne se reproduira pas.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Compléments</header>
+				<section>
+                    <p>En complément de junit, il existe des librairies en fonction du besoin :</p>
+                    <ul>
+                        <li>Mocks (mockito, easymock...) : permet de simuler un comportement pour un collaborateur afin de tester spécifiquement une condition.</li>
+                        <li>selenium : tests d'interface web au travers de naviagteurs.</li>
+                        <li>dbunit : facilite les test avec les bases de données relationelles.</li>
+                    </ul>
+                    <p>En fonction du besoin, il est donc possible de trouver le bon complément.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+                <header>Le livre de référence sur les tests unitaires</header>
+				<section>
+                    <img src="img/test-driven-development.jpg" style="padding-left: 240px;"/>
+					<p>Une étude de cas simple et claire par Kent Beck.</p>
 				</section>
 			</div>
 

@@ -1,3 +1,1 @@
-la philosophie
-le livre de Kent Beck
 un tp simple avec quelques classes a construire (besoin de collaborateur afin d'introduire l'IOC)

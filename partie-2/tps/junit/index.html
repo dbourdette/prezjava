@@ -18,9 +18,77 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>JUnit</h1>
+        <h1><B><span style="color:#00cc00">J</span><span style="color:#ff0000">U</span><span style="color:#000000">nit </span></B></h1>
 
+        <h2>Introduction</h2>
 
+        <p>JUnit est une librairie pour les tests unitaires créée par Kent Beck et Erich Gamma.</p>
+
+        <p>Elle permet d'écrire simplement des tests unitaires qui valide le fonctionnement du code qui ira par la suite en production.</p>
+
+        <pre>public class PersonTest {
+   @Test
+   public void fullname() {
+      Person person = new Person("John", "Doe");
+
+      Assert.assertEquals("fullname is incorrect", person.getFullname(), "John Doe");
+   }
+}</pre>
+
+        <p>Elle est d'autant plus intéressant lorsqu'elle est utilisée comme outils d'aide à la conception.</p>
+
+        <h2>Le projet</h2>
+
+        <p>Nous allons partir du projet maven qui a été généré dans le <a href="../../../partie-1/tps/maven/index.html">tp maven</a> et stoqué <a href="../../../partie-1/tps/github/index.html">sous github</a></p>
+
+        <p>Ce projet ne contient pas grand chose pour le moment mais il dispose au moins d'une structure de répertoires.</p>
+
+        <p>Après un mvn eclipse:eclipse, on importe ce projet sous eclipse.</p>
+
+        <p>Il est recommandé de faire des commits git et des pushs aussi souvent que nécessaire.</p>
+
+        <h2>Mise à jour de junit</h2>
+
+        <p>Avant de commencer à décrire ce que l'on veut faire, nous allons mettre à jour la version de junit utilisér dans le pom.xml</p>
+
+        <pre>&lt;dependency&gt;
+  &lt;groupId&gt;junit&lt;/groupId&gt;
+  &lt;artifactId&gt;junit&lt;/artifactId&gt;
+  &lt;version&gt;<b>4.8.2</b>&lt;/version&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>La version 4 de junit supporte les annotations qui permettent d'écrire les test plus simplement.</p>
+
+        <p>On regénère ensuite le projet avec mvn eclipse:eclipse et on rafraîchit le projet sous eclipse afin que cette modification soit bien prise en compte par eclipse.</p>
+
+        <h2>TagCloud</h2>
+
+        <p>Nous allons ajouter une classe TagCloud dans le package edu.ecm.blog.util</p>
+
+        <pre>public class TagCloud {
+
+}</pre>
+
+        <p>Cette classe nous servira plus tard lorsque nous constuirons notre application web.</p>
+
+        <p>Voici ce que nous voudrions qu'elle fasse pour le moment :</p>
+
+        <ul>
+            <li>Pouvoir ajouter un tag.</li>
+            <li>Savoir combien il y a de tag dans le cloud.</li>
+            <li>Pouvoir obtenir les n premiers tags.</li>
+        </ul>
+
+        <p>Nous allons rajouter tout cela en passant par des tests unitaires.</p>
+
+        <h2>TagCloudTest</h2>
+
+        <p>Par convention, une classe de test porte le nom de la classé testée, suffixée par "Test".</p>
+
+        <p>On ajoute le test JUnit (New &gt; JUnit Test Case) TagCloudTest dans le package edu.ecm.blog.util mais coté sources de test.</p>
+
+        <img src="img/new-junit-test.png" style="padding: 0 150px" />
     </div>
 </div>
 </body>
