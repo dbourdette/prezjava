@@ -76,7 +76,7 @@
 
         <ul>
             <li>Pouvoir ajouter un tag.</li>
-            <li>Savoir combien il y a de tag dans le cloud.</li>
+            <li>Savoir combien il y a de tags dans le cloud.</li>
             <li>Pouvoir obtenir les n premiers tags.</li>
         </ul>
 
@@ -90,7 +90,190 @@
 
         <img src="img/new-junit-test.png" style="padding: 0 150px" />
 
-        <p>TODO : add(String...) top() shuffle() -> add apache commons</p>
+        <h2>add</h2>
+
+        <p>Nous allons commencer pas la méthode add.</p>
+
+        <pre>public class TagCloudTest {
+   @Test
+   public void add() {
+      TagCloud tagCloud = new TagCloud();
+
+      tagCloud.add("java");
+   }
+}</pre>
+
+        <p>On exécute le test en faisant un click droit sur la classe Run As &gt; JUnit Test.</p>
+
+        <img src="img/junit-failed.png" style="padding: 0 200px" />
+
+        <p>Actuellement, ce test ne passe pas car la méthode add n'existe pas. Il suffit donc de la créer.</p>
+
+        <pre>public class TagCloud {
+   public void add(String tag) {
+
+   }
+}</pre>
+
+        <img src="img/junit-success.png" style="padding: 0 200px" />
+
+        <p>Elle ne fait rien, mais le test passe. Ajoutons un autre test.</p>
+
+        <h2>size</h2>
+
+        <pre>@Test
+public void size() {
+    TagCloud tagCloud = new TagCloud();
+
+    tagCloud.add("java");
+
+    Assert.assertEquals(1, tagCloud.size());
+}</pre>
+
+        <p>Nous pourrions implémenter cette méthode avec un simple compteur incrémenté lors de l'appel de add(). Nous allons plutôt utiliser une List dès a présent.</p>
+
+        <pre>public class TagCloud {
+    private List&lt;String&gt; tags = new ArrayList&lt;String&gt;();
+
+    public void add(String tag) {
+        tags.add(tag);
+    }
+
+    public int size() {
+        return tags.size();
+    }
+}</pre>
+
+        <p>Avec ce code, les 2 tests passent.</p>
+
+        <h2>add(String...)</h2>
+
+        <p>Afin de pouvoir écrire plus facilement nos tests, nous allons ajouter une méthode add(String...).</p>
+
+        <p>A partir de maintenant, seuls les tests seront décrit ici, l'implémentation étant libre.</p>
+
+        <pre>@Test
+public void addMutiple() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java", "ruby", "python");
+}</pre>
+
+        <p>Sans oublier de tester les cas limites.</p>
+
+        <pre>@Test
+public void addEmpty() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add();
+}
+
+@Test
+public void addNull() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add((String[]) null);
+}</pre>
+
+        <h2>doublons et contains</h2>
+
+        <p>Actuellement, nous pouvons avoir plusieurs fois le même tag. Nous ajoutons donc une méthode contains.</p>
+
+        <pre>@Test
+public void contains() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java");
+
+   Assert.assertTrue(tagCloud.contains("java"));
+}</pre>
+
+        <p>On modifie le test size() afin de vérifier que le même tag ne compte pas 2 fois.</p>
+
+        <pre>@Test
+public void size() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java", "java", "python");
+
+   Assert.assertEquals(2, tagCloud.size());
+}</pre>
+
+        <p>De même, les tags vides ou null ne devraient pas compter.</p>
+
+        <pre>@Test
+public void size() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java", "java", "python", "", null);
+
+   Assert.assertEquals(2, tagCloud.size());
+}</pre>
+
+        <h2>top(int) et shuffle()</h2>
+
+        <p>Lorsque nous utiliserons notre tagCloud, il se peut qu'il y ait des centaines de tags définis et nous voudrons en afficher qu'un jeu réduit.</p>
+
+        <pre>@Test
+public void top() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java", "ruby", "python", "c#", "groovy");
+   tagCloud.top(3);
+
+   Assert.assertEquals(3, tagCloud.size());
+}</pre>
+
+        <p>Avec les conditions aux limites.</p>
+
+        <pre>@Test
+public void topTooFew() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java");
+   tagCloud.top(3);
+
+   Assert.assertEquals(1, tagCloud.size());
+}
+
+@Test
+public void topNegative() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java");
+   tagCloud.top(-2);
+
+   Assert.assertEquals(0, tagCloud.size());
+}</pre>
+
+        <p>On note qu'écrire les tests unitaires fixe le fonctionnement de notre code de façon complètement arbitraire, bien au délà du design initial.</p>
+
+        <p>Afin de profiter malgré tout du volume de tags alors qu'on en affiche qu'un sous ensemble, nous allons mélanger notre tagCloud.</p>
+
+        <pre>@Test
+public void shuffle() {
+   TagCloud tagCloud = new TagCloud();
+
+   tagCloud.add("java", "ruby", "python", "c#", "groovy");
+   tagCloud.shuffle();
+
+   Assert.assertEquals(5, tagCloud.size());
+   Assert.assertTrue(tagCloud.contains("java"));
+}</pre>
+
+        <p>On pourrait réfléchir à un algorithme pour cette méhtode, mais java.util.Collections.shuffle() l'a déjà fait pour nous.</p>
+
+        <p>Nous avons ici un problème interessant pour nos test unitaires : comment tester le résultat d'un traitement aléatoire ?</p>
+
+        <p>Comme il n'y a pas de solution simple, nous nous contentons de tester la taille et le contenu.</p>
+
+        <p>Une solution consisterait à reposer sur un algorithme paramétrable et configuré spéciquement pour notre test. Le test unitaire aurait pour but de vérifier que la classe TagCloud reposer bien sur cet algorithme.</p>
+
+        <h2>Et maintenant</h2>
+
+        <p>Nous pourrions ajouter d'autres méthodes mais nous attendrons d'avoir une vision plus claire de notre besoin avant.</p>
+
+        <p></p>
     </div>
 </div>
 </body>
