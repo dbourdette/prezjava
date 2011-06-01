@@ -18,9 +18,9 @@ h1. "Architecture logicielle":http://dbourdette.github.com/prezjava/partie-2/sli
 
 * Développement pas les tests : junit
 
-* L'injection de dépendances : spring
-
 * Base de données et persistance : hibernate
+
+* L'injection de dépendances : spring
 
 * Aspect oriented programming
 

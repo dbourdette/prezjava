@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	<title>Base de données et persistance</title>
+
+	<link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+	<link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+	<link href="../../../common/css/moon.css" class="theme" rel="stylesheet">
+	<link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+	<link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+
+	<script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
+	<script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+
+	<script src="../../../common/js/code.js"></script>
+	<script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/main.js" type="text/javascript"></script>
+</head>
+<body>
+	<div class="presentation">
+		<div id="presentation-counter">Chargement...</div>
+
+		<div style="display: block;" class="slides">
+
+			<div class="slide">
+				<section id="landing-slide" class="middle">
+					<p>Base de données et persistance</p>
+				</section>
+			</div>
+
+            <div class="slide">
+                <header>Bases de données</header>
+                <section>
+                    <p>Les bases de données assure la persistance et la longévité des données.</p>
+                    <p>Les propriétés essentielles des bases de données sont regroupées sous l'acronyme <b>ACID</b> :</p>
+                    <ul>
+                        <li><b>Atomicité</b> : toute transaction doit s'éxécuter totalement ou pas du tout
+                        <li><b>Consistance</b> : la base assure sa propre intégrité
+                        <li><b>Isolation</b> : la base gère la concurrence entre les transactions
+                        <li><b>Durabilité</b> : la base assure la pérennité des données
+                    </ul>
+                    <p>Il est parfois compliqué de discuter avec une base de données mais il est difficile de se passer de ses services.</p>
+                </section>
+            </div>
+
+            <div class="slide">
+                <header>Types de bases de données</header>
+                <section>
+                    <p>Il existe différents types de base de données :</p>
+                    <ul>
+                        <li><b>relationnelles</b> : tables de données avec des relations entres elles (clés distantes).
+                        <li><b>hierarchiques</b> : les données sont stoquées dans une structure arborescente.
+                        <li><b>orientées objets</b> : visent à faciliter le passage objets &lt;-&gt; stockage.
+                        <li><b>XML</b> : stoquage et interrogation native en XML.
+                        <li><b>orientées documents</b> : stoquage d'objets avec des propriétés complexes.
+                    </ul>
+                    <p>les charges grandissantes et la flexibilité recherchée ont poussé certaines de ces solutions hors de la compétition.</p>
+                    <p>Les bases des données orientées documents offrent des perspectives sur le web bien plus grandes que ses prédécesseurs.</p>
+                    <p>C'est la mouvance <b><a href="http://fr.wikipedia.org/wiki/NoSQL" class="external" target="_blank">NoSQL</a></b> qui est en cours avec des solutions comme mongoDB, cassandra et solr.</p>
+                </section>
+            </div>
+
+			<div class="slide">
+				<header>Object Relational Mapping</header>
+				<section>
+                    <p>Les bases de données relationnelles sont les plus répandues à l'heure actuelle.</p>
+                    <p>Pourtant, l'interaction entre un language objet et une base de données relationnelle est loin d'être native : on parle d'un problème d'inpédance.</p>
+                    <p>Les librairies ORM visent à faciliter cette interaction.</p>
+                    <p>Voici quelques librairies ORM java :</p>
+                    <ul>
+                        <li>Hibernate</li>
+                        <li>Apache OpenJPA</li>
+                        <li>Oracle Toplink</li>
+                    </ul>
+                    <p>En java, il existe le standard JPA (Java Persistence Api) que suivent les principales librairies.</p>
+				</section>
+			</div>
+
+            <div class="slide">
+				<header>Exemple : l'objet du domaine</header>
+				<section>
+
+				</section>
+			</div>
+
+            <div class="slide">
+				<header>Exemple : configuration</header>
+				<section>
+
+				</section>
+			</div>
+
+            <div class="slide">
+				<header>Exemple : utilisation</header>
+				<section>
+
+				</section>
+			</div>
+
+		</div> <!-- slides -->
+	</div> <!-- presentation -->
+</body>
+</html>
