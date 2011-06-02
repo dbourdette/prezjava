@@ -55,3 +55,17 @@ pre {
 	background-color: black;
 	margin:5px 0px;
 }
+
+#project .nav {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+#project .nav .prev {
+    margin-left: 10px;
+}
+
+#project .nav .next {
+    float:right;
+    margin-right: 10px;
+}

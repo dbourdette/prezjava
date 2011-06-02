@@ -215,3 +215,20 @@ ul.nav li.active {
 	background-color: #595959;
 	color:#D4D4D4;
 }
+
+.slide .nav {
+    font-style: italic;
+}
+
+.slide .nav .prev {
+    position: absolute;
+    bottom: 50px;
+    margin-left: 10px;
+}
+
+.slide .nav .next {
+    position: absolute;
+    bottom: 50px;
+    right: 30px;
+    margin-right: 10px;
+}
