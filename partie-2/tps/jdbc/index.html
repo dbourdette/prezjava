@@ -26,7 +26,7 @@
 
         <p>C'est une API bas niveau qui permet de travailler avec les bases de données relationnelles.</p>
 
-        <p>JDBC définit un cadre et ensuite des vendeurs réalisent des implémentations (driver) en fonction de la base cible.</p>
+        <p>JDBC définit un cadre et ensuite des vendeurs réalisent des implémentations en fonction de la base cible.</p>
 
         <p>Il est rare d'avoir à travailler au niveau JDBC car de nombreuses librairies en facilite grandement l'usage.</p>
 
@@ -206,15 +206,97 @@ public void delete() throws ClassNotFoundException, SQLException {
 
         <h2>close()</h2>
 
-        <p>Nous n'avons pas fait les close() -> libération des resources.</p>
+        <p>Nous n'avons pas été très rigoureux dans la gestion de nos resources. Les connexions et les statements ouverts devraient être fermés grâce à la méthode close().</p>
+
+        <p>Partout ou cela est nécessaire (quand la resource ne sert plus) il faut rajouter l'appel.</p>
+
+        <pre>connection.close();
+
+...
+
+stmt.close();</pre>
+
+        <p>Comme nous sommes dans des tests unitaires, ce n'est pas très grave. En production, cela ferait du connection leak (fuite de connexion) et bloquerait l'application rapidement.</p>
 
         <h2>La gestion des erreurs</h2>
 
-        <p>try catch finally</p>
+        <p>Nous avons aussi passé sous silence la gestion d'erreur. Que se passe t il si une requête échoue et donc que la suite du programme ne s'exécute pas ?</p>
+
+        <p>Par exemple, dans le code suivant, si la requête échoue, la connexion n'est pas fermée.</p>
+
+        <pre>connection = DriverManager.getConnection("...");
+
+PreparedStatement stmt = connection.prepareStatement("...");
+
+stmt.executeUpdate(); <span class="comment">// boum !!!</span>
+
+stmt.close(); <span class="comment">// non exécuté</span>
+
+connection.close(); <span class="comment">// non exécuté</span>
+        </pre>
+
+        <p>Le code correct afin de gérer ces cas est de la forme try finally afin d'assurer la libération des resources.</p>
+
+        <pre>Connection connection = null;
+PreparedStatement stmt = null;
+
+<b>try</b> {
+    connection = DriverManager.getConnection("...");
+
+    stmt = connection.prepareStatement("...");
+
+    stmt.execute();
+} <b>finally</b> {
+    if (stmt != null) {
+        stmt.close();
+    }
+
+    if (connection != null) {
+        connection.close();
+    }
+}</pre>
+
+        <p>Si on ajoute à cela la gestion des transactions, coder de cette façon serait un enfer. Les frameworks et librairies modernes permettent de n'avoir que la partie à valeur ajoutée à coder.</p>
 
         <h2>La persitence des objets</h2>
 
-        <p>Exemple avec une classe Person (firstname, lastname)</p>
+        <p>Prenons un peu de recul et essayons d'imaginer un service de persitance pour une classe Person.</p>
+
+        <pre>public class Person {
+   private String firstname;
+
+   private String lastname;
+
+   // getters and setters
+}</pre>
+
+        <p>Ce modèle est assez proche de notre table 'test'.</p>
+
+        <p>Une méthode save(Person) dans un service aurait donc la forme suivante.</p>
+
+        <pre>public void save(Person person) {
+   connection = DriverManager.getConnection("...");
+
+   PreparedStatement stmt = connection.prepareStatement("insert into test (firstname, lastname) values (?, ?)");
+
+   stmt.setString(1, person.getFirstname());
+   stmt.setString(2, person.getLastname());
+
+   stmt.executeUpdate();
+}</pre>
+
+        <p>Il faudrait que ce service</p>
+
+        <ul>
+            <li>Gère bien la libération des resources</li>
+            <li>Permettre d'ajouter facilement de nouvelles propriétés</li>
+            <li>Gère les opérations de type CRUD et des méthodes de sélection spécialisées</li>
+            <li>Soit capable de lire et d'écrire des attributs plus complexes que des String</li>
+            <li>Puisse participer à des transactions en cours ou démarrer son propre contexte transactionel</li>
+            <li>...</li>
+        </ul>
+
+        <p>En bref, JDBC est assez simple et portable, mais nous allons avoir besoin d'un peu plus de puissance si on veut gagner en productivité.</p>
 
         <div class="nav">
             <a href="../junit/index.html" class="prev">&lt; Junit</a>
