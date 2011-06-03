@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Java database connectivity</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/main.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="presentation">
+    <div id="project">
+        <h1>Java database connectivity</h1>
+
+        <h2>Introduction</h2>
+
+        <p>JDBC est une spécification Sun qui existe depuis la version 1.1 de java.</p>
+
+        <p>C'est une API bas niveau qui permet de travailler avec les bases de données relationnelles.</p>
+
+        <p>JDBC définit un cadre et ensuite des vendeurs réalisent des implémentations (driver) en fonction de la base cible.</p>
+
+        <p>Il est rare d'avoir à travailler au niveau JDBC car de nombreuses librairies en facilite grandement l'usage.</p>
+
+        <h2>Mise en place d'une base de test</h2>
+
+        <p>Afin de tester JDBC, nous allons écrire quelques tests unitaires.</p>
+
+        <p>Nous allons utliser <a href="http://db.apache.org/derby/" class="external" target="_blank">Derby</a> comme base de données embarquée.</p>
+
+        <p>Nous créons donc la classe DerbyTest dans le package edu.ecm.blog.derby.</p>
+
+        <pre>public class DerbyTest {
+   @Test
+   public void createDb() throws ClassNotFoundException, SQLException {
+      <span class="comment">// chargement du driver</span>
+      Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+
+      <span class="comment">// création d'une connexion</span>
+      DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
+   }
+}</pre>
+
+        <p>Ce code charge le driver et crée la base derby dans le répertoire target/testdb.</p>
+
+        <p>Si on exécute ce test, on obtient l'erreur suivante.</p>
+
+        <pre>java.lang.<b>ClassNotFoundException: org.apache.derby.jdbc.EmbeddedDriver</b>
+    at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+    at java.security.AccessController.doPrivileged(Native Method)
+    at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:307)
+    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:248)
+    at java.lang.Class.forName0(Native Method)
+    at java.lang.Class.forName(Class.java:169)
+    at edu.ecm.blog.derby.DerbyTest.createDb(DerbyTest.java:12)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    at java.lang.reflect.Method.invoke(Method.java:597)
+    at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+    at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:49)
+    at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+</pre>
+
+        <p>Le driver n'est pas dans le classpath, on l'ajoute donc dans le pom.</p>
+
+        <pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
+  &lt;artifactId&gt;derby&lt;/artifactId&gt;
+  &lt;version&gt;10.8.1.2&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Un mvn eclipse:eclipse plus tard, le test passe.</p>
+
+        <p>Derby a créé un fichier derby.log à la racine. On l'ajoute dans le .gitignore afin que celui-ci ne soit pas pushé.</p>
+
+        <h2>Quelques requêtes</h2>
+
+        <p>Afin de faire des requêtes, il faut utiliser l'objet Connection issue du driver.</p>
+
+        <p>On teste la création d'une table.</p>
+
+        <pre>@Test
+public void createTable() throws ClassNotFoundException, SQLException {
+   <span class="comment">// chargement du driver</span>
+   Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+
+   <span class="comment">// création d'une connexion</span>
+   Connection connection = DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
+
+   connection.createStatement().execute("create table test (firstname varchar(30), lastname varchar(30))");
+}</pre>
+
+        <p>Si on exécute ce test une seconde fois, la base va lever une erreur car la table 'test' existe déjà.</p>
+
+        <p>De plus, il y un forte duplication de code entre nos 2 tests. Il faudrait donc optimiser cela avec d'en rajouter des nouveaux.</p>
+
+        <p>Afin de corriger ces deux problèmes, on modifie notre classe de test.</p>
+
+        <pre>public class DerbyTest {
+   private Connection connection;
+
+   @Before
+   public void init() throws ClassNotFoundException, SQLException {
+      <span class="comment">// chargement du driver</span>
+      Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+
+      <span class="comment">// création de la connexion</span>
+      connection = DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
+
+      clean();
+   }
+
+   @After
+   public void clean() throws SQLException {
+      try {
+         connection.createStatement().execute("drop table test ");
+      } catch (SQLException e) {
+         <span class="comment">// la table n'existait pas</span>
+         if (!e.getMessage().equals("'DROP TABLE' cannot be performed on 'TEST' because it does not exist.")) {
+            throw e;
+         }
+      }
+   }
+
+   @Test
+   public void createTable() throws ClassNotFoundException, SQLException {
+      connection.createStatement().execute("create table test (firstname varchar(30), lastname varchar(30))");
+   }
+}</pre>
+
+        <p>La table 'test' est supprimée entre chaque test.</p>
+
+        <p>On peut maintenant faire un test d'insertion.</p>
+
+        <pre>@Test
+public void insert() throws ClassNotFoundException, SQLException {
+   createTable();
+
+   PreparedStatement stmt = connection.prepareStatement("insert into test (firstname, lastname) values (?, ?)");
+
+   stmt.setString(1, "Groucho");
+   stmt.setString(2, "Marx");
+
+   Assert.assertEquals(1, stmt.executeUpdate());
+}</pre>
+
+        <p>Et un select.</p>
+
+        <pre>@Test
+public void select() throws ClassNotFoundException, SQLException {
+  insert();
+
+  PreparedStatement stmt = connection.prepareStatement("select firstname from test where lastname = ?");
+
+  stmt.setString(1, "Marx");
+
+  ResultSet rs = stmt.executeQuery();
+
+  rs.next();
+
+  Assert.assertEquals("Groucho", rs.getString("firstname"));
+}</pre>
+
+        <p>Et un delete.</p>
+
+        <pre>@Test
+public void delete() throws ClassNotFoundException, SQLException {
+  insert();
+
+  PreparedStatement stmt = connection.prepareStatement("delete from test where lastname = ?");
+
+  stmt.setString(1, "Marx");
+
+  Assert.assertEquals(1, stmt.executeUpdate());
+}</pre>
+
+        <p>Les commandes create, update, select et delete constituent les 4 opérations nécessaires à l'édition de contenu. Elles sont généralement regroupée sous l'acronyme CRUD (Create Request Update Delete).</p>
+
+        <h2>close()</h2>
+
+        <p>Nous n'avons pas fait les close() -> libération des resources.</p>
+
+        <h2>La gestion des erreurs</h2>
+
+        <p>try catch finally</p>
+
+        <h2>La persitence des objets</h2>
+
+        <p>Exemple avec une classe Person (firstname, lastname)</p>
+
+        <div class="nav">
+            <a href="../junit/index.html" class="prev">&lt; Junit</a>
+            <a href="../hibernate/index.html" class="next">Hibernate &gt;</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
