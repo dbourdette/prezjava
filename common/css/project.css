@@ -23,8 +23,7 @@ pre {
 	-moz-border-radius:0 20px 0 20px;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 5px 8px;
     font-size:16px;
-	background-image: -moz-linear-gradient(center top, rgb(228,235,245) 50%, rgb(100,136,176) 120%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%, rgb(228,235,245)), color-stop(120%, rgb(100,136,176)));
+	background-color: #D0DEF2;
 }
 
 #project h1 {

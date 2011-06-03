@@ -20,9 +20,103 @@
     <div id="project">
         <h1>Java</h1>
 
+        <p>Le but de ce tp n'est pas de faire le tour de tout ce qu'il est possible de faire avec le langage. Nous allons juste mettre en place notre modèle de données pour les tps à venir.</p>
+
         <h2>Création du modèle de données</h2>
 
-        <p>Post et Author</p>
+        <p>Pour notre modèle, nous définissons 2 classes dans le package edu.ecm.blog.domain : Author et Post.</p>
+
+        <p>On utilise eclipse afin de générer les getters et les setters.</p>
+
+        <p>Author est la représentation d'un auteur de billets sur un blog.</p>
+
+        <pre>public class Author {
+   private String name;
+
+   private String email;
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
+}</pre>
+
+        <p>Et Post est un billet de blog.</p>
+
+        <pre>public class Post {
+   private String title;
+   
+   private Date date;
+   
+   private String slug;
+   
+   private Author author;
+   
+   private String text;
+   
+   private String tags;
+
+   public String getTitle() {
+      return title;
+   }
+
+   public void setTitle(String title) {
+      this.title = title;
+   }
+
+   public Date getDate() {
+      return date;
+   }
+
+   public void setDate(Date date) {
+      this.date = date;
+   }
+
+   public String getSlug() {
+      return slug;
+   }
+
+   public void setSlug(String slug) {
+      this.slug = slug;
+   }
+
+   public Author getAuthor() {
+      return author;
+   }
+
+   public void setAuthor(Author author) {
+      this.author = author;
+   }
+
+   public String getText() {
+      return text;
+   }
+
+   public void setText(String text) {
+      this.text = text;
+   }
+
+   public String getTags() {
+      return tags;
+   }
+
+   public void setTags(String tags) {
+      this.tags = tags;
+   }
+}</pre>
+
+        <p>Ces classes ne présente que peu d'intêret techniquement mais elle sont importantes car elle représente notre domain métier.</p>
 
         <div class="nav">
             <a href="../jenkins/index.html" class="prev">&lt; Jenkins</a>
