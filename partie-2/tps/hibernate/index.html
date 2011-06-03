@@ -18,17 +18,172 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>Hibernate</h1>
+        <h1><img src="img/hibernate.png" width="300px"></h1>
 
         <h2>Introduction</h2>
 
+        <p>Hibernate est un framework de persitence objet - base de données relationnelles.</p>
+
+        <p>Il implémente et étend JPA (Java Persitance API), le standard de persistence jee.</p>
+
+        <p>Techniquement, c'est une sur couche de JDBC qui en simplifie et augmente l'usage.</p>
+
         <h2>Configuration hibernate</h2>
 
-        <p>Test unitaire hibernate en s'inspirant du test derby</p>
+        <p>Comme pour la configuration de derby, nous allons écrire un test unitaire afin de mettre en place notre couche de pesistence.</p>
+
+        <p>Nous créons un test HibernateTest dans le package edu.ecm.blog.hibernate.</p>
+
+        <pre>@Test
+public void createSessionFactory() {
+   Configuration configuration = new Configuration();
+
+   configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+   configuration.setProperty("hibernate.connection.url", "jdbc:derby:target/testdb;create=true");
+   configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
+
+   SessionFactory sessionFactory = configuration.buildSessionFactory();
+}</pre>
+
+        <p>Le guide complet de la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/session-configuration.html" class="external" target="_blank">configuration de hibernate</a></p>
+
+        <p>Ce test ne passe que si on ajoute les entrées suivantes dans le pom.xml</p>
+
+        <pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+  &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+  &lt;version&gt;3.6.4.Final&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;javassist&lt;/groupId&gt;
+  &lt;artifactId&gt;javassist&lt;/artifactId&gt;
+  &lt;version&gt;3.12.1.GA&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+  &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+  &lt;version&gt;1.6.1&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Ce test génère pas mal de traces dans la console au démarrage d'hibernate.</p>
+
+        <p>La SessionFactory que l'on récupère est un wrapper autour des APIs JDBC. Elle permet de récupérer des Sessions qui sont le pendant des Connections JDBC.</p>
 
         <h2>Le domaine</h2>
 
-        <p>Reprendre le domaine du projet fait dans le tp java -> ajout des annotations</p>
+        <p>Avant de pouvoir utliser concrètement notre SessionFactory, il faut lui donner la configuration des classes que l'on veut persiter.</p>
+
+        <p>La façon la plus simple est de le faire via des annotations dans nos classes du domaine.</p>
+
+        <p>On ajoute les annotations @Entity, @Table, @Column et @ManyToOne.</p>
+
+        <pre>@Entity
+@Table(name = "author")
+public class Author {
+   @Column
+   private String name;
+
+   @Column
+   private String email;
+
+   ...
+}</pre>
+
+        <pre>@Entity
+@Table(name = "post")
+public class Post {
+   @Column
+   private String title;
+   
+   @Column
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date date;
+   
+   @Column
+   private String slug;
+   
+   @ManyToOne(optional = true)
+   private Author author;
+   
+   @Column(length = 4000)
+   private String text;
+   
+   @Column
+   private String tags;
+ 
+   ...
+}</pre>
+
+        <p>Il est aussi possible de tout configurer (hibernate et objets du domaine) via fichiers xml mais cela est beaucoup plus verbeux.</p>
+
+        <p>Il ne reste qu'a informer hibernate de la présence de nos beans annotés.</p>
+
+        <pre>configuration.addAnnotatedClass(Author.class);
+configuration.addAnnotatedClass(Post.class);</pre>
+
+        <p>Une exécution en l'état nous indique que :</p>
+
+        <pre>org.hibernate.AnnotationException: No identifier specified for entity: edu.ecm.blog.domain.Author
+   at org.hibernate.cfg.InheritanceState.determineDefaultAccessType(InheritanceState.java:268)
+   at org.hibernate.cfg.InheritanceState.getElementsToProcess(InheritanceState.java:223)
+   at org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:686)
+   at org.hibernate.cfg.Configuration$MetadataSourceQueue.processAnnotatedClassesQueue(Configuration.java:4035)
+   at org.hibernate.cfg.Configuration$MetadataSourceQueue.processMetadata(Configuration.java:3989)
+   at org.hibernate.cfg.Configuration.secondPassCompile(Configuration.java:1398)
+   at org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1856)
+   at edu.ecm.blog.hibernate.HibernateTest.createSessionFactory(HibernateTest.java:23)
+   at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+   at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+   at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+   at java.lang.reflect.Method.invoke(Method.java:597)
+   at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+   at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+   at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+   at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+   at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+   at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+   at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+   at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+   at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+   at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+   at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+   at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+   at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+   at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:49)
+   at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)</pre>
+
+        <p>Pour corriger cette erreur, il suffit de rajouter un identifiant unique dans chaque classe.</p>
+
+        <pre>@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+private Long id;
+
+public Long getId() {
+  return id;
+}
+
+public void setId(Long id) {
+  this.id = id;
+}</pre>
+
+        <p>Cet identifiant servira de clé primaire dans la base de données.</p>
+
+        <p>Il utilise une stratégie de génération automatique : hibernate demandera à la base de générer des identifiants quand il en aura besoin.</p>
+
+        <p>Désormais, ce test unitaire passe.</p>
+
+        <h2>Persiter un objet</h2>
+
+        <p>Afin de voir ce que peut faire hibernate, nous allons persister un Author.</p>
+
+        <p>--> mettre la création du schéma en auto.</p>
 
         <h2>PostService</h2>
 
@@ -45,7 +200,7 @@
         <p>Comment injecter PostService dans TagCloudService ?</p>
 
         <div class="nav">
-            <a href="../jdbc/index.html" class="prev">&lt; Junit</a>
+            <a href="../jdbc/index.html" class="prev">&lt; JDBC</a>
             <a href="../spring/index.html" class="next">Spring &gt;</a>
         </div>
     </div>
