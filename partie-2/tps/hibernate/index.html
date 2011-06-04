@@ -41,6 +41,7 @@ public void createSessionFactory() {
    configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
    configuration.setProperty("hibernate.connection.url", "jdbc:derby:target/testdb;create=true");
    configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
+   configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
    SessionFactory sessionFactory = configuration.buildSessionFactory();
 }</pre>
@@ -70,7 +71,7 @@ public void createSessionFactory() {
 
         <p>Ce test génère pas mal de traces dans la console au démarrage d'hibernate.</p>
 
-        <p>La SessionFactory que l'on récupère est un wrapper autour des APIs JDBC. Elle permet de récupérer des Sessions qui sont le pendant des Connections JDBC.</p>
+        <p>La SessionFactory que l'on récupère est un wrapper autour des APIs JDBC. Elle permet de récupérer une Session qui est le pendant d'une Connection JDBC.</p>
 
         <h2>Le domaine</h2>
 
@@ -179,25 +180,263 @@ public void setId(Long id) {
 
         <p>Désormais, ce test unitaire passe.</p>
 
-        <h2>Persiter un objet</h2>
+        <h2>Persister un objet</h2>
 
-        <p>Afin de voir ce que peut faire hibernate, nous allons persister un Author.</p>
+        <p>Afin de voir ce que peut faire hibernate, nous allons persister un Author. On ajoute le test suivant.</p>
 
-        <p>--> mettre la création du schéma en auto.</p>
+        <pre>@Test
+public void saveAuthor() {
+    Author author = new Author();
+
+    author.setName("Harpo Marx");
+    author.setEmail("harpo.marx@gmail.com");
+
+    Session session = sessionFactory.openSession();
+
+    session.save(author);
+
+    session.close();
+}</pre>
+
+        <p>Afin de pouvoir écrire ce test il faut avoir passé le test précédent (createSessionFactory) en @Before au lieu de @Test afin d'initialiser la SessionFactory.</p>
+
+        <p>Hibernate nous permet donc de sauver un objet dans un table sans que nous ayons à manipuler de SQL.</p>
+
+        <p>De même que pour les tests jdbc, nous ne fermons pas correctement notre Session si jamais une erreur survient. Pour du code de test, cela est suffisant pour le moment.</p>
+
+        <p>Malgré cela, nous devons quand même bien nettoyer la base après notre test et fermer la SessionFactory.</p>
+
+        <pre>@After
+public void cleanDb() {
+    Session session = sessionFactory.openSession();
+
+    session.createQuery("delete from Author").executeUpdate();
+
+    session.close();
+
+    sessionFactory.close();
+}</pre>
+
+        <h2>Rechercher un objet</h2>
+
+        <p>Rechercher un objet dans la base se fait tout aussi simplement que la persistence.</p>
+
+        <p>Pour les requêtes hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html" class="external" target="_blank">HQL</a> (Hibernate Query Language)</p>
+
+        <pre>@Test
+public void findAuthor() {
+    saveAuthor();
+
+    Session session = sessionFactory.openSession();
+
+    Query query = session.createQuery("<b>from Author where name = :name</b>");
+
+    query.setString("name", "Harpo Marx");
+
+    List<Author> authors = query.list();
+
+    session.close();
+
+    Assert.assertEquals(1, authors.size());
+    Assert.assertEquals("Harpo Marx", authors.get(0).getName());
+}</pre>
+
+        <p>Avec hibernate on récupère directement nos objets à partir de la base.</p>
+
+        <p>En plus du HQL, il existe une autre API encore plus orientée objet : la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" class="external" target="_blank">Criteria API</a></p>
+
+        <pre>@Test
+public void findAuthorCriteria() {
+    saveAuthor();
+
+    Session session = sessionFactory.openSession();
+
+    Criteria criteria = session.createCriteria(<b>Author.class</b>);
+
+    criteria.add(Restrictions.eq("name", "Harpo Marx"));
+
+    List<Author> authors = criteria.list();
+
+    session.close();
+
+    Assert.assertEquals(1, authors.size());
+    Assert.assertEquals("Harpo Marx", authors.get(0).getName());
+}</pre>
+
+        <p>Ces 2 APIs sont disponibles en fonction du besoin.</p>
 
         <h2>PostService</h2>
 
-        <p>Test unitaire du service : save(Post), page(index, size), count()</p>
+        <p>Avec hibernate nous allons pouvoir écrire simplement notre service de gestion de billets.</p>
 
-        <p>Transaction commit</p>
+        <p>Les opérations à supporter sont :</p>
 
-        <h2>TagCloudService</h2>
+        <ul>
+            <li>save(post) : persister un billet en base</li>
+            <li>delete(id) : supprimer un billet</li>
+            <li>find(pageIndex, pageSize) : charger une liste de billets</li>
+            <li>count() : le nombre total de billets en base</li>
+        </ul>
 
-        <p>buildTagCloud()</p>
+        <p>On crée donc la classe PostService dans edu.ecm.blog.service.</p>
 
-        <h2>La collaboration entre les service</h2>
+        <pre>public class PostService {
+   public void save(Post post) {
+      ...
+   }
 
-        <p>Comment injecter PostService dans TagCloudService ?</p>
+   public void delete(Long id) {
+      ...
+   }
+
+   public List<Post> find(int pageIndex, int pageSize) {
+      ...
+   }
+
+   public int count() {
+      ...
+   }
+}</pre>
+
+        <p>Afin d'implémenter ces méthodes, nous allons passer par la classe PostServiceTest dans edu.ecm.blog.service.</p>
+
+        <pre>public class PostServiceTest {
+   private SessionFactory sessionFactory;
+
+   @Before
+   public void createSessionFactory() {
+      Configuration configuration = new Configuration();
+
+      configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+      configuration.setProperty("hibernate.connection.url", "jdbc:derby:target/testdb;create=true");
+      configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
+      configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+
+      configuration.addAnnotatedClass(Author.class);
+      configuration.addAnnotatedClass(Post.class);
+
+      sessionFactory = configuration.buildSessionFactory();
+   }
+
+   @After
+   public void cleanDb() {
+      Session session = sessionFactory.openSession();
+
+      session.createQuery("delete from Post").executeUpdate();
+
+      session.close();
+
+      sessionFactory.close();
+   }
+
+   @Test
+   public void save() {
+
+   }
+}</pre>
+
+        <p>En nous commençons par la méthode save. Nous souhaiterions pouvoir écrire :</p>
+
+        <pre>@Test
+public void save() {
+    PostService postService = new PostService();
+    postService.setSessionFactory(sessionFactory);
+
+    Post post = new Post();
+    post.setTitle("un post");
+    post.setDate(new Date());
+
+    postService.save(post);
+}</pre>
+
+        <p>Faites en sorte que cela soit possible et que ce test passe en prenant soin de bien fermer la session.</p>
+
+        <p>Le delete (<a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html#queryhql-bulk" class="external" target="_blank">doc hibernate</a>).</p>
+
+        <pre>@Test
+public void delete() {
+    PostService postService = new PostService();
+    postService.setSessionFactory(sessionFactory);
+
+    Post post = new Post();
+    post.setTitle("un post");
+    post.setDate(new Date());
+
+    postService.save(post);
+
+    postService.delete(post.getId());
+
+    Session session = sessionFactory.openSession();
+
+    Assert.assertEquals(0, session.createQuery("from Post").list().size());
+
+    session.close();
+}</pre>
+
+        <p>Le find avec la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" class="external" target="_blank">criteria API</a></p>
+
+        <pre>@Test
+public void find() {
+    PostService postService = new PostService();
+    postService.setSessionFactory(sessionFactory);
+
+    Post post = new Post();
+    post.setTitle("un post");
+    post.setDate(new Date());
+
+    postService.save(post);
+
+    post = new Post();
+    post.setTitle("un post");
+    post.setDate(new Date());
+
+    postService.save(post);
+
+    Assert.assertEquals(2, postService.find(0, 10).size());
+    Assert.assertEquals(1, postService.find(0, 1).size());
+}</pre>
+
+        <p>Et le count</p>
+
+        <pre>@Test
+public void count() {
+    PostService postService = new PostService();
+    postService.setSessionFactory(sessionFactory);
+
+    Post post = new Post();
+    post.setTitle("un post");
+    post.setDate(new Date());
+
+    postService.save(post);
+
+    post = new Post();
+    post.setTitle("un post");
+    post.setDate(new Date());
+
+    postService.save(post);
+
+    Assert.assertEquals(2, postService.count());
+}</pre>
+
+        <p>Après ce test, notre service est donc suffisament opérationnel pour le moment.</p>
+
+        <p>Cependant, nous avons beaucoup de duplication de code dans nos tests unitaires et le code est assez verbeux. Sans casser ces tests, il serait possible de grandement simplifier ce code.</p>
+
+        <h2>Les limites</h2>
+
+        <p>En SQL, tout ce que nous avons écrit aurait été très verbeux et une source potentielle de beaucoup de bugs. Hibernate est un aide précieuse lorsque l'on travaille avec des objets et une base de données relationelle.</p>
+
+        <p>Mais notre code a encore quelques limitations :</p>
+
+        <ul>
+            <li>Gestion des ouvertures et fermetures de sessions à la main.</li>
+            <li>Création et injection de la SessionFactory dans le service.</li>
+            <li>Impossibilité de participer à des transactions sans compliquer notre code.</li>
+            <li>Nous n'utilisons pas de pool de connexion sérieux (actuellement hibernate fournit un pool par défaut suffisant pour les tests).</li>
+            <li>La mise en place de la SessionFactory n'est pas facilement factorisable.</li>
+        </ul>
+
+        <p>Avant de coder un second service, nous allons nous tourner vers le framework spring afin de régler tous ces problèmes.</p>
 
         <div class="nav">
             <a href="../jdbc/index.html" class="prev">&lt; JDBC</a>

@@ -350,8 +350,7 @@ button.large {
 pre b {
   font-weight: normal;
   color: #c61800;
-  text-shadow: #c61800 0 0 1px;
-  /*letter-spacing: -1px;*/
+  letter-spacing: -1px;
 }
 pre em {
   font-weight: normal;

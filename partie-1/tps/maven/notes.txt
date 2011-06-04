@@ -1,0 +1,3 @@
+mvn idea:idea ou mvn netbeans:netbeans ?
+mvn test
+mvn site
