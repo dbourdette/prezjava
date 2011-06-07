@@ -22,7 +22,151 @@
 
         <h2>Introduction</h2>
 
-        <h2>DateSource</h2>
+        <p>Spring est un framework permettant la création d'application d'enteprise. Il propose :</p>
+
+        <ul>
+            <li>Un conteneur applicatif dans lequel les composants existent (instanciation).</li>
+            <li>Une mise en relation (wiring) des composants.</li>
+            <li>Une boite à outils afin de contruire des applications.</li>
+        </ul>
+
+        <p>En pratique, spring simplifie grandement l'écriture d'applications.</p>
+
+        <h2>Jars</h2>
+
+        <p>Avant de commencer, nous allons rajouter les jar nécessaire à spring dans le pom.xml.</p>
+
+        <pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+  &lt;version&gt;3.0.5.RELEASE&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
+  &lt;version&gt;3.0.5.RELEASE&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+  &lt;version&gt;3.0.5.RELEASE&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
+  &lt;version&gt;3.0.5.RELEASE&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+  &lt;version&gt;3.0.5.RELEASE&lt;/version&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.inject&lt;/groupId&gt;
+    &lt;artifactId&gt;javax.inject&lt;/artifactId&gt;
+    &lt;version&gt;1&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Et on peut faire un mvn eclipse:eclipse.</p>
+
+        <h2>Mise en place du contexte spring</h2>
+
+        <p>Nous allons partir de notre application et la faire évoluer afin de profiter de spring.</p>
+
+        <p>Toute application utilisant spring doit définir un context : c'est l'ensemble des objets qui constituent l'application.</p>
+
+        <p>La première étape consiste à définir un fichier PostServiceTest-context.xml dans le package edu.ecm.blog.service coté tests.</p>
+
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+   http://www.springframework.org/schema/beans
+   classpath:org/springframework/beans/factory/xml/spring-beans-3.0.xsd" &gt;
+
+&lt;/beans&gt;</pre>
+
+        <p>C'est dans ce fichier que seront définis les beans de notre application.</p>
+
+        <p>Afin que maven prennent en compte les fichiers xml dans src/test/java nous ajoutons la configuration suivante dans le pom (voir <a href="http://maven.apache.org/pom.html#Resources" class="external" target="_blank">configuration des resources</a>) :</p>
+
+        <pre>&lt;build&gt;
+    &lt;testResources&gt;
+        &lt;testResource&gt;
+            &lt;directory&gt;${basedir}/src/test/java&lt;/directory&gt;
+            &lt;includes&gt;
+                &lt;include&gt;**/*.xml&lt;/include&gt;
+            &lt;/includes&gt;
+        &lt;/testResource&gt;
+    &lt;/testResources&gt;
+&lt;/build&gt;</pre>
+
+        <p>Et dans le test unitaire, on rajoute les annotations suivantes :</p>
+
+        <pre><b>@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration</b>
+public class PostServiceTest {
+   ...
+}</pre>
+
+        <p>Le test unitaire passe encore mais nous n'avons encore pas faire grand chose : un contexte spring est instancié et existe pendant la durer de notre test.</p>
+
+        <h2>PostService 2.0</h2>
+
+        <p>La première chose que nous allons faire est de définir notre session factory dans le contexte spring. Dans PostServiceTest-context.xml</p>
+
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+   http://www.springframework.org/schema/beans
+   classpath:org/springframework/beans/factory/xml/spring-beans-3.0.xsd" &gt;
+
+<b>&lt;bean id="webportalsSessionFactory"
+            class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+   &lt;property name="hibernateProperties"&gt;
+      &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+         &lt;property name="properties"&gt;
+            &lt;props&gt;
+               &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/prop&gt;
+               &lt;prop key="hibernate.connection.url"&gt;jdbc:derby:target/testdb;create=true&lt;/prop&gt;
+               &lt;prop key="hibernate.connection.driver_class"&gt;org.apache.derby.jdbc.EmbeddedDriver&lt;/prop&gt;
+               &lt;prop key="hibernate.hbm2ddl.auto"&gt;update&lt;/prop&gt;
+            &lt;/props&gt;
+         &lt;/property&gt;
+      &lt;/bean&gt;
+   &lt;/property&gt;
+   &lt;property name="packagesToScan" value="edu.ecm.blog.domain"/&gt;
+&lt;/bean&gt;</b>
+
+&lt;/beans&gt;</pre>
+
+        <p>C'est une configuration équivalente à ce que nous avions dans notre méthode createSessionFactory(). Nous pouvons donc supprimer cette méthode.</p>
+
+        <p>En échange, on inject la session factory définit dans notre contexte dans notre test.</p>
+
+        <pre><b>@Inject</b>
+private SessionFactory sessionFactory;</pre>
+
+        <p>Du code java contre du xml, pour le moment nous n'avons pas gagné grand chose.</p>
+
+        <p>Si on exécute les tests unitaires, nous avons une erreur.</p>
+
+        <pre>Caused by: java.sql.SQLException: Cannot close a connection while a transaction is still active.
+    at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+    at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+    ... 37 more</pre>
+
+        <p>...</p>
+
+        <p>Ensuite on ajoute notre service dans le contexte spring.</p>
+
+        <pre></pre>
+
+        <h2>DataSource</h2>
 
         <p>Pool de connection pour la performance</p>
 
