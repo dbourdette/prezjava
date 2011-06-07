@@ -1,3 +1,5 @@
 mvn idea:idea ou mvn netbeans:netbeans ?
 mvn test
 mvn site
+
+search sur http://search.maven.org (http://repo1.maven.org/)

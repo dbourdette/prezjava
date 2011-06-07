@@ -1,4 +1,6 @@
 
+edu.ecm.blog -> edu.dummy.blog
+
 m.google is undefined
 
 lien external en target _blank

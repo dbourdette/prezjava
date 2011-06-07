@@ -210,12 +210,18 @@ public void saveAuthor() {
 public void cleanDb() {
     Session session = sessionFactory.openSession();
 
+    Transaction transaction = session.beginTransaction();
+
     session.createQuery("delete from Author").executeUpdate();
+
+    transaction.commit();
 
     session.close();
 
     sessionFactory.close();
 }</pre>
+
+        <p>La transaction ici permet à hibernate de bien valider la modification en base pour cette opération dite "bulk".</p>
 
         <h2>Rechercher un objet</h2>
 
@@ -322,7 +328,11 @@ public void findAuthorCriteria() {
    public void cleanDb() {
       Session session = sessionFactory.openSession();
 
+      Transaction transaction = session.beginTransaction();
+
       session.createQuery("delete from Post").executeUpdate();
+
+      transaction.commit();
 
       session.close();
 
