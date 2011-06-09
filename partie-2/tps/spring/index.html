@@ -392,9 +392,10 @@ public class TagCloudServiceTest {
 
       <b>TagCloud tagCloud = tagCloudService.buildTagCloud();</b>
 
-      Assert.assertEquals(4, tagCloud.size());
+      Assert.assertEquals(5, tagCloud.size());
       Assert.assertTrue(tagCloud.contains("java"));
       Assert.assertTrue(tagCloud.contains("python"));
+      Assert.assertTrue(tagCloud.contains("nodejs"));
    }
 
    private void saveSomePosts() {
