@@ -404,6 +404,7 @@ public void find() {
 
     Assert.assertEquals(2, postService.find(0, 10).size());
     Assert.assertEquals(1, postService.find(0, 1).size());
+    Assert.assertEquals(0, postService.find(1, 10).size());
 }</pre>
 
         <p>Et le count</p>

@@ -243,7 +243,7 @@ private PostService postService;</pre>
         <pre>@Override
 @Transactional
 public void save(Post post) {
-    Session session = sessionFactory.getCurrentSession();
+    Session session = sessionFactory.<b>getCurrentSession()</b>;
 
     session.save(post);
 }</pre>
@@ -429,7 +429,7 @@ public class TagCloudServiceTest {
         <ul>
             <li>Il est possible de faire un import de contexte via un tag import, par ex : &lt;import resource="test-context.xml" /&gt;</li>
             <li>TagCloudServiceImpl doit implémenter TagCloudService.</li>
-            <li>Utiliser la méthode org.springframework.util.StringUtils.split afin de récupérer un tableau de tags.</li>
+            <li>Utiliser la méthode org.apache.commons.lang.StringUtils.split afin de récupérer un tableau de tags (on peut trouver le jar commons-lang dans le <a href="http://search.maven.org" class="external" target="_blank">repo maven</a>).</li>
         </ul>
 
         <div class="nav">
