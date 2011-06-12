@@ -56,44 +56,223 @@
 			<div class="slide">
 				<header>Compilation et méthode main</header>
 				<section>
+                    <p>Java est un langage <b>compilé</b>. Mais contrairement au C qui est compilé en instructions natives, Java est compilé en <b>bytecode</b>.</p>
+                    <p>Cela lui permet d'être <b>portable</b> et exécutable sur toutes les machines où tourne une <b>machine virtuelle java</b> (jvm).</p>
+                    <p>La commande javac compile les fichiers .java en .class qui sont alors exécutables par la commande java.</p>
+                    <p>Afin de pouvoir être exécuté, un programme java doit posséder une méthode main.</p>
+                    <pre>public static void <b>main</b>(String[] args) { ... }</pre>
+                    <p>Le chargement du code java est dynamique : il est chargé au fur et à mesure du besoin.</p>
+                    <p>La machine virtuelle regarde dans le <b>classpath</b> afin de charger du code. Si une classe demandée n'est pas trouvée alors une erreur est remontée.</p>
+                    <pre>java.lang.ClassNotFoundException: path.to.my.unknown.Code
+Erreur
+ at java.net.URLClassLoader$1.run(URLClassLoader.java:198)
+...</pre>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Package, class, interface et enum</header>
+				<header>Package, class et import</header>
 				<section>
+                    <p>Les <b>classes</b> sont rangés dans des <b>packages</b> correspondants à l'arborescence des répertoires.</p>
+                    <pre>package edu.fr.test
+
+public class Test {
+   ...
+}</pre>
+                    <p>Si on souhaite utiliser une classe depuis une autre, il suffit de faire un import de la classe</p>
+                    <pre>import edu.fr.test.Test</pre>
+                    <p>Ou même de tout le package</p>
+                    <pre>import edu.fr.test.*</pre>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>classe Object</header>
+				<section>
+                    <p>Toutes les classes héritent de la classe Object qui définit les méthodes suivantes :</p>
+                    <ul>
+                        <li>getClass : la classe de l'object</li>
+                        <li>toString : une représentation en chaîne de caractères de l'objet</li>
+                        <li>equals : test d'égalité</li>
+                        <li>hashCode : une valeur de hash (un entier qui représente l'état de l'objet)</li>
+                        <li>clone : retourne un copie</li>
+                        <li>wait / notify : permet de bloquer ou débloquer le thread courant</li>
+                        <li>finalize : appelé quand l'objet va être supprimé de la mémoire</li>
+                    </ul>
+                    <p>En pratique, on surcharge fréquement equals, hashCode (qui vont de pair) et toString.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>interface</header>
+				<section>
+                     <p>Une interface définit un ensemble de méthodes et de constantes</p>
+                    <pre>public interface MailService {
+   public static final int SOME_NAME = 10;
+
+   public void send(Mail mail);
+
+   public List&lt;Mail&gt; retrieve();
+}</pre>
+                    <p>Il n'est pas possible d'instancier une interface.</p>
+                    <p>Une classe peut implémenter une interface : elle doit alors implémenter toutes les méthodes.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>enum</header>
+				<section>
+                    <p>Un enum est une classe qui ne possède qu'un nombre prédéfini d'instance</p>
+                    <pre>public enum Gender {
+	MALE, FEMALE, UNKNOWN;
+}</pre>
+                    <p>Les instances MALE, FEMALE et UNKNOWN n'existe qu'une seule fois dans toute la jvm.</p>
+                    <p>On peut donc faire des tests d'égalité par référence.</p>
+                    <pre>Gender gender1 = Gender.MALE;
+...
+Gender gender2 = Gender.MALE;
+
+gender1 == gender2;</pre>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>Annotations</header>
 				<section>
+                    <p>Les annotations permettent de marquer des classes ou des méthodes afin de les distinguer.</p>
+                    <p>Du code peut alors retrouver ces entités marquées et appliquer des traitements.</p>
+                    <p>Une annotation se définit comme suit.</p>
+                    <pre>public @interface LookAtMe {
+	String why();
+
+	String comments() default "none";
+}</pre>
+                    <p>Et s'utilise simplement.</p>
+                    <pre>@LookAtMe(why = "why not")
+    public void save() {
+   ...
+}</pre>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>Les stacktraces</header>
 				<section>
-				</section>
+                    <p>Quand une erreur survient, une exception est levée.</p>
+                    <p>Une exception est un type particulier d'objet instancié en cas de problème et qui peut être lancé via la synthaxe :</p>
+                    <pre>throw new IllegalArgumentException("param can not be null");</pre>
+                    <p>La méthode printStackTrace d'une exception permet d'obtenir la <b>stacktrace</b> :</p>
+                    <pre>java.io.FileNotFoundException: test.txt
+   at java.io.FileInputStream.<init>(FileInputStream.java)
+   at java.io.FileInputStream.<init>(FileInputStream.java)
+   at Test.readFile(Test.java:19)
+   at Test.main(Test.java:7)</pre>
+                    <p>Une stactrace contient le nom de l'erreur, un message et l'état complet de la pile d'appel au moment ou l'exception a été lancée.</p>
+                    <p>C'est donc un outils très complet afin de comprendre exactement ce qui a déclanché l'erreur.</p>
+        </section>
 			</div>
 
 			<div class="slide">
 				<header>La gestion de la mémoire</header>
 				<section>
-				</section>
-			</div>
-
-			<div class="slide">
-				<header>Projet coin</header>
-				<section>
+                    <p>Une application java réserve la mémoire en masse et la redistribue ensuite en fonction du besoin.</p>
+                    <p>Il n'y a donc pas besoin d'écrire du code afin de réserver ou libérer de la mémoire.</p>
+                    <p>La mémoire réservée est découpée en plusieurs zones, selon l'anciennté des objets.</p>
+                    <img src="img/gc.jpg" style="margin:0 100px" />
+                    <p>La <b>garbage collector</b> a pour charge de régulièrement regarder les objets devenus inutiles et de libérer la mémoire correspondante.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>java et jee</header>
 				<section>
+                    <p>En plus du langage, java propose une suite logicielle pour entreprise : Java Enterprise Edition (jee).</p>
+                    <p>C'est une galaxie de service extrêment vaste donc en voici quelques élements :</p>
+                    <ul>
+                        <li>Conteneurs de composants : servlets, portlets et ejb</li>
+                        <li>JPA : persistance object - relationnel</li>
+                        <li>JAX-WS : les services SOAP
+                        <li>JAX-RX : les servcies REST
+                        <li>JAXB : binding java - xml
+                        <li>JDBC : java database connectivity
+                        <li>JMS : java messaging service
+                        <li>JSF : java server faces
+                        <li>Bean validation : annotations pour la validation
+                        <li>javaMail : envoi et réception de mail
+                        <li>JMX : standardisation du management et supervision des applications
+                        <li>JNDI : java naming and directory interface</li>
+                        <li>Technologies de rendu : fichiers jsp, custom tags et expression language</li>
+	          	    </ul>
 				</section>
 			</div>
+
+			<div class="slide">
+				<header>Environnements managés</header>
+				<section>
+                    <p>Lorsqu'un application est déployée dans un serveur jee, elle ne possède pas de méthode main().</p>
+                    <p>C'est le serveur qui charge dynamiquement les objets et les appelle en fonction du besoin.</p>
+                    <p>Dans ce cadre, le serveur est appelé <b>conteneur</b> et les objest <b>composants</b>.</p>
+                    <p>Un conteneur est un environnement qui manage des composants.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<style>
+                    #packagings tbody td {
+                        text-align:left;
+                    }
+                </style>
+                <header>Packaging</header>
+				<section>
+                    <p>Afin d'être déployé dans un conteneur, les composants doivent être packagés dans un livrable.</p>
+                    <p>Voici les 3 formes de packaging principales en java :</p>
+                    <table class="refTable" id="packagings">
+                        <thead>
+                            <tr>
+                                <td>nom</td>
+                                <td>extension</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Les librairies</td>
+                                <td>.jar</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Modules réutilisables (avec possibilité de définir des ejbs dans le META-INT/ejb-jar.xml).</td>
+                            </tr>
+                            <tr>
+                                <td>Les applications web</td>
+                                <td>.war</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">servlets et jsp avec un descripteur de déploiement WEB-INF/web.xml.</td>
+                            </tr>
+                            <tr>
+                                <td>Les applications entreprise</td>
+                                <td>.ear</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">ejb avec un descripteur de déploiement META-INF/application.xml.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Dans ces packages, on trouve des descripteurs de déploiement qui indique au conteneur comment les déployer</p>
+				</section>
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			<div class="slide">
 	      	<header>Les serveurs jee</header>
@@ -225,16 +404,11 @@ public void destroy() {...}</pre>
 	      </div>
 	
 	      <div class="slide">
-	      	<style>
-	      		#packagings tbody td {
-	      			text-align:left;
-	      		}
-	      	</style>
 	      	<header>Packaging</header>
 	        <section>
 	        	<p>Un <b>package</b> est zip contenant toutes les ressources d'un module : lib, appli web...</p>
 	        	<p>Il existe 3 formes majoritaires de packaging en java.</p>
-	        	<table class="refTable" id="packagings">
+	        	<table class="refTable">
 	        		<thead>
 	        			<tr>
 	        				<td>nom</td>

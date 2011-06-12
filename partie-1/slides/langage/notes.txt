@@ -1,4 +1,3 @@
-language objet
 language type
 language compil� (byecode)
 language portable
