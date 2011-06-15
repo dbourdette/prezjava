@@ -2,36 +2,22 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-	    <title>MVC 2</title>
-	    
-		<link href="../static/css.css" rel="stylesheet" type="text/css">
-	    <link id="prettify-link" href="../static/prettify.css" rel="stylesheet" disabled="">
-	    <link href="../static/moon.css" class="theme" rel="stylesheet">
-	    <link href="../static/sand.css" class="theme" rel="stylesheet">
-	    <link href="../static/sea_wave.css" class="theme" rel="stylesheet">
-	    <link href="../static/default.css" class="theme" rel="stylesheet">
-	  	
-	    <link href="../static/dev.css" class="theme" rel="stylesheet">
-	    
-	    <script src="../static/jquery/jquery-1.4.4.min.js"></script>
-	    <script src="../static/jquery/jquery.xcolor.js"></script>
-	    <script src="../static/jquery/jquery.validate.js"></script>
-	    <link type="text/css" href="../static/jquery/smoothness/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
-	    <script src="../static/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-	    <script type="text/javascript">
-	    	jQuery.fn.outerHTML = function(s) {
-	  		return (s)
-	  		? this.before(s).remove()
-	  		: jQuery("<p>").append(this.eq(0).clone()).html();
-	  		}
-	    </script>
-	    
-	    <script src="../static/code.js"></script>
-	    <script src="../static/prettify.js" onload="prettyPrint();"></script>
-	    <script src="../static/js"></script>
-   		<script src="../static/main.js" type="text/javascript"></script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+        <title>MVC 2</title>
+
+        <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+        <link href="../../../common/css/moon.css" class="theme" rel="stylesheet">
+        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+
+        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
+        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+
+        <script src="../../../common/js/code.js"></script>
+        <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+        <script src="../../../common/js/main.js" type="text/javascript"></script>
   	</head>
   	<body>
     <div class="presentation">
@@ -53,7 +39,7 @@
 	      	<header>Les frameworks MVC</header>
 	        <section>
 	        	<p>Un framework MVC est un conteneur dans le conteneur jee.</p>
-	        	<img alt="" src="images/jee-mvc2-container.png" width="300px" style="margin:0 250px;"/>
+	        	<img alt="" src="img/jee-mvc2-container.png" width="300px" style="margin:0 250px;"/>
 	        	<p>Il offre des services supplémentaires facilant la création d'applications web :</p>
 	        	<ul>
 	        		<li><b>Request dispatching</b> (URL mapping) : routage de la requête vers le bon traitements.</li>
@@ -68,7 +54,7 @@
 	      	<header>L'architecture MVC 2</header>
 	        <section>
 	        	<p>L'architecture d'un framwork MVC 2 est simple et encourage la séparation des responsabilités.</p>
-	        	<img alt="" src="images/mvc2.png" width="600px" style="margin:0 100px;"/>
+	        	<img alt="" src="img/mvc2.png" width="600px" style="margin:0 100px;"/>
 	        	<p>Le MVC 2 se distingue du MVC par l'introduction d'un <b>front controller</b> (<b>Dispatcher</b>).</p>
 	        </section>
 	      </div>
@@ -77,7 +63,7 @@
 	      	<header>Quelques frameworks</header>
 	        <section>
 	        	<p>Une brève histoire des frameworks MVC :</p>
-	        	<img alt="" src="images/frameworks.png" width="840px"/>
+	        	<img alt="" src="img/frameworks.png" width="840px"/>
 	        	<p>Nous allons utiliser <b>Spring MVC</b> pour le reste de la présentation.</p>
 	        </section>
 	      </div>

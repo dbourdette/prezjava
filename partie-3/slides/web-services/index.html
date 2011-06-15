@@ -2,36 +2,22 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-	    <title>Web services</title>
-	    
-		<link href="../static/css.css" rel="stylesheet" type="text/css">
-	    <link id="prettify-link" href="../static/prettify.css" rel="stylesheet" disabled="">
-	    <link href="../static/moon.css" class="theme" rel="stylesheet">
-	    <link href="../static/sand.css" class="theme" rel="stylesheet">
-	    <link href="../static/sea_wave.css" class="theme" rel="stylesheet">
-	    <link href="../static/default.css" class="theme" rel="stylesheet">
-	  	
-	    <link href="../static/dev.css" class="theme" rel="stylesheet">
-	    
-	    <script src="../static/jquery/jquery-1.4.4.min.js"></script>
-	    <script src="../static/jquery/jquery.xcolor.js"></script>
-	    <script src="../static/jquery/jquery.validate.js"></script>
-	    <link type="text/css" href="../static/jquery/smoothness/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
-	    <script src="../static/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-	    <script type="text/javascript">
-	    	jQuery.fn.outerHTML = function(s) {
-	  		return (s)
-	  		? this.before(s).remove()
-	  		: jQuery("<p>").append(this.eq(0).clone()).html();
-	  		}
-	    </script>
-	    
-	    <script src="../static/code.js"></script>
-	    <script src="../static/prettify.js" onload="prettyPrint();"></script>
-	    <script src="../static/js"></script>
-   		<script src="../static/main.js" type="text/javascript"></script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+        <title>Web services</title>
+
+        <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+        <link href="../../../common/css/moon.css" class="theme" rel="stylesheet">
+        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+
+        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
+        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+
+        <script src="../../../common/js/code.js"></script>
+        <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+        <script src="../../../common/js/main.js" type="text/javascript"></script>
   	</head>
   	<body>
     <div class="presentation">
@@ -58,7 +44,7 @@
 	        		<li><b>web</b> : il utilise le protocole HTTP
 	        	</ul>
 	        	<p>Le services web peuvent se diviser en 2 groupes.</p>
-	        	<img alt="" src="images/web-services.png" width="450px" style="margin:0 180px">
+	        	<img alt="" src="img/web-services.png" width="450px" style="margin:0 180px">
 	        	<ul>
 	        		<li><b>RPC</b> (Remote Procedure Call) est l'appel d'une méthode distante comme si elle était locale.
 	        		<li><b>REST</b> (Representational State Transfer) est un modèle de conception qui repose intégralement sur le HTTP.
@@ -85,7 +71,7 @@
 	        		<li><b>WSDL</b> (Web Service Description Language) : descripteur d'un service SAOP, permet de générer un client
 	        		<li>UDDI (Universal Description Discovery and Integration) : un mécanisme d'annuaire
 	        	</ul>
-	        	<img alt="" src="images/soap-message.png" width="200px" style="margin:10px 20px;float:left">
+	        	<img alt="" src="img/soap-message.png" width="200px" style="margin:10px 20px;float:left">
 	        	<p>Un message SAOP</p>
 	        	<ul>
 	        		<li>enveloppe : contient le header et le body
@@ -282,7 +268,7 @@ Server: AmazonS3
 	        <header>A lire</header>
 	        <section>
 	        	<p>RESTful web services</p>
-	        	<img alt="" src="images/restful-web-services.gif" style="margin:10px 300px;">
+	        	<img alt="" src="img/restful-web-services.gif" style="margin:10px 300px;">
 	        	<p>Leonard Richardson et Sam Ruby</p>
 	        </section>
 	      </div>
