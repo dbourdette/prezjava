@@ -20,15 +20,168 @@
     <div id="project">
         <h1>Application web</h1>
 
-        <p>Nous allons utiliser nos services afin de construire une application web.</p>
+        <p>Nous allons utiliser notre projet et nos services afin de construire une application web.</p>
+
+        <p>Avec maven, il faut peu de choses afin de transformer notre application.</p>
 
         <h2>Packaging war</h2>
 
+        <p>La première étape consiste a changer le packaging dans le pom.</p>
+
+        <p>Actuellement, nous avons un packaging jar, nous passons en war.</p>
+
+        <pre>&lt;groupId&gt;edu.ecm.blog&lt;/groupId&gt;
+&lt;artifactId&gt;blog&lt;/artifactId&gt;
+&lt;packaging&gt;<b>war</b>&lt;/packaging&gt;</pre>
+
+        <p>Maintenant, un mvn package essayera de construire une application web (war).</p>
+
         <h2>src/main/webapp</h2>
 
-        <p>web.xml et une servlet</p>
+        <p>La seconde étape consiste à rajouter le répertoire qui contiendra les ressources web : src/main/webapp.</p>
+
+        <p>Dans l'application produite par maven, tous les fichiers présents dans ce répertoire seront à la racine de l'applicaiton et donc accesibles directement depuis l'interface http.</p>
+
+        <p>Le descripteur de déploiement</p>
+
+        <p>Le fichier web.xml décrit comment configurer l'application</p>
+
+        <p>Le conteneur lit ce fichier au moment du déploiement de l'application.</p>
+
+        <p>Ce fichier doit aller dans le répertoire WEB-INF de l'application web. Avec maven, il faut donc le mettre dans src/main/webapp/WEB-INF.</p>
+
+        		<pre>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+  version="2.5"&gt;
+
+   &lt;display-name&gt;blog&lt;/display-name&gt;
+
+&lt;/web-app&gt;</pre>
+
+        <p>Ce fichier ne dit pas grand chose : nous sommes en version 2.5 de la spécification des servlets et notre application s'appelle blog.</p>
+
+        <p>Avec ce fichier en place, on peut maitenant faire un mvn package et obtenir notre war, versionné, dans le répertoire target.</p>
 
         <h2>Plugin tomcat</h2>
+
+        <p>A partir de là, il serait tout a fait possible de copier ce fichier dans le répertoire webapps de tomcat et de le démarrer.</p>
+
+        <p>Mais faire une copie à la main à chaque build est fastidieux.</p>
+
+        <p>Nous allons donc utiliser le <a href="http://mojo.codehaus.org/tomcat-maven-plugin/index.html" class="external" target="_blank">plugin tomcat</a> pour maven afin de nous faciliter la tâche.</p>
+
+        <p>Avec mvn tomcat:run, maven télécharge le plugin tomcat et ses dépendances et lance un serveur tomcat.</p>
+
+        <pre>[INFO] Running war on http://localhost:8080/blog
+[INFO] Creating Tomcat server configuration at /path/to/projects/target/tomcat
+18 juin 2011 16:14:19 org.apache.catalina.startup.Embedded start
+INFO: Starting tomcat server
+18 juin 2011 16:14:19 org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/6.0.29
+18 juin 2011 16:14:20 org.apache.coyote.http11.Http11Protocol init
+INFO: Initializing Coyote HTTP/1.1 on http-8080
+18 juin 2011 16:14:20 org.apache.coyote.http11.Http11Protocol start
+INFO: Starting Coyote HTTP/1.1 on http-8080</pre>
+
+        <p>Le plugin vient avec sa propre version de tomcat pour le goal tomcat:run.</p>
+
+        <p>Notre application répond sur <a href="http://localhost:8080/blog/" target="_blank">http://localhost:8080/blog/</a>.</p>
+
+        <p>Elle a été déployée dans le contexte blog car par défaut, le plugin tomcat utilise le nom de l'application dans le pom.</p>
+
+        <p>Afin que notre application soit directement accessible à la racine, il faut paramétrer le plugin tomcat pour notre projet en ajoutant les lignes suivantes dans le pom.</p>
+
+        <pre>&lt;build&gt;
+    &lt;testResources&gt;
+        &lt;testResource&gt;
+            &lt;directory&gt;${basedir}/src/test/java&lt;/directory&gt;
+            &lt;includes&gt;
+                &lt;include&gt;**/*.xml&lt;/include&gt;
+            &lt;/includes&gt;
+        &lt;/testResource&gt;
+    &lt;/testResources&gt;
+
+    <b>&lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-maven-plugin&lt;/artifactId&gt;
+            &lt;configuration&gt;
+              &lt;path&gt;/&lt;/path&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;</b>
+&lt;/build&gt;</pre>
+
+        <p>Maintenant notre application répond sur la racine (/). Mais comme nous n'avons aucun composant configuré, nous avons une 404.</p>
+
+        <h2>Servlet API</h2>
+
+        <p>L'API des servlets est un ensemble de classes java disponibles dans un conteneur de servlets.</p>
+
+        <p>Tomcat va donc nous fournir toutes ses classes afin que l'on puisse répondre aux requêtes http.</p>
+
+        <p>Cependant, dans eclipse, ces classes ne sont pas disponibles au moment de l'écriture du code source.</p>
+
+        <p>Il faut donc ajouter cette api dans notre pom.</p>
+
+        <pre><span class="comment">&lt;!-- provided by the container --&gt;</span>
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+    &lt;version&gt;2.5&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
+    &lt;version&gt;2.0&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <h2>HelloWorldServlet</h2>
+
+        <p>Il est donc temps de rajouter notre premier composant web.</p>
+
+        <p>Afin d'accueillir nos servlets, nous ajoutons un package edu.ecm.blog.web.servlet.</p>
+
+        <p>Et notre première servlet.</p>
+
+        <pre>package edu.ecm.blog.web.servlet;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HelloWorldServlet extends HttpServlet {
+   private static final long serialVersionUID = 1L;
+
+   @Override
+   protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	    			   throws ServletException, IOException {
+	   response.getWriter().write("Hello !");
+   }
+}</pre>
+
+        <p>C'est un composant java qui peut répondre à une requête http et prduire une réponse.</p>
+
+        <p>Il faut ensuite configurer le mapping dans le web.xml</p>
+
+        <pre>&lt;servlet&gt;
+   &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
+   &lt;servlet-class&gt;edu.ecm.blog.web.servlet.HelloWorldServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+   &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
+   &lt;url-pattern&gt;/HelloWorldServlet&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre>
+
+        <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
 
         <div class="nav">
             <a href="../conteneurs/index.html" class="prev">&lt; Conteneurs</a>
