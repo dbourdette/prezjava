@@ -168,7 +168,7 @@ public class HelloWorldServlet extends HttpServlet {
    }
 }</pre>
 
-        <p>C'est un composant java qui peut répondre à une requête http et prduire une réponse.</p>
+        <p>C'est un composant java qui peut répondre à une requête http et produire une réponse.</p>
 
         <p>Il faut ensuite configurer le mapping dans le web.xml</p>
 
@@ -182,6 +182,347 @@ public class HelloWorldServlet extends HttpServlet {
 &lt;/servlet-mapping&gt;</pre>
 
         <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
+
+        <h2>Les paramètres</h2>
+		<p>Il est possible d'exploiter les paramètres depuis la servlet.</p>
+	    <pre>
+public class HelloWorldSerlvet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+    	throws ServletException, IOException {
+    	<b>String name = request.getParameter("name");</b>
+
+        response.getWriter().write(<b>"Hello " + name + " !"</b>);
+    }
+}</pre>
+	      <p>Ce qui donne en résultat sur <a href="http://localhost:8080/HelloWorldServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldServlet?name=Steven</a>.</p>
+	      <h2>Le redirect</h2>
+	      <p>On crée une seconde servlet, HelloWorldRedirectServlet, qui va faire un redirect vers HelloWorldSerlvet</p>
+	          <pre>
+public class HelloWorldRedirectServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+    	throws ServletException, IOException {
+    	response.sendRedirect("HelloWorldServlet");
+    }
+}</pre>
+        
+        <p>Avec la configuration du web.xml</p>
+        
+        <pre>&lt;servlet&gt;
+   &lt;servlet-name&gt;HelloWorldRedirectServlet&lt;/servlet-name&gt;
+   &lt;servlet-class&gt;edu.ecm.blog.web.servlet.HelloWorldRedirectServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+   &lt;servlet-name&gt;HelloWorldRedirectServlet&lt;/servlet-name&gt;
+   &lt;url-pattern&gt;/HelloWorldRedirectServlet&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre>
+        
+			<p>Ce qui donne en résultat sur <a href="http://localhost:8080/HelloWorldRedirectServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldRedirectServlet?name=Steven</a>.</p>
+			<p>On peut voir le premier retour du serveur (302) sur le traceur de requête de Chrome.</p>
+			<p>On note aussi que le paramètre name est perdu dans la redirection.</p>
+			<h2>Les sessions</h2>
+			<p>On crée une servlet, HelloWorldSessionServlet, afin de stoquer le nom passé en paramètre en session.</p>
+	          <pre>
+public class HelloWorldSessionServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(...) ... {
+    	String name = request.getParameter("name");
+
+    	<b>request.getSession(true).setAttribute("name", name);</b>
+
+    	response.getWriter().write("Stored " + name + " !");
+    }
+}</pre>
+
+        <p>Il faut écrire la déclaration et le mapping dans le web.xml.</p>
+
+        <pre>...</pre>
+
+		<p>La nouvelle servlet <a href="http://localhost:8080/HelloWorldSessionServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldSessionServlet?name=Steven</a>.</p>
+
+        <p>Modifions notre première servlet afin qu'elle en profite</p>
+
+<pre>
+public class HelloWorldSerlvet extends HttpServlet {
+    @Override
+    protected void doGet(...) ... {
+    	String name = request.getParameter("name");
+
+        if (name == null) {
+           <b>name = (String) request.getSession(true).getAttribute("name");</b>
+        }
+
+        response.getWriter().write("Hello " + name + " !");
+    }
+}</pre>
+        <p>Notre première servlet supporte l'absence de paramètre <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a>
+        si la variable est en session.</p>
+
+        <h2>Générer du HTML</h2>
+
+        <p>Il est possible de faire du html depuis une servlet.</p>
+
+        <pre>
+public class HelloWorldSerlvet extends HttpServlet {
+    @Override
+    protected void doGet(...) ... {
+        ...
+
+        <span class="comment">// response.getWriter().write("Hello " + name + " !");</span>
+
+    	PrintWriter writer = response.getWriter();
+
+        writer.write("&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;Hello " + name + " !&lt;/body&gt;&lt;/html&gt;");
+    }
+}</pre>
+
+        <p>Le résultat sur <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> donne un arbre DOM parfaitement formé.</p>
+
+        <img alt="" src="img/dom-tree.png" style="margin:0 50px;"/>
+
+		<p>Mais cette méthode est complètement inadaptée dès que la page web dépasse quelques lignes.</p>
+
+        <h2>Les fichiers jsp</h2>
+
+        <p>Nous avons mis du html dans du java. Dès que le code html à générer est un peu plus riche, nous mettons du java dans du html.</p>
+
+        <p>C'est le rôle des fichiers jsp de générer du html.</p>
+
+        <p>Au moment de générer le rendu, la servlet passe donc la main à une jsp.</p>
+
+	          <pre>
+public class HelloWorldSerlvet extends HttpServlet {
+    @Override
+    protected void doGet(...) ... {
+        ...
+
+    	<b>request.setAttribute("name", request.getParameter("name"));</b>
+
+        <b>request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp")
+           .forward(request, response);</b>
+    }
+}</pre>
+
+        <p>Et le fichier hello.jsp dans le répertoire WEB-INF :</p>
+
+        <pre>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+   &lt;head&gt;&lt;/head&gt;
+   &lt;body&gt;Hello ${name} ! (from jsp file)&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <p>Le résultat sur <a href="http://localhost:8080/HelloWorldServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldServlet?name=Steven</a>.</p>
+
+        <p>Les fichiers jsp sont compilés à la volée en fichiers java puis en bytecode (.class).</p>
+
+        <p>Un peu à l'image d'un fichier php, les fichiers jsp sont donc interprétés par le conteneur. Cela leur donne au moins une propriété intéressante : il n'est pas nécessaire de redémarrer le serveur tomcat afin qu'il prenne ne compte une modification.</p>
+
+        <h2>Les tag files</h2>
+
+        <p>Il est possible de factoriser du code jsp grâce aux tag files.</p>
+
+        <p>On ajoute le fichier hello.tag dans le répertoire WEB-INF/tags/widget.</p>
+	          <pre>
+&lt;%@ tag language="java" pageEncoding="UTF-8"%&gt;
+
+&lt;%@ attribute name="name" description="Name to display" required="true" type="java.lang.String" %&gt;
+
+Hello ${name} ! from tag</pre>
+			  <p>Ce qui nous autorise à faire l'appel suivant dans notre jsp.</p>
+			  <pre>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+
+<b>&lt;%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget" %&gt;</b>
+
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+     "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+   &lt;head&gt;&lt;/head&gt;
+   &lt;body&gt;<b>&lt;widget:hello name="${name}" /&gt;</b>&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <p>Cela ressemble à définir de nouveaux tags html.</p>
+
+        <h2>Les custom tags</h2>
+
+        <p>Les tag files sont parfaits afin d'écrire du code jsp réutilisable.</p>
+
+        <p>Dans d'autres cas, le code à réutiliser contient davantage de logique que de html et coder en jsp deviennent inadapté.</p>
+
+        <p>Les custom tags sont un peu plus compliqués à mettre en place mais ils sont écrit en java.</p>
+
+        <p>On ajout le fichier test.tld dans WEB-INF/tld.</p>
+			  <pre>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+	web-jsptaglibrary_2_0.xsd" version="2.0"&gt;
+
+  &lt;tlibversion&gt;1.0&lt;/tlibversion&gt;
+  &lt;jspversion&gt;2.0&lt;/jspversion&gt;
+  &lt;shortname&gt;link&lt;/shortname&gt;
+  &lt;uri&gt;<b>http://edu.ecm.blog/test</b>&lt;/uri&gt;
+  &lt;info&gt;Test taglib&lt;/info&gt;
+
+  &lt;tag&gt;
+    &lt;name&gt;hello&lt;/name&gt;
+    &lt;tagclass&gt;<b>edu.ecm.blog.web.tag.HelloTag</b>&lt;/tagclass&gt;
+    &lt;body-content&gt;empty&lt;/body-content&gt;
+    &lt;info&gt;Prints name&lt;/info&gt;
+    &lt;attribute&gt;
+      &lt;name&gt;name&lt;/name&gt;
+      &lt;required&gt;true&lt;/required&gt;
+      &lt;rtexprvalue&gt;true&lt;/rtexprvalue&gt;
+    &lt;/attribute&gt;
+  &lt;/tag&gt;
+
+&lt;/taglib&gt;</pre>
+			  <p>Ensuite on ajoute la clase HelloTag.</p>
+			  <pre>
+public class HelloTag extends SimpleTagSupport {
+
+  private String name;
+
+  @Override
+  public void doTag() throws JspException, IOException {
+    getJspContext().getOut().print("Hello " + name + " from custom tag");
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+}</pre>
+			  <p>Enfin on peut modifier notre fichier jsp.</p>
+			  <pre>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+
+&lt;%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget" %&gt;
+<b>&lt;%@ taglib uri="http://edu.ecm.blog/test" prefix="test" %&gt;</b>
+
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+  &lt;head&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;widget:hello name="${name}" /&gt;&lt;br&gt;
+    <b>&lt;test:hello name="${name}" /&gt;</b>
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+      <p>Custom tags et tag files sont des solutions complémentaires.</p>
+      <p>Les fichiers tld et les custom tags peuvent être facilement intégrés à des librairies (.jar) et donc être réutilisables entre plusieurs projets.</p>
+
+      <h2>La gestion d'erreur</h2>
+
+      <p>Le traitement d'un requête peut impliquer un nombre important d'objets et une erreur peut survenir à n'importe quel stade du traitement.</p>
+      <img alt="" src="img/error-handling.png" width="700" style="margin:0 80px;"/>
+
+      <p>Par défaut, il est donc intéressant d'avoir un mécanisme générique, une sorte de filet, qui récupère toutes ces erreurs.</p>
+      <p>Actuellement, si on génère une erreur, on obtient la page d'erreur par défaut.</p>
+      <pre>
+public class HelloWorldSerlvet extends HttpServlet {
+    @Override
+    protected void doGet(...) ... {
+    	throw new NullPointerException("ups !");
+    }
+}
+	          </pre>
+	          <p>Le résultat est assez sec <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a></p>
+	          <p>Une configuration simple du web.xml permet de traiter ce genre d'erreur.</p>
+	          <pre>
+&lt;error-page&gt;
+   &lt;error-code&gt;500&lt;/error-code&gt;
+   &lt;location&gt;/WEB-INF/jsp/500.jsp&lt;/location&gt;
+&lt;/error-page&gt;</pre>
+			<p>Et la jsp WEB-INF/jsp/500.jsp correspondant.</p>
+
+			<pre>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+   &lt;head&gt;&lt;/head&gt;
+   &lt;body&gt;Erreur 500&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+			<p>Ce qui permettrait de produire une réponse mise en forme sur <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a></p>
+
+            <h2>Les filtres</h2>
+
+			<p>Les filtres sont des composants qui interceptent les requêtes</p>
+			<p>Nous créons le filtre GuardFilter dans le package edu.ecm.blog.web.filter.</p>
+			<pre>
+public class GuardFilter implements Filter  {
+   @Override
+   public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain chain) throws IOException, ServletException {
+      try {
+         chain.doFilter(request, response);
+      } catch (Exception e) {
+         response.getWriter().write("got you !");
+      }
+   }
+
+   @Override
+   public void init(FilterConfig arg0) throws ServletException {
+
+   }
+
+   @Override
+   public void destroy() {
+
+   }
+}</pre>
+			<p>En prenant soin de modifier le web.xml.</p>
+			<pre>
+&lt;filter&gt;
+  &lt;display-name&gt;GuardFilter&lt;/display-name&gt;
+  &lt;filter-name&gt;GuardFilter&lt;/filter-name&gt;
+  &lt;filter-class&gt;edu.ecm.blog.web.filter.GuardFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+  &lt;filter-name&gt;GuardFilter&lt;/filter-name&gt;
+  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</pre>
+        <p>Sur la requête <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a>, le filtre a intercepté l'erreur et répondu.</p>
+        <p>Les filtres sont très pratiques afin d'implémenter des problématiques transverses telles que la sécurité ou la libération de ressources.</p>
+
+        <h2>Un exemple de librairie</h2>
+
+        <p><a href="http://code.google.com/p/javamelody" class="external" target="_blank">javamelody</a> est une librairie qui s'intègre à une application et permet de la monitorer.</p>
+
+        <p>On rajoute le jar via le pom.</p>
+
+        <pre>...</pre>
+
+        <pre>
+&lt;filter&gt;
+   &lt;filter-name&gt;monitoring&lt;/filter-name&gt;
+   &lt;filter-class&gt;net.bull.javamelody.MonitoringFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+   &lt;filter-name&gt;monitoring&lt;/filter-name&gt;
+   &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+&lt;listener&gt;
+   &lt;listener-class&gt;net.bull.javamelody.SessionListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+			</pre>
+
+			<p>Javamelody analyse tout ce qui se passe dans le serveur et est capable de fournir énormément d'information sur l'application.</p>
+			<p>Après quelques requêtes, on peut lire un rapport sur <a href="http://localhost:8080/monitoring" target="_blank">http://localhost:8080/monitoring</a>.</p>
+			<p>Dans notre cas, nous avons peu de composants. Dans une application réelle, javamelody fournit des informations sur tous les services standards et les librairies les plus utilisées.</p>
 
         <div class="nav">
             <a href="../conteneurs/index.html" class="prev">&lt; Conteneurs</a>
