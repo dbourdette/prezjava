@@ -19,6 +19,167 @@
 <div class="presentation">
     <div id="project">
         <h1>Spring MVC</h1>
+
+        <p>Les conteneurs de servlets sont des outils très puissants mais il ne serait pas pratique de construire une application riche avec des servlets.</p>
+
+        <p>Les frameworks MVC pour le web apportent les fonctionnalités manquantes.</p>
+
+        <p>Nous allons travailler avec spring MVC, le module MVC du framework spring.</p>
+
+        <h2>Mise en place</h2>
+
+        <p>En premier, on rajoute les librairies pour spring mvc.</p>
+
+        <pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+    &lt;version&gt;3.0.5.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+   &lt;version&gt;3.0.5.RELEASE&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+    &lt;version&gt;1.1.2&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Dans le web.xml, on rajoute la servlet spring. Elle reçoit toutes les requêtes.</p>
+        
+        <pre>
+<span class="comment">&lt;!-- Spring servlet --&gt;</span>
+&lt;servlet&gt;
+   &lt;servlet-name&gt;spring&lt;/servlet-name&gt;
+   &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+   &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+   &lt;servlet-name&gt;spring&lt;/servlet-name&gt;
+   &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre>
+
+        <p>Au démarrage de tomcat, cette servlet va aller charger un contexte spring (/WEB-INF/spring-servlet.xml) qu'il nous faut définir.</p>
+
+        <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:p="http://www.springframework.org/schema/p"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"&gt;
+
+   &lt;!-- Support des annotations --&gt;
+   &lt;context:annotation-config /&gt;
+   
+   &lt;!-- Création de composants classiques pour spring mvc --&gt;
+   &lt;mvc:annotation-driven /&gt;
+   
+   &lt;!-- Forwarde les demandes de fichiers statiques vers la servlet par défaut du conteneur --&gt;
+   &lt;mvc:default-servlet-handler /&gt;
+
+   &lt;!-- Définition de la Locale pour les opération de formattage --&gt;
+    &lt;bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver"&gt;
+        &lt;property name="defaultLocale" value="fr_FR" /&gt;
+    &lt;/bean&gt;
+
+   &lt;!-- Configuration de la technologie de rendu  --&gt;
+    &lt;bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"&gt;
+        &lt;property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /&gt;
+        &lt;property name="prefix" value="/WEB-INF/jsp/" /&gt;
+        &lt;property name="suffix" value=".jsp" /&gt;
+    &lt;/bean&gt;
+    
+&lt;/beans&gt;</pre>
+
+        <p>Il est temps de rajouter notre premier Controller.</p>
+
+        <h2>HelloController</h2>
+
+        <p>Nous définissons la class HelloController dans le package edu.ecm.blog.web.controller.</p>
+
+        <pre>@Controller
+public class HelloController {
+   @RequestMapping("/hello")
+   public String hello(Model model) {
+      model.addAttribute("name", "Steven");
+      
+      return "hello";
+   }
+}</pre>
+
+        <p>L'annotation @Controller indique a spring que ce composant est un composant spécial qui répond aux requêtes http.</p>
+
+        <p>L'annotation @RequestMapping fait la liaison entre l'url et la méthode appelée.</p>
+
+        <p>Le Model est ce qui est rempli par le Controller et transmis à la vue.</p>
+
+        <p>Le retour "hello" va être mappé pas le viewResolver et interpreté comme /WEB-INF/jsp/hello.jsp.</p>
+
+        <p>la création d'un Controller est donc plus simple et pus souple qu'une servlet. Le framework nosu laisse faire que ce qu'il ne peut faire lui même.</p>
+
+        <p>Afin que ce composant soit chargé, il faut le définir dans le contexte. Comme nous allons faire plusieurs Controller, nous utilisons un scan de package.</p>
+
+        <pre>&lt;context:component-scan base-package="edu.ecm.blog.web.controller" /&gt;</pre>
+
+        <p>Le Controller devrait répondre sur <a href="http://localhost:8080/hello" target="_blank">http://localhost:8080/hello</a></p>
+
+        <h2>La home page</h2>
+        
+        <p>Pour notre home, nous allons utiliser le template <a href="files/index.jsp" target="_blank">index.jsp</a> à placer dans WEB-INF/jsp.</p>
+
+        <p>La feuille de style est <a href="files/style.css" target="_blank">style.css</a> à placer dans src/main/webapp/css afin que le lien depuis la jsp soit valide.</p>
+
+        <p>Le Controller associé est le suivant.</p>
+
+        <pre>@Controller
+public class IndexController {
+   @RequestMapping("/index")
+   public String index() {
+      return "index";
+   }
+}</pre>
+
+        <p>Pour le moment, les données sont en dur dans la jsp, mais <a href="http://localhost:8080/index" target="_blank">http://localhost:8080/index</a> est disponible.</p>
+
+        <h2>Les services</h2>
+
+        <p>Nous allons maitenant ajouter nos services dans le contexte spring afin de les rendre accessible depuis les Controllers.</p>
+
+        <h2>Bootstrap</h2>
+
+        <h2>Bootstrap avec 3 billets</h2>
+
+        <p>@InitMethod et insert 3 billets</p>
+
+        <h2>La page de billet</h2>
+
+        <p>Le controller</p>
+
+        <h2>La page de liste</h2>
+
+        <p>Le template</p>
+
+        <p>Le controller</p>
+
+        <h2>La gestion des billets</h2>
+
+        <p>Le template</p>
+
+        <p>Le controller</p>
+
     </div>
 </div>
 </body>

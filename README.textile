@@ -1,43 +1,4 @@
-h1. "La forge logicielle : pratiques et outils":http://dbourdette.github.com/prezjava/partie-1/slides
 
-* "Pratiques":http://dbourdette.github.com/prezjava/partie-1/slides/pratiques/index.html
+Ce repository contient une présentation html sur le language java coté serveur pour des applications web.
 
-* "L'IDE : eclipse":http://dbourdette.github.com/prezjava/partie-1/slides/ide/index.html
-
-* "L'outils de build : maven":http://dbourdette.github.com/prezjava/partie-1/slides/build/index.html
-
-* "La gestion des sources":http://dbourdette.github.com/prezjava/partie-1/slides/vcs/index.html
-
-* "L'intégration continue : jenkins":http://dbourdette.github.com/prezjava/partie-1/slides/integration-continue/index.html
-
-* "Le Langage java":http://dbourdette.github.com/prezjava/partie-1/slides/langage/index.html
-
-* "Les librairies et les frameworks : spring, hibernate, junit":http://dbourdette.github.com/prezjava/partie-1/slides/libs/index.html
-
-h1. "Architecture logicielle":http://dbourdette.github.com/prezjava/partie-2/slides
-
-* Développement pas les tests : junit
-
-* Base de données et persistance : hibernate
-
-* L'injection de dépendances : spring
-
-* Aspect oriented programming
-
-h1. "Architecture des applications web":http://dbourdette.github.com/prezjava/partie-3/slides
-
-* Interface http
-
-* Architecture des serveurs
-
-* Conteneurs de servlet (tomcat)
-
-* Servlets, jsp et el
-
-* Frameworks MVC2 (spring MVC)
-
-* java ee
-
-* Bases de données orientées documents
-
-* Web services
+Tous les contenus sont disponibles à partir de l'"index":http://dbourdette.github.com/prezjava/ de la présentation.

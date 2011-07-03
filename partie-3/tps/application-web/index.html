@@ -502,9 +502,45 @@ public class GuardFilter implements Filter  {
 
         <p><a href="http://code.google.com/p/javamelody" class="external" target="_blank">javamelody</a> est une librairie qui s'intègre à une application et permet de la monitorer.</p>
 
-        <p>On rajoute le jar via le pom.</p>
+        <p>Malheureusement, la librairie n'est pas disponible dans le repo maven central. Nous ajoutons donc des repositories comme indiqué dans la <a href="http://code.google.com/p/javamelody/wiki/UserGuide#Dependencies" target="_blank" class="external">documentation javamelody</a></p>
 
-        <pre>...</pre>
+        <pre>
+&lt;repositories&gt;
+    &lt;!-- for javamelody --&gt;
+    &lt;repository&gt;
+       &lt;id&gt;m.g.o-public&lt;/id&gt;
+       &lt;url&gt;http://maven.glassfish.org/content/groups/public/&lt;/url&gt;
+       &lt;releases&gt;
+          &lt;enabled&gt;true&lt;/enabled&gt;
+       &lt;/releases&gt;
+       &lt;snapshots&gt;
+          &lt;enabled&gt;false&lt;/enabled&gt;
+       &lt;/snapshots&gt;
+    &lt;/repository&gt;
+    &lt;!-- for jrobin --&gt;
+    &lt;repository&gt;
+       &lt;id&gt;opennms-repo&lt;/id&gt;
+       &lt;name&gt;OpenNMS Repository&lt;/name&gt;
+       &lt;url&gt;http://repo.opennms.org/maven2&lt;/url&gt;
+       &lt;releases&gt;
+          &lt;enabled&gt;true&lt;/enabled&gt;
+       &lt;/releases&gt;
+       &lt;snapshots&gt;
+          &lt;enabled&gt;false&lt;/enabled&gt;
+       &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;</pre>
+
+        <p>Et le jar dans les dépendances.</p>
+
+        <pre>
+&lt;dependency&gt;
+   &lt;groupId&gt;net.bull.javamelody&lt;/groupId&gt;
+   &lt;artifactId&gt;javamelody-core&lt;/artifactId&gt;
+   &lt;version&gt;1.29.1&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Il ne reste plus qu'a configurer le filtre javamelody dans le web.xml.</p>
 
         <pre>
 &lt;filter&gt;
@@ -517,8 +553,9 @@ public class GuardFilter implements Filter  {
 &lt;/filter-mapping&gt;
 &lt;listener&gt;
    &lt;listener-class&gt;net.bull.javamelody.SessionListener&lt;/listener-class&gt;
-&lt;/listener&gt;
-			</pre>
+&lt;/listener&gt;</pre>
+
+        <p>Il existe <a href="http://code.google.com/p/javamelody/wiki/UserGuide#6._Optional_parameters" class="external" target="_blank">quelques paramètres</a> afin de configurer javamelody en fonction de son besoin.</p>
 
         <p>Javamelody analyse tout ce qui se passe dans le serveur et est capable de fournir énormément d'information sur l'application.</p>
         <p>Après quelques requêtes, on peut lire un rapport sur <a href="http://localhost:8080/monitoring" target="_blank">http://localhost:8080/monitoring</a>.</p>

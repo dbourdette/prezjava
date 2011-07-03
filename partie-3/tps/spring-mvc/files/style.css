@@ -1,0 +1,63 @@
+
+body {
+	width: 900px;
+	margin: auto;
+}
+
+#header {
+	width: 900px;
+	height: 50px;
+	border-bottom: 1px gray solid;
+	margin-bottom: 10px;
+}
+
+#header .title {
+	font-size: 20px;
+	position:relative;
+	top:10px;
+	left: 30px;
+}
+
+#posts {
+	float: left;
+	width: 689px;
+	padding:5px;
+	border-right: 1px gray solid;
+}
+
+.post {
+	margin-bottom:20px;
+	border-bottom: 1px #C2C2C2 solid;
+}
+
+.post .date {
+	font-style: italic;
+}
+
+.post .title {
+	font-weight: bold;
+}
+
+.post .tags {
+	
+}
+
+.post .author {
+	float:right;
+	font-weight: bold;
+}
+
+#right {
+	float: right;
+	width: 190px;
+	padding:5px;
+}
+
+.tagcloud {
+	
+}
+
+.latest {
+	
+}
+
