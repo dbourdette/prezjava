@@ -42,6 +42,24 @@
                 <p class="source">http://martinfowler.com/articles/continuousIntegration.html</p>
 			</div>
 
+			<div class="slide">
+				<header>L'intégration continue</header>
+				<section>
+					<p>
+						L'<b>intégration continue</b> est un pratique qui vise à tester le bon déroulement des builds aussi souvent que possible :
+						potentiellement après chaque commit.
+					</p>
+					<p>Cela permet :</p>
+					<ul>
+						<li>D'être informé d'un problème le plus tôt possible.
+						<li>D'éviter les effets big bang de fin de projet.
+					</ul>
+					<p>En plus du build, ce processus automatisé est aussi l'occassion de générer des rapports sur le code afin d'en améliorer la qualité.</p>
+					<p>L'outils open source de référence est jenkins</p>
+					<p>Des plugins ou outils complémentaires comment pmd ou sonar permettent d'obtenir des métriques sur le code.</p>
+				</section>
+			</div>
+
             <div class="slide">
 				<header>Bénéfices</header>
 				<section>
@@ -90,6 +108,21 @@
                     <p>Le serveur d'intégration d'Atlassian (jira, confluence...). Très complet mais payant.</p>
                     <br/><br/>
                     <p>Plus de logiciels sur la <a href="http://en.wikipedia.org/wiki/Continuous_integration" class="external" target="_blank">page de wikipedia (continuous integration)</a></p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Le déploiement continu</header>
+				<section>
+                    <p>Le déploiement continu est une extension de l'intégration continue : en plus d'intégrer régulièrement, on déploit en production régulièrement.</p>
+					<p>Voici la chaîne en place chez RTL net :</p>
+                    <img src="img/continuous-deployment.png" style="margin: 0 130px;">
+                    <ul>
+                        <li>Les demandes sont faites sous jira</li>
+                        <li>Les développeurs répondent aux demandes en développant</li>
+                        <li>Jenkins s'occupe de l'intégration continu</li>
+                        <li>Rundeck déploit en production quand une version est prête</li>
+                    </ul>
 				</section>
 			</div>
 

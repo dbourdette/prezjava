@@ -26,11 +26,26 @@
 
         <p>Généralement les artefacts sont des librairies (.jar) ou des applications web (.war).</p>
 
+        <p>Faire un build doit pouvoir se faire en <b>une seule ligne de commande</b> et produire le livrable qui est un <b>unique fichier</b>.</p>
+
+        <p>Ainsi, le build est facilement automatisable, le résultat peut être numéroté (ex : build-1.1.3.zip) et archivé.</p>
+
+        <p>Idéalement, il exécute les jeux de tests et produit divers rapports qui sont exploités pour le suivi de qualité ou la documentation.</p>
+
         <p>La particularité de maven est de gérer des repository de lirairies afin de facilité la gestion de dépendances entre les artefacts.</p>
 
         <p>Lors du build, maven va donc aller chercher toutes les dépendances, compiler le code, exécuter les tests et générer l'artefact.</p>
 
         <p>Un projet est entièrement décrit dans un fichier pom.xml (Project Object Model) à sa racine.</p>
+
+        <p>Les principales alternatives possibles en java sont</p>
+
+        <ul>
+            <li>ant : le premier outils de build en java pour java. Il utilise un style impératif comme make. Le script de build est une liste de commandes en xml.</li>
+            <li>maven : un outils de build qui utilise un style déclaratif. Sa force réside dans sa gestion des dépendances et son intégration dans la chaîne de montage logicielle.</li>
+            <li>ivy : pas vraiment un outils de build mais plutôt un gestionnaire de dépendances.</li>
+            <li>gradle : assez proche de maven car c'est une approche déclarative. Plus moderne, il repose sur un DSL et est plus flexible. Il est cependance moins répendu et donc moins supporté pas les logiciels tiers.</li>
+        </ul>
 
         <h2>Installation</h2>
 
@@ -110,7 +125,7 @@ src
   &lt;/dependencies&gt;
 &lt;/project&gt;</pre>
 
-        <p>En résumé, notre application blog en version 1.0-SNAPSHOT sera compilé en librairie jar. Elle utilise la librairie junit 3.8.1.</p>
+        <p>En résumé, notre application blog en version 1.0-SNAPSHOT sera compilée en librairie jar. Elle utilise la librairie junit 3.8.1.</p>
 
         <p>La classe App.java contient le code suivant :</p>
 

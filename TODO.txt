@@ -9,3 +9,8 @@ tomcat : redémarrage tomcat si modif classe et non jsp
 
 TP : persistance avec hibernate et hsql (derby ?)
 
+différents termes pour VCS (gestion de configuration...)
+
+bouqin mongodb
+
+jenkins with current project as the last point of jenkins tp

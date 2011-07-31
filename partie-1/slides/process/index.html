@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	<title>Pratiques</title>
+
+	<link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+	<link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+	<link href="../../../common/css/moon.css" class="theme" rel="stylesheet">
+	<link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+	<link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+
+	<script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
+	<script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+
+	<script src="../../../common/js/code.js"></script>
+	<script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/main.js" type="text/javascript"></script>
+</head>
+<body>
+	<div class="presentation">
+		<div id="presentation-counter">Chargement...</div>
+
+		<div style="display: block;" class="slides">
+
+			<div class="slide">
+				<section id="landing-slide" class="middle">
+					<p>Le process de développement</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Les principales étapes</header>
+				<section>
+					<p>La construction de logiciel en entreprise peut s'apparenter à une chaîne de montage.</p>
+					<p>C'est une succession d'activités qui mènent aux serveurs de production.</p>
+					<p>Généralement, on peut découper cette chaîne en 3 parties.</p>
+					<img style="margin-left:100px;" src="img/ask-dev-run.png" width="600px"/>
+					<p>En pratique, cela peut prendre la forme d'un V, d'une cascade, d'une spirale ou bien d'itérations courtes selon la méthodologie suivie.</p>
+					<p>Nous nous intéresserons principalement à l'étape développement.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Les outils du développement</header>
+				<section>
+					<p>Voici une vision globale des outils pouvant participant à l'activité de développement.</p>
+					<img style="margin-left:50px;" src="img/development.png" width="700px"/>
+					<p>L'écriture du code source se fait à l'aide d'un <b>IDE</b>. Nous utiliserons eclipse. Netbeans et intellij sont d'autres IDE très complets.</p>
+					<p>Pour le <b>versionning</b>, subversion est l'outils le plus utilisé. Cependant, git (notamment via github) gagne rapidement en popularité.</p>
+					<p>Un <b>outil de build</b> a pour but la création du produit final à partir du code source. L'outil de build classique pour java est maven. Des alternatives sont ant, ivy ou gradle.</p>
+					<p>Le <b>repository</b> (dépot en français) permet de stoquer les builds. Nexus et artifactory sont des solutions qui s'intègrent parfaitement avec maven.</p>
+					<p>Nous nous intéresserons à l'écriture du code et au build.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Les processus itératifs</header>
+				<section>
+                    <p>Design upfront vs design all the time</p>
+					<p>Agilité...</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>As A Service</header>
+				<section>
+					<p>Avec la standardisation des outils et l'apparition des offres de type cloud, il existe des solutions <b>SAAS</b> pour le développement.</p>
+					<p>Pour le versionning, il est existe des solutions comme assembla ou github.</p>
+					<p>Pour le build, <a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a> par exemple propose une solution d'intégration continue avec jenkins.</p>
+					<p>Coté hébergement (<b>PAAS</b>), il existe aussi de nombreuses solutions :</p>
+					<ul>
+						<li><a href="http://code.google.com/appengine/" class="external" target="_blank">Google App Engine</a></li>
+						<li><a href="http://www.cloudfoundry.com/" class="external" target="_blank">Cloud Foundry</a></li>
+                        <li><a href="http://www.cloudbees.com/" target="_blank" class="external">Cloudbees</a></li>
+					</ul>
+				</section>
+			</div>
+
+		</div> <!-- slides -->
+	</div> <!-- presentation -->
+</body>
+</html>

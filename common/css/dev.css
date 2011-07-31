@@ -232,3 +232,15 @@ ul.nav li.active {
     right: 30px;
     margin-right: 10px;
 }
+
+ol.toc {
+
+}
+
+ol.toc .note {
+    top: 2px;
+    left:5px;
+    position: relative;
+    font-style: italic;
+    font-size: x-small;
+}
