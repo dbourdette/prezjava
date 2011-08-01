@@ -1,4 +1,8 @@
 
+plus de shortcuts eclipse
+http://eclipse.dzone.com/news/effective-eclipse-shortcut-key
+http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf
+
 edu.ecm.blog -> edu.dummy.blog
 
 m.google is undefined
@@ -14,3 +18,7 @@ différents termes pour VCS (gestion de configuration...)
 bouqin mongodb
 
 jenkins with current project as the last point of jenkins tp
+
+
+
+language java -> effective java (Josh Bloch)

@@ -22,11 +22,18 @@
 
         <p>Un IDE est un environnement complet qui permet de travailler plus vite en regroupant de multiples outils de développement dans une même interface.</p>
 
-        <p>Eclipse est l'IDE java le plus utilisé au monde. Il est extrêmement populaire car il est très complet, modulable et gratuit.</p>
+        <p>Eclipse est l'IDE java le plus utilisé au monde. Il est extrêmement populaire car il est très complet, modulaire et gratuit.</p>
 
-        <p>Il dispose d'une myriade de plugins et est aussi la fondation pour des environnements de développement spécialisés.</p>
+        <p>Il dispose d'une myriade de plugins et est aussi la base (<a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform" class="external" target="_blank">eclipse rcp</a>) pour des environnements de développement spécialisés.</p>
 
-        <p>En <a href="http://www.eclipse.org/downloads/" class="external">téléchargement</a>, il existe plusieurs bundles (eclipse + une sélection de plugin) mais généralement on choisit entre eclipse pour java ee et springsource tool suite.</p>
+        <p>En <a href="http://www.eclipse.org/downloads/" class="external" target="_blank">téléchargement</a>, il existe plusieurs bundles : eclipse classic + une sélection de plugins.</p>
+
+        <p>L'une des 2 versions ci-dessous convient pour les manipulations à venir :</p>
+
+        <ul>
+            <li><b>Eclipse IDE for Java EE Developers</b> est la version la plus complète pour débuter</li>
+            <li><b>SpringSource Tool Suite</b> propose un support pour les produit spring source (spring, groovy...)</li>
+        </ul>
 
         <p>Les autres IDEs les plus utilisés sont : </p>
 
@@ -35,33 +42,43 @@
             <li>Intellij : Un IDE payant (la version communautaire est gratuite) de très bonne qualité. Contrairement à eclipse qui se nourrit de plugins issus de la communauté, les plugins intellij sont mieux intégrés à l'environnement de base.</li>
         </ul>
 
+        <p>Le but de ce tp est de se familiariser avec l'interface d'eclipse.</p>
+
         <h2>Workspace</h2>
 
-        <p>Au démarrage d'éclipse, on peut choisir son workspace.</p>
+        <p>Au démarrage d'éclipse, on peut choisir son <b>workspace</b>.</p>
 
         <img src="img/workspace.png" style="margin:0 100px;"/>
         
-        <p>Le workspace est un répertoire qui sert de base pour tout un jeu de projets.</p>
+        <p>Le workspace est le répertoire de travail d'eclipse qui contient tous les projets manipulées.</p>
 
-        <p>Il est possible d'avoir plusieurs workspaces et de passer de l'un à l'autre mais cela est rarement nécessaire, les capacités d'organisation au sein d'un workspace étant généralement suffisantes.</p>
+        <p>Il est possible d'avoir plusieurs workspaces et de passer de l'un à l'autre mais cela est rarement nécessaire. Les capacités d'organisation au sein d'un workspace étant généralement suffisantes.</p>
 
         <h2>Perspectives et vues</h2>
 
         <p>Comme n'importe quel IDE, eclipse a sa façon de nommer les différents éléments de son interface.</p>
 
-        <p>Le workbench est le conteneur principal, celui qui structure toute l'interface et la navigation.</p>
+        <p>Cette nomenclature est importante car elle permet de communiquer en utilisant les mêmes termes.</p>
+
+        <p>Le workbench est la fenêtre principale. Elle contient les menus, les éditeurs et des zones d'information.</p>
 
         <p>Les vues et les perspectives sont accessible via le menu Window.</p>
 
         <img src="img/view.png" style="margin:10px 10px;float:left"/>
 
-        <p>Une vue est un ensemble d'éléments tabulés concernant la même fonctionnalité : explorateur de projet, editeurs, serveurs, explorateur de repository svn...</p>
+        <p>Une vue est un éditeur spécialisé : explorateur de projet, editeurs, serveurs, explorateur de repository svn...</p>
+
+        <p>Il existe beaucoup de vues au sein d'eclipse.</p>
+
+        <p>Les vues sont organisées en panneaux tabulés au sein du workbench</p>
 
         <p style="clear:both;"></p>
 
         <img src="img/perspective.png" style="margin:10px 10px;float:left"/>
 
         <p>Une perpective est une distribution particulière d'éditeurs dans le workbench : java, debug, database explorer, </p>
+
+        <p>En changeant de perspective, on passe donc à une organisation adaptée à la tâche en cours.</p>
 
         <p style="clear:both;"></p>
 
@@ -70,6 +87,8 @@
         <p>Les préférences sont accessibles via le menu Window.</p>
 
         <p>Elles permettent de régler tous les aspects de l'IDE : formattage des sources, environnement java, serveurs...</p>
+
+        <p>Le moteur de recherche dans les préférences est très puissant et permet de trouver une option cachée dans un sous panneau d'un sous menu.</p>
 
         <h2>Plugins</h2>
 
@@ -111,7 +130,7 @@ public class Person {
 
 private String lastname;</pre>
 
-        <p>Eclispe est capable de générer les getters et setters pour ces attributs. Il suffit de faire un click droit dans l'éditeur et d'utiliser le menu Source &gt; Generate Getters and Setters...</p>
+        <p>Eclipse est capable de générer les getters et setters pour ces attributs. Il suffit de faire un click droit dans l'éditeur et d'utiliser le menu Source &gt; Generate Getters and Setters...</p>
 
         <pre>public String getFirstname() {
     return firstname;
@@ -179,8 +198,9 @@ public boolean equals(Object obj) {
     return true;
 }</pre>
 
-        <p>Les capacités de génération d'eclipse vont bien au delà de ces simples exemples. Nous aurions pu faire tout ce code à la main et parfois cela est nécessaire.
-        Cependant, chaque fois que cela est possible, il est bon de pouvoir compter sur l'IDE.</p>
+        <p>Les capacités de génération d'eclipse vont bien au delà de ces simples exemples. Nous aurions pu faire tout ce code à la main et parfois cela est nécessaire.</p>
+
+        <p>Cependant, java est un language verbeux et chaque fois que cela est possible, il est bon de pouvoir compter sur l'IDE.</p>
 
         <h2>main</h2>
 
@@ -194,13 +214,13 @@ public boolean equals(Object obj) {
 
         <p>C'est la signature de méthode nécessaire afin qu'elle puisse être appelée en ligne de commande.</p>
 
-        <p>En pratique, dans des envirronements managés coté serveur, cette méthode n'est jamais définie.</p>
+        <p>En pratique, dans des environnements managés coté serveur, cette méthode n'est jamais définie.</p>
 
-        <p>Afin de la tester un peu on ajout une écriture dans la console.</p>
+        <p>Afin de la tester un peu, on ajoute une écriture dans la sortie standard (stdout).</p>
 
         <pre>System.out.println("Hello world !");</pre>
 
-        <p>On peut lancer cette méthode via le menu contextuel </p>
+        <p>On peut lancer cette méthode via le menu contextuel de la classe.</p>
 
         <img src="img/run-java-main.png" style="margin: 0 120px" />
 
@@ -215,7 +235,7 @@ System.out.println(person);</pre>
 
         <h2>Refactoring</h2>
 
-        <p>Un bon IDE peut profiter du fort typage du language java afin d'offrir de grande capacité de refactoring.</p>
+        <p>Les IDEs java profite du fort typage du language afin d'offrir de grandes capacités de refactoring.</p>
 
         <p>Imaginons que nous souhaitions renommer la classe Person en People.</p>
 
@@ -230,7 +250,7 @@ person.setLastname("luthor");
 
 System.out.println(person);</pre>
 
-        <p>Encore une fois, les capacités d'eclipse dépassent amplement cet exemple simple. Le jour ou il faut faire du refactoring en renommant et déplacant de nombreuses classes, un IDE est indispensable.</p>
+        <p>Encore une fois, les capacités d'eclipse dépassent amplement cet exemple simple. Son éditeur de code et ses outils de refactoring sont très puissants.</p>
 
         <h2>Navigation</h2>
 
@@ -241,6 +261,10 @@ System.out.println(person);</pre>
             <li>control-shift-T (Open Type) afin de rechercher une classe via un moteur de recherche.</li>
             <li>click droit sur une classe puis References &gt; Project pour avoir toutes les utilisations de cette classe dans le cadre du projet.</li>
         </ul>
+
+        <h2>Plus de raccourçis</h2>
+
+        <p>Les raccourçis clavier sont indispensables afin d'être plus productif. En voici quelques uns :</p>
     </div>
 </div>
 </body>
