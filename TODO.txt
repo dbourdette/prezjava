@@ -3,11 +3,17 @@ plus de shortcuts eclipse
 http://eclipse.dzone.com/news/effective-eclipse-shortcut-key
 http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf
 
+premature optimization is the root of all evil
+
+write once, run everywhere
+
+principes de la programmation objet : encapsulation, héritage, polymorphisme...
+
 edu.ecm.blog -> edu.dummy.blog
 
 m.google is undefined
 
-lien external en target _blank
+lien external en target _blank (via js ?)
 
 tomcat : redémarrage tomcat si modif classe et non jsp
 

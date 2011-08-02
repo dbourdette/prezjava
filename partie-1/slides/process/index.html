@@ -27,50 +27,73 @@
 
 			<div class="slide">
 				<section id="landing-slide" class="middle">
-					<p>Le process de développement</p>
+					<p>Le processus de développement</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Les principales étapes</header>
+				<header>Définition</header>
 				<section>
-					<p>La construction de logiciel en entreprise peut s'apparenter à une chaîne de montage.</p>
-					<p>C'est une succession d'activités qui mènent aux serveurs de production.</p>
-					<p>Généralement, on peut découper cette chaîne en 3 parties.</p>
-					<img style="margin-left:100px;" src="img/ask-dev-run.png" width="600px"/>
-					<p>En pratique, cela peut prendre la forme d'un V, d'une cascade, d'une spirale ou bien d'itérations courtes selon la méthodologie suivie.</p>
-					<p>Nous nous intéresserons principalement à l'étape développement.</p>
+					<p>Un processus de développemet est la <b>succession d'activités</b> permettant d'obtenir le produit final.</p>
+                    <p>Il peut être plus ou moins formalisé.</p>
+                    <p>Plus il y a d'acteurs impliqués plus il est difficile à piloter.</p>
+                    <p>Il s'agit donc d'un jeu collaboratif complexe, mais dont l'objectif doit rester le <b>produit final</b>.</p>
+                    <p>Le produit final est le logiciel fonctionnel installé en production.</p>
+                    <br/>
+                    <p>Cette présentation ne traite que des aspects techniques et laisse de coté les interactions humaines.</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Les outils du développement</header>
+				<header>Un découpage simple</header>
 				<section>
-					<p>Voici une vision globale des outils pouvant participant à l'activité de développement.</p>
-					<img style="margin-left:50px;" src="img/development.png" width="700px"/>
-					<p>L'écriture du code source se fait à l'aide d'un <b>IDE</b>. Nous utiliserons eclipse. Netbeans et intellij sont d'autres IDE très complets.</p>
-					<p>Pour le <b>versionning</b>, subversion est l'outils le plus utilisé. Cependant, git (notamment via github) gagne rapidement en popularité.</p>
-					<p>Un <b>outil de build</b> a pour but la création du produit final à partir du code source. L'outil de build classique pour java est maven. Des alternatives sont ant, ivy ou gradle.</p>
-					<p>Le <b>repository</b> (dépot en français) permet de stoquer les builds. Nexus et artifactory sont des solutions qui s'intègrent parfaitement avec maven.</p>
-					<p>Nous nous intéresserons à l'écriture du code et au build.</p>
+					<p>Une vision simple du processus est de découper le processus en 3 étapes clés.</p>
+                    <ul>
+                        <li>Demandes : le client formalise son besoin.</li>
+                        <li>Développement : les développeurs réalisent les demandes.</li>
+                        <li>Production : les développements sont disponibles en ligne.</li>
+                    </ul>
+					<img style="margin-left:100px;margin-top:20px;" src="img/ask-dev-run.png" width="600px"/>
+					<p>En pratique, cela peut prendre la forme d'un V, d'un Y, d'une cascade, d'une spirale en fonction la méthodologie suivie.</p>
+                    <br/>
+					<p>Cette présentation s'intéresse principalement à l'étape de développement.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>Les processus itératifs</header>
 				<section>
-                    <p>Design upfront vs design all the time</p>
-					<p>Agilité...</p>
+                    <p>Les méthologies agiles (xp, scrum, lean...) préconissent de travailler en <b>itérations</b>.</p>
+                    <img src="img/iteration.png" alt="" style="margin-left: 200px;" />
+                    <p>Les itérations doivent être courtes : de quelques semaines à quelques mois.</p>
+                    <p>A la place d'un important design en amont, on conçoit l'architecture au fil des demandes et du développement.</p>
+                    <p>Travailler sur des cycles courts permet de reduire le risque et obtenir de meilleurs estimation de charge.</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>As A Service</header>
+				<header>Les outils du développement</header>
 				<section>
-					<p>Avec la standardisation des outils et l'apparition des offres de type cloud, il existe des solutions <b>SAAS</b> pour le développement.</p>
-					<p>Pour le versionning, il est existe des solutions comme assembla ou github.</p>
-					<p>Pour le build, <a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a> par exemple propose une solution d'intégration continue avec jenkins.</p>
-					<p>Coté hébergement (<b>PAAS</b>), il existe aussi de nombreuses solutions :</p>
+					<p>Voici les outils principaux de la phase de développement.</p>
+					<img style="margin-left:50px;" src="img/development.png" width="700px"/>
+					<p>L'<b>IDE</b> sert à l'écriture du code source.</p>
+					<p>L'outil de <b>versionning</b> est le coffre fort où l'on stoque tout ce qui est produit.</p>
+					<p>L'outil de <b>build</b> sert à la création du produit final à partir du code source.</p>
+					<p>Le <b>repository</b> (dépot en français) permet de stoquer les builds.</p>
+                    <br/>
+					<p>Nous nous intéresserons à l'écriture du code, au versioning et au build.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>as a Service</header>
+				<section>
+					<p>Les outils se standardisent et il existe maintenant des solutions <b>SaaS</b>.</p>
+					<p>Pour le versionning, il existe des solutions comme assembla ou github.</p>
+					<p>Pour le build, <a href="http://www.cloudbees.com/" target="_blank" class="external">cloudbees</a> propose une solution d'intégration continue avec une version pro de jenkins.</p>
+                    <p>Il est donc possible d'avoir une forge logicielle hébergée disponible rapidement.</p>
+                    <p>Pour l'open source, c'est souvent la solution adoptée.</p>
+					<p>Coté hébergement (<b>PAAS</b>), il existe aussi des solutions :</p>
 					<ul>
 						<li><a href="http://code.google.com/appengine/" class="external" target="_blank">Google App Engine</a></li>
 						<li><a href="http://www.cloudfoundry.com/" class="external" target="_blank">Cloud Foundry</a></li>
