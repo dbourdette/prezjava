@@ -60,13 +60,13 @@
 
         <p>Cette nomenclature est importante car elle permet de communiquer en utilisant les mêmes termes.</p>
 
-        <p>Le workbench est la fenêtre principale. Elle contient les menus, les éditeurs et des zones d'information.</p>
+        <p>Le workbench est la fenêtre principale. Elle contient les menus, les vues, les éditeurs et des zones d'information.</p>
 
         <p>Les vues et les perspectives sont accessible via le menu Window.</p>
 
         <img src="img/view.png" style="margin:10px 10px;float:left"/>
 
-        <p>Une vue est un éditeur spécialisé : explorateur de projet, editeurs, serveurs, explorateur de repository svn...</p>
+        <p>Une vue est une sous partie de spécialisé l'interface : explorateur de projet, editeurs, serveurs, explorateur de repository svn...</p>
 
         <p>Il existe beaucoup de vues au sein d'eclipse.</p>
 
@@ -76,11 +76,13 @@
 
         <img src="img/perspective.png" style="margin:10px 10px;float:left"/>
 
-        <p>Une perpective est une distribution particulière d'éditeurs dans le workbench : java, debug, database explorer, </p>
+        <p>Une perpective est une distribution particulière de vues dans le workbench : java, debug, database explorer, </p>
 
         <p>En changeant de perspective, on passe donc à une organisation adaptée à la tâche en cours.</p>
 
         <p style="clear:both;"></p>
+
+        <p>Les éditeurs occupent généralement la partie centrale du worbench et permettent d'éditer les contenus.</p>
 
         <h2>Préférences</h2>
 
@@ -262,10 +264,28 @@ System.out.println(person);</pre>
             <li>click droit sur une classe puis References &gt; Project pour avoir toutes les utilisations de cette classe dans le cadre du projet.</li>
         </ul>
 
+        <p>Par exemple, si on tape control-shift-T puis "People", on peut ouvrir rapidement le fichier contenant la classe sans utiliser la souris.</p>
+
         <h2>Plus de raccourçis</h2>
 
         <p>Les raccourçis clavier sont indispensables afin d'être plus productif. En voici quelques uns :</p>
-    </div>
+
+        <ul>
+            <li>Ctrl+Space : invoquer l'assistant de complétion</li>
+            <li>Ctrl+W ou Ctrl+F4 : fermer l'éditeur courant</li>
+            <li>Close All : fermer toutes les éditeurs</li>
+            <li>Ctrl+N : assistant de création</li>
+            <li>Ctrl+Shift+S : tout sauver</li>
+            <li>Ctrl+L : aller à la ligne</li>
+            <li>Alt+Left : fichier précédent de l'historique</li>
+            <li>Alt+Right : fichier précédent de l'historique</li>
+            <li>Ctrl+Shift+T : ouvrir la classe</li>
+            <li>Ctrl+Alt+H : voir tous les appels sur une méthode</li>
+            <li>F4 : voir la hiérarchie d'héritage d'une classe</li>
+            <li>Ctrl+Shift+F : formatter le code</li>
+        </ul>
+
+        <p>Il est facile de trouver des listes de raccourçis sur le web. Par exemple, <a href="http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf" class="external" target="_blank">en suivant ce lien</a></p>
 </div>
 </body>
 </html>

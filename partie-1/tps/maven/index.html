@@ -18,7 +18,7 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1><img src="img/maven.gif" width="462" height="106" alt="maven"/></h1>
+        <h1><img src="img/maven.gif" alt="maven"/></h1>
 
         <h2>Principes</h2>
 
@@ -32,18 +32,18 @@
 
         <p>Idéalement, il exécute les jeux de tests et produit divers rapports qui sont exploités pour le suivi de qualité ou la documentation.</p>
 
-        <p>La particularité de maven est de gérer des <b>repositories</b> afin de gérer les dépendances vers des lirairies.</p>
+        <p>La particularité de maven est de gérer des <b>repositories</b> contenant les lirairies nécessaires aux projets.</p>
 
         <p>Lors du build, maven va donc aller chercher toutes les dépendances, compiler le code, exécuter les tests et générer l'artefact.</p>
 
-        <p>Un projet est entièrement décrit dans un fichier pom.xml (Project Object Model) à sa racine.</p>
+        <p>Un projet est entièrement décrit dans un fichier <b>pom.xml</b> (Project Object Model) à sa racine.</p>
 
         <p>Les principales alternatives possibles en java sont</p>
 
         <ul>
             <li>ant : le premier outils de build en java pour java. Il utilise un style impératif comme make. Le script de build est une liste de commandes en xml.</li>
             <li>maven : un outils de build qui utilise un style déclaratif. Sa force réside dans sa gestion des dépendances et son intégration dans la chaîne de montage logicielle.</li>
-            <li>ivy : pas vraiment un outils de build mais plutôt un gestionnaire de dépendances.</li>
+            <li>ivy : pas vraiment un outils de build mais plutôt un équivalent de la partie gestion de dépendances de maven.</li>
             <li>gradle : assez proche de maven car c'est une approche déclarative. Plus moderne, il repose sur un DSL et est plus flexible. Il est cependance moins répendu et donc moins supporté pas les logiciels tiers.</li>
         </ul>
 
@@ -75,8 +75,7 @@ OS name: "mac os x" version: "10.6.4" arch: "x86_64" Family: "mac"</pre>
         <p>Nous allons maintenant créer un projet maven.</p>
         <p>Pour cela, il suffit de se positionner dans le répertoire qui va contenir le projet et d'exécuter :</p>
 
-        <pre>
-mvn archetype:generate -DgroupId=edu.ecm.blog -DartifactId=blog -DarchetypeArtifactId=maven-archetype-quickstart</pre>
+        <pre>mvn archetype:generate -DgroupId=edu.ecm.blog -DartifactId=blog -DarchetypeArtifactId=maven-archetype-quickstart</pre>
 
         <p>Pour la version, on garde la valeur par défaut : 1.0-SNAPSHOT</p>
 
@@ -100,9 +99,13 @@ src
 
         </pre>
 
-        <p>Cette structure se réfère à la <a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html" class="external">convention de repertoires maven</a></p>
+        <p>Cette structure se réfère à la <a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html" class="external" target="_blank">convention de repertoires maven</a></p>
 
-        <p>Nous aurions pu tout à créer ces répertoires et le pom.xml à la main.</p>
+        <p>
+            Nous aurions pu (et dû) tout à fait créer ces répertoires et le pom.xml à la main.
+            En effet, il s'avère plus complexe de taper la bonne ligne de commande avec le bon archetype que de créer quelques réperoire et un fichier.
+            Cette commande archetype est cité ici afin de savoir qu'elle existe.
+        </p>
 
         <p>Le pom.xml contient la description du projet :</p>
 
@@ -147,7 +150,7 @@ public class App
 
         <p>On peut alors lancer le build.</p>
 
-        <pre>&gt; <b>mvn package</b>
+        <pre>blog &gt; <b>mvn package</b>
 [INFO] Scanning for projects...
 [INFO] ------------------------------------------------------------------------
 [INFO] Building blog
@@ -186,25 +189,25 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 [INFO] Final Memory: 21M/505M
 [INFO] ------------------------------------------------------------------------</pre>
 
-        <p>Tout compile et les tests passent. Le répertoire target contient le résultat du build.</p>
+        <p>Tout compile et le test passe. Le répertoire target contient le résultat du build.</p>
 
         <p>Lors de la première exécution, le téléchargement de ressources prend un peu de temps.</p>
 
         <h2>lifecycles</h2>
 
-        <p>mvn package est la commande de base qui permet de passer par toutes les étapes du lifecycle package : il construit le package.</p>
+        <p>mvn package est la commande de base qui permet de passer par toutes les étapes du lifecycle package : il construit l'artefact.</p>
 
-        <p>Il est existe d'autres lifecycle comme mvn clean ou mvn site.</p>
+        <p>Il est existe d'<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html" class="external" target="_blank">autres lifecycles</a>, comme mvn clean ou mvn site.</p>
 
         <h2>Le repository local</h2>
 
-        <p>A chaque fois que le build requiert une librairie, maven la télécharge dans le repository local avant de l'utiliser. C'est une sorte de cache local des dépendances.</p>
+        <p>A chaque fois que le build a besoin d'une librairie, maven la télécharge depuis les repositories distants dans le repository local avant de l'utiliser. C'est une sorte de cache local des dépendances.</p>
 
         <p>Il contient les librairies qui servent à l'application mais aussi les plugins de maven.</p>
 
         <p>Ce repository est accessible dans ~/.m2/repository. Il y a une structure de répertoires avec toutes les librairies.</p>
 
-        <p>Par défaut, maven télécharge ses librairies à partir de http://repo1.maven.org.</p>
+        <p>Par défaut, maven télécharge ses librairies à partir du repository central http://repo1.maven.org.</p>
 
         <h2>settings.xml</h2>
 
@@ -212,9 +215,17 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
         <p>C'est notamment dans ce fichier que l'on peut rajouter des repositories et des proxy http.</p>
 
+        <p>Dans notre cas simple, nous n'utiliserons pas ce fichier.</p>
+
         <h2>mvn eclipse:eclipse</h2>
 
-        <p>Cette commande permet de générer le projet eclipse et donc d'ouvrir naturellement ce projet dans eclipse.</p>
+        <p>Cette commande permet de générer le projet eclipse</p>
+
+        <pre>mvn eclipse:eclipse</pre>
+
+        <p>On peut ensuite ouvrir simplement ce projet dans eclipse (File &gt New &gt Java Project en allant chercher le bon répertoire).</p>
+
+        <p>Eclipse respectera la structure de répertoire de maven.</p>
     </div>
 </div>
 </body>

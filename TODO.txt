@@ -1,11 +1,9 @@
 
-plus de shortcuts eclipse
-http://eclipse.dzone.com/news/effective-eclipse-shortcut-key
-http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf
-
 premature optimization is the root of all evil
 
 write once, run everywhere
+
+release early, release often
 
 principes de la programmation objet : encapsulation, héritage, polymorphisme...
 
@@ -25,6 +23,8 @@ bouqin mongodb
 
 jenkins with current project as the last point of jenkins tp
 
-
+debug dans eclipse
 
 language java -> effective java (Josh Bloch)
+
+note en haut des tps "but de ce tp blabla"
