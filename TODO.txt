@@ -28,3 +28,7 @@ debug dans eclipse
 language java -> effective java (Josh Bloch)
 
 note en haut des tps "but de ce tp blabla"
+
+groovy et grails
+
+DEV@Cloud cloudbees pour le tp jenkins

@@ -22,7 +22,23 @@
 
         <p>Jenkins est un serveur d'intégration continue open source créé par Kohsuke Kawaguchi.</p>
 
+        <p>Il est open source avec une communauté très dynamique.</p>
+
         <p>Il dispose d'un très grand nombre de plugins et s'intègre nativement avec maven.</p>
+
+        <p>Quelques autres serveurs d'intégration continue existants : </p>
+
+        <ul>
+            <li>Hudson : Jenkins et Hudson partage la même histoire et un fork récent les as séparés. Hudson est un produit Oracle.</li>
+            <li>Continuum et Gump : 2 serveurs d'intégration continue de la fondation apache.</li>
+            <li>Bamboo : Le serveur d'intégration d'Atlassian (jira, confluence...). Très complet mais payant.</li>
+        </ul>
+
+        <p>Plus d'exemples sur la <a href="http://en.wikipedia.org/wiki/Continuous_integration" class="external" target="_blank">page de wikipedia (continuous integration)</a>.</p>
+
+        <p>Dans un premier temps, nous allons tester jenkins avec un projet de référence simple.</p>
+
+        <p>Ensuite, on ajoutera le projet blog que nous sommes en train de développer.</p>
 
         <h2>Installation</h2>
 
@@ -70,7 +86,7 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
         <img src="img/jenkin-ui.png" style="margin: 10px 50px;" />
 
-        <h2>Ajout d'un plugin</h2>
+        <h2>Ajout du plugin github</h2>
 
         <p>Afin de pouvoir récupérer notre projet sur github, nous allons installer le plugin nécessaire.</p>
         <p>Les plugins sont accessibles via Administrer Jenkins > Gestion des plugins > Disponibles.</p>
@@ -95,7 +111,7 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
         <img src="img/jenkins-github-repo.png" width="840px" style="margin: 10px 0px;" />
 
-        <p>Tous les autres paramètres sont a laisser inchangés.</p>
+        <p>Tous les autres paramètres sont à laisser inchangés.</p>
 
         <h2>Exécution du job</h2>
 
@@ -117,15 +133,23 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
         <img src="img/jenkins-cron.png" width="840px" style="margin: 10px 0px;" />
 
-        <p>Jenkins est maintenant configuré pour exécuter le build à chaque modifications.</p>
-
-        <p>Nous allons faire une modification dans le répository github et voir que jenkins relance le build.</p>
+        <p>Jenkins est maintenant configuré pour exécuter le build à chaque modification.</p>
 
         <h2>Jenkins dans la forge logicielle</h2>
 
         <p>Les capacités de Jenkins sont bien plus grandes que ce court exemple mais la configuration reste simple et rapide.</p>
 
         <p>Grâce aux plugins il est possible de faire communiquer Jenkins avec d'autres éléments de la forge logicielle.</p>
+
+        <h2>Notre projet</h2>
+
+        <p>Notre projet blog est <a href="../github/index.html">sous github</a> dans un repository git@github.com:{user}/blog.git.</p>
+
+        <p>Configurer un job qui build ce projet comme il le fait avec le projet de référence.</p>
+
+        <p>Faire une modification dans le répository github et voir que jenkins relance bien le build.</p>
+
+        <p>Une fois ce projet intégré dans jenkins, on peut supprimer le job pour le projet de référence.</p>
     </div>
 </div>
 </body>

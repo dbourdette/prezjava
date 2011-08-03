@@ -45,24 +45,40 @@
 						<li>héritage</li>
 						<li>appels dynamiques</li>
 					</ul>
-					<p>Java n'est pas un pur language objet car il inclut des types de base (int, long...) et on ne peut pas surcharger certains opérateurs (+, -...).</p>
-					<p>C'est un language fortement typé : les contrôles sont effecutés à la compilation.</p>
-					<p>Le code source est compilé en byte code ce qui le rend portable sur tous les environnements disposant d'une machine virtuelle Java.</p>
-					<p>La version courante est 1.6 et la version 1.7 est en cours de spécification.</p>
+					<p>Java n'est pas un language objet pur car il inclut des types de base (int, long...) et on ne peut pas surcharger certains opérateurs (+, -...).</p>
+					<p>C'est un language <b>fortement typé</b> : les contrôles sont effecutés à la compilation.</p>
+					<p>Le code source est compilé en <b>bytecode</b> portable.</p>
+					<p>La version courante est la version 1.7 (java 1.7 équivalent à java 7.0).</p>
+                    <p>Ces quelques slides font un rappel rapide du language et des ses mécaniques.</p>
 				</section>
 				<p class="source">http://en.wikipedia.org/wiki/Object-oriented_programming</p>
 			</div>
 
 			<div class="slide">
-				<header>Compilation et méthode main</header>
+				<header>Compilation</header>
 				<section>
                     <p>Java est un langage <b>compilé</b>. Mais contrairement au C qui est compilé en instructions natives, Java est compilé en <b>bytecode</b>.</p>
+                    <img src="img/compilation.png" alt="" style="margin-left: 120px;">
                     <p>Cela lui permet d'être <b>portable</b> et exécutable sur toutes les machines où tourne une <b>machine virtuelle java</b> (jvm).</p>
-                    <p>La commande javac compile les fichiers .java en .class qui sont alors exécutables par la commande java.</p>
-                    <p>Afin de pouvoir être exécuté, un programme java doit posséder une méthode main.</p>
-                    <pre>public static void <b>main</b>(String[] args) { ... }</pre>
+                    <p style="font-size: 30px;font-style: italic;margin: 10px 220px">Write once, run everywhere</p>
+                    <p>La compilation se fait avec la commande javac</p>
+                    <pre>javac -classpath lib1.jar;lib2.jar Hello.java</pre>
+                    <p>Elle tranforme les fichiers .java en fichiers .class contenant le bytecode.</p>
+				</section>
+			</div>
+
+			<div class="slide">
+				<header>Méthode main et exécution</header>
+				<section>
+                    <p>L'exécution d'une classe java se fait avec la commande java</p>
+                    <pre>java -classpath lib1.jar;lib2.jar Hello</pre>
+                    <p>Afin de pouvoir être exécuté, cette classe Hello doit posséder une méthode main.</p>
+                    <pre>public static void <b>main</b>(String[] args) {
+    ...
+}</pre>
                     <p>Le chargement du code java est dynamique : il est chargé au fur et à mesure du besoin.</p>
-                    <p>La machine virtuelle regarde dans le <b>classpath</b> afin de charger du code. Si une classe demandée n'est pas trouvée alors une erreur est remontée.</p>
+                    <p>La machine virtuelle regarde dans le <b>classpath</b> afin de charger du code.</p>
+                    <p>Si une classe demandée n'est pas définie dans le classpath alors une erreur est remontée.</p>
                     <pre>java.lang.ClassNotFoundException: path.to.my.unknown.Code
 Erreur
  at java.net.URLClassLoader$1.run(URLClassLoader.java:198)
@@ -71,60 +87,76 @@ Erreur
 			</div>
 
 			<div class="slide">
-				<header>Package, class et import</header>
+				<header>package, class et import</header>
 				<section>
-                    <p>Les <b>classes</b> sont rangés dans des <b>packages</b> correspondants à l'arborescence des répertoires.</p>
-                    <pre>package edu.fr.test
+                    <p>Les <b>classes</b> sont organisées en <b>packages</b> correspondants à l'arborescence des répertoires.</p>
+                    <pre><b>package</b> edu.fr.test
 
-public class Test {
+public <b>class</b> Test {
    ...
 }</pre>
                     <p>Si on souhaite utiliser une classe depuis une autre, il suffit de faire un import de la classe</p>
-                    <pre>import edu.fr.test.Test</pre>
-                    <p>Ou même de tout le package</p>
-                    <pre>import edu.fr.test.*</pre>
+                    <pre><b>import</b> edu.fr.test.Test</pre>
+                    <p>Ou de tout le package.</p>
+                    <pre><b>import</b> edu.fr.test.*</pre>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>classe Object</header>
+				<header>Classe Object</header>
 				<section>
                     <p>Toutes les classes héritent de la classe Object qui définit les méthodes suivantes :</p>
+                    <table style="margin-left: 70px;border: 1px black solid;border-collapse: collapse;" border="1px" >
+                        <tr>
+                            <td style="text-align: center">Object</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;">
+                                <ul>
+                                    <li>getClass : la classe de l'object</li>
+                                    <li>toString : une représentation en chaîne de caractères de l'objet</li>
+                                    <li>equals : test d'égalité</li>
+                                    <li>hashCode : une valeur de hash (un entier qui représente l'état de l'objet)</li>
+                                    <li>clone : retourne un copie</li>
+                                    <li>wait / notify : permet de bloquer ou débloquer le thread courant</li>
+                                    <li>finalize : appelé quand l'objet va être supprimé de la mémoire</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>En pratique :</p>
                     <ul>
-                        <li>getClass : la classe de l'object</li>
-                        <li>toString : une représentation en chaîne de caractères de l'objet</li>
-                        <li>equals : test d'égalité</li>
-                        <li>hashCode : une valeur de hash (un entier qui représente l'état de l'objet)</li>
-                        <li>clone : retourne un copie</li>
-                        <li>wait / notify : permet de bloquer ou débloquer le thread courant</li>
-                        <li>finalize : appelé quand l'objet va être supprimé de la mémoire</li>
+                        <li>Les méthodes <b>equals et hashCode</b>, qui vont de pair, sont fréquemment surchargées</li>
+                        <li>La méthode <b>toString</b> est pratique pour du debugging</li>
+                        <li>getClass est très utile</li>
+                        <li>Les autres méthodes sont rarement manipulées dans du code applicatif</li>
                     </ul>
-                    <p>En pratique, on surcharge fréquement equals, hashCode (qui vont de pair) et toString.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>interface</header>
 				<section>
-                     <p>Une interface définit un ensemble de méthodes et de constantes</p>
-                    <pre>public interface MailService {
+                    <p>Une interface définit un contrat (une API) que des classes peuvent <b>implémenter</b>.</p>
+                    <p>Elle contient des <b>signatures</b> de méthodes et des constantes</p>
+                    <pre>public <b>interface</b> MailService {
    public static final int SOME_NAME = 10;
 
    public void send(Mail mail);
 
    public List&lt;Mail&gt; retrieve();
 }</pre>
-                    <p>Il n'est pas possible d'instancier une interface.</p>
-                    <p>Une classe peut implémenter une interface : elle doit alors implémenter toutes les méthodes.</p>
+                    <p>Contrairement à une classe, il n'est pas possible d'instancier une interface.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>enum</header>
 				<section>
-                    <p>Un enum est une classe qui ne possède qu'un nombre prédéfini d'instance</p>
-                    <pre>public enum Gender {
-	MALE, FEMALE, UNKNOWN;
+                    <p>Un enum est une classe qui ne possède qu'un <b>nombre prédéfini</b> d'instances</p>
+                    <pre>public <b>enum</b> Gender {
+    MALE, FEMALE, UNKNOWN;
 }</pre>
                     <p>Les instances MALE, FEMALE et UNKNOWN n'existe qu'une seule fois dans toute la jvm.</p>
                     <p>On peut donc faire des tests d'égalité par référence.</p>
@@ -132,34 +164,37 @@ public class Test {
 ...
 Gender gender2 = Gender.MALE;
 
-gender1 == gender2;</pre>
+gender1.equals(gender2); // true
+gender1 == gender2; // true</pre>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>Annotations</header>
 				<section>
-                    <p>Les annotations permettent de marquer des classes ou des méthodes afin de les distinguer.</p>
-                    <p>Du code peut alors retrouver ces entités marquées et appliquer des traitements.</p>
-                    <p>Une annotation se définit comme suit.</p>
-                    <pre>public @interface LookAtMe {
-	String why();
+                    <p>Une annotation est un marqueur (un label, un tag...) et se définit comme suit :</p>
+                    <pre>public <b>@interface</b> LookAtMe {
+    String why();
 
-	String comments() default "none";
+    String comments() default "none";
 }</pre>
-                    <p>Et s'utilise simplement.</p>
+                    <p>Comme une interface, elle ne contient aucun traitement.</p>
+                    <p>Et s'utilise simplement en annotant les classes, les attributs ou les méthodes.</p>
                     <pre>@LookAtMe(why = "why not")
-    public void save() {
+public void save() {
    ...
 }</pre>
+                    <p>Il est possible de venir lire ces marqueurs par <b>introspection</b> des classes.</p>
+                    <p>En pratique, on est rare de définir ses propres annotations. Il est pas contre très pratique et courant des les utiliser.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>Les stacktraces</header>
 				<section>
-                    <p>Quand une erreur survient, une exception est levée.</p>
-                    <p>Une exception est un type particulier d'objet instancié en cas de problème et qui peut être lancé via la synthaxe :</p>
+                    <p>Quand une erreur survient, une exception est levée (en anglais <b>thrown</b>).</p>
+                    <p>Une exception est une classe java héritant de la classe Throwable.</p>
+                    <p>On peut lever une exception via la synthaxe :</p>
                     <pre>throw new IllegalArgumentException("param can not be null");</pre>
                     <p>La méthode printStackTrace d'une exception permet d'obtenir la <b>stacktrace</b> :</p>
                     <pre>java.io.FileNotFoundException: test.txt
@@ -167,7 +202,7 @@ gender1 == gender2;</pre>
    at java.io.FileInputStream.<init>(FileInputStream.java)
    at Test.readFile(Test.java:19)
    at Test.main(Test.java:7)</pre>
-                    <p>Une stactrace contient le nom de l'erreur, un message et l'état complet de la pile d'appel au moment ou l'exception a été lancée.</p>
+                    <p>Une stactrace contient la classe de l'erreur, un message et l'état complet de la <b>pile d'appel</b> au moment ou l'exception a été lancée.</p>
                     <p>C'est donc un outils très complet afin de comprendre exactement ce qui a déclanché l'erreur.</p>
         </section>
 			</div>
@@ -177,17 +212,17 @@ gender1 == gender2;</pre>
 				<section>
                     <p>Une application java réserve la mémoire en masse et la redistribue ensuite en fonction du besoin.</p>
                     <p>Il n'y a donc pas besoin d'écrire du code afin de réserver ou libérer de la mémoire.</p>
-                    <p>La mémoire réservée est découpée en plusieurs zones, selon l'anciennté des objets.</p>
+                    <p>La mémoire réservée est découpée en plusieurs zones, selon l'ancienneté des objets en mémoire.</p>
                     <img src="img/gc.jpg" style="margin:0 100px" />
-                    <p>La <b>garbage collector</b> a pour charge de régulièrement regarder les objets devenus inutiles et de libérer la mémoire correspondante.</p>
+                    <p>La <b>garbage collector</b> surveille les objets devenus inutiles et libère la mémoire correspondante.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>java et jee</header>
 				<section>
-                    <p>En plus du langage, java propose une suite logicielle pour entreprise : Java Enterprise Edition (jee).</p>
-                    <p>C'est une galaxie de service extrêment vaste donc en voici quelques élements :</p>
+                    <p>En plus du langage, java propose des librairies pour applications d'entreprise : Java Enterprise Edition (jee).</p>
+                    <p>C'est une galaxie de services vaste dont en voici quelques élements :</p>
                     <ul>
                         <li>Conteneurs de composants : servlets, portlets et ejb</li>
                         <li>JPA : persistance object - relationnel</li>
@@ -209,10 +244,13 @@ gender1 == gender2;</pre>
 			<div class="slide">
 				<header>Environnements managés</header>
 				<section>
-                    <p>Lorsqu'un application est déployée dans un serveur jee, elle ne possède pas de méthode main().</p>
-                    <p>C'est le serveur qui charge dynamiquement les objets et les appelle en fonction du besoin.</p>
-                    <p>Dans ce cadre, le serveur est appelé <b>conteneur</b> et les objest <b>composants</b>.</p>
-                    <p>Un conteneur est un environnement qui manage des composants.</p>
+                    <p>En entreprise, les applications java jee sont déployés dans des <b>conteneurs d'applications</b>.</p>
+                    <p>Dans un conteneur les objets sont souvent appelés <b>composants</b>.</p>
+                    <p>Ces applications à base de composants ne possèdent pas de méthode main(). Elles se conforment aux spécifications et implémentent des interfaces.</p>
+                    <p>Le conteneur charge les composants et les sollicite en fonction du besoin.</p>
+                    <p>Les fichiers qui décrivent les composants afin que le conteneur puisse comprendre la structure de l'application sont appelés <b>descripteurs de déploiement</b>.</p>
+                    <br>
+                    <p>Nous reviendrons plus tard dans la présentation sur jee et les conteneurs.</p>
 				</section>
 			</div>
 	  

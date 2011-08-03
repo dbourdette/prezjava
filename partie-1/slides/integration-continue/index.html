@@ -31,33 +31,31 @@
             </div>
 
             <div class="slide">
+				<header>L'intégration</header>
+				<section>
+					<p>L'intégration logicielle est l'action qui consiste à faire un build prêt pour la production.</p>
+                    <p>Selon les projets et les pratiques, selon varie de <b>quelques secondes à plusieurs jours</b>.</p>
+                    <p>Si une erreur est détectée pendant l'intégration, le coût peut donc être lourd.</p>
+                    <p>En cas de bug en production, une intégration lente empêche une correction rapide.</p>
+                    <p>On recommande donc une intégration <b>courte</b> et <b>automatisable</b>.</p>
+                    <br>
+                    <p>Sur des projets maven, cela se résume à une commande :</p>
+                    <pre>mvn package</pre>
+                    <p>Mais sur des projets complexes avec de multiples modules, on tend toujours vers une augmentation de la durée.</p>
+				</section>
+			</div>
+
+            <div class="slide">
 				<header>Une pratique agile</header>
 				<section>
-					<p>L'intégration continue est une pratique agile qui vise à intégrer régulièrement tout le travail d'une équipe.</p>
-                    <p>La fréquence d'intégration est variable, allant d'une fois par jour à de multiples fois par jour.</p>
+                    <p>L'intégration continue est une pratique mise en avant par les méthodologies agiles.</p>
+					<p>Le principe est de réaliser des intégrations aussi fréquemment que possible. la fluidité du process est une obsession des méthodologies agiles.</p>
+                    <p>La fréquence optimale est de déclencher l'intégration après chaque modification des sources.</p>
                     <p>Le but est de détecter l'apparition d'anomalies le plus tôt possible.</p>
-                    <p>La définiton d'intégration couvre généralement la récupération du code source, l'exécution des tests et le build du livrable.</p>
+                    <p>Diverses métriques sur la qualité du code peuvent être produites lors de l'intégration. Elles visent à l'amélioration continue du code.</p>
                     <p style="font-size: 30px;font-style: italic;margin: 100px 150px">If it hurts, do it more often (Kent Beck)</p>
 				</section>
                 <p class="source">http://martinfowler.com/articles/continuousIntegration.html</p>
-			</div>
-
-			<div class="slide">
-				<header>L'intégration continue</header>
-				<section>
-					<p>
-						L'<b>intégration continue</b> est un pratique qui vise à tester le bon déroulement des builds aussi souvent que possible :
-						potentiellement après chaque commit.
-					</p>
-					<p>Cela permet :</p>
-					<ul>
-						<li>D'être informé d'un problème le plus tôt possible.
-						<li>D'éviter les effets big bang de fin de projet.
-					</ul>
-					<p>En plus du build, ce processus automatisé est aussi l'occassion de générer des rapports sur le code afin d'en améliorer la qualité.</p>
-					<p>L'outils open source de référence est jenkins</p>
-					<p>Des plugins ou outils complémentaires comment pmd ou sonar permettent d'obtenir des métriques sur le code.</p>
-				</section>
 			</div>
 
             <div class="slide">
@@ -67,61 +65,46 @@
                     <ul>
                         <li>Responsabilisation des commiters</li>
                         <li>Détection rapide d'une modification qui casse le build</li>
-                        <li>Moins de surprises en fin de projets</li>
-                        <li>Facilite la tenue d'un planning</li>
+                        <li>Moins de surprises en fin de projets (effet big bang)</li>
                         <li>Permet de déployer en production plus souvent</li>
+                        <li>Permet de surveiller l'état d'avancement d'un projet (effet tunnel)</li>
                     </ul>
-                    <p>La suite de tests qui accompagne le code source est exécuté à chaque build et une erreur est immédiatement remontée (mail, lava lamp, feu tricolore...) en cas d'échec.</p>
+                    <p>Un indicateur de santé de l'intégration continue est souvent installé au sein des équipes.</p>
+                    <img src="img/red-light.jpg" alt="" width="400" style="margin-left: 200px;">
 				</section>
-                <p class="source">http://martinfowler.com/articles/continuousIntegration.html</p>
 			</div>
 
             <div class="slide">
 				<header>Pratiques clés</header>
 				<section>
-					<p>Voici les pratiques associées à l'intégration continue:</p>
-
+					<p>Voici quelques pratiques associées à l'intégration continue:</p>
                     <ul>
-                        <li>Un seul repository pour le code source</li>
-                        <li>Build automatisé</li>
-                        <li>Build exécutant les tests</li>
+                        <li>Un seul VCS pour le code source</li>
+                        <li>Le build est automatisé</li>
+                        <li>Le build exécute les tests unitaires</li>
                         <li>Tout le monde commit quotidiennement dans la branche maitre</li>
+                        <li>Tout le monde peut voir le résultat des builds</li>
                         <li>Chaque commit dans la branche maitre déclenche un build</li>
                         <li>Le build doit être rapide</li>
                         <li>Les tests doivent être exécuté dans un environnement proche de la configuration de production</li>
-                        <li>Rendre disponibles facilement les livrables</li>
-                        <li>Tout le monde peut voir le résultat des builds</li>
-                        <li>Le déploiement est automatisé</li>
+                        <li>Les livrables sont disponibles facilement</li>
                     </ul>
-				</section>
-                <p class="source">http://fr.wikipedia.org/wiki/Intégration_continue</p>
-			</div>
-
-			<div class="slide">
-				<header>Principaux logiciels</header>
-				<section>
-                    <h2>Jenkins / Hudson</h2>
-                    <p>Jenkins est la solution open source avec un large support et une communauté très dynamique.</p>
-                    <h2>Continuum et Gump</h2>
-                    <p>2 serveurs d'intégration continue de la fondation apache.</p>
-                    <h2>Bamboo</h2>
-                    <p>Le serveur d'intégration d'Atlassian (jira, confluence...). Très complet mais payant.</p>
-                    <br/><br/>
-                    <p>Plus de logiciels sur la <a href="http://en.wikipedia.org/wiki/Continuous_integration" class="external" target="_blank">page de wikipedia (continuous integration)</a></p>
+                    <p>Cette liste n'est pas exhaustive mais définit un état d'esprit lié au build.</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Le déploiement continu</header>
+				<header>Dans la continuité</header>
 				<section>
-                    <p>Le déploiement continu est une extension de l'intégration continue : en plus d'intégrer régulièrement, on déploit en production régulièrement.</p>
-					<p>Voici la chaîne en place chez RTL net :</p>
+                    <p>Si on intègre en continu, pourquoi ne pas déployer en continu ?</p>
+                    <p>C'est une mouvance relativement récente mais qui gagne en popularité.</p>
+                    <p>Voici la chaîne en place chez RTL net :</p>
                     <img src="img/continuous-deployment.png" style="margin: 0 130px;">
                     <ul>
                         <li>Les demandes sont faites sous jira</li>
                         <li>Les développeurs répondent aux demandes en développant</li>
-                        <li>Jenkins s'occupe de l'intégration continu</li>
-                        <li>Rundeck déploit en production quand une version est prête</li>
+                        <li>Jenkins s'occupe de l'intégration continue</li>
+                        <li>On déploit via Rundeck quand une version est prête</li>
                     </ul>
 				</section>
 			</div>
