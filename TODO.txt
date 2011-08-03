@@ -1,12 +1,6 @@
 
 premature optimization is the root of all evil
 
-write once, run everywhere
-
-release early, release often
-
-principes de la programmation objet : encapsulation, héritage, polymorphisme...
-
 edu.ecm.blog -> edu.dummy.blog
 
 m.google is undefined
@@ -17,15 +11,9 @@ tomcat : redémarrage tomcat si modif classe et non jsp
 
 TP : persistance avec hibernate et hsql (derby ?)
 
-différents termes pour VCS (gestion de configuration...)
-
 bouqin mongodb
 
-jenkins with current project as the last point of jenkins tp
-
 debug dans eclipse
-
-language java -> effective java (Josh Bloch)
 
 note en haut des tps "but de ce tp blabla"
 
