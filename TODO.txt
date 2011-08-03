@@ -20,3 +20,23 @@ note en haut des tps "but de ce tp blabla"
 groovy et grails
 
 DEV@Cloud cloudbees pour le tp jenkins
+
+sources java et html sous gist ?
+
+JEE -> EJBs ? (glassfish ?)
+
+web services = JAX-WS + rest
+
+mapping json avec jackson
+
+jpa vs hibernate
+
+jms avec activemq
+
+méthode, signature et varargs dans les slides java pour le tp junit
+java annotations since 1.5
+
+Don't Repeat Yourself (DRY)
+Keep it simple / Simple is beautiful
+Law of demeter
+

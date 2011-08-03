@@ -22,20 +22,26 @@
 
         <h2>Introduction</h2>
 
-        <p>JUnit est une librairie pour les tests unitaires créée par Kent Beck et Erich Gamma.</p>
+        <p>JUnit est une librairie de tests unitaires pour java.</p>
 
-        <p>Elle permet d'écrire simplement des tests unitaires qui valide le fonctionnement du code qui ira par la suite en production.</p>
+        <p>Elle appartient à la famille des librairies <a href="http://en.wikipedia.org/wiki/XUnit" class="external" target="_blank">xUnit</a> initiée par Kent Beck et Erich Gamma.</p>
+
+        <p>Elle permet d'écrire simplement des tests unitaires qui valident le fonctionnement du code.</p>
+
+        <p>Elle fonctionne en utilisant des <b>assertions</b> qui testent le comportement du code testé.</p>
 
         <pre>public class PersonTest {
    @Test
    public void fullname() {
       Person person = new Person("John", "Doe");
 
-      Assert.assertEquals("fullname is incorrect", person.getFullname(), "John Doe");
+      Assert.<b>assertEquals</b>("fullname is incorrect", person.getFullname(), "John Doe");
    }
 }</pre>
 
-        <p>Elle est d'autant plus intéressant lorsqu'elle est utilisée comme outils d'aide à la conception.</p>
+        <p>Lors de l'écriture du code, c'est une aide à la conception.</p>
+
+        <p>Une fois le code écrit, c'est une protection contre les risques de regressions.</p>
 
         <h2>Le projet</h2>
 
@@ -43,13 +49,13 @@
 
         <p>Ce projet ne contient pas grand chose pour le moment mais il dispose au moins d'une structure de répertoires.</p>
 
-        <p>Après un mvn eclipse:eclipse, on importe ce projet sous eclipse.</p>
+        <p>Il a été importé dans eclipse.</p>
 
         <p>Il est recommandé de faire des commits git et des pushs aussi souvent que nécessaire.</p>
 
         <h2>Mise à jour de junit</h2>
 
-        <p>Avant de commencer à décrire ce que l'on veut faire, nous allons mettre à jour la version de junit utilisée dans le pom.xml</p>
+        <p>Avant de commencer à écrire du code, nous allons mettre à jour la version de junit utilisée dans le pom.xml</p>
 
         <pre>&lt;dependency&gt;
   &lt;groupId&gt;junit&lt;/groupId&gt;
@@ -58,7 +64,7 @@
   &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>La version 4 de junit supporte les annotations qui permettent d'écrire les test plus simplement.</p>
+        <p>La version 4 de junit supporte les annotations qui permettent d'écrire les tests plus simplement.</p>
 
         <p>On regénère ensuite le projet avec mvn eclipse:eclipse et on rafraîchit le projet sous eclipse afin que cette modification soit bien prise en compte par eclipse.</p>
 
@@ -92,7 +98,7 @@
 
         <h2>add</h2>
 
-        <p>Nous allons commencer pas la méthode add.</p>
+        <p>Nous allons commencer pas la méthode add. On écrit le unitaire suivant.</p>
 
         <pre>public class TagCloudTest {
    @Test
@@ -107,7 +113,7 @@
 
         <img src="img/junit-failed.png" style="padding: 0 200px" />
 
-        <p>Actuellement, ce test ne passe pas car la méthode add n'existe pas. Il suffit donc de la créer.</p>
+        <p>Actuellement, ce test ne passe pas car la méthode add n'existe pas dans notre TagCloud. Il suffit donc de la créer.</p>
 
         <pre>public class TagCloud {
    public void add(String tag) {
@@ -130,7 +136,9 @@ public void size() {
     Assert.assertEquals(1, tagCloud.size());
 }</pre>
 
-        <p>Nous pourrions implémenter cette méthode avec un simple compteur incrémenté lors de l'appel de add(). Nous allons plutôt utiliser une List dès a présent.</p>
+        <p>Nous pourrions implémenter cette méthode avec un simple compteur incrémenté lors de l'appel de add().</p>
+
+        <p>Nous allons plutôt utiliser une List dès à présent.</p>
 
         <pre>public class TagCloud {
     private List&lt;String&gt; tags = new ArrayList&lt;String&gt;();
@@ -177,7 +185,9 @@ public void addNull() {
 
         <h2>doublons et contains</h2>
 
-        <p>Actuellement, nous pouvons avoir plusieurs fois le même tag. Nous ajoutons donc une méthode contains.</p>
+        <p>Actuellement, nous pouvons avoir plusieurs fois le même tag dans la collection.</p>
+
+        <p>Nous ajoutons donc une méthode contains qui servira à répondre à ce besoin.</p>
 
         <pre>@Test
 public void contains() {
@@ -211,6 +221,8 @@ public void size() {
 }</pre>
 
         <h2>top(int) et shuffle()</h2>
+
+        <p>C'est le dernier élément de notre liste de besoins initiaux.</p>
 
         <p>Lorsque nous utiliserons notre tagCloud, il se peut qu'il y ait des centaines de tags définis et nous voudrons en afficher qu'un jeu réduit.</p>
 
@@ -246,9 +258,9 @@ public void topNegative() {
    Assert.assertEquals(0, tagCloud.size());
 }</pre>
 
-        <p>On note qu'écrire les tests unitaires fixe le fonctionnement de notre code de façon complètement arbitraire, bien au délà du design initial.</p>
+        <p>On note qu'écrire les tests unitaires aide à définir le fonctionnement de notre code, bien au délà du design initial.</p>
 
-        <p>Afin de profiter malgré tout du volume de tags alors qu'on en affiche qu'un sous ensemble, nous allons mélanger notre tagCloud.</p>
+        <p>Afin de pas toujours avoir les mêmes n premier tags, nous allons mélanger notre tagCloud.</p>
 
         <pre>@Test
 public void shuffle() {
@@ -261,17 +273,21 @@ public void shuffle() {
    Assert.assertTrue(tagCloud.contains("java"));
 }</pre>
 
-        <p>On pourrait réfléchir à un algorithme pour cette méhtode, mais java.util.Collections.shuffle() l'a déjà fait pour nous.</p>
+        <p>On pourrait réfléchir à un algorithme pour implémenter cette méhtode, mais java.util.Collections.shuffle() va nous suffire.</p>
 
-        <p>Nous avons ici un problème interessant pour nos test unitaires : comment tester le résultat d'un traitement aléatoire ?</p>
+        <p>Nous avons ici un problème intéressant pour nos tests unitaires : comment tester le résultat d'un traitement aléatoire ?</p>
 
-        <p>Comme il n'y a pas de solution simple, nous nous contentons de tester la taille et le contenu.</p>
+        <p>Il n'y a pas de solution simple et nous souhaitons garder nos tests simples.</p>
 
-        <p>Une solution consisterait à reposer sur un algorithme paramétrable et configuré spéciquement pour notre test. Le test unitaire aurait pour but de vérifier que la classe TagCloud reposer bien sur cet algorithme.</p>
+        <p>On se contente donc de tester quelques invariants : la taille et un peu du contenu.</p>
+
+        <p>Si il devenait important de tester la bonne distribution de la méthode shuffle, comment pourrait on procéder ?</p>
 
         <h2>Et maintenant</h2>
 
-        <p>Nous pourrions ajouter d'autres méthodes mais nous attendrons d'avoir une vision plus claire de notre besoin avant.</p>
+        <p>Il s'agit d'une introduction à JUnit et nous ne savons pas encore bien ce que nous allons faire de notre application.</p>
+
+        <p>Nous ajouterons donc d'autres tests au fur et à mesure des manipulations à venir.</p>
     </div>
 </div>
 </body>

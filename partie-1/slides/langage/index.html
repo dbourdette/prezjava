@@ -25,7 +25,7 @@
       
       <div style="display: block;" class="slides">
 			<div class="slide">
-				<style>
+                <style type="text/css">
 					#landing-slide p {
 						font-size: 35px;
 					}
@@ -198,8 +198,8 @@ public void save() {
                     <pre>throw new IllegalArgumentException("param can not be null");</pre>
                     <p>La méthode printStackTrace d'une exception permet d'obtenir la <b>stacktrace</b> :</p>
                     <pre>java.io.FileNotFoundException: test.txt
-   at java.io.FileInputStream.<init>(FileInputStream.java)
-   at java.io.FileInputStream.<init>(FileInputStream.java)
+   at java.io.FileInputStream.&lt;init&gt;(FileInputStream.java)
+   at java.io.FileInputStream.&lt;init&gt;(FileInputStream.java)
    at Test.readFile(Test.java:19)
    at Test.main(Test.java:7)</pre>
                     <p>Une stactrace contient la classe de l'erreur, un message et l'état complet de la <b>pile d'appel</b> au moment ou l'exception a été lancée.</p>
@@ -227,7 +227,7 @@ public void save() {
                         <li>Conteneurs de composants : servlets, portlets et ejb</li>
                         <li>JPA : persistance object - relationnel</li>
                         <li>JAX-WS : les services SOAP
-                        <li>JAX-RX : les servcies REST
+                        <li>JAX-RX : les services REST
                         <li>JAXB : binding java - xml
                         <li>JDBC : java database connectivity
                         <li>JMS : java messaging service
