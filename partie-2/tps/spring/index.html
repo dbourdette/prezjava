@@ -34,7 +34,7 @@
 
         <h2>Jars</h2>
 
-        <p>Avant de commencer, nous allons rajouter les jar nécessaires à spring dans le pom.xml.</p>
+        <p>Avant de commencer, nous allons rajouter les jars nécessaires à spring dans le pom.xml.</p>
 
         <pre>&lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
@@ -113,7 +113,7 @@ public class PostServiceTest {
    ...
 }</pre>
 
-        <p>Le test unitaire passe encore mais nous n'avons encore pas faire grand chose : un contexte spring est instancié et existe pendant la durer de notre test.</p>
+        <p>Le test unitaire passe encore mais nous n'avons encore pas faire grand chose : un contexte spring est instancié et existe pendant la durée de notre test.</p>
 
         <h2>AnnotationSessionFactoryBean</h2>
 
@@ -218,17 +218,17 @@ private PostService postService;</pre>
 
         <p>Heureusement, eclipse va nous aider un peu.</p>
 
-        <p>Dans elipse, on fait un rename de la classe PostService vers PostServiceImpl (click droit sur la classe).</p>
+        <p>Dans elipse, on fait un rename de la classe PostService vers PostServiceImpl (clic droit sur la classe).</p>
 
         <img src="img/rename.png" style="margin:0 80px;" />
 
-        <p>Puis on extrait une interface PostService à partir de notre classe (click droit sur la classe).</p>
+        <p>Puis on extrait une interface PostService à partir de notre classe (clic droit sur la classe).</p>
 
         <img src="img/extract-interface.png" style="margin:0 65px;" />
 
         <p>Il faut sélectionner les 4 méthodes et ne pas prendre l'option "Declare interface methods as 'abstract'".</p>
 
-        <p>Ne reste qu'a changer la définition du bean dans le contexte.</p>
+        <p>Ne reste qu'à changer la définition du bean dans le contexte.</p>
 
         <pre>&lt;bean class="edu.ecm.blog.service.PostServiceImpl" /&gt;</pre>
 
@@ -293,7 +293,7 @@ public void save(Post post) {
 
         <p>Il existe une petite optimisation possible lors de l'utilisation des @Transactional</p>
 
-        <p>En effet, si la relation avec la base de faire en lecture seule, alors il vaut mieux l'indiquer via la notation :</p>
+        <p>En effet, si la relation avec la base se fait en lecture seule, alors il vaut mieux l'indiquer via la notation :</p>
 
         <pre>@Transactional(readOnly = true)</pre>
 
@@ -305,7 +305,7 @@ public void save(Post post) {
 
         <h2>DataSource</h2>
 
-        <p>Jusqu'a présent, nous avons utilisé le pool de connextion fourni par hibernate qui ne manque pas de nous le dire :</p>
+        <p>Jusqu'a présent, nous avons utilisé le pool de connexion fourni par hibernate qui ne manque pas de nous le dire :</p>
 
         <pre>Using Hibernate built-in connection pool (not for production use!)</pre>
 
@@ -362,7 +362,7 @@ public void save(Post post) {
 
         <p>Le but est donc de réaliser la classe TagCloudServiceImpl qui implémente se service.</p>
 
-        <p>Comme d'habitude, on commence pas écrire un test unitaire.</p>
+        <p>Comme d'habitude, on commence par écrire un test unitaire.</p>
 
         <pre>@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration

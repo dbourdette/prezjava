@@ -26,11 +26,11 @@
 
         <p>Il implémente et étend JPA (Java Persitance API), le standard de persistence jee.</p>
 
-        <p>Techniquement, c'est une sur couche de JDBC qui en simplifie et augmente l'usage.</p>
+        <p>Techniquement, c'est une surcouche de JDBC qui en simplifie et augmente l'usage.</p>
 
         <h2>Configuration hibernate</h2>
 
-        <p>Comme pour la configuration de derby, nous allons écrire un test unitaire afin de mettre en place notre couche de pesistence.</p>
+        <p>Comme pour la configuration de derby, nous allons écrire un test unitaire afin de mettre en place notre couche de persistance.</p>
 
         <p>Nous créons un test HibernateTest dans le package edu.ecm.blog.hibernate.</p>
 
@@ -120,7 +120,7 @@ public class Post {
 
         <p>Il est aussi possible de tout configurer (hibernate et objets du domaine) via fichiers xml mais cela est beaucoup plus verbeux.</p>
 
-        <p>Il ne reste qu'a informer hibernate de la présence de nos beans annotés.</p>
+        <p>Il ne reste qu'à informer hibernate de la présence de nos beans annotés.</p>
 
         <pre>configuration.addAnnotatedClass(Author.class);
 configuration.addAnnotatedClass(Post.class);</pre>
