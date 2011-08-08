@@ -26,7 +26,7 @@
 
         <p>Il implémente et étend JPA (Java Persitance API), le standard de persistence jee.</p>
 
-        <p>Techniquement, c'est une surcouche de JDBC qui en simplifie et augmente l'usage.</p>
+        <p>Techniquement, c'est une surcouche de JDBC qui en simplifie grandement l'usage.</p>
 
         <h2>Configuration hibernate</h2>
 
@@ -45,6 +45,8 @@ public void createSessionFactory() {
 
    SessionFactory sessionFactory = configuration.buildSessionFactory();
 }</pre>
+
+        <p>C'est l'équivalent de la création de la connexion en JDBC.</p>
 
         <p>Le guide complet de la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/session-configuration.html" class="external" target="_blank">configuration de hibernate</a></p>
 
@@ -71,9 +73,11 @@ public void createSessionFactory() {
 
         <p>Ce test génère pas mal de traces dans la console au démarrage d'hibernate.</p>
 
-        <p>La SessionFactory que l'on récupère est un wrapper autour des APIs JDBC. Elle permet de récupérer une Session qui est le pendant d'une Connection JDBC.</p>
+        <p>La SessionFactory que l'on récupère est un wrapper autour des APIs JDBC.</p>
 
-        <h2>Le domaine</h2>
+        <p>Elle permet de récupérer une Session qui est le pendant d'une Connection JDBC.</p>
+
+        <h2>Les classes du domaine</h2>
 
         <p>Avant de pouvoir utliser concrètement notre SessionFactory, il faut lui donner la configuration des classes que l'on veut persiter.</p>
 
@@ -202,7 +206,9 @@ public void saveAuthor() {
 
         <p>Hibernate nous permet donc de sauver un objet dans une table sans que nous ayons à manipuler de SQL.</p>
 
-        <p>De même que pour les tests jdbc, nous ne fermons pas correctement notre Session si jamais une erreur survient. Pour du code de test, cela est suffisant pour le moment.</p>
+        <p>De même que pour les tests jdbc, nous ne fermons pas correctement notre Session si jamais une erreur survient.</p>
+
+        <p>Comme nous somme dans du code de test, cela est suffisant pour le moment.</p>
 
         <p>Malgré cela, nous devons quand même bien nettoyer la base après notre test et fermer la SessionFactory.</p>
 
@@ -212,7 +218,7 @@ public void cleanDb() {
 
     Transaction transaction = session.beginTransaction();
 
-    session.createQuery("delete from Author").executeUpdate();
+    session.createQuery("<b>delete from Author</b>").executeUpdate();
 
     transaction.commit();
 
@@ -221,13 +227,15 @@ public void cleanDb() {
     sessionFactory.close();
 }</pre>
 
-        <p>La transaction ici permet à hibernate de bien valider la modification en base pour cette opération dite "bulk".</p>
+        <p>La transaction ici permet à hibernate de bien valider la modification en base pour cette opération dite "bulk" (en masse).</p>
 
         <h2>Rechercher un objet</h2>
 
         <p>Rechercher un objet dans la base se fait tout aussi simplement que la persistence.</p>
 
-        <p>Pour les requêtes hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html" class="external" target="_blank">HQL</a> (Hibernate Query Language)</p>
+        <p>Pour les requêtes hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html" class="external" target="_blank">HQL</a> (Hibernate Query Language).</p>
+
+        <p>Le HQL permet de travailler avec le nom des attributs des classes aul lieu du nom des colonnes en base.</p>
 
         <pre>@Test
 public void findAuthor() {
@@ -247,7 +255,7 @@ public void findAuthor() {
     Assert.assertEquals("Harpo Marx", authors.get(0).getName());
 }</pre>
 
-        <p>Avec hibernate on récupère directement nos objets à partir de la base.</p>
+        <p>Avec hibernate on récupère directement nos objets à partir de la base (au lieu d'un ResultSet).</p>
 
         <p>En plus du HQL, il existe une autre API encore plus orientée objet : la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" class="external" target="_blank">Criteria API</a></p>
 
@@ -288,23 +296,23 @@ public void findAuthorCriteria() {
 
         <pre>public class PostService {
    public void save(Post post) {
-      ...
+      <span class="comment">// TODO</span>
    }
 
    public void delete(Long id) {
-      ...
+      <span class="comment">// TODO</span>
    }
 
    public List<Post> find(int pageIndex, int pageSize) {
-      ...
+      <span class="comment">// TODO</span>
    }
 
    public int count() {
-      ...
+      <span class="comment">// TODO</span>
    }
 }</pre>
 
-        <p>Afin d'implémenter ces méthodes, nous allons passer par la classe PostServiceTest dans edu.ecm.blog.service.</p>
+        <p>Afin d'implémenter ces méthodes, nous allons utiliser une classe de test, PostServiceTest, dans le package edu.ecm.blog.service du répertoire src/test/java.</p>
 
         <pre>public class PostServiceTest {
    private SessionFactory sessionFactory;
@@ -345,7 +353,7 @@ public void findAuthorCriteria() {
    }
 }</pre>
 
-        <p>En nous commençons par la méthode save. Nous souhaiterions pouvoir écrire :</p>
+        <p>Et nous commençons par la méthode save. Nous souhaiterions pouvoir écrire :</p>
 
         <pre>@Test
 public void save() {
@@ -431,19 +439,23 @@ public void count() {
 
         <p>Après ce test, notre service est donc suffisament opérationnel pour le moment.</p>
 
-        <p>Cependant, nous avons beaucoup de duplication de code dans nos tests unitaires et le code est assez verbeux. Sans casser ces tests, il serait possible de grandement simplifier ce code.</p>
+        <p>Cependant, nous avons beaucoup de duplication de code dans nos tests unitaires et le code reste assez verbeux.</p>
+
+        <p>Sans casser les tests, il serait possible de grandement simplifier ce code.</p>
 
         <h2>Les limites</h2>
 
-        <p>En SQL, tout ce que nous avons écrit aurait été très verbeux et une source potentielle de beaucoup de bugs. Hibernate est un aide précieuse lorsque l'on travaille avec des objets et une base de données relationelle.</p>
+        <p>Tout ce que nous avons écrit aurait été très verbeux en SQL.</p>
+
+        <p>Hibernate est une aide précieuse lorsque l'on travaille avec des objets et une base de données relationelles.</p>
 
         <p>Mais notre code a encore quelques limitations :</p>
 
         <ul>
             <li>Gestion des ouvertures et fermetures de sessions à la main.</li>
-            <li>Création et injection de la SessionFactory dans le service.</li>
-            <li>Impossibilité de participer à des transactions sans compliquer notre code.</li>
-            <li>Nous n'utilisons pas de pool de connexion sérieux (actuellement hibernate fournit un pool par défaut suffisant pour les tests).</li>
+            <li>Il faut fournir la SessionFactory au service.</li>
+            <li>Pas de gestion de transaction.</li>
+            <li>Nous n'utilisons pas de pool de connexion sérieux (hibernate fournit un pool par défaut suffisant pour les tests).</li>
             <li>La mise en place de la SessionFactory n'est pas facilement factorisable.</li>
         </ul>
 
