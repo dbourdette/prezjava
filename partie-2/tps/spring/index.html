@@ -22,17 +22,21 @@
 
         <h2>Introduction</h2>
 
-        <p>Spring est un framework permettant la création d'application d'enteprise. Il propose :</p>
+        <p>Spring est un framework facilitant la création d'applications d'entreprise.</p>
+
+        <p>Il propose :</p>
 
         <ul>
-            <li>Un conteneur applicatif dans lequel les composants existent (instanciation).</li>
-            <li>Une mise en relation (wiring) des composants.</li>
+            <li>Un conteneur de composants.</li>
+            <li>La gestion du cycle de vie des composants (instanciation, mise en relation et libération).</li>
             <li>Une boite à outils afin de contruire des applications.</li>
         </ul>
 
-        <p>En pratique, spring simplifie grandement l'écriture d'applications.</p>
+        <p>La mise en relation des composants entre eux est appelée wiring (câblage).</p>
 
-        <h2>Jars</h2>
+        <p>Spring se positionne comme une aide à la pratique de jee.</p>
+
+        <h2>Dépendances</h2>
 
         <p>Avant de commencer, nous allons rajouter les jars nécessaires à spring dans le pom.xml.</p>
 
@@ -76,11 +80,13 @@
 
         <h2>Mise en place du contexte spring</h2>
 
-        <p>Nous allons partir de notre application et la faire évoluer afin de profiter de spring.</p>
+        <p>Nous allons faire profiter notre application de spring.</p>
 
-        <p>Toute application utilisant spring doit définir un context : c'est l'ensemble des objets qui constituent l'application.</p>
+        <p>Toute application utilisant spring doit définir un contexte : c'est l'ensemble des composants de l'application.</p>
 
-        <p>La première étape consiste à définir un fichier PostServiceTest-context.xml dans le package edu.ecm.blog.service coté tests.</p>
+        <p>Comme d'habitude, nous commencons par les tests.</p>
+
+        <p>La première étape consiste à définir un fichier PostServiceTest-context.xml dans le package edu.ecm.blog.service dans le répertoire source des tests.</p>
 
         <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -90,9 +96,11 @@
 
 &lt;/beans&gt;</pre>
 
+        <p>Ce fichiers est une coquille vide de configuration de spring.</p>
+
         <p>C'est dans ce fichier que seront définis les beans de notre application.</p>
 
-        <p>Afin que maven prennent en compte les fichiers xml dans src/test/java nous ajoutons la configuration suivante dans le pom (voir <a href="http://maven.apache.org/pom.html#Resources" class="external" target="_blank">configuration des resources</a>) :</p>
+        <p>Afin que les fichiers xml dans src/test/java fasse partie du build, nous ajoutons la configuration suivante dans le pom (voir <a href="http://maven.apache.org/pom.html#Resources" class="external" target="_blank">configuration des resources</a>) :</p>
 
         <pre>&lt;build&gt;
     &lt;testResources&gt;
@@ -113,7 +121,11 @@ public class PostServiceTest {
    ...
 }</pre>
 
-        <p>Le test unitaire passe encore mais nous n'avons encore pas faire grand chose : un contexte spring est instancié et existe pendant la durée de notre test.</p>
+        <p>L'annotation <b>@RunWith</b> indique à JUnit que les tests doivent tourner avec le plugin spring.</p>
+
+        <p>L'annotation <b>@ContextConfiguration</b> permet de configurer le chargement du contexte spring.</p>
+
+        <p>Le test unitaire passe encore mais nous n'avons encore pas faire grand chose : le contexte spring est chargé pour la durée de notre test.</p>
 
         <h2>AnnotationSessionFactoryBean</h2>
 
@@ -166,6 +178,8 @@ public void createSessionFactory() {
         <pre><b>@Inject</b>
 private SessionFactory sessionFactory;</pre>
 
+        <p>L'annotation <b>@Inject</b> permet de demander à spring d'injecter une dépendance dans notre composant. C'est l'activité de base du wiring : injecter les dépendances.</p>
+
         <p>Et nous n'avons plus besoin de fermer la SessionFactory nous même.</p>
 
         <pre>@After
@@ -183,7 +197,9 @@ public void cleanDb() {
   <s>sessionFactory.close();</s>
 }</pre>
 
-        <p>Du code java contre du xml, pour le moment nous n'avons pas gagné grand chose. Mais les tests unitaires devraient encore passer.</p>
+        <p>Du code java contre du xml, pour le moment nous n'avons pas encore gagné grand chose.</b>
+
+        <p>Les tests unitaires devraient encore passer.</p>
 
         <h2>PostService v1.1</h2>
 
@@ -191,7 +207,7 @@ public void cleanDb() {
 
         <pre>&lt;bean class="edu.ecm.blog.service.PostService" /&gt;</pre>
 
-        <p>Une instance de la classe PostService sera donc chargée dans le contexte spring.</p>
+        <p>Au démarrage du contexte spring, une instance de la classe PostService sera donc instanciée.</p>
 
         <p>On profite du fait que notre bean soit géré par spring afin de supprimer la méthode setSessionFactory de notre PostService.</p>
 
@@ -212,9 +228,13 @@ private PostService postService;</pre>
 
         <h2>PostService v2.0</h2>
 
-        <p>Nous allons maintenant nous séparer de la gestion du session.close() en cas d'erreur. On va rendre tout notre code transactionnel dans le même temps.</p>
+        <p>Nous allons maintenant nous séparer de la gestion des fermetures de sessions (session.close()) et cela fonctionnera même en cas d'erreur.</p>
 
-        <p>En premier, nous allons devoir extraire une interface à partir de notre service. C'est une contrainte lié au langage java qui ne peut générer des proxies qu'a partir d'une interface.</p>
+        <p>En bonus, nous allons rendre tout notre code transactionnel dans le même temps.</p>
+
+        <p>En premier, nous devons extraire une interface à partir de notre service.</p>
+
+        <p>C'est une contrainte lié au langage java qui ne peut générer des <a href="http://en.wikipedia.org/wiki/Proxy_pattern" class="external" target="_blank">proxies</a> qu'a partir d'une interface.</p>
 
         <p>Heureusement, eclipse va nous aider un peu.</p>
 
@@ -228,7 +248,7 @@ private PostService postService;</pre>
 
         <p>Il faut sélectionner les 4 méthodes et ne pas prendre l'option "Declare interface methods as 'abstract'".</p>
 
-        <p>Ne reste qu'à changer la définition du bean dans le contexte.</p>
+        <p>Ne reste qu'à changer la définition du bean à instancier dans le contexte.</p>
 
         <pre>&lt;bean class="edu.ecm.blog.service.PostServiceImpl" /&gt;</pre>
 
@@ -236,7 +256,7 @@ private PostService postService;</pre>
 
         <p>Une interface plus tard, les tests passent toujours.</p>
 
-        <p>Maintenant on ajoute un @Transactional sur les 4 méthodes de l'implémentation et on peut retirer toute la gestion de la fermeture de la session.</p>
+        <p>Maintenant on ajoute une annotation <b>@Transactional</b> sur les 4 méthodes de l'implémentation et on peut retirer toute la gestion de la fermeture de la session.</p>
 
         <p>Par exemple, la méthode save devient :</p>
 
@@ -248,7 +268,7 @@ public void save(Post post) {
     session.save(post);
 }</pre>
 
-        <p>Cela simplifie grandement nos méthodes, nous libérant ainsi d'une partie répétivite et sujette à bugs.</p>
+        <p>Cela simplifie grandement nos méthodes, nous libérant ainsi d'une partie répétitive et sujette à bugs.</p>
 
         <p>Pour que les tests unitaires passent il faut quand même rajouter un peu de configuration dans le fichier xml.</p>
 
@@ -274,24 +294,29 @@ public void save(Post post) {
 
 &lt;/beans&gt;</pre>
 
-        <p>C'est maintenant le contexte spring qui va gérer les ouvertures et fermeture de sessions et les transactions.</p>
+        <p>C'est maintenant le contexte spring qui va gérer :</p>
+
+        <ul>
+            <li>L'ouverture et la fermeture des session (pas de connection leak)</li>
+            <li>La transaction SQL</li>
+        </ul>
 
         <p>Si tout va bien, les test passent toujours.</p>
 
-        <p>La mise en place de la configuration spring peut sembler un peu lourde par rapport au gain en ligne de code mais :</p>
+        <p>La mise en place de la configuration spring peut sembler un peu lourde par rapport au gain en lignes de code mais :</p>
 
         <ul>
-            <li>la configuration est factorisée et le gain va donc croissant avec le l'augmentation du nombre de services.</li>
+            <li>la configuration est factorisée et le gain va donc croissant avec le l'augmentation du nombre de composants.</li>
             <li>Nos services sont "injectables" facilement afin de construire notre application.</li>
             <li>Le code ne conserve que la partie à forte valeur ajoutée.</li>
             <li>Notre code est maintenant transactionnel et peut participer simplement à des transactions englobants plusieurs service en même temps.</li>
             <li>La démarcation des transactions est déclarative et tout la gestion des ressources est prise en charge.</li>
-            <li>Les conditions d'exécution du test sont les mêmes que seront les conditions en production.</li>
+            <li>Les appels à notre service dans le test sont les mêmes que les appels qui auront lieu en production.</li>
         </ul>
 
         <h2>readOnly = true</h2>
 
-        <p>Il existe une petite optimisation possible lors de l'utilisation des @Transactional</p>
+        <p>Il existe une petite optimisation possible lors de l'utilisation des annotations @Transactional.</p>
 
         <p>En effet, si la relation avec la base se fait en lecture seule, alors il vaut mieux l'indiquer via la notation :</p>
 
@@ -305,7 +330,7 @@ public void save(Post post) {
 
         <h2>DataSource</h2>
 
-        <p>Jusqu'a présent, nous avons utilisé le pool de connexion fourni par hibernate qui ne manque pas de nous le dire :</p>
+        <p>Jusqu'a présent, nous avons utilisé le pool de connexion fourni par hibernate qui ne manque pas de nous le dire dans les logs :</p>
 
         <pre>Using Hibernate built-in connection pool (not for production use!)</pre>
 
@@ -332,7 +357,7 @@ public void save(Post post) {
 
 <span class="comment">&lt;!-- factory bean pour la SessionFactory hibernate --&gt;</span>
 &lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
-    &lt;property name="dataSource" ref="dataSource" /&gt;
+    <b>&lt;property name="dataSource" ref="dataSource" /&gt;</b>
     &lt;property name="hibernateProperties"&gt;
         &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
             &lt;property name="properties"&gt;
