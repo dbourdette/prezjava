@@ -18,7 +18,7 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>Spring</h1>
+        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring</h1>
 
         <h2>Introduction</h2>
 
@@ -428,9 +428,10 @@ public class TagCloudServiceTest {
         <p>Voici quelques indices :</p>
 
         <ul>
-            <li>Il est possible de faire un import de contexte via un tag import, par ex : &lt;import resource="test-context.xml" /&gt;</li>
             <li>TagCloudServiceImpl doit implémenter TagCloudService.</li>
-            <li>Utiliser la méthode org.apache.commons.lang.StringUtils.split afin de récupérer un tableau de tags (on peut trouver le jar commons-lang dans le <a href="http://search.maven.org" class="external" target="_blank">repo maven</a>.</li>
+            <li>Le service doit aller chercher tous les tags en base.</li>
+            <li>Il est possible de faire un import d'un contexte dans un autre via un tag xml, par ex : <br>&lt;import resource="test-context.xml" /&gt;</li>
+            <li>Utiliser la méthode org.apache.commons.lang.StringUtils.split afin de découper un String en un tableau de String (on peut trouver le jar commons-lang dans le <a href="http://search.maven.org" class="external" target="_blank">repo maven</a>.</li>
         </ul>
     </div>
 </div>
