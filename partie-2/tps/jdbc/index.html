@@ -26,9 +26,13 @@
 
         <p>C'est une API bas niveau qui permet de travailler avec les bases de données relationnelles.</p>
 
-        <p>JDBC définit un cadre et ensuite des vendeurs réalisent des implémentations en fonction de la base cible.</p>
+        <p>Elle permet de converser avec les bases de données au travers du language SQL.</p>
 
-        <p>Il est rare d'avoir à travailler au niveau JDBC car de nombreuses librairies en facilite grandement l'usage.</p>
+        <p>Il existe au moins une implémentation de JDBC pour chacune des bases de données majeures : oracle, sybase, mysql...</p>
+
+        <p>De nombreuses librairies permettent de travailler à plus haut niveau en s'abstrayant de JDBC et du SQL.</p>
+
+        <p>Cependant, les appels vers les bases de données passent toujours au travers d'une couche JDBC et il est toujours bon d'avoir des connaissances en SQL.</p>
 
         <h2>Mise en place d'une base de test</h2>
 
@@ -36,7 +40,7 @@
 
         <p>Nous allons utliser <a href="http://db.apache.org/derby/" class="external" target="_blank">Derby</a> comme base de données embarquée.</p>
 
-        <p>Nous créons donc la classe DerbyTest dans le package edu.ecm.blog.derby.</p>
+        <p>Nous créons la classe DerbyTest dans le package edu.ecm.blog.derby.</p>
 
         <pre>public class DerbyTest {
    @Test
@@ -99,7 +103,7 @@
 
         <p>Un mvn eclipse:eclipse plus tard, le test passe.</p>
 
-        <p>Derby a créé un fichier derby.log à la racine. On l'ajoute dans le .gitignore afin que celui-ci ne soit pas pushé.</p>
+        <p>Derby a créé un fichier derby.log à la racine. On l'ajoute dans le .gitignore afin que celui-ci ne soit pas versionné.</p>
 
         <h2>Quelques requêtes</h2>
 
@@ -113,16 +117,16 @@ public void createTable() throws ClassNotFoundException, SQLException {
    Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
    <span class="comment">// création d'une connexion</span>
-   Connection connection = DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
+   Connection <b>connection</b> = DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
 
    connection.createStatement().execute("create table test (firstname varchar(30), lastname varchar(30))");
 }</pre>
 
         <p>Si on exécute ce test une seconde fois, la base va lever une erreur car la table 'test' existe déjà.</p>
 
-        <p>De plus, il y un forte duplication de code entre nos 2 tests. Il faudrait donc optimiser cela avec d'en rajouter des nouveaux.</p>
+        <p>De plus, il y une forte duplication de code entre nos 2 tests.</p>
 
-        <p>Afin de corriger ces deux problèmes, on modifie notre classe de test.</p>
+        <p>Afin de corriger ces deux problèmes, on optimise notre classe de test.</p>
 
         <pre>public class DerbyTest {
    private Connection connection;
@@ -202,13 +206,15 @@ public void delete() throws ClassNotFoundException, SQLException {
   Assert.assertEquals(1, stmt.executeUpdate());
 }</pre>
 
-        <p>Les commandes create, update, select et delete constituent les 4 opérations nécessaires à l'édition de contenu. Elles sont généralement regroupées sous l'acronyme CRUD (Create Request Update Delete).</p>
+        <p>Les commandes create, update, select et delete constituent les 4 opérations nécessaires à l'édition de contenu.</p>
+
+        <p>Elles sont généralement regroupées sous l'acronyme <b>CRUD</b> (Create Request Update Delete).</p>
 
         <h2>close()</h2>
 
-        <p>Nous n'avons pas été très rigoureux dans la gestion de nos resources. Les connexions et les statements ouverts devraient être fermés grâce à la méthode close().</p>
+        <p>Nous n'avons pas été très rigoureux dans la gestion de nos resources. Les connexions, les resultsets et les statements ouverts devraient être fermés grâce à la méthode close().</p>
 
-        <p>Partout ou cela est nécessaire (quand la resource ne sert plus) il faut rajouter l'appel.</p>
+        <p>Partout ou cela est nécessaire (quand la resource ne sert plus) il faut rajouter les appels suivants.</p>
 
         <pre>connection.close();
 
@@ -216,7 +222,9 @@ public void delete() throws ClassNotFoundException, SQLException {
 
 stmt.close();</pre>
 
-        <p>Comme nous sommes dans des tests unitaires, ce n'est pas très grave. En production, cela ferait du connection leak (fuite de connexion) et bloquerait l'application rapidement.</p>
+        <p>Comme nous sommes dans des tests unitaires, ce n'est pas très grave.</p>
+
+        <p>En production, cela ferait du connection leak (fuite de connexion) et bloquerait l'application rapidement.</p>
 
         <h2>La gestion des erreurs</h2>
 
@@ -228,7 +236,7 @@ stmt.close();</pre>
 
 PreparedStatement stmt = connection.prepareStatement("...");
 
-stmt.executeUpdate(); <span class="comment">// boum !!!</span>
+stmt.executeUpdate(); <span class="comment">//\/\ <b>boum</b> /\/\ !!!</span>
 
 stmt.close(); <span class="comment">// non exécuté</span>
 
@@ -256,7 +264,11 @@ PreparedStatement stmt = null;
     }
 }</pre>
 
-        <p>Si on ajoute à cela la gestion des transactions, coder de cette façon serait un enfer. Les frameworks et librairies modernes permettent de n'avoir que la partie à valeur ajoutée à coder.</p>
+        <p>Enfin, il faudrait ajouter à cela la gestion des transactions.</p>
+
+        <p>Ce qui semblait simple au début se tranfrome donc rapidement en enfer.</p>
+
+        <p>Les frameworks modernes prennent en charge tous ces aspects répétitifs afin de garder un code simple.</p>
 
         <h2>La persitence des objets</h2>
 
@@ -296,7 +308,13 @@ PreparedStatement stmt = null;
             <li>...</li>
         </ul>
 
-        <p>En bref, JDBC est assez simple et portable, mais nous allons avoir besoin d'un peu plus de puissance si on veut gagner en productivité.</p>
+        <p>Nous n'allons donc pas coder cela en JDBC, ce serait trop long.</p>
+
+        <h2>En résumé</h2>
+
+        <p>JDBC est assez simple et portable.</p>
+
+        <p>Mais nous allons avoir besoin d'un peu plus de puissance si on veut gagner en productivité.</p>
     </div>
 </div>
 </body>
