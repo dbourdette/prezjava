@@ -21,7 +21,35 @@
         <h1>Spring AOP</h1>
 
         <h2>Introduction</h2>
-    </div>
-</div>
-</body>
+
+        <h2>Déclarer son propre aspect</h2>
+
+        <p>La détection d'aspects est activée avec la configuration suivante.</p>
+
+        <pre>&lt;aop:aspectj-autoproxy/&gt;</pre>
+
+        <p>Et pour Créer un aspect afin d'afficher le temps de calcul de chaque méthode.</p>
+
+        <pre>
+@Aspect
+@Component
+public class TraceAspect {
+   @Around("within(fr.prez.ioc..*)")
+   public Object trace(ProceedingJoinPoint pjp) throws Throwable {
+      long t1 = System.currentTimeMillis();
+
+      <b>Object value = pjp.proceed()</b>;
+
+      long t2 = System.currentTimeMillis();
+
+      System.out.println("Executed " + pjp.getSignature() + " in " +
+         (t2 - t1) + "ms");
+
+      return value;
+   }
+}</pre>
+
+            <p>Custom aspects : logging ? perf ?</p>
+        </div>
+    </body>
 </html>
