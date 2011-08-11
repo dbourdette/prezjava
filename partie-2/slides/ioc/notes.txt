@@ -1,3 +1,0 @@
-@Component
-@Schedule @Async
-Trouver un exemple concret et non pas serviceA et serviceB

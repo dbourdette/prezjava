@@ -20,6 +20,7 @@ note en haut des tps "but de ce tp blabla"
 groovy et grails
 
 DEV@Cloud cloudbees pour le tp jenkins
+RUN@Cloud ou cloud foundry pour tp spring ?
 
 sources java et html sous gist ?
 
@@ -40,5 +41,6 @@ Don't Repeat Yourself (DRY)
 Keep it simple / Simple is beautiful
 Law of demeter
 
-logo spring dans le tp
+json et jsonp
 
+@Schedule @Async
