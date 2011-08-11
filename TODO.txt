@@ -44,3 +44,5 @@ Law of demeter
 json et jsonp
 
 @Schedule @Async
+
+spring java based config
