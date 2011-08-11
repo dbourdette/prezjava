@@ -36,7 +36,7 @@
               </div>
 
               <div class="slide">
-                <header>Une solution à un problème</header>
+                <header>Un problème de design</header>
                 <section>
                     <p>Le code suivant est problématique.</p>
                     <pre>
@@ -65,7 +65,9 @@ public class SimpleService {
               <div class="slide">
                 <header>La collaboration entre les objets</header>
                 <section>
-                    <p>Les problèmes grandissent avec la taille de l'application.</p>
+                    <p>Le problème grandit rapidement avec la taille de l'application.</p>
+                    <img src="img/class-diagram.png" style="margin-left:150px;">
+                    <p>Comment instancier et lier tous ces objets entre eux ?</p>
                     <p>Il est nécessaire d'adopter une méthode systématique efficace.</p>
                 </section>
               </div>
@@ -73,21 +75,21 @@ public class SimpleService {
               <div class="slide">
                 <header>Une solution</header>
                 <section>
-                    <p>Pour bien définir la responsabilité de chaque composant, l'application doit alors déléguer :</p>
+                    <p>On divise la vie de l'application en 2 temps</p>
                     <ul>
-                        <li>La création et la configuration des composants</li>
-                        <li>La gestion du cycle de vie des composants</li>
+                        <li>La mise en place des composants : instanciation et wiring</li>
+                        <li>Le fonctionnement nominal de l'application</li>
                     </ul>
-                    <p>Concrêtement, un service n'instancie pas d'autres services, il obtient des références.</p>
-                    <p>Les composants abandonnent ce qui n'est pas à eux au bénéfice d'un chef d'orchestre.</p>
-                    <br>
-                    <p>Cette démarche est appelée <b>Inversion of Control</b>.</p>
+                    <p>Le code applicatif délègue la première partie de sa vie à un chef d'orchestre.</p>
+                    <p>Celui-ci gère le cycle de vie des objets : instanciation, wiring et libération.</p>
                     <br>
                     <ul>
-                        <li>La démarche de conception objet est libérée et la définition des classes est plus simple.</li>
-                        <li>Le coupable entre les classe est plus faible.</li>
+                        <li>La définition des classes est plus simple.</li>
+                        <li>Le couplage entre les classes est plus faible.</li>
                         <li>Les tests unitaires sont plus simples à écrire.</li>
                     </ul>
+                    <br>
+                    <p>Cette démarche est appelée <b>Inversion of Control</b>.</p>
                 </section>
               </div>
 
@@ -146,22 +148,22 @@ public class SimpleService {
               <div class="slide">
                 <header>Démarrage d'un contexte spring</header>
                 <section>
-                    <p>La configuration canonique de spring se fait via un fichier xml contenant des beans.</p>
+                    <p>La configuration canonique de spring se fait via un fichier xml définissant le context spring.</p>
                     <pre>
-    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-    &lt;beans&gt;
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans&gt;
 
-      &lt;bean id="..." class="..."&gt;
-        &lt;!-- configuration du bean ici --&gt;
-      &lt;/bean&gt;
+  &lt;bean id="<span class="comment">...</span>" class="<span class="comment">...</span>"&gt;
+    <span class="comment">&lt;!-- configuration du bean ici --&gt;</span>
+  &lt;/bean&gt;
 
-      &lt;!-- plus de beans ici --&gt;
+  <span class="comment">&lt;!-- plus de beans ici --&gt;</span>
 
-    &lt;/beans&gt;</pre>
-                    <p>Qui peut être chargé avec le code suivant</p>
+&lt;/beans&gt;</pre>
+                    <p>C'est une liste de beans qui seront chargés au démarrage de l'application.</p>
+                    <p>Le contexte peut être chargé avec le code suivant</p>
                     <pre>
-    ApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");</pre>
-                    <p>L'injection des liens entre les beans est appelée <b>wiring</b>.</p>
+ApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");</pre>
                 </section>
               </div>
 
@@ -169,50 +171,39 @@ public class SimpleService {
                 <header>Des beans spring</header>
                 <section>
                     <p>Imaginons deux services qui collaborent.</p>
-                    <pre>
-    public interface ServiceA {
-       public void doSomethingUseful();
-    }
-
-    public class ServiceAImpl implements ServiceA {
-       public void doSomethingUseful() { ... }
-    }
-
-    public class ServiceB {
-       private ServiceA serviceA;
-       public void setServiceA(ServiceA serviceA) {this.serviceA = serviceA;}
-       public void call() { serviceA.doSomethingUseful(); }
-    }</pre>
+                    <img src="img/spring-beans.png" style="margin-left: 220px;">
                     <p>Voici la configuration spring nécessaire.</p>
                     <pre>
-    &lt;bean id="serviceA" class="x.y.z.ServiceAImpl" /&gt;
+&lt;bean id="simpleService" class="x.y.z.SimpleService"&gt;
+    &lt;property name="otherService" ref="otherService"&gt;
+&lt;/bean&gt;
 
-    &lt;bean id="serviceB" class="x.y.z.ServiceB"&gt;
-        &lt;property name="serviceA" ref="serviceA"&gt;
-    &lt;/bean&gt;</pre>
+&lt;bean id="otherService" class="x.y.z.OtherService" /&gt;</pre>
+                    <p>Et la récupération d'un bean dans le contexte.</p>
+                    <pre>SimpleService simpleService = (SimpleService) ctx.getBean("simpleService")</pre>
                 </section>
               </div>
 
               <div class="slide">
                 <header>@Inject</header>
                 <section>
-                    <p>Il existe une alternative avec des annotations afin d'injecter les dépendances.</p>
+                    <p>Il est possible d'activiter les annotations afin d'injecter les dépendances.</p>
                     <pre>
-    public class ServiceB {
+    public class SimpleService {
        <b>@Inject</b>
-       private ServiceA serviceA;
+       private OtherService otherService;
 
-       public void call() { serviceA.doSomethingUseful(); }
+       public void call() { otherService.doSomethingUseful(); }
     }</pre>
                     <p>Avec le contexte suivant.</p>
                     <pre>
-    &lt;context:annotation-config/&gt; <span class="comment">&lt;!-- active les annotations --&gt;</span>
+<span class="comment">&lt;!-- active les annotations --&gt;</span>
+&lt;context:annotation-config/&gt;
 
-    &lt;bean id="serviceA" class="x.y.z.ServiceAImpl" /&gt;
+&lt;bean id="serviceA" class="x.y.z.ServiceAImpl" /&gt;
 
-    &lt;bean id="serviceB" class="x.y.z.ServiceB" /&gt;
-    </pre>
-                    <p>@Inject est le standard jee, spring supporte aussi sa propre annotation @Autowired et une autre annotation standard @Resource.</p>
+&lt;bean id="serviceB" class="x.y.z.ServiceB" /&gt;</pre>
+                    <p><b>@Inject</b> est le standard jee, spring supporte aussi sa propre annotation <b>@Autowired</b> et une autre annotation standard <b>@Resource</b>.</p>
                 </section>
               </div>
 
@@ -221,44 +212,32 @@ public class SimpleService {
                 <section>
                     <p>On peut aussi demander à spring de chercher les composants dans le classpath.</p>
                     <pre>
-    &lt;context:annotation-config/&gt; <span class="comment">&lt;!-- active les annotations --&gt;</span>
-    &lt;context:component-scan base-package="x.y.z"/&gt; <span class="comment">&lt;!--scan le package x.y.z--&gt;</span>
-    </pre>
+<span class="comment">&lt;!--scan le package x.y.z--&gt;</span>
+&lt;context:component-scan base-package="x.y.z"/&gt;</pre>
 
-                    <p>Les composants doivent juste être annotés</p>
+                    <p>Tous les composants annotés dans les packages sous x.y.z seront chargés.</p>
                     <pre>
-    <b>@Service</b>
-    public class ServiceAImpl implements ServiceA {
-       public void doSomethingUseful() { ... }
-    }
+<b>@Service</b>
+public class OtherService {
+   public void doSomethingUseful() { ... }
+}
 
-    <b>@Service</b>
-    public class ServiceB {
-       @Inject
-       private ServiceA serviceA;
+<b>@Service</b>
+public class SimpleService {
+   @Inject
+   private OtherService otherService;
 
-       public void call() { serviceA.doSomethingUseful(); }
-    }</pre>
-                    <p>Les @Component peuvent être des @Service, @Repository ou bien des @Controller.</p>
+   public void call() { otherService.doSomethingUseful(); }
+}</pre>
+                    <p><b>@Component</b> est l'annotation générique.</p>
+                    <p><b>@Service</b>, <b>@Repository</b> ou bien <b>@Controller</b> sont plus précis sémantiquement.</p>
                 </section>
               </div>
 
               <div class="slide">
-                <header>Projet spring</header>
+                <header>Aspect Oriented Programming</header>
                 <section>
-                    <p>Un squelette du projet est disponible dans le répertoire <a href="projets/ioc/index.html" class="project" target="_blank">projets/ioc</a>.</p>
-                    <p>Nous utilisons <a href="http://eclipse.org" class="external" target="_blank">eclipse</a> comme IDE.</p>
-                    <p>Nous utilisons <a href="http://lucene.apache.org/solr/" class="external" target="_blank">solr</a> comme moteur de recherche et base de données orientée document.</p>
-                    <p><br><br></p>
-                    <p>Nous allons construire une base de moteur de recherche web.</p>
-                </section>
-              </div>
-
-
-              <div class="slide">
-                <header>AOP Proxies</header>
-                <section>
-                    <p>Lors du wiring, spring peut intercaler des classes entre l'appelant et la cible.</p>
+                    <p>La délégation du wiring à spring offre la possibilté d'intercaler du code entre les appels.</p>
                     <img alt="" src="images/aop-proxy.png" width="500px" style="margin:0 150px;">
                     <p>Cette approche est appelée <b>Aspect Oriented Programming</b> et peut être mis en place de plusieurs façons :</p>
                     <ul>
@@ -272,9 +251,9 @@ public class SimpleService {
               </div>
 
               <div class="slide">
-                <header>Gestion de transaction</header>
+                <header>Exemple AOP : les transactions</header>
                 <section>
-                    <p>Le gestion des resources liées aux transactions est lourde à manipuler.</p>
+                    <p>La gestion des transactions est lourde.</p>
                     <pre>
     public void doSomethingUseful() {
       Connection con = null;
@@ -295,6 +274,7 @@ public class SimpleService {
         if (con != null) { con.close(); }
       }
     }</pre>
+                    <p>Sauf que ce code de gestion est toujours le même.</p>
                 </section>
               </div>
 
@@ -303,51 +283,24 @@ public class SimpleService {
                 <section>
                     <p>Grâce à l'AOP et un gestionnaire de transaction, on peut simplifier le code précédent.</p>
                     <pre>
-    <b>@Transactional</b>
-    public void doSomethingUseful() {
-      Connection conn = DataSourceUtils.getConnection(dataSource);
+<b>@Transactional</b>
+public void doSomethingUseful() {
+  Connection conn = DataSourceUtils.getConnection(dataSource);
 
-      stmt = con.createStatement();
-      stmt.executeUpdate("update my_table set stock = 3 where id = 15");
-    }</pre>
+  stmt = con.createStatement();
+  stmt.executeUpdate("update my_table set stock = 3 where id = 15");
+}</pre>
                     <p>Avec la configuration suivante</p>
                     <pre>
-    <span class="comment">&lt;!-- activer les annotations @Transactional --&gt;</span>
-    &lt;tx:annotation-driven transaction-manager="txManager"/&gt;
+<span class="comment">&lt;!-- activer les annotations @Transactional --&gt;</span>
+&lt;tx:annotation-driven transaction-manager="txManager"/&gt;
 
-    <span class="comment">&lt;!-- le gestionnaire de transaction --&gt;</span>
-    &lt;bean id="txManager"
-        class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;
-       <span class="comment">&lt;!-- la dataSource est définie ailleurs --&gt;</span>
-       &lt;property name="dataSource" ref="dataSource"/&gt;
-    &lt;/bean&gt;</pre>
-                </section>
-              </div>
-
-              <div class="slide">
-                <header>Déclarer son propre aspect</header>
-                <section>
-                    <p>La détection d'aspects est activée avec la configuration suivante.</p>
-                    <pre>&lt;aop:aspectj-autoproxy/&gt;</pre>
-                    <p>Et pour Créer un aspect afin d'afficher le temps de calcul de chaque méthode.</p>
-                    <pre>
-    @Aspect
-    @Component
-    public class TraceAspect {
-       @Around("within(fr.prez.ioc..*)")
-       public Object trace(ProceedingJoinPoint pjp) throws Throwable {
-          long t1 = System.currentTimeMillis();
-
-          <b>Object value = pjp.proceed()</b>;
-
-          long t2 = System.currentTimeMillis();
-
-          System.out.println("Executed " + pjp.getSignature() + " in " +
-             (t2 - t1) + "ms");
-
-          return value;
-       }
-    }</pre>
+<span class="comment">&lt;!-- le gestionnaire de transaction --&gt;</span>
+&lt;bean id="txManager"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;
+   <span class="comment">&lt;!-- la dataSource est définie ailleurs --&gt;</span>
+   &lt;property name="dataSource" ref="dataSource"/&gt;
+&lt;/bean&gt;</pre>
                 </section>
               </div>
 
