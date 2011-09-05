@@ -1,4 +1,6 @@
 
+a quiz at the end of each part.
+
 premature optimization is the root of all evil
 
 edu.ecm.blog -> edu.dummy.blog
