@@ -397,22 +397,13 @@ Connection: keep-alive
 	        </section>
 	        <p class="source">http://tools.ietf.org/html/rfc2616#section-14.9</p>
 	      </div>
-	
-	      <div class="slide">
-	      	<header>La génération de réponse</header>
-	        <section>
-	          	<p>Le fonctionnement canonique d'un serveur http est de déclencher un traitement pour chaque requête entrante.</p>
-	        	<img alt="" src="img/server-internals.png" width="600px;" style="margin:0 100px">
-	        	<p>Un processus ou un thread accompagne la requête jusqu'a la sortie.</p>
-	        	<p>Une file d'attente permet de gérer le surplus de requêtes.</p>
-	        </section>
-	      </div>
 	      
 	      <div class="slide">
 	        <header>Les cookies</header>
 	        <section>
 	        	<p>Un cookie est un couple clé / valeur stoqué par le navigateur. Il a une date d'expiration et n'est valide que pour un domaine.</p>
-	        	<p>L'ensemble des cookies est envoyé vers le serveur à chaque requête dans les headers HTTP.</p>
+	        	<p>Le serveur envoie des cookies au navigateur grâce au header HTTP Set-Cookie.</p>
+                <p>L'ensemble des cookies est envoyé vers le serveur à chaque requête dans les headers HTTP.</p>
 	        	<pre>
 Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103; 
   __utmz=106559260.1286524216.97.23.utmcsr=aka-cdn-ns.adtech.de|
@@ -425,8 +416,7 @@ Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103;
   vote-5937621514="14042010 221016";
   vote-5953180085="02102010 180702"
 	        	</pre>
-	        	<p>Le serveur envoie des cookies au navigateur grâce au header HTTP Set-Cookie.</p>
-	        	<p>Les cookies pouvant être lu par un tiers (<a href="http://fr.wikipedia.org/wiki/Attaque_de_l%27homme_du_milieu" class="external" target="_blank">man in the middle</a>), il ne faut pas y stoquer d'information sensibles.</p>
+	        	<p>Les cookies pouvant être lu par un tiers (<a href="http://fr.wikipedia.org/wiki/Attaque_de_l%27homme_du_milieu" class="external" target="_blank">man in the middle attack</a>), il ne faut pas y stoquer d'information sensibles.</p>
 	        </section>
 	      </div>
 	      
@@ -437,6 +427,7 @@ Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103;
 	        	<p>Afin de pouvoir retrouver la bonne session pour chaque client, le serveur écrit un cookie dans lequel il note l'identifiant de la session.</p>
 	        	<p>Dans le cas des serveurs jee, le nom du cookie est jsessionid</p>
 	        	<pre>JSESSIONID=2E58EE7BCFCE2CC2139D2ACB73327DB4</pre>
+                <p>Si on supprime ce cookie coté client, le lien avec la session coté serveur est perdu.</p>
 	        </section>
 	      </div>
 	      
@@ -518,9 +509,17 @@ Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103;
 	      </div>
 
         <div class="slide">
-	        <header>WebDAv</header>
+	        <header>WebDAV</header>
 	        <section>
-                <p>Certains protocoles, comment par exemple <a href="http://fr.wikipedia.org/wiki/WebDAV" class="external" target="_blank">WebDAV</a>, propose des extensions pour ces méthodes.</p>
+                <p>Le <a href="http://www.webdav.org/" class="external" target="_blank">WebDAV</a> (Web-based Distributed Authoring and Versioning) est une extension du protocole HTTP.</p>
+
+                <p>Ce protocole permet d'éditer et de gérer des fichiers distants en garantissant la bonne gestion des accès concurrent.</p>
+
+                <p>Ce protocole est souvent utilisé afin d'éditer le contenu de sites web ou de repository de données.</p>
+
+                <p>Comme c'est une extension du protocole HTTP, il est possible de naviguer en lecture seule avec un simple navigateur.</p>
+
+                <p>Par exemple, dans le cas de subversion, le repository de sources est généralement exposé via WebDAV, ce qui permet de naviguer dans les sources facilement.</p>
 	        </section>
 	      </div>
 	  </div>
