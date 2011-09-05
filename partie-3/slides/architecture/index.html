@@ -82,46 +82,14 @@
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Bases de données</header>
-	        <section>
-	        	<p>Les bases de données assure la persistance et la longévité des données.</p>
-	        	<p>Les propriétés essentielles des bases de données sont regroupées sous l'acronyme <b>ACID</b> :</p>
-	        	<ul>
-	        		<li><b>Atomicité</b> : toute transaction doit s'éxécuter totalement ou pas du tout
-	        		<li><b>Consistance</b> : la base assure sa propre intégrité
-	        		<li><b>Isolation</b> : la base gère la concurrence entre les transactions
-	        		<li><b>Durabilité</b> : la base assure la pérennité des données
-	        	</ul>
-	        	<p>Il est parfois compliqué de discuter avec une base de données mais il est difficile de se passer de ses services.</p>
-	        </section>
-	      </div>
-	      
-	      <div class="slide">
-	        <header>Types de bases de données</header>
-	        <section>
-	        	<p>Il existe différents types de base de données :</p>
-	        	<ul>
-	        		<li><b>relationnelles</b> : tables de données avec des relations entres elles (clés distantes).
-	        		<li><b>hierarchiques</b> : les données sont stoquées dans une structure arborescente.
-	        		<li><b>orientées objets</b> : visent à faciliter le passage objets &lt;-&gt; stockage.
-	        		<li><b>XML</b> : stoquage et interrogation native en XML.
-	        		<li><b>orientées documents</b> : stoquage d'objets avec des propriétés complexes.
-	        	</ul>
-	        	<p>les charges grandissantes et la flexibilité recherchée ont poussé certaines de ces solutions hors de la compétition.</p>
-	        	<p>Les bases des données orientées documents offrent des perspectives sur le web bien plus grandes que ses prédécesseurs.</p>  
-	        	<p>C'est la mouvance <b><a href="http://fr.wikipedia.org/wiki/NoSQL" class="external" target="_blank">NoSQL</a></b> qui est en cours avec des solutions comme mongoDB, cassandra et solr.</p>
-	        </section>
-	      </div>
-	      
-	      <div class="slide">
 	        <header>Topologies</header>
 	        <section>
-	        	<p>La topologie de réseau est l'organisation des serveurs au sein d'un ensemble.</p>
+	        	<p>La topologie de réseau est l'organisation des serveurs qui constitue l'architecture.</p>
 	        	<p>Le but d'une bonne topologie est la tenue en charge et la faible consommation de ressources.</p>
 	        	<img alt="" src="img/scalabilite.png" width="500px" style="margin:0 130px;">
-	        	<p>Ajouter des serveurs n'est pas toujours possible. Une architecture qui le permet est <b>scalable horizontalement</b>.</p>
-	        	<p>Dans le cas où cela n'est pas possible, une autre solution est la <b>scalabilité verticale</b> (ajout de ressources sur le serveur) qui offre de bien moins bons gains.</p>
-	        	<p>Il n'y a pas de solution unique à la tenue en charche : des sites comme twitter ou facebook ont du inventer leur propres techniques.</p>
+	        	<p>La <b>scalabilité horizontale</b> est la capacité de rajouter des serveurs.</p>
+	        	<p>La <b>scalabilité verticale</b> est l'ajout de ressources sur les serveurs existants. Cette solution atteint rapidement ses limites.</p>
+	        	<p>Il n'y a pas de solution unique à la tenue en charge : des sites comme twitter ou facebook ont du inventer leur propres techniques.</p>
 	        	<p>Nous allons voir quelques exemples et techniques afin d'augmenter la tenue en charge.</p>
 	        </section>
 	      </div>
@@ -129,7 +97,7 @@
 	      <div class="slide">
 	        <header>Topologie canonique</header>
 	        <section>
-	        	<p>C'est la forme de base avec un serveur et une base de données.</p>
+	        	<p>C'est la forme de base avec 2 tiers : un serveur et une base de données.</p>
 	        	<img alt="" src="img/topologie-canonique.png" width="300px" style="margin:0 260px;">
 	        	<p>C'est généralement le point de départ pour un service avec un petit volume d'opérations.</p>
 	        	<table class="proscons">
@@ -289,15 +257,6 @@
 	        </section>
 	      </div>
 	  </div>
-	
-      <div class="slide">
-      	<header>A lire</header>
-        <section>
-        	<p>Une bonne partie des patterns aujourd'hui en place dans les serveurs et les frameworks.</p>
-        	<img alt="" src="img/enterprise-patterns-fowler.jpg" style="margin:0 250px;">
-        	<p>Patterns of Enterprise Application Architecture / Martin Fowler</p>
-        </section>
-      </div>
       <!-- slides -->
 
     </div> <!-- presentation -->
