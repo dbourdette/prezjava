@@ -283,12 +283,12 @@ public void save(Post post) {
    ...
 
 <span class="comment">&lt;!-- ajoute un gestionnaire de transactions lié à la sessionFactory --&gt;</span>
-&lt;bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"&gt;
+<b>&lt;bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"&gt;
     &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
-&lt;/bean&gt;
+&lt;/bean&gt;</b>
 
 <span class="comment">&lt;!-- active le support des annotations @Transactional --&gt;</span>
-&lt;tx:annotation-driven transaction-manager="transactionManager"/&gt;
+<b>&lt;tx:annotation-driven transaction-manager="transactionManager"/&gt;</b>
 
    ...
 

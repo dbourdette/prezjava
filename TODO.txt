@@ -1,4 +1,6 @@
 
+maven set sources to 1.6
+
 premature optimization is the root of all evil
 
 edu.ecm.blog -> edu.dummy.blog

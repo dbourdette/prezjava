@@ -65,7 +65,7 @@ Initialized empty Git repository in /path/to/projects/blog/.git/</pre>
 
         <p>Certains fichiers ne doivent pas être envoyé vers le VCS : les fichiers générés lors de la compilation ou bien les fichiers générés par maven ne font pas partie des sources.</p>
 
-        <p>On crée le fichier .gitignore afin de les exclure.</p>
+        <p>On crée le fichier .gitignore à la racine du projet afin de les exclure.</p>
 
         <pre>
 .project
@@ -103,7 +103,7 @@ blog &gt; git commit -m "initial commit"</pre>
 
         <p>Il nous reste donc a relier notre master local au origin/master</p>
 
-        <pre>blog &gt; git remote add git@github.com:{user}/blog.git</pre>
+        <pre>blog &gt; git remote add origin git@github.com:{user}/blog.git</pre>
 
         <h2>git push</h2>
 
