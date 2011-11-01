@@ -128,13 +128,13 @@ public class HelloController {
 
         <p>Le retour "hello" va être mappé pas le viewResolver et interpreté comme /WEB-INF/jsp/hello.jsp.</p>
 
-        <p>la création d'un Controller est donc plus simple et pus souple qu'une servlet. Le framework nosu laisse faire que ce qu'il ne peut faire lui même.</p>
+        <p>la création d'un Controller est donc plus simple et plus souple qu'une servlet. Le framework nousmp) laisse faire que ce qu'il ne peut faire lui même.</p>
 
         <p>Afin que ce composant soit chargé, il faut le définir dans le contexte. Comme nous allons faire plusieurs Controller, nous utilisons un scan de package.</p>
 
         <pre>&lt;context:component-scan base-package="edu.ecm.blog.web.controller" /&gt;</pre>
 
-        <p>Le Controller devrait répondre sur <a href="http://localhost:8080/hello" target="_blank">http://localhost:8080/hello</a></p>
+        <p>Le Controller devrait répondre sur <a href="http://localhost:8080/hello" target="_blank">http://localhost:8080/hello</a> en lançant l'application avec la commande mvn tomcat:run.</p>
 
         <h2>La home page</h2>
         
@@ -156,13 +156,89 @@ public class IndexController {
 
         <h2>Les services</h2>
 
-        <p>Nous allons maitenant ajouter nos services dans le contexte spring afin de les rendre accessible depuis les Controllers.</p>
+        <p>Nous allons maintenant ajouter nos services dans le contexte spring afin de les rendre accessibles depuis les Controllers.</p>
+
+        <p>Comme pour les Controllers, nous allons utiliser un scan.</p>
+
+        <pre>&lt;context:component-scan base-package="edu.ecm.blog.service"/&gt;</pre>
+
+        <p>Et les 2 implémentations des services doivent être annoté avec @Service</p>
+
+        <pre>@Service
+public class PostServiceImpl implements PostService</pre>
+
+        <p>Ainsi les services du package seront chargés dans le contexte spring au démarrage de l'application.</p>
+
+        <h2>La base de données</h2>
+        
+        <p>Comme pour les tests unitaires, il manque la définition de la session factory et de la connexion à la base.</p>
+
+        <p></p>
+
+        <pre>&lt;!-- pool de connexion --&gt;
+&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+    &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+    &lt;property name="url" value="jdbc:derby:target/<b>blogdb</b>;create=true"/&gt;
+    &lt;property name="username" value=""/&gt;
+    &lt;property name="password" value=""/&gt;
+&lt;/bean&gt;
+
+&lt;!-- factory bean pour la SessionFactory hibernate --&gt;
+&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+    &lt;property name="dataSource" ref="dataSource"/&gt;
+    &lt;property name="hibernateProperties"&gt;
+        &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+            &lt;property name="properties"&gt;
+                &lt;props&gt;
+                    &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/prop&gt;
+                    &lt;prop key="hibernate.hbm2ddl.auto"&gt;update&lt;/prop&gt;
+                &lt;/props&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="packagesToScan" value="edu.ecm.blog.domain"/&gt;
+&lt;/bean&gt;
+
+&lt;!-- ajoute un gestionnaire de transactions lié à la sessionFactory --&gt;
+&lt;bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"&gt;
+    &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
+&lt;/bean&gt;
+
+&lt;!-- active le support des annotations @Transactional --&gt;
+&lt;tx:annotation-driven transaction-manager="transactionManager"/&gt;</pre>
+
+        <p>La configuration est quasi identique à la configuration des tests.</p>
+
+        <p>Pour une application réelle, nous n'utiliserions pas une base embarquée.</p>
+
+        <p>Nous utiliserions une url qui pointe vers la base comme par exemple : jdbc:mysql://host:3306/blogdb.</p>
 
         <h2>Bootstrap</h2>
 
-        <h2>Bootstrap avec 3 billets</h2>
+        <p>En l'état, l'application démarre sans erreur mais les données sont toujours en dur dans la page jsp.</p>
 
-        <p>@InitMethod et insert 3 billets</p>
+        <p>Nous allons donc initialiser le contenu de la base de données au démarrage.</p>
+
+        <p>Dans la classe IndexController on rajoute une méthode bootstrap</p>
+
+        <pre>@PostConstruct
+public void bootstrap() {
+
+}</pre>
+
+        <p>@PostConstruct est une annotation java standard qui marque une méthode a appeler après la construction du composant.</p>
+
+        <p>L'appel est fait après injection des dépendances.</p>
+
+        <p>L'alter ego de @PostConstruct est @PreDestroy, appelé juste avant la destruction du composant.</p>
+
+        <p>En injectant le PostService dans le Controller, implémenter le pseudo code suivant :</p>
+
+        <pre>if (pas de billet) {
+    créer 3 billets en remplissant tous les champs (sauf l'auteur)
+}</pre>
+
+        <h2>Le Model et la jsp</h2>
 
         <h2>La page de billet</h2>
 
@@ -179,6 +255,8 @@ public class IndexController {
         <p>Le template</p>
 
         <p>Le controller</p>
+
+        <p>pagination, gestion des auteurs</p>
 
     </div>
 </div>

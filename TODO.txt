@@ -48,3 +48,5 @@ json et jsonp
 @Schedule @Async
 
 spring java based config
+
+jndi pour la définition d'une connexion à la base
