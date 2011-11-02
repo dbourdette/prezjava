@@ -1,4 +1,6 @@
 
+language java : classe Object (equals / hashCode, toString)
+
 a quiz at the end of each part.
 
 premature optimization is the root of all evil
