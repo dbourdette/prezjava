@@ -298,15 +298,60 @@ public String index(Model model) {
 
         <h2>La page de billet</h2>
 
-        <p>Le controller</p>
+        <p>La page du billet est assez similaire à la page d'index.</p>
+
+        <p><a href="files/post.jsp" target="_blank">Le template de la page</a> est le même avec un unique billet.</p>
+
+        <p>Nous pouvons créer une seconde méthode dans le Controller.</p>
+
+        <pre><b>@RequestMapping("/billet/{slug}")</b>
+public String post(<b>@PathVariable</b> String slug, Model model) {
+    model.addAttribute("post", postService.<b>findBySlug</b>(slug));
+
+    return "post";
+}</pre>
+
+        <p>Le mapping contient une partie qui correspond à un paramètre de la méthode.</p>
+
+        <p>Et nous avons ajouté une méthode à notre service.</p>
+
+        <p>Il reste donc plusieurs choses à faire :</p>
+
+        <ul>
+            <li>implémenter la méthode findBySlug()</li>
+            <li>intégrer le template html</li>
+            <li>rajouter des liens sur les titres des billets de la home page vers la page de billet</li>
+        </ul>
+
+        <p>Le Controller faisant maintenant un peu plus que la page d'index, nous pouvons le renommer BlogController.</p>
+
+        <p>Il s'agit d'un refactoring utile qui permet au nom du composant d'être en phase avec son utilité.</p>
 
         <h2>La gestion des billets</h2>
+
+        <p>Nous allons construire un CRUD (Create Request Update Delete) pour les billets.</p>
+
+        <p>Nous commençons par créer un nouveau Controller</p>
+
+        <pre>@Controller
+public class AdminController {
+}</pre>
 
         <p>Le template</p>
 
         <p>Le controller</p>
 
-        <p>pagination, gestion des auteurs</p>
+        <h2>Le reste</h2>
+
+        <p>Il resterait beaucoup a faire afin d'avoir une application complète.</p>
+
+        <ul>
+            <li>La pagination</li>
+            <li>Faire fonctionner le bloc de tags</li>
+            <li>Faire fonctionner le bloc des derniers billets</li>
+            <li>La gestion des auteurs</li>
+            <li>La gestion des cas d'erreur</li>
+        </ul>
 
     </div>
 </div>
