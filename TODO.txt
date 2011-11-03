@@ -1,5 +1,7 @@
-
 language java : classe Object (equals / hashCode, toString)
+
+partie 4 : travailler avec mysql
+partie 4 : travailler avec mongodb
 
 a quiz at the end of each part.
 
@@ -14,8 +16,6 @@ lien external en target _blank (via js ?)
 tomcat : redémarrage tomcat si modif classe et non jsp
 
 TP : persistance avec hibernate et hsql (derby ?)
-
-bouqin mongodb
 
 debug dans eclipse
 
