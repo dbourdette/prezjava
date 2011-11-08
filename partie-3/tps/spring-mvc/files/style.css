@@ -4,6 +4,10 @@ body {
 	margin: auto;
 }
 
+p {
+    margin: 0;
+}
+
 #header {
 	width: 900px;
 	height: 50px;
@@ -59,5 +63,12 @@ body {
 
 .latest {
 	
+}
+
+#form {
+	float: left;
+	width: 689px;
+	padding:5px;
+	border-right: 1px gray solid;
 }
 
