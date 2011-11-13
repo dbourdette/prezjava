@@ -61,7 +61,7 @@
 &lt;/servlet&gt;
 &lt;servlet-mapping&gt;
    &lt;servlet-name&gt;spring&lt;/servlet-name&gt;
-   &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+   &lt;url-pattern&gt;<b>/</b>&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
         <p>Au démarrage de tomcat, cette servlet va aller charger un contexte spring (/WEB-INF/spring-servlet.xml) qu'il nous faut définir.</p>
@@ -91,24 +91,24 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
    &lt;mvc:default-servlet-handler /&gt;
 
    &lt;!-- Définition de la Locale pour les opération de formattage --&gt;
-    &lt;bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver"&gt;
-        &lt;property name="defaultLocale" value="fr_FR" /&gt;
-    &lt;/bean&gt;
+   &lt;bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver"&gt;
+       &lt;property name="defaultLocale" value="fr_FR" /&gt;
+   &lt;/bean&gt;
 
    &lt;!-- Configuration de la technologie de rendu  --&gt;
-    &lt;bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"&gt;
-        &lt;property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /&gt;
-        &lt;property name="prefix" value="/WEB-INF/jsp/" /&gt;
-        &lt;property name="suffix" value=".jsp" /&gt;
-    &lt;/bean&gt;
-    
+   &lt;bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"&gt;
+       &lt;property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /&gt;
+       &lt;property name="prefix" value="/WEB-INF/jsp/" /&gt;
+       &lt;property name="suffix" value=".jsp" /&gt;
+   &lt;/bean&gt;
+
 &lt;/beans&gt;</pre>
 
         <p>Il est temps de rajouter notre premier Controller.</p>
 
         <h2>HelloController</h2>
 
-        <p>Nous définissons la class HelloController dans le package edu.ecm.blog.web.controller.</p>
+        <p>Nous définissons la classe HelloController dans le package edu.ecm.blog.web.controller.</p>
 
         <pre>@Controller
 public class HelloController {
@@ -122,13 +122,13 @@ public class HelloController {
 
         <p>L'annotation @Controller indique a spring que ce composant est un composant spécial qui répond aux requêtes http.</p>
 
-        <p>L'annotation @RequestMapping fait la liaison entre l'url et la méthode appelée.</p>
+        <p>L'annotation @RequestMapping fait la liaison entre l'url du service et la méthode cible de la classe.</p>
 
         <p>Le Model est ce qui est rempli par le Controller et transmis à la vue.</p>
 
-        <p>Le retour "hello" va être mappé pas le viewResolver et interpreté comme /WEB-INF/jsp/hello.jsp.</p>
+        <p>Le retour "hello" va être mappé pas le viewResolver (avec le prefix et suffix de la configuration spring) et interpreté comme /WEB-INF/jsp/hello.jsp.</p>
 
-        <p>la création d'un Controller est donc plus simple et plus souple qu'une servlet. Le framework nousmp) laisse faire que ce qu'il ne peut faire lui même.</p>
+        <p>La création d'un Controller est une opération simple et les annotations apportent de la souplesse.</p>
 
         <p>Afin que ce composant soit chargé, il faut le définir dans le contexte. Comme nous allons faire plusieurs Controller, nous utilisons un scan de package.</p>
 
@@ -217,7 +217,7 @@ public class PostServiceImpl implements PostService</pre>
 
         <p>En l'état, l'application démarre sans erreur mais les données sont toujours en dur dans la page jsp.</p>
 
-        <p>Nous allons donc initialiser le contenu de la base de données au démarrage.</p>
+        <p>Afin de pouvoir afficher des données dans la page, nous allons initialiser la base de données au démarrage de l'application.</p>
 
         <p>Dans la classe IndexController on rajoute une méthode bootstrap</p>
 
@@ -243,7 +243,7 @@ public void bootstrap() {
         <p>Afin d'injecter notre attribut dans le modèle, il suffit de demander le modèle à Spring</p>
 
         <pre>@RequestMapping("/index")
-public String index(Model model) {
+public String index(<b>Model model</b>) {
     return "index";
 }</pre>
 
@@ -264,9 +264,11 @@ public String index(Model model) {
             <li>La java standard tag lib (JSTL) : une notation xml qui permet d'appeler du code java</li>
         </ul>
 
+        <p>On peut également définir et utiliser ses propres tag libs.</p>
+
         <p>Un <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" class="external" target="_blank">bon tutorial sur la jstl</a> est disponible sur le site de developpez.com</p>
 
-        <p>Afin de pouvoir utiliser la jstl, il faut ajouter une implémentation dans le pom.xml</p>
+        <p>Afin de pouvoir utiliser la jstl, il faut ajouter une librairie d'implémentation dans le pom.xml</p>
 
         <pre>&lt;dependency&gt;
    &lt;groupId&gt;taglibs&lt;/groupId&gt;
@@ -326,6 +328,8 @@ public String post(<b>@PathVariable</b> String slug, Model model) {
         <p>Le Controller faisant maintenant un peu plus que la page d'index, nous pouvons le renommer BlogController.</p>
 
         <p>Il s'agit d'un refactoring utile qui permet au nom du composant d'être en phase avec son utilité.</p>
+
+        <p>Les annotations facilitent ces refactorings.</p>
 
         <h2>La gestion des billets</h2>
 
@@ -491,16 +495,86 @@ public String post(@PathVariable Long id, Model model) {
 
         <h3>JSR 303</h3>
 
+        <p>Nous avons effectué la validation dans le Controller.</p>
+
+        <p>Cette possibilité est simple mais deviendrait dense si il fallait valider beaucoup de champs.</p>
+
+        <p>Nous allons maintenant utiliser une technique beaucoup plus concise : la <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank" class="external">JSR 303</a> (spécification bean validation).</p>
+
+        <p>Tout d'abord, il faut importer une librairie d'implémentation de la spécification.</p>
+
+        <pre><span class="comment">&lt;!-- hibernate validator --&gt;</span>
+&lt;dependency&gt;
+   &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+   &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
+   &lt;version&gt;4.2.0.Final&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Hibernate validator est la spécification de référence.</p>
+
+        <p>Nous pouvons alors modifier l'AdminController</p>
+
+        <pre>@RequestMapping(value = "/admin/post", method = RequestMethod.POST)
+public String post(@ModelAttribute("post") <b>@Valid</b> Post post, BindingResult bindingResult, Model model) {
+   <s>if (StringUtils.isEmpty(post.getTitle())) {
+       bindingResult.rejectValue("title", "field.empty", "Le titre est obligatoire");
+
+       return "admin/post";
+   }</s>
+
+   <b>if (bindingResult.hasErrors()) {
+       return "admin/post";
+   }</b>
+
+   postService.save(post);
+
+   return "redirect:/admin/posts";
+}</pre>
+
+        <p>L'annotation @Valid indique a spring qu'il doit exécuter un validateur sur l'attribut.</p>
+
+        <p>Il nous suffit alors d'annoter le champs title de la class Post :</p>
+
+        <pre>@Column
+<b>@NotEmpty</b>
+private String title;</pre>
+
+        <p>En tant qu'implémentation de la JSR 303, hibernate validator vient avec la prise en charge des annotations et un jeu de messages d'erreur localisé.</p>
+
+        <img src="img/jsr-303.png" alt="" style="margin: 0 100px">
+
+        <p>Il est maintenant très simple de rajouter d'autres @NotEmpty ou bien @Length ou @Email.</p>
+
+        <p>Il est même possible d'écrire ses propres annotations afin de rendre réutilisable simplement ses éléments de validation.</p>
+
+        <h2>En peu de recul</h2>
+
+        <p>L'utilisation des Controllers est simple mais il nous a fallu bien des librairies et quelques fichiers de configuration pour arriver à ce résultat.</p>
+
+        <p>Dans le cadre d'un projet maven + spring mvc, obtenir sa première page n'est pas instantané.</p>
+
+        <p>D'autres frameworks (rails, grails, roo, play...) offrent un démarrage rapide et beaucoup de vitesse pour les besoins classiques (le CRUD est un des exemples courants)</p>
+
+        <p>Spring mvc de son coté est un peu plus lourd à manipuler mais est d'une très grande flexibilité.</p>
+
+        <p>Selon les projets, on peut donc choisir la technologie la plus adaptée.</p>
+
         <h2>Le reste</h2>
 
         <p>Il resterait beaucoup a faire afin d'avoir une application complète.</p>
 
+        <p>Voici quelques pistes / questions pour la suite :</p>
+
         <ul>
-            <li>La pagination</li>
-            <li>Faire fonctionner le bloc de tags</li>
-            <li>Faire fonctionner le bloc des derniers billets</li>
-            <li>La gestion des auteurs</li>
-            <li>La gestion des cas d'erreur</li>
+            <li>La page d'index est /index. Comment pourrait on faire pour que / réponde également comme page d'index ?</li>
+            <li>Comment devrait on gérer la pagination ? Quelle ergonomie dans la page ? Quelles modifications dans le service ?</li>
+            <li>Comment pourrait on gérer convenablement le bloc de tag ?</li>
+            <li>Comment lister les billets par tags (et donc pour mettre des liens sur les tags) ?</li>
+            <li>Comment faire fonctionner le bloc des derniers billets ?</li>
+            <li>La gestion des auteurs est un élément délicat. Comment gérer la relation @ManyToOne dans le formulaire d'édition ? Comment gérer cela dans le controller et le service ?</li>
+            <li>La gestion des cas d'erreur : que faire de http://localhost:8080/billet/not-existing-post ou bien http://localhost:8080/admin/post/aaa ?</li>
+            <li>Si notre blog devait supporter beaucoup de trafic, que pourrait on faire pour l'aider à tenir la charge ?</li>
         </ul>
 
     </div>
