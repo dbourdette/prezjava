@@ -213,25 +213,95 @@ Executed Session org.hibernate.SessionFactory.getCurrentSession() in 1ms</pre>
 
         <h2>Un peu de cache</h2>
 
-        <p>La problématique de cache est élément d'une application facile à impléménter via AOP.</p>
+        <p>La problématique de cache est un élément d'une application facile à impléménter via AOP.</p>
 
         <p>Nous allons ajouter les mécaniques suivantes :</p>
 
         <ul>
             <li>Ajouter un cache aux méthodes find, findById, findBySlug et count du PostService.</li>
-            <li>Lorsque que les méthodes save et delete sont appelées, le cache doit être vidé (flushé).</li>
+            <li>Lorsque que les méthodes save et delete sont appelées, le cache doit être vidé (flush).</li>
         </ul>
 
-        <p>ehcache pom</p>
+        <p>Nous allons utiliser ehcache comme librairie de cache.</p>
 
-        <p>annotation @Cache et @FlushCache</p>
+        <pre>&lt;dependency&gt;
+   &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
+   &lt;artifactId&gt;ehcache-core&lt;/artifactId&gt;
+   &lt;version&gt;2.4.6&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
 
-        <p>use them on service</p>
+        <p>Son utilisation est simple. Pour des cas plus complexes, elle est même capable de devenir distribuée au travers de <a href="http://www.terracotta.org/" target="_blank" class="external">terracotta</a></p>
 
-        <p>CacheAspect cache et fush</p>
+        <p>La configuration spring</p>
 
-        <p>Spring @Cache annotation.</p>
+        <pre>&lt;bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"&gt;
+   &lt;property name="configLocation" value="/WEB-INF/ehcache.xml" /&gt;
+&lt;/bean&gt;
 
+&lt;bean id="postsCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"&gt;
+   &lt;property name="cacheManager" ref="cacheManager" /&gt;
+   &lt;property name="cacheName" value="postsCache" /&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Et le fichier WEB-INF/ehcache.xml associé</p>
+
+        <pre>&lt;ehcache&gt;
+   &lt;defaultCache maxElementsInMemory="500" eternal="true" overflowToDisk="false"
+            memoryStoreEvictionPolicy="LFU"/&gt;
+   &lt;cache name="postsCache" maxElementsInMemory="500" eternal="true" overflowToDisk="false"
+            memoryStoreEvictionPolicy="LRU"/&gt;
+&lt;/ehcache&gt;</pre>
+
+        <p>Nous avons donc maintenant un cache postsCache disponible.</p>
+
+        <p>Nous définissons 2 annotations dans le package edu.ecm.blog.annotation</p>
+
+        <pre>@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface UseCache {
+}</pre>
+
+        <pre>@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface FlushCache {
+}</pre>
+
+        <p>Elles nous servent a annoter les méthodes du PostServiceImpl</p>
+
+        <pre>@UseCache
+public Post findById(Long id) {
+   <span class="comment">...</span>
+}</pre>
+
+        <p>Il nous alors définir notre Aspect.</p>
+
+        <pre>@Aspect
+@Component
+public class CacheAspect {
+   @Inject
+   private Ehcache postsCache;
+
+   @Around("@annotation(useCache)")
+   public Object cache(ProceedingJoinPoint pjp, UseCache useCache) throws Throwable {
+       return pjp.proceed();
+   }
+
+   @Around("@annotation(flushCache)")
+   public Object flush(ProceedingJoinPoint pjp, FlushCache flushCache) throws Throwable {
+       return pjp.proceed();
+   }
+}</pre>
+
+        <p>Proposer une implémentation pour ces 2 méthodes.</p>
+
+        <h2>Oui mais...</h2>
+
+        <p>Ce que nous avons mis en place est simple et peut évoluer facilement.</p>
+
+        <p>Mais depuis peu, spring propose une <a href="http://static.springsource.org/spring/docs/3.1.0.M1/spring-framework-reference/html/cache.html" target="_blank" class="external">abstraction pour le cache</a></p>
+
+        <p>Elle propose ce que nous venons d'implémenter en beaucoup plus souple.</p>
     </div>
 </div>
 </body>
