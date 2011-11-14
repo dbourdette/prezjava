@@ -45,7 +45,7 @@
 	        		<li><b>Request dispatching</b> (URL mapping) : routage de la requête vers le bon traitements.</li>
 	        		<li><b>Binding et validation</b> : conversion des paramètres, affectation et gestion des erreurs.</li>
 	        		<li>Gestion de <b>formulaires</b> : simplification et gestion des erreurs</li>
-	        		<li><b>Rendering</b> : aide à la création des fichiers jsp ou autres.</li>
+	        		<li><b>Rendering</b> : aide à la création des fichiers jsp ou autres technologies.</li>
 	        	</ul>
 	        </section>
 	      </div>
@@ -64,20 +64,22 @@
 	        <section>
 	        	<p>Une brève histoire des frameworks MVC :</p>
 	        	<img alt="" src="img/frameworks.png" width="840px"/>
-	        	<p>Nous allons utiliser <b>Spring MVC</b> pour le reste de la présentation.</p>
+	        	<p>L'écosystème est riche et dynamique.</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
 	      	<header>Spring MVC</header>
 	        <section>
-	        	<p>Spring MVC est un pur framework MVC 2 configuré grâce à un contexte spring.</p>
-	        	<p>Spring 2.5 a introduit une nouveau framework MVC fortement basé sur les annotations.</p>
+	        	<p>Spring MVC est un pur framework MVC 2 dont la configuration repose sur spring.</p>
+	        	<p>Depuis spring 2.5, il est fortement basé sur les annotations.</p>
 	        	<p>Dans une application web avec spring MVC, on retrouve donc.</p>
 	        	<ul>
 	        		<li>Un descripteur de déploiement web jee (web.xml)
-	        		<li>Un contexte spring qui est chargé au démarrage de l'application 
+	        		<li>Des contextes spring (1 contexte parent et 1 contexte par dispatcher spring)
 	        	</ul>
+                <p>Pour application spring, la configuration est relativement aisée.</p>
+                <p>En comparaison d'autres frameworks nativement web, cette configuration est un peu lourde.</p>
 	        </section>
 	      </div>
 	
@@ -96,8 +98,9 @@
  &lt;servlet-name&gt;spring&lt;/servlet-name&gt;
  &lt;url-pattern&gt;<b>/</b>&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
-				<p>Nous avons donc un contrôleur frontal unique qui distribue toutes les requêtes.</p>
-				<p>Le nom du fichier de configuration spring est déterminé par le nom de la DispatcherServlet auquel est ajouté le suffixe "-servlet".</p> 
+				<p>Le contrôleur frontal (DispatcherServlet) distribue toutes les requêtes (mapping sur /).</p>
+				<p>Le nom de la servlet (ici spring) détermine le nom par défaut du fichier spring associé.</p>
+                <p>Le fichier spring chargé est donc WEB-INF/spring-servlet.xml</p>
 	        </section>
 	      </div>
 	
@@ -106,16 +109,22 @@
 	        <section>
 	        	<p>C'est un contexte spring classique auquel se rajoute les éléments mvc.</p>
 	        	<pre>
-&lt;context:annotation-config /&gt;
 &lt;context:component-scan base-package="fr.mon.package" /&gt;
-&lt;aop:aspectj-autoproxy /&gt;
+
+<span class="comment">&lt;!-- Activation des annotations --&gt;</span>
+&lt;context:annotation-config /&gt;
 
 <span class="comment">&lt;!-- Enregistrement de convertisseurs et formatteurs spécifiques au mvc --&gt;</span>
 &lt;mvc:annotation-driven /&gt;
 
-<span class="comment">&lt;!-- Forwarde les demandes de fichiers statiques 
+<span class="comment">&lt;!-- Forwarde les demandes de fichiers statiques
    vers la servlet par défaut du conteneur --&gt;</span>
 &lt;mvc:default-servlet-handler /&gt;
+
+<span class="comment">&lt;!-- Définition de la Locale pour les opération de formattage --&gt;</span>
+&lt;bean id="localeResolver" class="...FixedLocaleResolver"&gt;
+   &lt;property name="defaultLocale" value="fr_FR" /&gt;
+&lt;/bean&gt;
 
 <span class="comment">&lt;!-- Configure la technologie de templating --&gt;</span>
 &lt;bean id="jspViewResolver" class="...InternalResourceViewResolver"&gt;
@@ -129,7 +138,7 @@
 	      <div class="slide">
 	      	<header>HelloWorldController</header>
 	        <section>
-	          <p>Un contrôleur est un composant spécial dédié au traitements des requêtes HTTP.</p>
+	          <p>Un contrôleur est un composant spring spécial dédié aux traitements des requêtes HTTP.</p>
 	          <pre>
 @Controller
 public class HelloWorldController {
@@ -149,6 +158,8 @@ public class HelloWorldController {
 	      	<header>Paramètres</header>
 	        <section>
 	          <p>Les paramètres de la requête peuvent être déclarés comme des paramètres de la méthode.</p>
+              <pre>http://localhost:8080/hello?name=Steven</pre>
+              <p>Et la méthode associée</p>
 	          <pre>
 @Controller
 public class HelloWorldController {
@@ -158,7 +169,7 @@ public class HelloWorldController {
   response.getWriter().write("Hello " + name + " !");
  }
 }</pre>
-				<p>Une requête sur /hello?name=Steven affiche Hello Steven !</p>
+              <p>L'annotation @RequestParam permet de d'ajuster le mapping du paramètre.</p>
 	        </section>
 	      </div>
 	
@@ -166,15 +177,17 @@ public class HelloWorldController {
 	      	<header>La conversion automatique</header>
 	        <section>
 	          <p>Le framework est capable de convertir les paramètres vers le bon type de données</p>
+              <pre>http://localhost:8080/hello?value=10</pre>
+              <p>Et la méthode associée</p>
 	          <pre>
 @Controller
 public class HelloWorldController {
  @RequestMapping("/hello")
- public void hello(<b>Integer value</b>) throws IOException {
+ public void hello(HttpServletResponse response, <b>Integer value</b>) throws IOException {
   response.getWriter().write("Hello " + value + " !");
  }
 }</pre>
-				<p>Par contre, si la conversion échoue (/hello?value=xyz) une erreur est visible par le client.</p>
+				<p>En cas d'erreur de conversion (/hello?value=xyz) une erreur 400 (Bad Request) est lancée.</p>
 	        </section>
 	      </div>
 	
@@ -182,22 +195,26 @@ public class HelloWorldController {
 	      	<header>Le parsing du chemin</header>
 	        <section>
 	          <p>Il est aussi possible de découper le chemin de la requête et de s'en servir comme paramètres.</p>
+                <pre>http://localhost:8080/hello/Steven</pre>
+                <p>Et la méthode associée</p>
 	          <pre>
 @Controller
 public class HelloWorldController {
  @RequestMapping("/hello/{name}")
- public void hello(<b>@PathVariable String name</b>) throws IOException {
+ public void hello(HttpServletResponse response, <b>@PathVariable String name</b>)
+  throws IOException {
   response.getWriter().write("Hello " + name + " !");
  }
 }</pre>
-				<p>Ce qui répondrait sur un appel du type /hello/Steven.</p>
+				<p>Cela permet de construire des urls de service élégantes.</p>
+                <p>C'est un point important du référencement naturel : la capacité a remonter naturellement dans les moteurs de recherche.</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
 	      	<header>Paramètres injectés</header>
 	        <section>
-	        	<p>Les objects suivants sont injectés automatiquement si il sont présents dans la signature.</p>
+	        	<p>Les liste des paramètres injectables est longue.</p>
 	        	<ul style="float:left;">
 	        		<li>HttpServletRequest</li>
 	        		<li>HttpServletResponse</li>
@@ -220,7 +237,7 @@ public class HelloWorldController {
 	        		<li>Errors</li>
 	        	</ul>
 	        	<div style="clear:both;"></div>
-	          	<p>On peut donc simplifier notre code</p>
+	          	<p>On pourrait donc simplifier notre code</p>
 	          	<pre>
 @Controller
 public class HelloWorldController {
@@ -236,7 +253,7 @@ public class HelloWorldController {
 	      <div class="slide">
 	      	<header>Retours supportés</header>
 	        <section>
-	        	<p>Voici tous les retours possibles pour les méthodes.</p>
+	        	<p>La liste des retours possible est aussi longue.</p>
 	        	<ul style="float:left;">
 	        		<li>ModelAndView</li>
 	        		<li>Model / Map</li>
@@ -261,13 +278,15 @@ public class HelloWorldController {
   return "Hello " + name + "!";
  }
 }</pre>
+                <p>Avec @ResponseBody, spring comprend que le retour de la méthode doit être écrit dans le corps de la réponse.</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
 	      	<header>Le forward vers la vue</header>
 	        <section>
-	          <p>Le controller peut simplement passer la main à un ficher jsp</p>
+              <p>Dans un conteneur de servlet, un forward consiste a passer la main à un autre composant.</p>
+	          <p>Pour demander à spring de passer la main à une jsp, on peut retourner le nom du fichier.</p>
 	          <pre>
 @Controller
 public class HelloWorldController {
@@ -284,7 +303,7 @@ public class HelloWorldController {
 	      <div class="slide">
 	      	<header>Le modèle et la vue</header>
 	        <section>
-	          <p>Le rôle de la vue est de recevoir le modèle de données et de le mettre en forme.</p>
+              <p>Le rôle du controller est d'interagir avec les services et de préparer le modèle.</p>
 	          <pre>
 @Controller
 public class HelloWorldController {
@@ -295,7 +314,7 @@ public class HelloWorldController {
    return "hello";
  }
 }</pre>
-			  <p>Les données du modèle sont alors exploitables dans la jsp.</p>
+			  <p>Le rôle de la vue est de recevoir le modèle de données et de le mettre en forme.</p>
 			  <pre>
 &lt;%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%&gt;
@@ -310,10 +329,10 @@ public class HelloWorldController {
 	      <div class="slide">
 	      	<header>Les formulaires</header>
 	        <section>
-	        	<p>La gestion des formulaires est une aide importante des framewokrs MVC.</p>
-	        	<p>Nous allons prendre comme exemple le formulaire suivant.</p>
+	        	<p>Spring mvc propose un gestion assez classique des formulaires.</p>
+                <p>Nous allons prendre le formulaire suivant comme exemple.</p>
 	        	<pre><form method="post" action="/editPerson">nom <input type="text" name="name">, age <input type="text" name="age"> <input type="submit"></form></pre>
-	        	<p>Avec le code jsp qui correspondant (en utilisant les custom tags form de spring).</p>
+	        	<p>Le code jsp qui correspondant.</p>
 	        	<pre>
 &lt;form:form commandName="person" method="post" action="/editPerson"&gt;
    nom &lt;form:input path="name"&gt;
@@ -341,7 +360,7 @@ public class PersonForm {
 </pre>
 	        	<p>Par convention, il est pratique d'utliser le suffixe Form.</p>
 	        	<p>Cependant, n'importe quelle classe avec les accesseurs disponibles pour les champs du formulaire ferait l'affaire.</p>
-	        	<p>Il est même possible d'utiliser des objets du domaine métier qui ont un comportement riche.</p>
+	        	<p>Il est même possible d'utiliser des objets du domaine métier qui serviront à la persistance.</p>
 	        </section>
 	      </div>
 	
@@ -380,18 +399,18 @@ public class PersonController {
 	        		<li>Le <b>binding</b> : prendre les chaînes de caractères dans la requête et remplir l'objet (form backing bean)
 	        		<li>La <b>validation</b> : noter toutes les erreurs de conversion lors du binding et être capable d'afficher des messages d'erreur
 	        	</ul>
-	        	<p>Les annotation simplifient la configuration de la validation.</p>
-	        	<pre>
-public class Report {
-   @NotNull
-   @Past
-   @DateTimeFormat(pattern="MM/dd/yyyy HH:mm")
-   private Date creationDate;
-}</pre>
+                <p>La JSR 303 (bean validation) simplifie la configuration de la validation.</p>
+	        	<pre>@NotEmpty
+private String name;</pre>
 	        	<pre>
 @RequestMapping(method = RequestMethod.<b>POST</b>)
-public String post(@ModelAttribute @Valid Report report,
+public String post(@ModelAttribute("person") @Valid PersonForm form,
             BindingResult result) {
+
+        if (result.hasError()) {
+            return "form";
+        }
+
         <span class="comment">...</span>
 }</pre>
 	        	
@@ -402,24 +421,12 @@ public String post(@ModelAttribute @Valid Report report,
 	      	<header>Redirect after POST</header>
 	        <section>
 	          <p>Lors du POST du formulaire, des données sont envoyées au serveur.</p>
-	          <p>En cas d'erreur de validation, le contrôleur note les erreurs et <b>forward</b> vers la vue qui les affichent.</p>
-	          <p>Si le client rafraîchit (F5) sa page a ce moment, les données sont renvoyées comme précédemment.</p>
 	          <p>En cas de succès, une modification est inscrite dans la base de données du serveur.</p>
-	          <p>Si le client rafraîchit (F5) sa page a ce moment, les données sont renvoyées et une deuxième sauvegarde est faite en base.</p>
+              <p>Faire un refresh sur un navigateur consiste a refaire la même requête.</p>
+              <p>Dans notre cas, un refresh ferait une deuxième écriture en base.</p>
 	          <p>Il est donc impératif que le contrôleur fasse un <b>redirect</b> après une modification en base.</p>
 	          <p>Ce pattern est appelé <b>redirect after POST</b></p>
 	          <p>Cela permet d'éviter l'insert de doublons en base et d'assurer le fonctionnement normal du bouton back du navigateur.</p> 
-	        </section>
-	      </div>
-	
-	      <div class="slide">
-	      	<header>Structure du projet web spring</header>
-	        <section>
-	        	<p>Un squelette du projet est disponible dans le répertoire <a href="projets/blog/index.html" class="project" target="_blank">blog</a></p>
-	        	<p>Nous utilisons <a href="http://eclipse.org" class="external" target="_blank">eclipse</a> comme IDE.</p>
-	        	<p>Nous utilisons <a href="http://tomcat.apache.org" class="external" target="_blank">tomcat</a> comme conteneur de servlets.</p>
-	        	<p><br><br></p>
-	        	<p>Nous allons construire un début de blog avec des composants spring.</p>
 	        </section>
 	      </div>
 	     
