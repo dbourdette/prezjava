@@ -18,11 +18,151 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>Mysql</h1>
+        <h1><img src="img/mysql.gif" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;"> <span style="color:#004D61;">My</span><span style="color:#E67914">SQL</span></h1>
 
         <h2>Introduction</h2>
 
+        <p>Les bases de données relationnelles sont les plus répandues en production.</p>
 
+        <p>Elles ont survécues aux bases de données objets et aux bases xml.</p>
+
+        <p>Parmis celle-ci Mysql a toujours eut une place a part : la base libre, simple et performante.</p>
+
+        <h2>Installation</h2>
+
+        <p>L'installation de myqsl est simple, il suffit de suivre les instructions disponibles sur <a href="http://www.mysql.fr/" target="_blank" class="external">www.mysql.fr/</a></p>
+
+        <p>Une fois installée, il suffit de démarrer mysql</p>
+
+        <h2>création de la base</h2>
+
+        <p>Afin de pouvoir gérer la base de données mysql, on récupère MySQL Workbench sur le site de mysql.</p>
+
+        <p>Une fois le workbench lancé, on crée une nouvelle connexion sur localhost</p>
+
+        <img src="img/mysql-connexion.png" alt="" style="margin: 0 50px;">
+
+        <p>On se connecte sur le serveur en local et on demande la création d'un nouveau schéma.</p>
+
+        <img src="img/mysql-schema.png" alt="" style="margin: 0 20px;">
+
+        <p>Le schéma blog existe et il ne contient aucune table.</p>
+
+        <h2>Changements dans l'application</h2>
+
+        <p>La première chose à faire est de rajouter le driver mysql.</p>
+
+        <pre>&lt;dependency&gt;
+    &lt;groupId&gt;mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+    &lt;version&gt;5.1.18&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Dans notre application, la définition de la connexion à la base est :</p>
+
+        <pre>&lt;!-- pool de connexion --&gt;
+&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+   &lt;property name="url" value="jdbc:derby:target/blogdb;create=true"/&gt;
+   &lt;property name="username" value=""/&gt;
+   &lt;property name="password" value=""/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+   &lt;property name="dataSource" ref="dataSource"/&gt;
+   &lt;property name="hibernateProperties"&gt;
+       &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+          &lt;property name="properties"&gt;
+             &lt;props&gt;
+                &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/prop&gt;
+                &lt;prop key="hibernate.hbm2ddl.auto"&gt;update&lt;/prop&gt;
+             &lt;/props&gt;
+          &lt;/property&gt;
+       &lt;/bean&gt;
+   &lt;/property&gt;
+   &lt;property name="packagesToScan" value="edu.ecm.blog.domain"/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Pour mysql, l'url est de la forme :</p>
+
+        <pre>jdbc:mysql://localhost/dbname</pre>
+
+        <p>Avec la configuration de mysql par défaut, on a donc la configuration suivante.</p>
+
+        <pre>&lt;!-- pool de connexion --&gt;
+&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+   &lt;property name="url" value="<b>jdbc:mysql://localhost/blog</b>"/&gt;
+   &lt;property name="username" value="<b>root</b>"/&gt;
+   &lt;property name="password" value="<b></b>"/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Il faut également changer le dialect hibernate en :</p>
+
+        <pre>org.hibernate.dialect.MySQL5Dialect</pre>
+
+        <p>Si on redémarre, notre application est connectée à la base mysql.</p>
+
+        <p>Sous le workbench, on peut voir nos tables</p>
+
+        <img src="img/mysql-tables.png" alt="" style="margin: 0 300px;">
+
+        <p>Afin de se connecter à d'autres bases, il suffit d'avoir le driver et la bonne url.</p>
+
+        <p>Hibernate et jdbc permettent de s'abstraire de beaucoup des différences existantes entre les bases.</p>
+
+        <h2>Mise à jour du schéma</h2>
+
+        <p>Actuellement, le schéma de la base de données est mis à jour au démarrage de l'application.</p>
+
+        <pre>&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+   &lt;property name="dataSource" ref="dataSource"/&gt;
+   &lt;property name="hibernateProperties"&gt;
+       &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+          &lt;property name="properties"&gt;
+             &lt;props&gt;
+                &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.MySQL5Dialect&lt;/prop&gt;
+                &lt;prop key="hibernate.hbm2ddl.auto"&gt;<b>update</b>&lt;/prop&gt;
+             &lt;/props&gt;
+          &lt;/property&gt;
+       &lt;/bean&gt;
+   &lt;/property&gt;
+   &lt;property name="packagesToScan" value="edu.ecm.blog.domain"/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Lorsque l'on ajoute des attributs au model, les colonnes sont automatiquement crées.</p>
+
+        <p>De même, lors de la suppression, la base perd des colonnes.</p>
+
+        <p>En production, cela peut être embêtant si l'on souhaite migrer progressivement les applications et donc garder la main sur les modifications de schéma effectuées dans la base.</p>
+
+        <p>De plus, une erreur de déploiement pourrait détruire des données importantes.</p>
+
+        <p>Pour ne pas faire d'erreur, on passe donc le hbm2ddl (Hibernate model to data definition language) en none</p>
+
+        <p>Oui mais comment demander a hibernate de nous aider quand même un peu ?</p>
+
+        <p>En fait, on va utiliser le code d'hibernate pour générer le sql.</p>
+
+        <pre>Configuration configuration = new Configuration();
+
+configuration.addAnnotatedClass(Post.class);
+configuration.addAnnotatedClass(Author.class);
+
+for (String string : configuration.generateSchemaCreationScript(new MySQL5Dialect())) {
+   System.out.println(string + ";");
+}</pre>
+
+        <p>Il est facile de placer ce code dans un main ou un test unitaire afin de générer le code sql de la base désirée.</p>
+
+        <p>On obtient le code ddl suivant que l'on peut exécuter via le workbench.</p>
+
+    <pre>create table author (id bigint not null auto_increment, email varchar(255), name varchar(255), primary key (id));
+create table post (id bigint not null auto_increment, date datetime, slug varchar(255), tags varchar(255),
+        text varchar(4000), title varchar(255) not null, author_id bigint, primary key (id));
+alter table post add index FK3498A070AF1F0F (author_id), add constraint FK3498A070AF1F0F foreign key (author_id)
+        references author (id);</pre>
     </div>
 </div>
 </body>
