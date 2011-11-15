@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Jndi</title>
+    <title>Java Naming and Directory Interface</title>
 
     <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
     <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
@@ -18,11 +18,159 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>Jndi</h1>
+        <h1 style="line-height: 55px;padding-left: 10px;"><img src="img/java.png" height="50px" style="float:left"/>Java Naming and Directory Interface</h1>
 
         <h2>Introduction</h2>
 
+        <p>JNDI est une des technologies centrales de JEE (Jave Entreprise Edition).</p>
 
+        <p>Elle permet d’accéder à différents services de nommage ou de répertoire avec une api uniforme.</p>
+
+        <p>En pratique, elle permet aux composants d'une application d'obtenir des références sur des services en connaissant uniquement leur adresse virtuelle dans le jndi.</p>
+
+        <p>C'est une implémentation du pattern Service Locator.</p>
+
+        <img src="img/service-locator.png" alt="" style="margin: 0 140px;">
+
+        <p>Comme spring, cela permet de découpler les composants d'une application.</p>
+
+        <h2>Exemple</h2>
+
+        <p>Admettons qu'une DataSource est été configurée dans le jndi à l'adresse jdbc/mabase.</p>
+
+        <p>Le code afin d'obtenir une référence est le suivant :</p>
+
+        <pre>Context ctx = new InitialContext();
+DataSource ds = (DataSource) ctx.lookup("jdbc/mabase");</pre>
+
+        <p>L'appelant n'a aucune idée de la façon dont la DataSource a été initialisé.</p>
+
+        <p>Un autre avantage est que le contenu du jndi peut varier en fonction de l'environnement.</p>
+
+        <p>La DataSource peut pointer vers une base de test pour le développement et la vraie base en production.</p>
+
+        <p>Pendant ce temps, le code qui utilise la DataSource est identique.</p>
+
+        <p>Le code peut donc être packagé en jar / war et configuré au runtime via le jndi.</p>
+
+        <h2>JNDI et Spring</h2>
+
+        <p>Spring va un cran plus loin et injecte lui même la référence dans le composant.</p>
+
+        <p>Avec spring, le composant ne sait même pas que la DataSource est dans le jndi.</p>
+
+        <p>Cela est particulièrement pratique pour les tests, où obtenir une instance de jndi est pénible.</p>
+
+        <h2>Le pool de connexion</h2>
+
+        <p>Actuellement, la définition de notre pool de connexion est la suivante :</p>
+
+        <pre>&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+   &lt;property name="url" value="jdbc:derby:target/blogdb;create=true"/&gt;
+   &lt;property name="username" value=""/&gt;
+   &lt;property name="password" value=""/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Le but est de passer cette configuration sous jndi.</p>
+
+        <p>Par défaut, tomcat va chercher le fichier context.xml dans le répertoire META-INF de l'application web afin de définir le contexte de l'application.</p>
+
+        <p>Dans ce contexte, il y notamment la possibilité de définir des entrées dans le jndi.</p>
+
+        <p>Pour notre besoin, il faut donc définir le fircher webapp/META-INF/context.xml suivant.</p>
+
+        <pre>&lt;Context&gt;
+   &lt;Resource name="jdbc/blogdb"
+          auth="Container"
+          type="javax.sql.DataSource"
+          username=""
+          password=""
+          driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
+          url="jdbc:derby:target/blogdb;create=true"
+          maxActive="10"
+          maxIdle="2"/&gt;
+&lt;/Context&gt;</pre>
+
+        <p>La configuration est la même que celle du fichier spring.</p>
+
+        <p>Maintenant on modifie notre context spring afin d'utiliser jdbc/blogdb depuis le jndi.</p>
+
+        <pre>&lt;bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"&gt;
+   &lt;property name="jndiName" value="java:comp/env/jdbc/blogdb" /&gt;
+&lt;/bean&gt;</pre>
+
+        <p>La configuration spring devient plus simple et indépendante de l'environnement.</p>
+
+        <p>Et encore une fois, nos composants n'ont pas été affectés par cette modification.</p>
+
+        <h2>jndi namespace</h2>
+
+        <p>On peut pousser la configuration spring un peu plus loin.</p>
+
+        <p>Spring dispose d'un namespace jee afin de faciliter la récupération de références dans le jndi.</p>
+
+        <pre>&lt;beans <span class="comment">...</span> xmlns:jee="http://www.springframework.org/schema/jee" xsi:schemaLocation="
+   <span class="comment">...</span>
+   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"&gt;</pre>
+
+        <p>On peut ensuite écrire.</p>
+
+        <pre>&lt;jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/blogdb" /&gt;</pre>
+
+        <h2>Déploiement dans tomcat</h2>
+
+        <p>Si on devait déployer notre application dans un tomcat en développement puis en prod, nous utiliserions la possibilité de définir le contexte dans $CATALINA_BASE de ces différentes installations.</p>
+
+        <p>Extrait de la <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/context.html" target="_blank" class="external">documentation tomcat</a> :</p>
+        
+        <pre>Context elements may be explicitly defined:
+
+In the $CATALINA_BASE/conf/context.xml file: the Context element information will be loaded by all webapps.
+In the $CATALINA_BASE/conf/[enginename]/[hostname]/context.xml.default file: the Context element information
+   will be loaded by all webapps of that host.
+In individual files (with a ".xml" extension) in the <b>$CATALINA_BASE/conf/[enginename]/[hostname]/</b> directory.
+    The name of the file (less the .xml extension) will be used as the context path.
+    Multi-level context paths may be defined using #, e.g. foo#bar.xml for a context path of /foo/bar.
+    The default web application may be defined by using a file called ROOT.xml.
+Only if a context file does not exist for the application in the $CATALINA_BASE/conf/[enginename]/[hostname]/,
+    in an individual file at /META-INF/context.xml inside the application files.
+    If the web application is packaged as a WAR then /META-INF/context.xml will be copied to
+    $CATALINA_BASE/conf/[enginename]/[hostname]/ and renamed to match the application's context path.
+    Once this file exists, it will not be replaced if a new WAR with a newer /META-INF/context.xml is placed
+    in the host's appBase.
+Inside a Host element in the main conf/server.xml.</pre>
+
+        <p>La solution préférée est un fichier context dans $CATALINA_BASE/conf/[enginename]/[hostname]/.</p>
+
+        <p>Par exemple $CATALINA_BASE/conf/Catalina/localhost/blog.xml</p>
+
+        <p>Cela permet d'avoir un fichier context par application.</p>
+
+        <h2>Les autres app serv</h2>
+
+        <p>Chaque serveur d'application ou conteneur de servlet dispose de ses propres moyens de configuration.</p>
+
+        <p>Il faut donc regarder les moyens offerts par chaque serveur afin de savoir comment configurer au mieux le war.</p>
+
+        <h2>META-INF/context.xml</h2>
+
+        <p>Tomcat ne prendre pas en compte notre META-INF/context.xml si un fichier contexte est bien présent dans $CATALINA_BASE.</p>
+
+        <p>Cependant, ce n'est pas très propre d'envoyer un fichier servant aux tests en production.</p>
+
+        <p>Nous allons donc utiliser maven afin de filter ce fichier au moment du build.</p>
+
+        <pre>&lt;plugin&gt;
+   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+   &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+   &lt;version&gt;2.1.1&lt;/version&gt;
+   &lt;configuration&gt;
+       &lt;packagingExcludes&gt;META-INF/context.xml&lt;/packagingExcludes&gt;
+   &lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+
+        <p>Nous utisons jndi et notre war est propre.</p>
     </div>
 </div>
 </body>
