@@ -1,4 +1,4 @@
-L&F
+css for blog app
 
 language java : classe Object (equals / hashCode, toString)
 

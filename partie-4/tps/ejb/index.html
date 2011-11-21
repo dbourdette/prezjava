@@ -60,7 +60,7 @@
 
         <p>La ligne de commande pour démarrer glassfish en embedded est : </p>
 
-        <pre>mvn embedded-glassfish:run</pre>
+        <pre class="shell">mvn embedded-glassfish:run</pre>
 
         <p>Si on teste cette commande avec notre application, elle devrait tourner comme avec tomcat sur http://localhost:8080/index (attention le glassfish-embedded-all-3.1.1.jar est un peu long a récupérer).</p>
 
@@ -70,7 +70,7 @@
 
         <p>Vu le fonctionnement du plugin, il vaut mieux monter un peu la taille mémoire de la jvm et définir :</p>
 
-        <pre>export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
+        <pre class="shell">export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
 
         <p>Pour rappel</p>
 

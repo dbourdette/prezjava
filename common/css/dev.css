@@ -1,7 +1,6 @@
 
 .presentation {
-	background-image: -moz-radial-gradient(center center, rgb(133,143,179) 60%, rgb(46,80,148) 130%);
-	background-image: -webkit-radial-gradient(center center, rgb(133,143,179) 60%, rgb(46,80,148) 130%);
+	background-color: rgb(133,143,179);
 }
 
 #landing-slide p {
@@ -10,9 +9,6 @@
 
 .slide {
 	font-size:20px;
-	border: 1px #284B7E solid;
-	background-image: -moz-linear-gradient(center top, rgb(228,235,245) 50%, rgb(100,136,176) 120%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%, rgb(228,235,245)), color-stop(120%, rgb(100,136,176)));
 }
 
 pre {

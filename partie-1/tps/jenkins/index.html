@@ -45,17 +45,17 @@
         <p>Il faut télécharger le .war depuis le <a href="https://wiki.jenkins-ci.org" class="external">site de jenkins</a></p>
 
         <p>Une fois téléchargé, il suffit de le lancer:</p>
-        <pre>java -jar jenkins.war</pre>
+        <pre class="shell">java -jar jenkins.war</pre>
 
         <p>Par défaut, jenkins se lance sur le port 8080.<br>Afin de le lancer sur un autre port il suffit d'utiliser l'option --httpPort</p>
-        <pre>java -jar jenkins.war --httpPort=8081 --ajp13Port=8082</pre>
+        <pre class="shell">java -jar jenkins.war --httpPort=8081 --ajp13Port=8082</pre>
 
         <p>AJP est un protocole alternatif à HTTP.</p>
         <p>Les options de jenkins sont disponibles dans la <a href="https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins" class="external">documentation</a>
             et notamment dans la partie <a href="https://wiki.jenkins-ci.org/display/JENKINS/Starting+and+Accessing+Jenkins" class="external">démarrage de jenkins</a></p>
 
         <p>Ce qui donne la sortie suivante</p>
-        <pre>
+        <pre class="shell">
 Running from: /Applications/Jenkins/jenkins.war
 webroot: $user.home/.jenkins
 [Winstone 2011/05/23 16:45:46] - Beginning extraction from war file
@@ -143,7 +143,7 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
         <h2>Notre projet</h2>
 
-        <p>Notre projet blog est <a href="../github/index.html">sous github</a> dans un repository git@github.com:{user}/blog.git.</p>
+        <p>Notre projet blog est sous <a href="../github/index.html">github</a> dans un repository git@github.com:{user}/blog.git.</p>
 
         <p>Configurer un job qui build ce projet comme il le fait avec le projet de référence.</p>
 
