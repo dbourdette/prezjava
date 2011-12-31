@@ -325,6 +325,7 @@ pre.shell {
   border-radius: 0;
   background: rgba(0, 0, 0, 1);
   color: #dfdede;
+  border: 3px #cccccc solid;
 }
 
 pre select {
@@ -476,4 +477,16 @@ video {
   left: 0;
   width: 100%;
   text-align: center;
+}
+
+div.todo {
+    background-color: #feffd5;
+    border: 1px #e5e797 solid;
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 40px;
+    background-image: url("../img/todo.png");
+    background-repeat: no-repeat;
+    background-position: 3px 5px;
+    margin-bottom: 5px;
 }
