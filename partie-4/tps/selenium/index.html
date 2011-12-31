@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Selenium</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+</head>
+<body>
+<div class="presentation">
+    <div id="project">
+        <h1 style="line-height: 80px;"><img src="img/webdriver.png" alt="" style="float: left;"> Selenium</h1>
+
+        <h2>Introduction</h2>
+
+        <p><a href="http://seleniumhq.org/" class="external" target="_blank">Selenium</a> est un projet pour l'automatisation des tests au travers d'un browser.</p>
+
+        <p>Il se décline en 2 parties :</p>
+
+        <ul>
+            <li>Selenium IDE : un plugin pour firefox qui permet d'enregistrer ses actions dans le navigateur.</li>
+            <li>Selenium WebDriver : une librairie permettant de piloter le navigateur via une API.</li>
+        </ul>
+
+        <p>Nous allons utiliser la librairie afin d'écrire des tests d'interface.</p>
+
+        <h2>Mise en place</h2>
+
+        <p>Afin d'utiliser la librairie, il suffit de la rajouter dans le pom.</p>
+
+        <pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
+   &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
+   &lt;version&gt;2.14.0&lt;/version&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Cependant les tests selenium ne sont pas des tests unitaires classiques.</p>
+
+        <p>On parle de <b>test d'intégration</b> : l'application tourne et est connectée à la base de données</p>
+
+        <p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
+
+        <ul>
+            <li>Placer ces tests dans un package edu.ecm.blog.selenium</li>
+            <li>Exclure ce package lors des tests unitaires
+                <pre>&lt;plugin&gt;
+   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+   &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+   &lt;configuration&gt;
+       &lt;excludes&gt;
+          &lt;exclude&gt;**/selenium/*Test.java&lt;/exclude&gt;
+       &lt;/excludes&gt;
+   &lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+             </li>
+        </ul>
+
+        <p>Il existe d'autres possibilités plus riches mais cela suffit pour notre besoin.</p>
+
+        <h2>Un premier test</h2>
+
+        <p>Nous créons la classe GoogleTest dans le package edu.ecm.blog.selenium, dans src/test/java</p>
+
+        <pre>public class GoogleTest {
+   private WebDriver webDriver;
+
+   @Before
+   public void init() {
+       <span class="comment">// création du pilote firefox</span>
+       webDriver = new FirefoxDriver();
+   }
+
+   @After
+   public void close() {
+       <span class="comment">// fermeture du navigateur</span>
+       webDriver.close();
+   }
+}</pre>
+
+        <p>Nous pouvons ajouter un test de recherche sur google.fr</p>
+
+        <pre>@Test
+public void search() throws InterruptedException {
+   <span class="comment">// naviguer vers google.fr</span>
+   webDriver.navigate().to("http://google.fr");
+
+   <span class="comment">// remplir le champs de recherche</span>
+   WebElement input = webDriver.findElement(By.name("q"));
+
+   input.sendKeys("selenium");
+
+   <span class="comment">// post du formulaire contenant l'input</span>
+   input.submit();
+
+   <span class="comment">// on attends le chargement de la page</span>
+   WebElement link = new WebDriverWait(webDriver, 5).until(new ExpectedCondition&lt;WebElement&gt;() {
+      public WebElement apply(@Nullable WebDriver input) {
+         <span class="comment">// on doit trouver le lien vers le site</span>
+         return webDriver.findElement(By.partialLinkText("Web Browser Automation"));
+      }
+   });
+
+   Assert.assertEquals("http://seleniumhq.org/", link.getAttribute("href"));
+}</pre>
+
+        <p>Le test est assez simple mais le block lié au wait est un peu verbeux.</p>
+
+        <p>Les tests selenium reposent sur des assertions lié à l'arbre DOM.</p>
+
+        <h2>Ajout d'un billet</h2>
+
+        <p>Nous allons maintenant nous tourner vers notre propre site.</p>
+
+        <p>Nous créons une classe BlogTest dans le même package.</p>
+
+        <p>Faire un premier test home() qui vérifie que la page d'index répond correctement.</p>
+
+        <pre>@Test
+public void home() {
+   <span class="comment">// on navigue vers la home</span>
+
+   <span class="comment">// on vérifie le title</span>
+}</pre>
+
+        <p>En pratique les pages sont beaucoup plus riches que notre page et il y a beaucoup plus d'éléments que l'on peut tester.</p>
+
+        <p>Il faut cependant garder les tests simples : lisibles et résistants au changement.</p>
+
+        <p>Ensuite, on test l'ajout d'un billet via l'url http://localhost:8080/admin/post.</p>
+
+        <p>Pour réaliser ce test, on implémente le pseudo code suivant.</p>
+
+        <pre>@Test
+public void post() {
+   aller sur le formulaire
+
+   remplir le formulaire
+
+   le poster
+
+   vérifier que le billet a bien été ajouté en home page
+}</pre>
+
+        <p>Comme pour les tests unitaires, les tests selenium accompagnent l'évolution du code.</p>
+
+        <h2>Refactoring</h2>
+
+        <p>Nos tests fonctionnent mais le code de test est un peu verbeux.</p>
+
+        <p>Afin d'écrire de les rendre plus simple, nous allons utiliser la librairie <a href="https://github.com/MathildeLemee/FluentLenium" class="external" target="_blank">FluentLenium</a>.</p>
+
+        <p>La librairie dans le pom.</p>
+
+        <pre>&lt;dependency&gt;
+   &lt;groupId&gt;fr.javafreelance.fluentlenium&lt;/groupId&gt;
+   &lt;artifactId&gt;fluentlenium&lt;/artifactId&gt;
+   &lt;version&gt;0.5.3&lt;/version&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>L'heritage de la classe FluentTest</p>
+
+        <pre>public class BlogTest extends FluentTest { ... }</pre>
+
+        <p>On peut alors supprimer les méthodes @Before et @After, le driver est gérer par la classe mère.</p>
+
+        <p>FluentLenium permet d'écrire les tests sous la forme :</p>
+
+        <pre>goTo("http://mywebpage/");
+fill("#firstName").with("toto");
+click("#create-button");
+assertThat(title()).isEqualTo("Hello toto");</pre>
+
+        <p>Ce qui donne pour notre test home() :</p>
+
+        <pre>goTo("http://localhost:8080/");
+
+Assert.assertEquals("Mon blog", $(".title").first().getText());</pre>
+
+        <p>Même en java, on peut écrire du code lisible et synthétique.</p>
+
+        <p>Il reste a faire de même pour les autres tests.</p>
+
+    </div>
+</div>
+</body>
+</html>
