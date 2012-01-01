@@ -386,6 +386,19 @@ div.example {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+div.note {
+    display: block;
+    padding: 10px 20px;
+    color: #5c5a1c;
+    background: rgba(255, 250, 49, 0.40);
+    -webkit-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #c4a21b;
+}
+
 video {
   -moz-border-radius: 8px;
   -khtml-border-radius: 8px;
