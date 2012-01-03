@@ -13,7 +13,7 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-    <script src="../../../common/js/main.js" type="text/javascript"></script>
+
 </head>
 <body>
 <div class="presentation">
@@ -58,7 +58,7 @@
 
         <p>Afin de pouvoir pusher notre projet vers github, il faut d'abord initializer notre répertoire projet.</p>
 
-        <pre>blog &gt; git init
+        <pre class="shell">blog &gt; <b>git init</b>
 Initialized empty Git repository in /path/to/projects/blog/.git/</pre>
 
         <h2>.gitignore</h2>
@@ -80,7 +80,7 @@ target/*</pre>
 
         <p>La command git status doit donc afficher à peu près cela.</p>
 
-        <pre>blog &gt; git status
+        <pre class="shell">blog &gt; <b>git status</b>
 # On branch master
 #
 # Initial commit
@@ -95,31 +95,31 @@ nothing added to commit but untracked files present (use "git add" to track)</pr
 
         <p>On ajoute donc tout nos fichiers et on commit.</p>
 
-        <pre>blog &gt; git add *
-blog &gt; git add .gitignore
-blog &gt; git commit -m "initial commit"</pre>
+        <pre class="shell">blog &gt; <b>git add *</b>
+blog &gt; <b>git add .gitignore</b>
+blog &gt; <b>git commit -m "initial commit"</b></pre>
 
         <h2>git remote add</h2>
 
         <p>Il nous reste donc a relier notre master local au origin/master</p>
 
-        <pre>blog &gt; git remote add origin git@github.com:{user}/blog.git</pre>
+        <pre class="shell">blog &gt; <b>git remote add git@github.com:{user}/blog.git</b></pre>
 
         <h2>git push</h2>
 
         <p>Afin d'envoyer les fichiers vers github, on utilise la commande push.</p>
 
-        <pre>blog &gt; git push origin master</pre>
+        <pre class="shell">blog &gt; <b>git push origin master</b></pre>
 
         <p>Les fichiers sont maintenant sur le repository github.</p>
 
         <p>Afin de simplifier les push et les pull, on peut ajouter un lien par défaut entre le master local et le master sur origin.</p>
 
-        <pre>blog &gt; git config branch.master.merge refs/heads/master</pre>
+        <pre class="shell">blog &gt; <b>git config branch.master.merge refs/heads/master</b></pre>
 
         <p>Maintenant git push et pit pull depuis la branche locale master travaillerons avec la branche master distante. La commande de push devient donc simplement :</p>
 
-        <pre>blog &gt; git push</pre>
+        <pre class="shell">blog &gt; <b>git push</b></pre>
 
         <p>A partir de maintenant, il est conseillé de commiter aussi souvent que nécessaire.</p>
     </div>

@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Session Beans</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+
+</head>
+<body>
+<div class="presentation">
+    <div id="project">
+        <h1 style="line-height: 55px;padding-left: 10px;"><img src="img/java.png" height="50px" style="float:left"/>Session Beans</h1>
+
+        <h2>Introduction</h2>
+
+        <p>Les session beans sont les composants EJBs qui définissent les services.</p>
+
+        <p>Ce sont les équivalents des @Component et @Service spring.</p>
+
+        <p>Il y en a plusieurs types :</p>
+
+        <ul>
+            <li>@Singleton : les services sans état</li>
+            <li>@Stateless : les services sans état (disponibles dans un pool)</li>
+            <li>@Stateful : les services avec état conversationel (gestion de session)</li>
+        </ul>
+
+        <p></p>
+
+        <h2>Embedded Glassfish</h2>
+
+        <p>Glassfish est l'implémentation de référence produite par oracle.</p>
+
+        <p>Il est normalement dans les premiers à implémenter les nouvelles spécifications.</p>
+
+        <p>La version embedded permet de lancer une application sous glassfish en ligne de commande.</p>
+
+        <p>On commence par ajouter le plugin qui permettra de lancer glassfish comme on le fait avec tomcat.</p>
+
+        <pre>&lt;plugin&gt;
+   &lt;groupId&gt;org.glassfish&lt;/groupId&gt;
+   &lt;artifactId&gt;maven-embedded-glassfish-plugin&lt;/artifactId&gt;
+   &lt;version&gt;3.1.1&lt;/version&gt;
+   &lt;configuration&gt;
+       &lt;ports&gt;
+           &lt;http-listener&gt;8080&lt;/http-listener&gt;
+       &lt;/ports&gt;
+      &lt;contextRoot&gt;/&lt;/contextRoot&gt;
+   &lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+
+        <p>La ligne de commande pour démarrer glassfish en embedded est : </p>
+
+        <pre class="shell">mvn embedded-glassfish:run</pre>
+
+        <p>Si on teste cette commande avec notre application, elle devrait tourner comme avec tomcat sur http://localhost:8080/index (attention le glassfish-embedded-all-3.1.1.jar est un peu long a récupérer).</p>
+
+        <p>Le plugin fonctionne un peu différemment du plugin tomcat : la commande démarre le serveur, déploie l'application et passe en mode interactif.</p>
+
+        <p>On peut donc simplement redéployer l'application en tapant ENTER.</p>
+
+        <p>Vu le fonctionnement du plugin, il vaut mieux monter un peu la taille mémoire de la jvm et définir :</p>
+
+        <pre class="shell">export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
+
+        <p>Pour rappel</p>
+
+        <img src="img/jvm-memory.png" alt="" style="margin: 0 170px;">
+
+        <h2>Un premier session bean</h2>
+
+        <p>Nous allons nous servir de la spécification EJB 3.1 afin de pouvoir ajouter des EJBs dans notre war.</p>
+
+        <p>Pour avoir les éléments de la spécification disponibles, nous utilisons le jar mis à disposition par redhat.</p>
+
+        <pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.jboss.spec.javax.ejb&lt;/groupId&gt;
+    &lt;artifactId&gt;jboss-ejb-api_3.1_spec&lt;/artifactId&gt;
+    &lt;version&gt;1.0.1.Final&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Attention, tout ce que nous allons écrire à partir d'ici ne fonctionnera pas sous tomcat mais uniquement dans des serveurs d'application.</p>
+
+        <p>Le fichier ejb-jar.xml étant optionnel, nous allons nous en passer.</p>
+
+        <p>Dans le package edu.ecm.blog.ejb on crée la classe suivante :</p>
+
+        <pre>@Singleton <span class="comment">// instance unique de ce service dans l'application</span>
+@Startup <span class="comment">// instancié au démarrage de l'application</span>
+public class HelloEJB {
+    @PostConstruct
+    public void hello() {
+        System.out.println("hello app serv");
+    }
+}</pre>
+
+        <p>Le message devrait s'afficher dans le flot de choses écrites dans la console.</p>
+
+        <p>Attention : le plugin glassfish charge le war présent dans le répertoire target. Pour qu'une modification soit prise en compte, il faut donc faire un mvn package avant de taper ENTER.</p>
+
+        <p>Cela limite quelque peu la promesse de re déploiement à chaud.</p>
+
+        <h2>Depuis une servlet</h2>
+
+        <p>Afin de rendre ce service interessant, il faut pouvoir l'utiliser depuis un autre composant.</p>
+
+        <p>Dans un conteneur EJB, on utilise la notation @EJB afin d'obtenir une référence.</p>
+
+        <pre>public class HelloEJB {
+   public String hello(String name) {
+       return "Hi " + name;
+   }
+}</pre>
+
+       <pre>@Singleton
+public class MoreSeriousEJB {
+   @EJB
+   private HelloEJB helloEJB;
+
+   public String hello(String name) {
+       return helloEJB.hello(name);
+   }
+}</pre>
+
+        Et depuis la servlet HelloWorldServlet.
+
+        <pre>public class HelloWorldServlet extends HttpServlet {
+   private static final long serialVersionUID = 1L;
+
+   @EJB
+   private MoreSeriousEJB moreSeriousEJB;
+
+   @Override
+   protected void doGet(HttpServletRequest request,
+         HttpServletResponse response) throws ServletException, IOException {
+      response.getWriter().write(moreSeriousEJB.hello("Steven"));
+   }
+}</pre>
+
+        <p>Si on regarde sur http://localhost:8080/HelloWorldServlet, on obtient bien le résultat attendu.</p>
+
+        <pre>Hi Steven</pre>
+
+        <p>Notre servlet a donc bien trouvé le premier EJB qui a lui même trouvé le second.</p>
+
+        <p>Si on regarde coté nouvelles spécification jee, il serait même possible de se passer du web.xml et de tout faire par annotations (mais ce n'est pas le sujet ici).</p>
+
+        <h2>Depuis un Controller spring</h2>
+
+        <p>L'utilisation depuis un composant spring est un peu moins simple (pour le moment ?)</p>
+
+        <p>On commence par ajouter le namespace jee au contexte spring</p>
+
+        <pre>&lt;beans <span class="comment">...</span> xmlns:jee="http://www.springframework.org/schema/jee" xsi:schemaLocation="
+<span class="comment">...</span>
+http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"&gt;</pre>
+
+        <p>Ce qui nous permet d'écrire.</p>
+
+        <pre>&lt;jee:jndi-lookup id="moreSeriousEJB" jndi-name="java:global/myapp/MoreSeriousEJB" /&gt;</pre>
+
+        <p>Le jndi name est standardisé depuis les EJB 3.1. Ce nom est visible dans les logs de chargement de glassfish.</p>
+
+        <p>Et enfin dans le controller.</p>
+
+        <pre>@Controller
+public class HelloController {
+   @Inject
+   private MoreSeriousEJB moreSeriousEJB;
+
+   @RequestMapping("/hello")
+   @ResponseBody
+   public String hello(Model model) {
+      return moreSeriousEJB.hello("Steven from Controller");
+   }
+}</pre>
+
+        <p>Sur http://localhost:8080/hello on a donc.</p>
+
+        <pre>Hi Steven from Controller</pre>
+
+        <p>L'intégration est donc relativement simple même si spring ne supporte pas l'annotation @EJB (pour le moment ?).</p>
+
+        <h2>@Schedule</h2>
+
+        <p>Il est possible de planifier l'exécution d'une méthode par une simple annotation.</p>
+
+        <pre>private int count = 0;
+
+@Schedule(hour = "*", minute = "*", second = "*/5")
+public void endlessly() {
+    System.out.println(helloEJB.hello("" + count));
+
+    count++;
+}</pre>
+
+        <p>Ce qui donne</p>
+
+        <pre>Hi 1
+Hi 2
+Hi 3</pre>
+
+        <p>Spring possède une annotation équivalente.</p>
+
+        <h2>@Asynchronous</h2>
+
+        <p>L'annotation @Asynchronous permet d'exécuter une méthode en asynchrone.</p>
+
+        <p>Cela permet à l'appelant de récupérer la main immédiatement alors que le code de la méthode appelée sera exécuté dès que possible, en parallèle.</p>
+
+        <p>Un exemple serait le déclenchement d'un calcul long (rapport hebdomadaire) depuis une interface web qui affichera alors que le calcul est en cours.</p>
+
+        <p>La mise en place est simple.</p>
+
+        <pre>@Asynchronous
+public void startSomethingLong() {
+    <span class="comment">...</span>
+}</pre>
+
+        <p>En conséquence, le type de retour est limité aux types suivants :</p>
+
+        <ul>
+            <li>void : pas de retour</li>
+            <li>Future&lt;T&gt; : permet d'avoir un retour à la fin de l'exécution asynchrone (callback)</li>
+        </ul>
+
+        <h2>Un bémol</h2>
+
+        <p>Il y a quelques années, il aurait fallu que ce tutorial soit 3 fois plus long afin de couvrir la même chose.</p>
+
+        <p>Les spécifications 3.0 et 3.1 ont apporté une simplication longuement attendue.</p>
+
+        <p>Cependant, même si les EJBs 1 sont morts, les EJBs 2.x sont encore dans la nature, en production dans bien des serveurs.</p>
+
+        <p>Les concepts sont sensiblement les mêmes mais la configuration et le packaging sont beaucoup plus douloureux.</p>
+    </div>
+</div>
+</body>
+</html>

@@ -13,7 +13,7 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-    <script src="../../../common/js/main.js" type="text/javascript"></script>
+
 </head>
 <body>
 <div class="presentation">
@@ -23,6 +23,113 @@
         <p>Le but de ce tp est de voir en pratique comment sont formés des requêtes et des réponses http.</p>
 
         <p>L'HyperText Tranfert Protocol est un protocol simple, haut niveau et extensible.</p>
+
+        <h2>La vue d'ensemble</h2>
+
+        <p>Les navigateurs modernes permettent de voir facilement l'ensemble des requêtes et réponses http.</p>
+
+        <p>Pour ce tp, nous allons utiliser chrome qui dispose d'un jeu d'outils très complet.</p>
+
+        <img src="img/dev-tools.png" style="margin: 0 40px" />
+
+        <p>Le raccourçi est Crtl+Maj+I.</p>
+
+        <p>Lorsque l'on fait une requête vers un site, l'onglet network permet de voir toutes les requêtes effectuées.</p>
+
+        <img src="img/network.png" width="840px" />
+
+        <p>Pour chaque ressource, on y voit : </p>
+
+        <ul>
+            <li>Le nom</li>
+            <li>La méthode http (ici GET pour tous)</li>
+            <li>Le code de retour : 200, 302...</li>
+            <li>Le type mime : text/html, text/plain...</li>
+            <li>La taille des données récupérées</li>
+            <li>Le temps mis pour récupérer les données</li>
+        </ul>
+
+        <pre>Que veut dire un code de retour 200 ? un 302 ? un 404 ?</pre>
+
+        <p>Une page web un peu riche peut facilement contenir plusieurs centaines de ressources.</p>
+
+        <h2>Une ressource</h2>
+
+        <p>Nous allons prendre un des éléments de la liste et regarder en détails le contenu de l'échange.</p>
+
+        <p>Toujours dans l'onglet network, si on clique sur une ressource, on obtient les informations suivantes.</p>
+
+        <img src="img/headers.png" width="820px" style="margin: 0 10px" />
+
+        <p>On retrouve le nom, la méthode et le code de retour mais cette fois on voit tous les headers.</p>
+
+        <p>Les Request Headers sont les options envoyées par le navigateur vers le serveur.</p>
+
+        <p>Les Response Headers sont des informations complémentaires au contenu renvoyées par le serveur.</p>
+
+        <p>Dans les 2 cas, ce sont des couples (clé - valeur) qui sont en début de requête ou de réponse.</p>
+
+        <pre>Quelle est la signification des headers de requête : Accept, Accept-Charset, If-Modified-Since, Referer, User-Agent ?
+
+Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
+
+        <p>La liste des headers n'est pas figée et il est possible de définir ses propres headers, de préférence en utilisant le préfixe X-.</p>
+
+        <h2>curl</h2>
+
+        <p>Le navigateur est une aide au développement extrêmement précieuse.</p>
+
+        <p>Il est cependant possible de tester un serveur web en ligne de commande.</p>
+
+        <p>La commande curl permet de forger des requêtes vers un serveur http.</p>
+
+        <pre class="shell">curl http://www.lemonde.fr</pre>
+
+        <p>Le contenu de la page s'affiche dans le terminal.</p>
+
+        <p>Si on souhaite voir les headers.</p>
+
+        <pre class="shell">curl --head http://www.lemonde.fr</pre>
+
+        <p>Ou ajouter des headers</p>
+
+        <pre class="shell">curl --header "Accept: text/html" http://www.lemonde.fr</pre>
+
+        <p>Plus d'exemples sont disponible sur le <a href="http://curl.haxx.se/docs/httpscripting.html" target="_blank" class="external">site de curl</a></p>
+
+        <p>Il est assez rare d'avoir à forger soit même une requête http mais cela peut s'avèrer utile pour faire des tests.</p>
+
+        <h2>HttpClient</h2>
+
+        <p>Dans le cas des requêtes http de serveur à serveur, on utilise des librairies clientes telle que la lib <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" target="_blank" class="external">HttpClient de la fondation apache</a></p>
+
+        <p>Pour faire un test, nous commençons par ajouter la dépendance dans le pom.xml</p>
+
+        <pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+    &lt;artifactId&gt;httpclient&lt;/artifactId&gt;
+    &lt;version&gt;4.1.2&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Ensuite on crée une classe de Test dans edu.ecm.blog.http</p>
+
+        <pre>public class HttpClientTest {
+   @Test
+   public void get() {
+
+   }
+}</pre>
+
+        <p>En suivant le <a href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html/index.html" target="_blank" class="external">HttpClient Tutorial</a>, faire une requête vers www.lemonde.fr et vérifier le code de retour.</p>
+
+        <p>Les classes intéressantes sont HttpClient, HttpGet et HttpResponse.</p>
+
+        <p>Une fois le test en place, on ajoute un @Ignore sur le test afin qu'il ne soit pas exécuté à chaque build avec les tests unitaires.</p>
+
+        <p>HttpClient est un client http complet qui permet de faire des requêtes http depuis du code java.</p>
+
+        <p>Il dispose également de nombreuses options permettant de régler le comportement du client en lui même : pooling, timeouts...</p>
     </div>
 </div>
 </body>

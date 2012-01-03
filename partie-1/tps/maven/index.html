@@ -13,7 +13,6 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-    <script src="../../../common/js/main.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="presentation">
@@ -63,7 +62,7 @@
             <li>Run mvn --version to verify that it is correctly installed.</li>
         </ol>
 
-        <pre>
+        <pre class="shell">~ &gt; <b>mvn --version</b>
 Apache Maven 2.1.0 (r755702; 2009-03-18 20:10:27+0100)
 Java version: 1.6.0_20
 Java home: /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
@@ -75,13 +74,13 @@ OS name: "mac os x" version: "10.6.4" arch: "x86_64" Family: "mac"</pre>
         <p>Nous allons maintenant créer un projet maven.</p>
         <p>Pour cela, il suffit de se positionner dans le répertoire qui va contenir le projet et d'exécuter :</p>
 
-        <pre>mvn archetype:generate -DgroupId=edu.ecm.blog -DartifactId=blog -DarchetypeArtifactId=maven-archetype-quickstart</pre>
+        <pre class="shell">mvn archetype:generate -DgroupId=edu.ecm.blog -DartifactId=blog -DarchetypeArtifactId=maven-archetype-quickstart</pre>
 
         <p>Pour la version, on garde la valeur par défaut : 1.0-SNAPSHOT</p>
 
         <p>Le répertoire blog a été créé et il contient la structure suivante :</p>
 
-        <pre>
+        <pre class="shell">
 pom.xml
 src
 |--main
@@ -150,7 +149,7 @@ public class App
 
         <p>On peut alors lancer le build.</p>
 
-        <pre>blog &gt; <b>mvn package</b>
+        <pre class="shell">blog &gt; <b>mvn package</b>
 [INFO] Scanning for projects...
 [INFO] ------------------------------------------------------------------------
 [INFO] Building blog
@@ -221,7 +220,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
         <p>Cette commande permet de générer le projet eclipse</p>
 
-        <pre>mvn eclipse:eclipse</pre>
+        <pre class="shell">mvn eclipse:eclipse</pre>
 
         <p>On peut ensuite ouvrir simplement ce projet dans eclipse (File &gt New &gt Java Project en allant chercher le bon répertoire).</p>
 

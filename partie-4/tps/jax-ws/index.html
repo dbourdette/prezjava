@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Java API for XML Web Services</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+</head>
+<body>
+<div class="presentation">
+    <div id="project">
+        <h1 style="line-height: 60px"><img src="img/javaxml-duke.gif" alt="" style="float: left;height: 60px;margin-right: 10px;"> Java API for XML Web Services</h1>
+
+        <h2>Introduction</h2>
+
+        <p>La spécification jax-ws permet de construire des services web.</p>
+
+        <p>Un service web est un service rpc (remote procedure call) qui respecte le protocole SOAP.</p>
+
+        <p>Un service rpc permet de faire des appels de méthodes distantes, comme ci (presque) elles étaient locales.</p>
+
+        <p>jax-ws est la dernière mouture des services web en java. Bien d'autres spécifications et librairies antérieures existent.</p>
+
+        <p>La facilité d'utilisation est bien plus grande aujourd'hui mais les principes restent identiques.</p>
+
+        <h2>Metro</h2>
+
+        <p><a href="http://metro.java.net/" class="external" target="_blank">Metro</a> est l'implémentation de référence pour les services web en java.</p>
+
+        <p>On commence donc par ajouter toutes les librairies à notre projet.</p>
+
+        <pre>&lt;dependency&gt;
+   &lt;groupId&gt;com.sun.xml.ws&lt;/groupId&gt;
+   &lt;artifactId&gt;jaxws-rt&lt;/artifactId&gt;
+   &lt;version&gt;2.2.5&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Cela permet de récupérer metro et ses dépendances.</p>
+
+        <h2>Hello world</h2>
+
+        <p>Dans le package edu.ecm.blog.webservice, on crée la classe PostWebService.</p>
+
+        <pre>@WebService
+@SOAPBinding(style = SOAPBinding.Style.RPC)
+public class PostWebService {
+    public String hi(String name) {
+        return "Hello " + StringUtils.defaultIfEmpty(name, "unknown");
+    }
+}</pre>
+
+        <p>Pour metro, il faut un fichier sun-jaxws.xml dans src/main/webapp/WEB-INF</p>
+
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0"&gt;
+    &lt;endpoint name="PostWs" implementation="edu.ecm.blog.webservice.PostWebService" url-pattern="<b>/ws/post</b>" /&gt;
+&lt;/endpoints&gt;</pre>
+
+        <p>Et la déclaration du mapping dans le web.xml</p>
+
+        <pre>&lt;listener&gt;
+   &lt;listener-class&gt;com.sun.xml.ws.transport.http.servlet.WSServletContextListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+&lt;servlet&gt;
+   &lt;servlet-name&gt;postWebService&lt;/servlet-name&gt;
+   &lt;servlet-class&gt;com.sun.xml.ws.transport.http.servlet.WSServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+   &lt;servlet-name&gt;postWebService&lt;/servlet-name&gt;
+   &lt;url-pattern&gt;<b>/ws/post</b>&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre>
+
+        <p>Et si on démarre tomcat, le service répond sur <a href="http://localhost:8080/ws/post" class="external" target="_blank">http://localhost:8080/ws/post</a></p>
+
+        <img src="img/web-services.png" alt="" style="width: 840px">
+
+        <p>En quelques lignes de configuration, nous avons mis en place notre service web.</p>
+
+        <p>Le WSDL sur <a href="http://localhost:8080/ws/post?wsdl">http://localhost:8080/ws/post?wsdl</a> est déjà très verbeux alors que notre service est simple.</p>
+
+        <p>Le prix du standard et de l'interopérabilité passe donc par de la verbosité et de la génération automatique.</p>
+
+        <h3>Le client</h3>
+
+        <p>Nous allons mettre en place un test d'intégration qui va valider le bon fonctionnement de notre service.</p>
+
+        <p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
+
+        <ul>
+            <li>Placer ces tests dans un package edu.ecm.blog.integration</li>
+            <li>Exclure ce package lors des tests unitaires
+                <pre>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+        &lt;excludes&gt;
+            &lt;exclude&gt;**/integration/*Test.java&lt;/exclude&gt;
+        &lt;/excludes&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+            </li>
+        </ul>
+
+        <p>On crée donc la classe PostWebServiceTest dans le package edu.ecm.blog.integration de src/test/java.</p>
+
+        <p>Pour pouvoir appeler le webservice, il nous faut générer un client à partir du WSDL.</p>
+
+        <p>On utilise l'outil wsimport qui permet cela. A la racine du projet :</p>
+
+        <pre class="shell">blog &gt; <b>wsimport -s src/test/java -d target -p edu.ecm.blog.integration.generated http://localhost:8080/ws/post?wsdl</b>
+
+parsing WSDL...
+
+generating code...
+
+compiling code...</pre>
+
+        <p>Ce qui nous permet d'écrire et faire passer le test suivant.</p>
+
+        <pre>@Test
+public void hi() {
+   PostWebServiceService postWebServiceService = new PostWebServiceService();
+   PostWebService postWebService = postWebServiceService.getPostWebServicePort();
+
+   Assert.assertEquals("Hello jax-ws", postWebService.hi("jax-ws"));
+}</pre>
+
+        <h3>Un peu de recul</h3>
+
+        <p>La mise en place d'un web service est relativement aisée.</p>
+
+        <p>Cependant, rien que pour un hello world, il y a quelques manipulations.</p>
+
+        <p>Coté client on repose sur de la génération de code, ce qui rend notre client fragile face à une évolution de l'api.</p>
+
+        <p>Les types des paramètres et les types de retour des méthodes font également partie de l'api. On a donc souvent des classes spécialisées juste pour le webservice.</p>
+
+        <p>Le point positif est que notre service est accessible depuis beaucoup de languages.</p>
+
+        <h2>La liste des billets</h2>
+
+        <p>Nous souhaitons maintenant faire quelque chose d'un peu plus utile : exposer la liste des billets.</p>
+
+        <p>On aimerait reposer sur le PostService et écrire :</p>
+
+        <pre>public List&lt;Post&gt; latestPosts() {
+    return postService.find(0, 10);
+}</pre>
+
+        <p>Cependant, comment obtenir une référence vers le PostService de notre application ?</p>
+
+        <p>Spring dispose d'un <a href="http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/remoting.html#remoting-web-services-jaxws-export-servlet" class="external" target="_blank">support pour les services web</a> permettant l'injection des dépendances</p>
+
+        <p>Avec le support spring, on peut écrire :</p>
+
+        <pre>public class PostWebService extends SpringBeanAutowiringSupport {
+    @Inject
+    private PostService postService;
+
+    public List&lt;Post&gt; latestPosts() {
+        return postService.find(0, 10);
+    }
+}</pre>
+
+        <p>Cependant, si on relance le tomcat, on obtient l'erreur :</p>
+
+        <pre class="shell">...
+Caused by: java.security.PrivilegedActionException: com.sun.xml.bind.v2.runtime.IllegalAnnotationsException:
+            2 counts of IllegalAnnotationExceptions
+java.util.List is an interface, and JAXB can't handle interfaces.
+        this problem is related to the following location:
+                at java.util.List
+        ...</pre>
+
+        <p>JAXB est la librairie qui transforme les objets java en xml.</p>
+
+        <p>Visiblement JAXB n'accepte pas une interface comme type de retour de notre méthode.</p>
+
+        <p>Une solution possible est d'utiliser une classe de wrapping afin que la signature de notre méthode soit :</p>
+
+        <pre>public Posts latestPosts() {
+   return new Posts(postService.find(0, 10));
+}</pre>
+
+        <p>Et donc la classe en question.</p>
+
+        <pre>public class Posts {
+   private List&lt;Post&gt; posts;
+
+   public Posts() {
+   }
+
+   public Posts(List&lt;Post&gt; posts) {
+   this.posts = posts;
+   }
+
+   public List&lt;Post&gt; getPosts() {
+   return posts;
+   }
+
+   public void setPosts(List&lt;Post&gt; posts) {
+   this.posts = posts;
+   }
+}</pre>
+
+        <p>Et cette fois tomcat démarre.</p>
+
+        <p>En regénérant le client du service web, on peut écrire le test suivant :</p>
+
+        <pre>@Test
+public void latestPosts() {
+    PostWebServiceService postWebServiceService = new PostWebServiceService();
+    PostWebService postWebService = postWebServiceService.getPostWebServicePort();
+
+    Assert.assertTrue(postWebService.latestPosts().getPosts().size() > 0);
+    Assert.assertTrue(postWebService.latestPosts().getPosts().get(0).getTitle().length() > 0);
+}</pre>
+
+        <p>Malheureusement, ce test échoue avec l'erreur suivante :</p>
+
+        <pre class="shell">java.lang.NullPointerException
+at edu.ecm.blog.webservice.PostWebService.latestPosts(PostWebService.java:27)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+...</pre>
+
+        <p>Malgré nos efforts, le PostService n'est pas correctement injecté dans notre service web.</p>
+
+        <p>L'explication est un peu technique et est liée au fonctionnement des contextes spring dans un environnement web.</p>
+
+        <p>Pour corriger cela, le plus simple est de rajouter les lignes suivantes dans le web.xml :</p>
+
+        <pre>&lt;listener&gt;
+   &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+&lt;context-param&gt;
+   &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+   &lt;param-value&gt;WEB-INF/spring-context.xml&lt;/param-value&gt;
+&lt;/context-param&gt;</pre>
+
+        <p>Et de copier le fichier WEB-INF/spring-servlet.xml vers WEB-INF/spring-context.xml</p>
+
+        <p>Cette fois, le test passe.</p>
+
+        <div class="note">
+            Au sein d'une application web avec spring, il y a plusieurs contextes :
+            <ul>
+                <li>Un contexte père construit par le ContextLoaderListener</li>
+                <li>Un contexte fils par servlet spring défini dans le web.xml</li>
+            </ul>
+            Le contexte père est accessible de partout alors qu'un contexte fils n'est accessible que via la serlvet qui lui est associée.
+            <br><br>
+            Dans notre cas, afin d'avoir accès au PostService pour des requêtes passant par la WSServlet (/ws/post), il faut que le service soit défini dans le contexte père.
+            <br><br>
+            La bonne pratique est donc de définir les services dans le contexte chargé par le ContextLoaderListener et tout ce qui est spécifique à une servlet spring (controllers, localeResolver, viewResolver...) dans le contexte associé à la servlet.
+            <br><br>
+            Actuellement, nos beans sont déclarés en double, ce qui n'est pas correct.
+        </div>
+   </div>
+</div>
+</body>
+</html>

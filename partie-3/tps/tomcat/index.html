@@ -13,7 +13,7 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-    <script src="../../../common/js/main.js" type="text/javascript"></script>
+
 </head>
 <body>
 <div class="presentation">
@@ -41,8 +41,8 @@
 
         <p>On peut dès à présent lancer le serveur</p>
 
-        <pre>&gt; cd ~/apache-tomcat-6.0.xx
-&gt; ./bin/startup.sh
+        <pre class="shell">&gt; <b>cd ~/apache-tomcat-6.0.xx</b>
+&gt; <b>./bin/startup.sh</b>
 Using CATALINA_BASE:   "/home/user/apache-tomcat-6.0.32"
 Using CATALINA_HOME:   "/home/user/apache-tomcat-6.0.32"
 Using CATALINA_TMPDIR: "/home/user/apache-tomcat-6.0.32/temp"
@@ -59,8 +59,8 @@ Using CLASSPATH:       /home/user/apache-tomcat-6.0.32/bin/bootstrap.jar"</pre>
 
         <p>Voici les répertoires à la racine de tomcat :</p>
 
-        <pre>&gt; cd ~/apache-tomcat-6.0.xx
-&gt; ls
+        <pre class="shell">&gt; <b>cd ~/apache-tomcat-6.0.xx</b>
+&gt; <b>ls</b>
 d----        16/06/2011     21:27            bin            <span class="comment">les exécutables</span>
 d----        16/06/2011     21:30            conf           <span class="comment">la configuration de tomcat et des applications</span>
 d----        16/06/2011     21:27            lib            <span class="comment">les librairies (.jar)</span>
@@ -91,7 +91,7 @@ d----        16/06/2011     21:30            work           <span class="comment
 
         <p>Une installation de tomcat vient avec quelques applications de démonstration</p>
 
-<pre>&gt; ls ~/apache-tomcat-6.0.xx/webapps
+<pre class="shell">&gt; <b>ls ~/apache-tomcat-6.0.xx/webapps</b>
 d----        16/06/2011     21:28            docs
 d----        16/06/2011     21:28            examples
 d----        16/06/2011     21:28            host-manager

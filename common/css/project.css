@@ -3,7 +3,7 @@ body {
     background-color: #778;
 }
 
-pre {
+pre, pre.shell {
     font-size: 12px;
 }
 
@@ -23,7 +23,7 @@ pre {
 	-moz-border-radius:0 20px 0 20px;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 5px 8px;
     font-size:16px;
-	background-color: #D0DEF2;
+	background-color: white;
 }
 
 #project h1 {
