@@ -1,2 +1,0 @@
-@Transactional
-Derby ou HSQL ?

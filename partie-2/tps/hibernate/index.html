@@ -26,6 +26,8 @@
 
         <p>Il implémente et étend JPA (Java Persitance API), le standard de persistence jee.</p>
 
+        <img src="img/another-layer.png" alt="" style="margin: 0 250px;">
+        
         <p>Techniquement, c'est une surcouche de JDBC qui en simplifie grandement l'usage.</p>
 
         <h2>Configuration hibernate</h2>
@@ -233,9 +235,9 @@ public void cleanDb() {
 
         <p>Rechercher un objet dans la base se fait tout aussi simplement que la persistence.</p>
 
-        <p>Pour les requêtes hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html" class="external" target="_blank">HQL</a> (Hibernate Query Language).</p>
+        <p>Pour les requêtes, hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html" class="external" target="_blank">HQL</a> (Hibernate Query Language).</p>
 
-        <p>Le HQL permet de travailler avec le nom des attributs des classes aul lieu du nom des colonnes en base.</p>
+        <p>Le HQL permet de travailler avec le nom des attributs des classes au lieu du nom des colonnes en base.</p>
 
         <pre>@Test
 public void findAuthor() {

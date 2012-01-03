@@ -1,9 +1,0 @@
-language type
-language compil� (byecode)
-language portable
-packages, class, interface, enum, annotation
-stack jobLog
-jee
-conteneurs
-historique du langage et projet coin
-Garbage Collection (heap, perm gen...)
