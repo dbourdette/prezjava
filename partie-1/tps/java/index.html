@@ -124,9 +124,50 @@
 
         <p>Ces classes ne présentent que peu d'intêret techniquement mais elles sont importantes car elles représentent notre domain métier.</p>
 
-        <div class="todo">évolutions jdk 1.2 a jdk 1.7 (coin) ... varargs (pour tp junit) ... annotations ... enums</div>
+        <h2>L'évolution</h2>
 
-        <div class="todo">equals / hashCode, toString</div>
+        <p>En un peu plus de 10 ans, le language à subit peu d'évolution. En voici les principales :</p>
+
+        <ul>
+            <li>java 1.4 (2002)
+                <ul>
+                    <li>assert : assertion </li>
+                </ul>
+            </li>
+            <li>java 1.5 / 5.0 (2004)
+                <ul>
+                    <li>generiques <span class="comment">List&lt;T&gt;</span></li>
+                    <li>annotations <span class="comment">@Annotation</span></li>
+                    <li>autoboxing / unboxing <span class="comment">Integer i = 10; int j = i;</span></li>
+                    <li>enum <span class="comment">enum Sign {BELIER, LION...}</span></li>
+                    <li>varargs <span class="comment">public void tags(String... tags)</span></li>
+                    <li>imports statiques <span class="comment">import static org.junit.Assert.assertEquals</span></li>
+                    <li>for each loops <span class="comment">for (String tag : tags) {...}</span></li>
+                </ul>
+            </li>
+            <li>java 6.0 (2006)
+
+            </li>
+            <li>java 7.0 (projet coin)
+                <ul>
+                    <li>strings dans les switch</li>
+                    <li>notation plus lisible pour les numériques <span class="comment">int value = 100_000;</span></li>
+                    <li>multi catch <span class="comment">try { ... } catch (FirstException | SecondException ex) { ... }</span></li>
+                    <li>opérateur diamant <span class="comment">List&lt;String&gt; values = new ArrayList&lt;&gt;()</span></li>
+                    <li>try with resources <span class="comment">try (Statement stmt = con.createStatement()) { stmt.executeQuery(query); }</span></li>
+                    <li>varargs simplifiés</li>
+                </ul>
+            </li>
+            <li>java 8.0
+                <ul>
+                    <li>closures ?</li>
+                </ul>
+            </li>
+
+            <p>A coté du language, les évolutions des apis ont été beaucoup plus importantes.</p>
+
+            <p>Cependant, java garde une forte compatibilité avec les versions passées</p>
+        </ul>
     </div>
 </div>
 </body>
