@@ -7,7 +7,7 @@
    </head>
    <body>
            <div id="header">
-               <span class="title">Mon blog</span>
+               <span class="title"><a href="/">Mon blog</a></span>
            </div>
            
            <div id="posts">

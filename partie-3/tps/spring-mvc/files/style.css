@@ -10,6 +10,11 @@ p {
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+    color: #274787;
+}
+
 #header {
     width: 900px;
     height: 50px;
@@ -23,6 +28,7 @@ p {
     border: 1px #284B7E solid;
     font-size: 16px;
     background-color: white;
+    box-shadow: 5px 5px #444;
 }
 
 #header .title {
@@ -41,6 +47,7 @@ p {
     border-bottom-right-radius: 20px 20px;
     border: 1px #284B7E solid;
     background-color: white;
+    box-shadow: 5px 5px #444;
 }
 
 .post {
@@ -84,6 +91,7 @@ p {
     background-color: white;
     margin-bottom: 10px;
     padding: 5px;
+    box-shadow: 5px 5px #444;
 }
 
 .tagcloud ul li {
@@ -98,6 +106,7 @@ p {
     border: 1px #284B7E solid;
     background-color: white;
     padding: 5px;
+    box-shadow: 5px 5px #444;
 }
 
 #form {
@@ -110,5 +119,5 @@ p {
     border-top-right-radius: 0px 0px;
     border: 1px #284B7E solid;
     background-color: white;
+    box-shadow: 5px 5px #444;
 }
-
