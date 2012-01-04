@@ -18,14 +18,14 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>Tomcat</h1>
+        <h1 style="line-height: 60px;"><img src="img/tomcat.png" style="float: left; margin-right: 10px;"> Tomcat</h1>
 
         <p>Les conteneurs jee sont une des clés de la réussite de java en entreprise.</p>
 
         <p>Il se divisent en 2 grandes familles :</p>
 
         <ul>
-            <li>Les conteneurs de servlets : support du protocole http et quelques spécifications jee (servlets, jsp, jndi, jdbc...).</li>
+            <li>Les conteneurs de servlets : support du protocole http et une sous partie jee (servlets, jsp, jndi, jdbc...).</li>
             <li>Les conteneurs d'applications : support de toutes les spécifications jee.</li>
         </ul>
 
@@ -53,7 +53,9 @@ Using CLASSPATH:       /home/user/apache-tomcat-6.0.32/bin/bootstrap.jar"</pre>
 
         <img src="img/tomcat-home-page.png" width="800px" style="margin: 10px 20px;">
 
-        <p>C'est la page d'accueil de tomcat. Il y quelques liens et exemples accessibles depuis celle-ci. En pratique, on y va jamais.</p>
+        <p>C'est la page d'accueil de tomcat. Il y quelques liens et exemples accessibles depuis celle-ci.</p>
+
+        <p>En pratique, on y va jamais.</p>
 
         <h2>Les répertoires de tomcat</h2>
 
@@ -85,7 +87,7 @@ d----        16/06/2011     21:30            work           <span class="comment
 
         <h2>Contrôler tomcat</h2>
 
-        <p>Le répertoire bin de $CATALINA_HOME contient les script startup.sh et shutdown.sh (ou .bat sous windows).</p>
+        <p>Le répertoire bin de $CATALINA_HOME contient les script startup.sh et shutdown.sh (*.bat sous windows).</p>
 
         <h2>Les applications</h2>
 
@@ -104,15 +106,22 @@ d----        16/06/2011     21:28            ROOT</pre>
 
         <p>Tomcat charge toutes ces applications au démarrage.</p>
 
-        <p>Dans ce répertoire, les applications peuvent être sous format déployé comme ici ou sous forme de fichier war.</p>
+        <p>Dans ce répertoire, on peut trouver :</p>
+
+        <ul>
+            <li>des répertoires d'applications</li>
+            <li>des fichiers .war : ce sont des applications zippées (packagées)</li>
+        </ul>
 
         <h2>Sécurité</h2>
 
-        <p>Certaines de ces applications sont protégées par autentification de type BASIC (popup navigateur au moment d'accéder à la ressource.)</p>
+        <p>Certaines de ces applications sont protégées par autentification de type BASIC (popup navigateur quand on tente d'aller sur l'application.)</p>
 
         <p>C'est le cas de l'application manager qui nécessite un user avec un rôle manager-gui.</p>
 
-        <p>Aucun utilisateur n'est défini par défaut, alors on en ajoute un dans le fichier $CATALINA_HOME/conf/tomcat-users.xml.</p>
+        <p>Pour des raisons de sécurité, aucun utilisateur n'est défini par défaut.</p>
+
+        <p>Le fichier $CATALINA_HOME/conf/tomcat-users.xml permet de rajouter un user.</p>
 
         <pre>&lt;user username="admin" password="admin" roles="manager-status"/&gt;</pre>
 
@@ -124,9 +133,13 @@ d----        16/06/2011     21:28            ROOT</pre>
 
         <p>Et la page <a href="http://localhost:8080/manager/html" target="_blank">http://localhost:8080/manager/html</a> devient accessible.</p>
 
-        <p>Cette page permet d'administrer toutes les applications déployées dans le serveur. En pratique, on ne l'utilise jamais.</p>
+        <p>Cette page permet d'administrer toutes les applications déployées dans le serveur.</p>
 
-        <p>Le fichier tomcat-users.xml définit un ensemble d'utilisateurs valable pour toutes les applications déployées. En sécurité, cet ensemble est appelé realm.</p>
+        <p>En pratique, on ne l'utilise jamais.</p>
+
+        <p>Le fichier tomcat-users.xml définit un ensemble d'utilisateurs valable pour toutes les applications déployées.</p>
+
+        <p>En sécurité, cet ensemble est appelé realm (domaine).</p>
 
         <p>Le fichier tomcat-user.xml est le fichier de configuration par défaut du <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/realm.html" class="external" target="_blank">Memory Based Realm</a> de tomcat.</p>
     </div>

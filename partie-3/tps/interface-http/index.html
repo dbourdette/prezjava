@@ -18,11 +18,20 @@
 <body>
 <div class="presentation">
     <div id="project">
-        <h1>L'interface HTTP</h1>
+        <h1>
+            <span style="font-size: 40px;text-shadow: 4px 4px #CCC;position: relative;left: 12px;color:#007000;">w</span>
+            <span style="font-size: 50px;text-shadow: 4px 4px #CCC;position: relative;color:#007000;">w</span>
+            <span style="font-size: 40px;text-shadow: 4px 4px #CCC;position: relative;right: 12px;color:#007000;">w</span>
+            L'interface HTTP
+        </h1>
 
         <p>Le but de ce tp est de voir en pratique comment sont formés des requêtes et des réponses http.</p>
 
         <p>L'HyperText Tranfert Protocol est un protocol simple, haut niveau et extensible.</p>
+
+        <img src="img/request-response.png" alt="" style="margin: 0 140px;">
+
+        <p>Il permet d'échanger des données selon un mode requête - réponse.</p>
 
         <h2>La vue d'ensemble</h2>
 
@@ -53,6 +62,8 @@
 
         <p>Une page web un peu riche peut facilement contenir plusieurs centaines de ressources.</p>
 
+        <p>L'affichage d'une page web peut donc prendre plusieurs secondes, le temps de récupérer toutes les données et de mettre en place les éléments dans la page interprétée.</p>
+
         <h2>Une ressource</h2>
 
         <p>Nous allons prendre un des éléments de la liste et regarder en détails le contenu de l'échange.</p>
@@ -61,19 +72,19 @@
 
         <img src="img/headers.png" width="820px" style="margin: 0 10px" />
 
-        <p>On retrouve le nom, la méthode et le code de retour mais cette fois on voit tous les headers.</p>
+        <p>On retrouve le nom, la méthode et le code de retour mais cette fois on voit les <b>headers http</b>.</p>
 
-        <p>Les Request Headers sont les options envoyées par le navigateur vers le serveur.</p>
+        <p>Les <b>Request Headers</b> sont les options envoyées par le navigateur vers le serveur.</p>
 
-        <p>Les Response Headers sont des informations complémentaires au contenu renvoyées par le serveur.</p>
+        <p>Les <b>Response Headers</b> sont des informations complémentaires au contenu renvoyées par le serveur.</p>
 
         <p>Dans les 2 cas, ce sont des couples (clé - valeur) qui sont en début de requête ou de réponse.</p>
 
-        <pre>Quelle est la signification des headers de requête : Accept, Accept-Charset, If-Modified-Since, Referer, User-Agent ?
+        <pre>Que signifient les headers de requête : Accept, Accept-Charset, If-Modified-Since, Referer, User-Agent ?
 
 Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
 
-        <p>La liste des headers n'est pas figée et il est possible de définir ses propres headers, de préférence en utilisant le préfixe X-.</p>
+        <p>Il est possible de définir ses propres headers en étandant les headers standards (X- pour extended).</p>
 
         <h2>curl</h2>
 
@@ -91,7 +102,7 @@ Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
 
         <pre class="shell">curl --head http://www.lemonde.fr</pre>
 
-        <p>Ou ajouter des headers</p>
+        <p>Ou ajouter des headers à la requête</p>
 
         <pre class="shell">curl --header "Accept: text/html" http://www.lemonde.fr</pre>
 
@@ -101,7 +112,9 @@ Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
 
         <h2>HttpClient</h2>
 
-        <p>Dans le cas des requêtes http de serveur à serveur, on utilise des librairies clientes telle que la lib <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" target="_blank" class="external">HttpClient de la fondation apache</a></p>
+        <p>Coté code, on peut ausse forger des requêtes http.</p>
+
+        <p>Le plus simple est d'utiliser une librairie cliente telle que la lib <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" target="_blank" class="external">HttpClient de la fondation apache</a></p>
 
         <p>Pour faire un test, nous commençons par ajouter la dépendance dans le pom.xml</p>
 
@@ -129,7 +142,7 @@ Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
 
         <p>HttpClient est un client http complet qui permet de faire des requêtes http depuis du code java.</p>
 
-        <p>Il dispose également de nombreuses options permettant de régler le comportement du client en lui même : pooling, timeouts...</p>
+        <p>Beaucoup d'options sont disponibles pour le comportement du client en lui même : pooling, timeouts...</p>
     </div>
 </div>
 </body>

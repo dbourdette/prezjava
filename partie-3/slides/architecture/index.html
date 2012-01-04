@@ -4,7 +4,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-        <title>Base de données et persistance</title>
+        <title>Architecture des serveurs</title>
     
         <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
         <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
@@ -153,6 +153,8 @@
 		        		</tr>
 	        		</tbody>
 	        	</table>
+                <p>Cela scale d'autant mieux que les serveurs sont sans état (<b>stateless</b>).</p>
+                <p>Le facteur limitant devient alors la base de données.</p>
 	        </section>
 	      </div>
 	      
@@ -181,7 +183,7 @@
 		        			</td>
 		        			<td>
 		        				<ul>
-		        					<li>Il n'est pas toujours possible de définir une règle de segmentation perenne
+		        					<li>Il n'est pas toujours possible de définir une règle de segmentation pérenne
 		        					<li>La réconciliation de données entre les bases est difficile
 		        				</ul>
 		        			</td>
