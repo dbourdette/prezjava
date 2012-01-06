@@ -421,6 +421,8 @@ public String post(<b>@ModelAttribute("post")</b> Post post, <b>BindingResult</b
 
         <p>Le minimum vital pour notre billet est le titre. On fait donc une vérification et on sauve le billet en base.</p>
 
+        <span class="todo">IMPORT COMMONS LANG</span>
+        
         <pre>if (StringUtils.isEmpty(post.getTitle())) {
     bindingResult.rejectValue("title", "field.empty", "Le titre est obligatoire");
 
@@ -430,6 +432,15 @@ public String post(<b>@ModelAttribute("post")</b> Post post, <b>BindingResult</b
 postService.save(post);
 
 return "redirect:/admin/posts";</pre>
+
+        <p>StringUtils vient de la librairie commons lang qu'il faut ajouter au pom</p>
+
+        <pre>&lt;dependency&gt;
+    &lt;groupId&gt;commons-lang&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-lang&lt;/artifactId&gt;
+    &lt;version&gt;2.6&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
 
         <p>Si on tente de sauvegarder un billet en l'état, nous avons un message d'erreur nous indiquant que spring ne parvient pas a convertir une chaîne de caractères en date.</p>
 
