@@ -173,6 +173,8 @@ public class PostServiceImpl implements PostService</pre>
 
         <p>Ainsi les services du package seront chargés dans le contexte spring au démarrage de l'application.</p>
 
+        <p>Les services sont chargés mais cela produit une erreur car aucune session factory n'est présente dans notre contexte spring.</p>
+
         <h2>La base de données</h2>
         
         <p>Comme pour les tests unitaires, il manque la définition de la session factory et de la connexion à la base.</p>
