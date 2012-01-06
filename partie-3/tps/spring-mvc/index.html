@@ -421,8 +421,6 @@ public String post(<b>@ModelAttribute("post")</b> Post post, <b>BindingResult</b
 
         <p>Le minimum vital pour notre billet est le titre. On fait donc une vérification et on sauve le billet en base.</p>
 
-        <span class="todo">IMPORT COMMONS LANG</span>
-        
         <pre>if (StringUtils.isEmpty(post.getTitle())) {
     bindingResult.rejectValue("title", "field.empty", "Le titre est obligatoire");
 
