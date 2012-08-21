@@ -12,10 +12,10 @@
     <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/prettify.js"></script>
 
 </head>
-<body>
+<body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
         <h1 style="line-height: 55px;padding-left: 10px;"><img src="img/java.png" height="50px" style="float:left"/>Java</h1>
@@ -24,105 +24,59 @@
 
         <p>Notre projet est géré avec maven et il est stoqué sous github. Nous allons pouvoir commencer à écrire du code java.</p>
 
-        <p>Le but de ce tp n'est pas de faire le tour de tout ce qu'il est possible de faire avec le langage.</p>
-
         <p>Nous allons juste mettre en place notre modèle de données pour les tps à venir.</p>
 
         <h2>Création du modèle de données</h2>
 
-        <p>Pour notre modèle, nous définissons 2 classes dans le package edu.ecm.blog.domain : Author et Post.</p>
+        <p>Pour notre modèle, nous définissons une classe dans le package fr.todooz.domain : Task.</p>
 
         <p>On utilise eclipse afin de générer les getters et les setters.</p>
 
-        <p>Author est la représentation d'un auteur de billets sur un blog.</p>
+        <p>Task est la représentation d'une tâche dans une liste de choses à faire.</p>
 
-        <pre>public class Author {
-   private String name;
+        <pre class="prettyprint">public class Task {
+  private Date createdAt;
 
-   private String email;
+  private String text;
 
-   public String getName() {
-      return name;
-   }
+  private Date date;
 
-   public void setName(String name) {
-      this.name = name;
-   }
+  private String tags;
 
-   public String getEmail() {
-      return email;
-   }
+  public Date getCreatedAt() {
+      return createdAt;
+  }
 
-   public void setEmail(String email) {
-      this.email = email;
-   }
-}</pre>
+  public void setCreatedAt(Date createdAt) {
+      this.createdAt = createdAt;
+  }
 
-        <p>Et Post est un billet de blog.</p>
-
-        <pre>public class Post {
-   private String title;
-   
-   private Date date;
-   
-   private String slug;
-   
-   private Author author;
-   
-   private String text;
-   
-   private String tags;
-
-   public String getTitle() {
-      return title;
-   }
-
-   public void setTitle(String title) {
-      this.title = title;
-   }
-
-   public Date getDate() {
+  public Date getDate() {
       return date;
-   }
+  }
 
-   public void setDate(Date date) {
+  public void setDate(Date date) {
       this.date = date;
-   }
+  }
 
-   public String getSlug() {
-      return slug;
-   }
-
-   public void setSlug(String slug) {
-      this.slug = slug;
-   }
-
-   public Author getAuthor() {
-      return author;
-   }
-
-   public void setAuthor(Author author) {
-      this.author = author;
-   }
-
-   public String getText() {
-      return text;
-   }
-
-   public void setText(String text) {
-      this.text = text;
-   }
-
-   public String getTags() {
+  public String getTags() {
       return tags;
-   }
+  }
 
-   public void setTags(String tags) {
+  public void setTags(String tags) {
       this.tags = tags;
-   }
+  }
+
+  public String getText() {
+      return text;
+  }
+
+  public void setText(String text) {
+      this.text = text;
+  }
 }</pre>
 
-        <p>Ces classes ne présentent que peu d'intêret techniquement mais elles sont importantes car elles représentent notre domain métier.</p>
+      <p>Cette classe ne présente que peu d'intêret techniquement mais elle est importante car elle représente notre domain métier.</p>
 
         <h2>L'évolution</h2>
 
@@ -130,12 +84,12 @@
 
         <ul>
             <li>java 1.4 (2002)
-                <ul>
+                <ul style="font-size: small">
                     <li>assert : assertion </li>
                 </ul>
             </li>
             <li>java 1.5 / 5.0 (2004)
-                <ul>
+                <ul style="font-size: small">
                     <li>generiques <span class="comment">List&lt;T&gt;</span></li>
                     <li>annotations <span class="comment">@Annotation</span></li>
                     <li>autoboxing / unboxing <span class="comment">Integer i = 10; int j = i;</span></li>
@@ -149,7 +103,7 @@
 
             </li>
             <li>java 7.0 (projet coin)
-                <ul>
+                <ul style="font-size: small">
                     <li>strings dans les switch</li>
                     <li>notation plus lisible pour les numériques <span class="comment">int value = 100_000;</span></li>
                     <li>multi catch <span class="comment">try { ... } catch (FirstException | SecondException ex) { ... }</span></li>
@@ -159,12 +113,12 @@
                 </ul>
             </li>
             <li>java 8.0
-                <ul>
+                <ul style="font-size: small">
                     <li>closures ?</li>
                 </ul>
             </li>
 
-            <p>A coté du language, les évolutions des apis ont été beaucoup plus importantes.</p>
+            <p>A coté du language, les évolutions des apis et librairies ont été beaucoup plus importantes.</p>
 
             <p>Cependant, java garde une forte compatibilité avec les versions passées</p>
         </ul>
