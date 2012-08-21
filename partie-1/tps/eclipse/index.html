@@ -12,10 +12,10 @@
     <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/prettify.js"></script>
 
 </head>
-<body>
+<body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
         <h1 style="line-height:50px;padding-left:10px;"><img src="img/eclipse_icon.png" height="50" style="float:left;"/> Eclipse</h1>
@@ -112,13 +112,13 @@
 
         <h2>Une classe</h2>
 
-        <p>En faisant un click droit sur le répertoire, on peut créer une classe java Person dans le package edu.ecm.test</p>
+        <p>En faisant un click droit sur le répertoire, on peut créer une classe java Person dans le package fr.test</p>
 
         <img src="img/new-java-class.png" style="margin: 0 120px" />
 
         <p>On obtient le code suivant :</p>
 
-        <pre>package edu.ecm.test;
+        <pre class="prettyprint language-java">package fr.test;
 
 public class Person {
 
@@ -128,13 +128,13 @@ public class Person {
 
         <p>On ajoute les attributs suivants dans la classe.</p>
 
-        <pre>private String firstname;
+        <pre class="prettyprint language-java">private String firstname;
 
 private String lastname;</pre>
 
         <p>Eclipse est capable de générer les getters et setters pour ces attributs. Il suffit de faire un click droit dans l'éditeur et d'utiliser le menu Source &gt; Generate Getters and Setters...</p>
 
-        <pre>public String getFirstname() {
+        <pre class="prettyprint language-java">public String getFirstname() {
     return firstname;
 }
 
@@ -152,24 +152,28 @@ public void setLastname(String lastname) {
 
         <h2>toString</h2>
 
-        <p>La méthode toString() est la méthode qui transforme un Object en chaîne de caractères. Elle sert principalement à faire du débuggage car pour la serialisation il existe des mécaniques bidirectionnelles plus complètes.</p>
+        <p>La méthode toString() est la méthode qui transforme un Object en chaîne de caractères. Elle sert principalement à faire du débug car pour la serialisation il existe des mécaniques bidirectionnelles (objet &lt;-&gt; string) plus complètes.</p>
 
         <p>Eclipse peut également générer cette méthode via le menu contextuel Source &gt; Generate toString()...</p>
 
-        <pre>@Override
+        <pre class="prettyprint language-java">@Override
 public String toString() {
     return "Person [firstname=" + firstname + ", lastname=" + lastname + "]";
 }</pre>
 
         <h2>equals et hashCode</h2>
 
-        <p>Les méthodes equals et hashCode servent lorsque les objets sont utilisés dans des collections ou des mécaniques à base de tables de hash.</p>
+        <p>Ces 2 méthodes marchent en couple et sont capitales.</p>
 
         <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur eclipse mais une description détaillée et simple est disponible dans le <a href="http://java.sun.com/developer/Books/effectivejava/Chapter3.pdf" class="external">chapitre 3 de effective java</a></p>
 
+        <p>Les méthodes equals et hashCode permettent de comparer des objets 2 à 2. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
+
+        <p>Une mauvaise implémentation peut avoir des conséquences désatreuses pour une application.</p>
+
         <p>Avec eclipse, il suffit de demander la génération de ces méthodes via Source &gt; Generate hashCode() and equals()...</p>
 
-        <pre>@Override
+        <pre class="prettyprint language-java">@Override
 public int hashCode() {
     final int prime = 31;
     int result = 1;
@@ -206,21 +210,21 @@ public boolean equals(Object obj) {
 
         <h2>main</h2>
 
-        <p>On va maintenant créer un classe avec une méthode main.</p>
+        <p>On va maintenant créer une classe avec une méthode main.</p>
 
-        <pre>public class Main {
+        <pre class="prettyprint language-java">public class Main {
     public static final void main(String[] args) {
 
     }
 }</pre>
 
-        <p>C'est la signature de méthode nécessaire afin qu'elle puisse être appelée en ligne de commande.</p>
+        <p>C'est un point de départ obligé pour toute application java.</p>
 
-        <p>En pratique, dans des environnements managés coté serveur, cette méthode n'est jamais définie.</p>
+        <div class="note">En pratique, dans des environnements managés, cette méthode est déjà implémentée pour nous.</div>
 
         <p>Afin de la tester un peu, on ajoute une écriture dans la sortie standard (stdout).</p>
 
-        <pre>System.out.println("Hello world !");</pre>
+        <pre class="prettyprint language-java">System.out.println("Hello world !");</pre>
 
         <p>On peut lancer cette méthode via le menu contextuel de la classe.</p>
 
@@ -228,7 +232,7 @@ public boolean equals(Object obj) {
 
         <p>On peut utiliser notre class Person depuis le main.</p>
 
-        <pre>Person person = new Person();
+        <pre class="prettyprint language-java">Person person = new Person();
 
 person.setFirstname("alex");
 person.setLastname("luthor");
@@ -247,7 +251,7 @@ System.out.println(person);</pre>
 
         <p>La classe main a été modifiée en fonction.</p>
 
-        <pre>People person = new People();
+        <pre class="prettyprint language-java">People person = new People();
 
 person.setFirstname("alex");
 person.setLastname("luthor");

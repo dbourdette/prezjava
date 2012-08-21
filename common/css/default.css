@@ -388,15 +388,17 @@ div.example {
 
 div.note {
     display: block;
-    padding: 10px 20px;
+    padding: 5px 10px;
+    margin: 0px 10px;
     color: #5c5a1c;
-    background: rgba(255, 250, 49, 0.40);
-    -webkit-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    -moz-border-radius: 8px;
-    border-radius: 8px;
+    background: rgba(255, 254, 163, 0.40);
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     margin-bottom: 10px;
-    border: 1px solid #c4a21b;
+    border: 1px solid #e6d342;
+    font-size: small;
 }
 
 video {
