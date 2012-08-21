@@ -12,15 +12,17 @@
     <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/prettify.js"></script>
 
 </head>
-<body>
+<body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
         <h1 style="line-height: 60px;padding-left:10px;"><img src="img/github.png" height="60px" style="float:left"/>Github</h1>
 
         <h2>Principes</h2>
+
+        <img src="img/vault.jpg" alt="vault" style="float:right;width: 120px;margin: 10px">
 
         <p>Un versioning control system (VCS) présente des qualités similaires à une base de données (consistance, durabilité, transactions...)</p>
 
@@ -40,17 +42,17 @@
 
         <h2>Compte github</h2>
 
-        <p>Github est un site web qui propose une interface web communautaire par dessus git. Github est gratuit et simple à utiliser. Cela en fait un outils de référence pour les projets open source.</p>
+        <p>Github est un site web qui propose une interface web communautaire par dessus git. Github est gratuit pour les projets open source et simple à utiliser. Cela en fait un outils de référence pour les projets open source.</p>
 
         <p>C'est l'outils que nous allons utiliser pour notre projet.</p>
 
         <p>Créer un compte github et configurer une clée ssh en suivant le tutorial <a href="https://github.com/" class="external" target="_blank">github</a></p>
 
-        <h2>Création du repository blog sur github</h2>
+        <h2>Création du repository todooz sur github</h2>
 
-        <p>Depuis le dashboard, créer un repository blog.</p>
+        <p>Depuis le dashboard, créer un repository todooz.</p>
 
-        <p>On doit donc obtenir un repository de la forme git@github.com:{user}/blog.git</p>
+        <p>On doit donc obtenir un repository de la forme git@github.com:{user}/todooz.git</p>
 
         <p>On peut choisir un autre nom pour le repository. Dans ce cas, il faut adapter les références à github pour toutes les manipulations à venir.</p>
 
@@ -58,8 +60,8 @@
 
         <p>Afin de pouvoir pusher notre projet vers github, il faut d'abord initializer notre répertoire projet.</p>
 
-        <pre class="shell">blog &gt; <b>git init</b>
-Initialized empty Git repository in /path/to/projects/blog/.git/</pre>
+        <pre class="shell">todooz &gt; <b>git init</b>
+Initialized empty Git repository in /path/to/projects/todooz/.git/</pre>
 
         <h2>.gitignore</h2>
 
@@ -72,7 +74,7 @@ Initialized empty Git repository in /path/to/projects/blog/.git/</pre>
 .classpath
 target/*</pre>
 
-        <p>.project et .classpath sont la défintion du projet eclipse et sont générés par maven.</p>
+        <p>.project et .classpath sont la défintion du projet eclipse et sont générés par maven (maven eclipse:eclipse).</p>
 
         <p>Le répertoire target contient le résultat de la compilation et autres fichiers générés lors du build.</p>
 
@@ -80,7 +82,7 @@ target/*</pre>
 
         <p>La command git status doit donc afficher à peu près cela.</p>
 
-        <pre class="shell">blog &gt; <b>git status</b>
+        <pre class="shell">todooz &gt; <b>git status</b>
 # On branch master
 #
 # Initial commit
@@ -95,31 +97,31 @@ nothing added to commit but untracked files present (use "git add" to track)</pr
 
         <p>On ajoute donc tout nos fichiers et on commit.</p>
 
-        <pre class="shell">blog &gt; <b>git add *</b>
-blog &gt; <b>git add .gitignore</b>
-blog &gt; <b>git commit -m "initial commit"</b></pre>
+        <pre class="shell">todooz &gt; <b>git add *</b>
+todooz &gt; <b>git add .gitignore</b>
+todooz &gt; <b>git commit -m "initial commit"</b></pre>
 
         <h2>git remote add</h2>
 
         <p>Il nous reste donc a relier notre master local au origin/master</p>
 
-        <pre class="shell">blog &gt; <b>git remote add origin git@github.com:{user}/blog.git</b></pre>
+        <pre class="shell">todooz &gt; <b>git remote add origin git@github.com:{user}/todooz.git</b></pre>
 
         <h2>git push</h2>
 
         <p>Afin d'envoyer les fichiers vers github, on utilise la commande push.</p>
 
-        <pre class="shell">blog &gt; <b>git push origin master</b></pre>
+        <pre class="shell">todooz &gt; <b>git push origin master</b></pre>
 
         <p>Les fichiers sont maintenant sur le repository github.</p>
 
         <p>Afin de simplifier les push et les pull, on peut ajouter un lien par défaut entre le master local et le master sur origin.</p>
 
-        <pre class="shell">blog &gt; <b>git config branch.master.merge refs/heads/master</b></pre>
+        <pre class="shell">todooz &gt; <b>git config branch.master.merge refs/heads/master</b></pre>
 
         <p>Maintenant git push et pit pull depuis la branche locale master travaillerons avec la branche master distante. La commande de push devient donc simplement :</p>
 
-        <pre class="shell">blog &gt; <b>git push</b></pre>
+        <pre class="shell">todooz &gt; <b>git push</b></pre>
 
         <p>A partir de maintenant, il est conseillé de commiter aussi souvent que nécessaire.</p>
     </div>
