@@ -1,4 +1,3 @@
-
-Ce repository contient une présentation html sur le language java coté serveur pour des applications web.
+C'est une présentation sur java / j2ee utilisés construire pour des applications web.
 
 Tous les contenus sont disponibles à partir de la l'index de la "présentation":http://dbourdette.github.com/prezjava/.
