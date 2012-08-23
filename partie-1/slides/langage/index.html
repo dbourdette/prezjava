@@ -16,10 +16,10 @@
 		<script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
 
 		<script src="../../../common/js/code.js"></script>
-		<script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+		<script src="../../../common/js/prettify.js" ></script>
 
   	</head>
-  	<body>
+  	<body onload="prettyPrint();">
     <div class="presentation">
       <div id="presentation-counter">Chargement...</div>
       
@@ -62,7 +62,7 @@
                     <p>Cela lui permet d'être <b>portable</b> et exécutable sur toutes les machines où tourne une <b>machine virtuelle java</b> (jvm).</p>
                     <p style="font-size: 30px;font-style: italic;margin: 10px 220px">Write once, run everywhere</p>
                     <p>La compilation se fait avec la commande javac</p>
-                    <pre>javac -classpath lib1.jar;lib2.jar Hello.java</pre>
+                    <pre><b>javac</b> -classpath lib1.jar;lib2.jar Hello.java</pre>
                     <p>Elle tranforme les fichiers .java en fichiers .class contenant le bytecode.</p>
 				</section>
 			</div>
@@ -71,7 +71,7 @@
 				<header>Méthode main et exécution</header>
 				<section>
                     <p>L'exécution d'une classe java se fait avec la commande java</p>
-                    <pre>java -classpath lib1.jar;lib2.jar Hello</pre>
+                    <pre><b>java</b> -classpath lib1.jar;lib2.jar Hello</pre>
                     <p>Afin de pouvoir être exécuté, cette classe Hello doit posséder une méthode main.</p>
                     <pre>public static void <b>main</b>(String[] args) {
     ...
@@ -129,8 +129,8 @@ public <b>class</b> Test {
                     <ul>
                         <li>Les méthodes <b>equals et hashCode</b>, qui vont de pair, sont fréquemment surchargées</li>
                         <li>La méthode <b>toString</b> est pratique pour du debugging</li>
-                        <li>getClass est très utile</li>
-                        <li>Les autres méthodes sont rarement manipulées dans du code applicatif</li>
+                        <li><b>getClass</b> permet d'accéder aux méta données de l'objet. On parle d'introspection.</li>
+                        <li>Il est très rare d'utiliser les autres méthodes.</li>
                     </ul>
 				</section>
 			</div>
@@ -138,8 +138,9 @@ public <b>class</b> Test {
 			<div class="slide">
 				<header>interface</header>
 				<section>
-                    <p>Une interface définit un contrat (une API) que des classes peuvent <b>implémenter</b>.</p>
-                    <p>Elle contient des <b>signatures</b> de méthodes et des constantes</p>
+                    <p>Une interface définit un contrat (une API) auquel une classe peut adhérer.</p>
+                    <p>On dit alors qu'une classe <b>implémente</b> une interface.</p>
+                    <p>Une interface peut contenir des <b>signatures</b> de méthodes et des constantes</p>
                     <pre>public <b>interface</b> MailService {
    public static final int SOME_NAME = 10;
 
@@ -172,21 +173,23 @@ gender1 == gender2; <span class="comment">// true</span></pre>
 			<div class="slide">
 				<header>Annotations</header>
 				<section>
-                    <p>Une annotation est un marqueur (un label, un tag...) et se définit comme suit :</p>
+                    <p>Une annotation est un marqueur qui a valeur de qualificatif.</p>
+                    <p>Elle s'utilise simplement en annotant les classes, les attributs ou les méthodes.</p>
+                    <pre>@LookAtMe(why = "why not")
+public void save() {
+   ...
+}</pre>
+                    <p>Sa définition à la forme suivante.</p>
                     <pre>public <b>@interface</b> LookAtMe {
     String why();
 
     String comments() default "none";
 }</pre>
                     <p>Comme une interface, elle ne contient aucun traitement.</p>
-                    <p>Et s'utilise simplement en annotant les classes, les attributs ou les méthodes.</p>
-                    <pre>@LookAtMe(why = "why not")
-public void save() {
-   ...
-}</pre>
-                    <p>Il est possible de venir lire ces marqueurs par <b>introspection</b> des classes.</p>
 
-                    <p>En pratique, il est rare de définir ses propres annotations. Il est pas contre très pratique et courant de les utiliser.</p>
+                    <p>Il est possible de venir lire ces marqueurs par <b>introspection</b>.</p>
+
+                    <p>On utilise beaucoup les annotations. On en définit peu soi même.</p>
 				</section>
 			</div>
 
@@ -211,9 +214,10 @@ public void save() {
 			<div class="slide">
 				<header>La gestion de la mémoire</header>
 				<section>
-                    <p>Une application java réserve la mémoire en masse et la redistribue ensuite en fonction du besoin.</p>
+                    <p>Une machine virtuelle java réserve et gère la mémoire en masse.</p>
                     <p>Il n'y a donc pas besoin d'écrire du code afin de réserver ou libérer de la mémoire.</p>
-                    <p>La mémoire réservée est découpée en plusieurs zones, selon l'ancienneté des objets en mémoire.</p>
+                    <p>La machine virtuelle segmente la mémoire en fonction de la durée de vie des objets.</p>
+                    <p>Des stragtégies complexes pilotent les données en mémoire.</p>
                     <img src="img/gc.jpg" style="margin:0 100px" />
                     <p>La <b>garbage collector</b> surveille les objets devenus inutiles et libère la mémoire correspondante.</p>
 				</section>
@@ -222,8 +226,8 @@ public void save() {
 			<div class="slide">
 				<header>java et jee</header>
 				<section>
-                    <p>En plus du langage, java propose des librairies pour applications d'entreprise : Java Enterprise Edition (jee).</p>
-                    <p>C'est une galaxie de services vaste dont en voici quelques élements :</p>
+                    <p>JEE est un ensemble de librairies et outils facilitant l'usage de java en entreprise.</p>
+                    <p>C'est un panel de services vaste dont en voici quelques élements :</p>
                     <ul>
                         <li>Conteneurs de composants : servlets, portlets et ejb</li>
                         <li>JPA : persistance object - relationnel</li>
@@ -239,17 +243,18 @@ public void save() {
                         <li>JNDI : java naming and directory interface</li>
                         <li>Technologies de rendu : fichiers jsp, custom tags et expression language</li>
 	          	    </ul>
+                    <p>JEE est un outils parmis d'autres et n'est pas une obligation pour java.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>Environnements managés</header>
 				<section>
-                    <p>En entreprise, les applications java jee sont déployés dans des <b>conteneurs d'applications</b>.</p>
-                    <p>Dans un conteneur les objets sont souvent appelés <b>composants</b>.</p>
-                    <p>Ces applications à base de composants ne possèdent pas de méthode main(). Elles se conforment aux spécifications et implémentent des interfaces.</p>
-                    <p>Le conteneur charge les composants et les sollicite en fonction du besoin.</p>
-                    <p>Les fichiers qui décrivent les composants afin que le conteneur puisse comprendre la structure de l'application sont appelés <b>descripteurs de déploiement</b>.</p>
+                    <p>Une application jee est déployée dans un <b>conteneur d'applications</b>.</p>
+                    <p>Dans un conteneur les objets structurants sont souvent appelés <b>composants</b>.</p>
+                    <p>La création d'application jee se fait en implémentant des interfaces et non en déclarant une méthode main.</p>
+                    <p>C'est le conteneur qui charge les composants et les sollicite en fonction du besoin.</p>
+                    <p>La déclaration des composants se fait dans un <b>descripteurs de déploiement</b>.</p>
                     <br>
                     <p>Nous reviendrons plus tard dans la présentation sur jee et les conteneurs.</p>
 				</section>
@@ -260,7 +265,7 @@ public void save() {
 				<section>
                     <p><b>Effective java</b> : le guide des bonnes pratiques java et objet par Joshua Bloch.</p>
                     <img alt="" src="img/effective-java.jpg" width="200px;" style="margin-left:300px">
-                    <p>Un catalogue de bonnes pratiques essentielles, simples et efficaces.</p>
+                    <p>Un catalogue de bonnes pratiques <b>essentielles</b>, simples et efficaces.</p>
                     <p>Disponible sur <a href="http://www.amazon.fr/Effective-Java-Joshua-Bloch/dp/0321356683/ref=sr_1_1?ie=UTF8&qid=1312385429&sr=8-1" class="external" target="_blank">amazon</a></p>
 				</section>
 			</div>
