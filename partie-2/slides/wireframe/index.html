@@ -1,71 +1,9 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-	    <title>Le wireframe</title>
-	    
-		<link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-
-        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-
-        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-        <script src="../../../common/js/code.js"></script>
-        <script src="../../../common/js/prettify.js"></script>
-
-  	</head>
-  	<body onload="prettyPrint();">
-    <div class="presentation">
-      <div id="presentation-counter">Chargement...</div>
-      <div style="display: block;" class="slides">
-
-              <div class="slide">
-                <style>
-                  #landing-slide p {
-                    font-size: 35px;
-                  }
-                </style>
-                <section id="landing-slide" class="middle">
-                  <p>Le wireframe</p>
-                </section>
-              </div>
-
-              <div class="slide">
-                <header>Todooz</header>
-                <section>
-                    <p>.</p>
-                    <pre>
-public class SimpleService {
-   private Database database;
-
-   public SimpleService() {
-      this.database = new Database(...);
-   }
-
-   public void updateDatabase() {
-      database.doUpdateDatabase();
-   }
-   ...
-}</pre>
-                    <ul>
-                        <li>Le constructeur entreprend des opérations risquées : que se passe t il en cas d'exception ?</li>
-                        <li>Le service instancie et configure lui même la connexion : ce n'est pas son rôle.</li>
-                        <li>Il est diffcile de rendre paramétrable la configuration de l'instance database.</li>
-                        <li>L'instance database ne peut pas être partagée entre plusieurs services.</li>
-                        <li>Qui libère la ressource database lorsque SimpleService n'est plus utile ?</li>
-                    </ul>
-                </section>
-              </div>
-
-          </div>
-          <!-- slides -->
-
-        </div> <!-- presentation -->
-    
-  	</body>
-  </html>
+<head>
+    <title></title>
+</head>
+<body style="text-align:center;">
+    <img src="img/wireframe.png" alt="wireframe" style="width: 800px">
+</body>
+</html>

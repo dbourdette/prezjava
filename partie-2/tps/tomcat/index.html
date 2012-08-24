@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Conteneurs</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1 style="line-height: 60px;"><img src="img/tomcat.png" style="float: left; margin-right: 10px;"> Tomcat</h1>
+
+        <p>Les serveurs jee se divisent en 2 grandes familles :</p>
+
+        <ul>
+            <li>Les conteneurs de servlets : serveur http + sous partie des specs jee (servlets, jsp, jndi, jdbc...).</li>
+            <li>Les conteneurs d'applications : support de toutes les spécifications jee.</li>
+        </ul>
+
+        <p>Nous allons nous intéresser uniquement aux conteneurs de servlets : Il sont suffisants pour notre besoin.</p>
+
+        <h2>Tomcat</h2>
+
+        <p>Nous allons utiliser le serveur de la fondation apache : <a href="http://tomcat.apache.org/" class="external" target="_blank">tomcat</a>.</p>
+
+        <p>On commence par télécharger la dernière version <a href="http://tomcat.apache.org/download-60.cgi" class="external" target="_blank">6.0.x de tomcat</a></p>
+
+        <p>On décompresse l'archive et on copie le répertoire apache-tomcat-6.0.xx dans son home directory.</p>
+
+        <p>On peut dès à présent lancer le serveur</p>
+
+        <pre class="shell">&gt; <b>cd ~/apache-tomcat-6.0.xx</b>
+&gt; <b>./bin/startup.sh</b>
+Using CATALINA_BASE:   "/home/user/apache-tomcat-6.0.32"
+Using CATALINA_HOME:   "/home/user/apache-tomcat-6.0.32"
+Using CATALINA_TMPDIR: "/home/user/apache-tomcat-6.0.32/temp"
+Using JRE_HOME:        "/path/to/java/jdk1.6.0_17"
+Using CLASSPATH:       /home/user/apache-tomcat-6.0.32/bin/bootstrap.jar"</pre>
+
+        <p>Et aller sur la page <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a></p>
+
+        <img src="img/tomcat-home-page.png" width="800px" style="margin: 10px 20px;">
+
+        <p>C'est la page d'accueil de tomcat. Il y quelques liens et exemples accessibles depuis celle-ci.</p>
+
+        <p>En pratique, on y va jamais.</p>
+
+        <h2>Les répertoires de tomcat</h2>
+
+        <p>Voici les répertoires à la racine de tomcat :</p>
+
+        <pre class="shell">&gt; <b>cd ~/apache-tomcat-6.0.xx</b>
+&gt; <b>ls</b>
+d----        16/06/2011     21:27            bin            <span class="comment">les exécutables</span>
+d----        16/06/2011     21:30            conf           <span class="comment">la configuration de tomcat et des applications</span>
+d----        16/06/2011     21:27            lib            <span class="comment">les librairies (.jar)</span>
+d----        16/06/2011     21:30            logs           <span class="comment">les logs du serveur</span>
+d----        16/06/2011     21:27            temp           <span class="comment">répertoire de travail pour les applications</span>
+d----        16/06/2011     21:28            webapps        <span class="comment">les applications</span>
+d----        16/06/2011     21:30            work           <span class="comment">répertoire de travail de tomcat</span>
+-a---        16/06/2011     21:26      38657 LICENSE
+-a---        16/06/2011     21:26        574 NOTICE
+-a---        16/06/2011     21:26       8672 RELEASE-NOTES
+-a---        16/06/2011     21:26       6836 RUNNING.txt</pre>
+
+        <p>Et la signification des variables d'environnement qui apparaissent au démarrage :</p>
+
+        <ul>
+            <li>CATALINA_HOME : c'est le répertoire d'installation de tomcat (bin, conf tomcat, lib)</li>
+            <li>CATALINA_BASE : c'est le répertoire où sont les applications (webapps, conf applications)</li>
+            <li>CATALINA_TMPDIR : c'est le répertoire de travail</li>
+        </ul>
+
+        <p>Tomcat peut donc être installé dans un répertoire et les applications peuvent être ailleurs.</p>
+
+        <p>On peut donc lancer plusieurs fois le même tomcat avec à chaque fois des applications différentes.</p>
+
+        <h2>Contrôler tomcat</h2>
+
+        <p>Le répertoire bin de $CATALINA_HOME contient les script startup.sh et shutdown.sh (*.bat sous windows).</p>
+
+        <h2>Les applications</h2>
+
+        <p>Une installation de tomcat vient avec quelques applications de démonstration</p>
+
+<pre class="shell">&gt; <b>ls ~/apache-tomcat-6.0.xx/webapps</b>
+d----        16/06/2011     21:28            docs
+d----        16/06/2011     21:28            examples
+d----        16/06/2011     21:28            host-manager
+d----        16/06/2011     21:28            manager
+d----        16/06/2011     21:28            ROOT</pre>
+
+        <p>L'application examples est accessible sur <a href="http://localhost:8080/examples" target="_blank">http://localhost:8080/examples</a></p>
+
+        <p>L'application <b>ROOT</b> est particulière, elle répond à la racine <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>, c'est l'application qui sert de page d'acceuil.</p>
+
+        <p>Tomcat charge toutes ces applications au démarrage.</p>
+
+        <p>Dans ce répertoire, on peut trouver :</p>
+
+        <ul>
+            <li>des répertoires d'applications</li>
+            <li>des fichiers .war : ce sont des applications zippées (packagées)</li>
+        </ul>
+
+        <h2>Structure d'une application</h2>
+
+        <p>Canoniquement, les applications web java sont des archiches (zip) avec l'extension .war.</p>
+
+        <img src="img/war-layout.png" alt="war layout" style="width: 350px;float:left;margin: 0 10px 10px 10px;">
+
+        <p>La structure interne d'un war est la suivante.</p>
+
+        <p>Le répertoire WEB-INF est un répertoire protégé.<br>Ses fichiers ne sont pas accessibles depuis un navigateur web :</p>
+
+        <ul>
+            <li>classes : les classes java du projet</li>
+            <li>lib : les librairies additionnelles</li>
+            <li>jsp : les fichiers jsp</li>
+            <li>tags : des morceaux de jsp réutilisables</li>
+            <li>tld : des descripteur de tags et fonctions</li>
+            <li>web.xml : le descripteur de déploiement</li>
+        </ul>
+
+        <p>A la racine, on trouve les fichiers publiques accessibles depuis un navigateur : fichiers hmtl, css, images...</p>
+
+        <div style="clear: both" />
+
+        <p>Les outils de build tel que maven et les IDE aident à contruire cette archive.</p>
+
+        <h2>Sécurité</h2>
+
+        <p>Certaines de ces applications sont protégées par autentification de type BASIC (popup navigateur quand on tente d'aller sur l'application.)</p>
+
+        <p>C'est le cas de l'application manager qui nécessite un user avec un rôle manager-gui.</p>
+
+        <p>Pour des raisons de sécurité, aucun utilisateur n'est défini par défaut.</p>
+
+        <p>Le fichier $CATALINA_HOME/conf/tomcat-users.xml permet de rajouter un user.</p>
+
+        <pre>&lt;user username="admin" password="admin" roles="manager-status"/&gt;</pre>
+
+        <p>Et on redémarre tomcat et l'utilisateur admin a ainsi accès à <a href="http://localhost:8080/manager/status" target="_blank">http://localhost:8080/manager/status</a></p>
+
+        <p>Pour l'interface d'admin, il faut le rôle manager-gui :</p>
+
+        <pre>&lt;user username="admin" password="admin" roles="manager-status,manager-gui"/&gt;</pre>
+
+        <p>Et la page <a href="http://localhost:8080/manager/html" target="_blank">http://localhost:8080/manager/html</a> devient accessible.</p>
+
+        <p>Cette page permet d'administrer toutes les applications déployées dans le serveur.</p>
+
+        <p>En pratique, on ne l'utilise jamais.</p>
+
+        <p>Le fichier tomcat-users.xml définit un ensemble d'utilisateurs valable pour toutes les applications déployées.</p>
+
+        <p>En sécurité, cet ensemble est appelé realm (domaine).</p>
+
+        <p>Le fichier tomcat-user.xml est le fichier de configuration par défaut du <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/realm.html" class="external" target="_blank">Memory Based Realm</a> de tomcat.</p>
+    </div>
+</div>
+</body>
+</html>
