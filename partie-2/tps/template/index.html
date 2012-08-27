@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Hibernate</title>
+    <title>Le template html</title>
 
     <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
     <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
@@ -18,7 +18,196 @@
 <body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
+        <h1 style="line-height: 60px;"><img src="img/wireframe.jpeg" style="float: left; margin-right: 10px;width: 120px"> Le template html</h1>
 
+        <div style="clear: both" />
+
+        <p>Nous allons mettre en place le template html de notre application.</p>
+
+        <h2>Bootstrap</h2>
+
+        <p>Nous utilisons <a href="http://twitter.github.com/bootstrap/" class="external" target="_blank">twitter bootstrap</a> qui est un framework css / javascript pour html 5.</p>
+
+        <p>Cela nous permet de construire rapidement notre <a href="html/template.html">template</a>.</p>
+
+        <p>Le code html est le suivant :</p>
+
+        <pre class="prettyprint">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Todooz&lt;/title&gt;
+    &lt;!-- Bootstrap --&gt;
+    &lt;link href="css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="container"&gt;
+    &lt;div class="navbar navbar-inverse"&gt;
+        &lt;div class="navbar-inner"&gt;
+            &lt;span class="brand"&gt;Todooz&lt;/span&gt;
+            &lt;form class="navbar-search pull-left"&gt;
+                &lt;input type="text" class="search-query" placeholder="Search"&gt;
+            &lt;/form&gt;
+            &lt;a href="/add" class="btn btn-inverse pull-right"&gt;&lt;i class="icon-plus icon-white"&gt;&lt;/i&gt;&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="span9"&gt;
+            &lt;legend&gt;All tasks&lt;/legend&gt;
+
+            &lt;div&gt;
+                &lt;p&gt;20 juillet 2012&lt;/p&gt;
+                &lt;span class="lead"&gt;Read Effective Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;p&gt;Read Effective Java before it's too late&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+                &lt;p&gt;20 juillet 2012&lt;/p&gt;
+                &lt;span class="lead"&gt;Read Effective Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;p&gt;Read Effective Java before it's too late&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+                &lt;p&gt;20 juillet 2012&lt;/p&gt;
+                &lt;span class="lead"&gt;Read Effective Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;p&gt;Read Effective Java before it's too late&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+                &lt;p&gt;20 juillet 2012&lt;/p&gt;
+                &lt;span class="lead"&gt;Read Effective Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;p&gt;Read Effective Java before it's too late&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+                &lt;p&gt;20 juillet 2012&lt;/p&gt;
+                &lt;span class="lead"&gt;Read Effective Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;p&gt;Read Effective Java before it's too late&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+                &lt;p&gt;20 juillet 2012&lt;/p&gt;
+                &lt;span class="lead"&gt;Read Effective Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;span class="badge badge-info"&gt;Java&lt;/span&gt;
+                &lt;p&gt;Read Effective Java before it's too late&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="span3"&gt;
+            &lt;div&gt;
+                &lt;legend&gt;Quick links&lt;/legend&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href="/today"&gt;Today's&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="/today"&gt;Tomorrow's&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+                &lt;legend&gt;Tags&lt;/legend&gt;
+                &lt;a href="/tag/java" style="font-size:14px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:20px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:16px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:12px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:10px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:22px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:12px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:14px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:18px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:24px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:12px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:10px"&gt;java&lt;/a&gt;
+                &lt;a href="/tag/java" style="font-size:14px"&gt;java&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script src="js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <h2>maven</h2>
+
+        <p>La première étape consiste a informer maven que nous allons construire un war (web application archive).</p>
+
+        <p>Dans le fichier pom.xml :</p>
+
+        <pre>&lt;project ...&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;fr.todooz&lt;/groupId&gt;
+    &lt;artifactId&gt;todooz&lt;/artifactId&gt;
+    <s style="color: red">&lt;packaging&gt;jar&lt;/packaging&gt;</s>
+    <span style="color: green">&lt;packaging&gt;war&lt;/packaging&gt;</span>
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;todooz&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+
+        <h2>src/main/webapp</h2>
+
+        <p>Dans la structure d'un war, les fichiers publics (html, css, images, javascripts) vont à la racine de l'archive.</p>
+
+        <p>Dans un projet maven de type war, ces fichiers sont dans le répertoire src/main/webapp.</p>
+
+        <p>Les fichiers de ce répertoire seront donc recopiés à la racine du war lors du build.</p>
+
+        <p>Avec eclipse, nous créons donc ce répertoire et créons le fichier index.html dedans.</p>
+
+        <p>Il reste a copier les fichiers de <a href="http://twitter.github.com/bootstrap/" class="external" target="_blank">bootstrap</a> (css, img, js) dans ce même répertoire.</p>
+
+        <h2>tomcat:run</h2>
+
+        <p>Il ne nous reste plus qu'a démarrer un serveur web afin de tester notre application.</p>
+
+        <p>La commande mvn tomcat:run permet de lancer un serveur tomcat.</p>
+
+        <pre>todooz &gt; mvn tomcat:run
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building todooz 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] >>> tomcat-maven-plugin:1.1:run (default-cli) @ todooz >>>
+[INFO]
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ todooz ---
+[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /path/to/projects/todooz/src/main/resources
+[INFO]
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ todooz ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] <<< tomcat-maven-plugin:1.1:run (default-cli) @ todooz <<<
+[INFO]
+[INFO] --- tomcat-maven-plugin:1.1:run (default-cli) @ todooz ---
+[INFO] Running war on http://localhost:8080/todooz
+[INFO] Using existing Tomcat server configuration at /path/to/projects/todooz/target/tomcat
+26 ao#t 2012 21:02:49 org.apache.catalina.startup.Embedded start
+INFO: Starting tomcat server
+26 ao#t 2012 21:02:49 org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/6.0.29
+26 ao#t 2012 21:02:49 org.apache.coyote.http11.Http11Protocol init
+INFO: Initializing Coyote HTTP/1.1 on http-8080
+26 ao#t 2012 21:02:49 org.apache.coyote.http11.Http11Protocol start
+INFO: Starting Coyote HTTP/1.1 on <b>http-8080</b></pre>
+
+        <p>Si tout c'est bien passé, le résultat est disponible sur <a href="http://localhost:8080/todooz/index.html" class="external" target="_blank">http://localhost:8080/todooz/index.html</a></p>
     </div>
 </div>
 </body>
