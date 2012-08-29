@@ -175,6 +175,8 @@
 
         <p>Il ne nous reste plus qu'a démarrer un serveur web afin de tester notre application.</p>
 
+        <p>Nous allons donc utiliser le <a href="http://mojo.codehaus.org/tomcat-maven-plugin/index.html" class="external" target="_blank">plugin tomcat</a> pour maven afin de nous faciliter la tâche.</p>
+
         <p>La commande mvn tomcat:run permet de lancer un serveur tomcat.</p>
 
         <pre>todooz &gt; <b>mvn tomcat:run</b>
@@ -208,6 +210,44 @@ INFO: Initializing Coyote HTTP/1.1 on http-8080
 INFO: Starting Coyote HTTP/1.1 on <b>http-8080</b></pre>
 
         <p>Si tout c'est bien passé, le résultat est disponible sur <a href="http://localhost:8080/todooz/index.html" class="external" target="_blank">http://localhost:8080/todooz/index.html</a></p>
+
+        <h2>Using platform encoding</h2>
+
+        <p>TODO</p>
+
+        <h2>ROOT</h2>
+
+        <p>Les conteneurs de servlets permettent de déployer plusieurs application en même temps.</p>
+
+        <p>Par défaut, mvn tomcat:run déploie notre application dans le contexte correspondant au nom du projet.</p>
+
+        <pre>http://localhost:8080/<b>{context}</b>/...</pre>
+
+        <p>Pour plus de simplicité, nous allons faire que la commande déploie notre application à la racine.</p>
+
+        <p>On paramètre donc le plugin tomcat.</p>
+
+        <pre>&lt;project&gt;
+    ...
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                &lt;artifactId&gt;tomcat-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;path&gt;/&lt;/path&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+    &lt;dependencies&gt;
+        ...
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+
+        <p>Cette fois, le résultat est disponible sur <a href="http://localhost:8080/index.html" class="external" target="_blank">http://localhost:8080/index.html</a></p>
     </div>
 </div>
 </body>

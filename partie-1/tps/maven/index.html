@@ -228,7 +228,49 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
         <p>On peut ensuite ouvrir simplement ce projet dans eclipse (File &gt New &gt Java Project en allant chercher le bon répertoire).</p>
 
-        <p>Eclipse respectera la structure de répertoire de maven.</p>
+        <p>En fait cette commande génère le .project</p>
+
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;projectDescription&gt;
+    &lt;name&gt;todooz&lt;/name&gt;
+    &lt;comment&gt;NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in
+            M2Eclipse.&lt;/comment&gt;
+    &lt;projects/&gt;
+    &lt;buildSpec&gt;
+        &lt;buildCommand&gt;
+            &lt;name&gt;org.eclipse.jdt.core.javabuilder&lt;/name&gt;
+        &lt;/buildCommand&gt;
+    &lt;/buildSpec&gt;
+    &lt;natures&gt;
+        &lt;nature&gt;org.eclipse.jdt.core.javanature&lt;/nature&gt;
+    &lt;/natures&gt;
+&lt;/projectDescription&gt;</pre>
+
+        <p>et le .classpath</p>
+
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;classpath&gt;
+    &lt;classpathentry kind="src" path="src/main/java" including="**/*.java"/&gt;
+    &lt;classpathentry kind="output" path="target/classes"/&gt;
+    &lt;classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/&gt;
+    &lt;classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/&gt;
+&lt;/classpath&gt;</pre>
+
+        <p>Eclipse obtient donc la connaissance des répertoires et librairies gérées par maven.</p>
+
+        <h2>M2_REPO</h2>
+
+        <p>Dans le .classpath, on peut voir que eclipse obtient une référence vers une librairie dont le chemin comment par M2_REPO.</p>
+
+        <p>Maven évite les chemin absolu en dur lors de la production du .classpath pour eclipse.</p>
+
+        <p>Il reste donc a informer eclipse du répertoire correspondant dans Eclipse &gt; Préférence &gt; Classpath Variables.</p>
+
+        <img src="img/classpath-variables.png" alt="classpath variables" style="margin: 0 100px;">
+
+        <p>On ajoute l'entrée M2_REPO qui pointe vers le répertoire .m2/repository dans le home.</p>
+
+        <p>Enfin on autorise eclipse a faire un rebuild du project suite à la modification du classpath.</p>
     </div>
 </div>
 </body>

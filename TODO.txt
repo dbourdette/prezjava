@@ -1,3 +1,7 @@
 
-add some drawings
+interface http : décomposition d'une url (protocol...)
 
+Using platform encoding
+
+cheat sheet : convention de repertoires maven
+cheat sheet : structure d'un war
