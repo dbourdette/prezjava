@@ -1,0 +1,316 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+        <title>Les conteneurs jee</title>
+
+        <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+
+        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+
+        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
+        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+
+        <script src="../../../common/js/code.js"></script>
+        <script src="../../../common/js/prettify.js"></script>
+
+  	</head>
+  	<body onload="prettyPrint();">
+    <div class="presentation">
+      <div id="presentation-counter">Chargement...</div>
+      <div style="display: block;" class="slides">
+      
+	      <div class="slide">
+			<style>
+			  #landing-slide p {
+			    font-size: 35px;
+			  }
+			</style>
+			<section id="landing-slide" class="middle">
+			  <p>Les conteneurs jee</p>
+			</section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Les serveurs jee</header>
+	        <section>
+	        	<p>Un serveur jee est un serveur répondant aux <b>spécifications</b> jee : APIs et services utiles aux applications.</p>
+	        	<p>Les APIS permettent de définir des composants : on parle d'<b>environnements managés</b>.</p>
+	        	<img alt="" src="img/jee-container.png" width="300px" style="margin:0 250px;"/>
+	          	<ul>
+	          		<li>Les composants : servlets, portlets, ejb, jsp...</li>
+	          		<li>Les services : JPA, JMS, JDBC, JNDI, JMX... </li>
+	          	</ul>
+	          	<p>La liste complète des <a href="http://www.oracle.com/technetwork/java/javaee/tech/index.html" class="external" target="_blank">spécifications jee 6</a> est disponible sur le site d'oracle.</p>
+                <ul>
+                    <li>les <b>conteneur de servlets</b> : le minimum afin de faire des applications web
+                    <li>les <b>serveur d'application</b> : ils implémentent la totalité des spécifications
+                </ul>
+	        </section>
+	        <p class="source">http://fr.wikipedia.org/wiki/Java_EE</p>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Historique</header>
+	        <section>
+	        	<p>Voici les principales dates clées pour jee.</p>
+	        	<ul>
+	        		<li>J2EE 1.2 (1999) : servlets, jsp, EJBs (1.1), JMS, RMI
+	        		<li>J2EE 1.3 (2001) : EJBs (2.0 CMP), JCA
+	        		<li>J2EE 1.4 (2003) : EJBs (2.1 MDB), Web services, JAX-RPC, Deployment Specification
+	        		<li>JEE 5 (2006) : EJB (3.0 annotations), JPA, Annotations, JSF, JAX-WS
+	        		<li>JEE 6 (2009) : Profil web, EJB (3.1 singletons, lite, asynchronous), JAX-RS
+	        	</ul>
+	        	<p>La liste des technologies est beaucoup plus longue que ce résumé rapide.</p>
+	        	<p>Plus généralement, l'évolution de jee peut être vu comme :</p>
+	        	<ul>
+	        		<li>Une base solide mais controversée (EJBs) en 2000
+	        		<li>Une évolution d'un monolithe vers une galaxie de services (ex CMP -> JPA)
+	        		<li>Le passage du tout xml vers les annotations depuis 2006
+	        	</ul>
+	        	<p>Aujourd'hui, jee a corrigé beaucoup de ses défauts et essaye d'allier entreprise et simplicité.</p>
+	        </section>
+	        <p class="source">http://en.wikipedia.org/wiki/Java_EE_version_history</p>
+	      </div>
+	
+	      <div class="slide">
+	      	<style>
+	      		#packagings tbody td {
+	      			text-align:left;
+	      		}
+	      	</style>
+	      	<header>Packaging</header>
+	        <section>
+	        	<p>Un <b>package</b> est un fichier zip contenant toutes les ressources d'un module : lib, appli web...</p>
+	        	<p>Il existe 3 formes majoritaires de packaging en java.</p>
+	        	<table class="refTable" id="packagings">
+	        		<thead>
+	        			<tr>
+	        				<td>nom</td>
+	        				<td>extension</td>
+	        			</tr>
+	        		</thead>
+	        		<tbody>
+		        		<tr>
+		        			<td>Les librairies</td>
+		        			<td>.jar</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2">Modules réutilisables (avec possibilité de définir des ejbs dans le META-INF/ejb-jar.xml).</td>
+		        		</tr>
+		        		<tr>
+		        			<td>Les applications web</td>
+		        			<td>.war</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2">servlets et jsp avec un descripteur de déploiement WEB-INF/web.xml.</td>
+		        		</tr>
+		        		<tr>
+		        			<td>Les applications entreprise</td>
+		        			<td>.ear</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2">ejb avec un descripteur de déploiement META-INF/application.xml.</td>
+		        		</tr>
+		        	</tbody>
+	        	</table>
+                <p>Chacun de ces packagings peuvent contenir des descripteurs de déploiement.</p>
+                <ul>
+                    <li>web.xml pour les war</li>
+                    <li>persitence.xml pour JPA</li>
+                    <li>ejb-jar.xml pour les EJBs</li>
+                </ul>
+	        </section>
+	      </div>
+	
+	      <div class="slide">
+	      	<header>Arborescence d'un war</header>
+	        <section>
+	        	<p>Un war (<b>web application archive</b>) est un zip contenant une application web.</p>
+	        	<img alt="" src="../../../partie-2/tps/tomcat/img/war-layout.png" style="float:left;width:350px;margin:0 10px;">
+	        	<p><br>Le répertoire <b>WEB-INF</b> est un répertoire protégé.<br>
+	        	Ses fichiers ne sont pas accessibles directement.</p>
+	        	<ul>
+	        		<li>classes : les classes java du projet
+	        		<li>lib : les librairies externes
+	        		<li>jsp : les fichiers jsp
+	        		<li>tags : des morceaux de jsp réutilisables
+	        		<li>tld : des descripteur de tags
+	        		<li>web.xml : le descripteur de déploiement
+	        		<li>à la racine : les fichiers web accessibles
+	        	</ul>
+	        </section>
+	      </div>
+
+          <div class="slide">
+              <header>Les composants jee</header>
+              <section>
+                  <p>Voici quelques types de composants.</p>
+                  <table class="refTable">
+                      <thead>
+                      <tr>
+                          <td>nom</td>
+                          <td>description</td>
+                      </tr>
+                      </thead>
+                      <tr>
+                          <td>Servlets</td>
+                          <td>Le composant pour la gestion des requêtes client - serveur</td>
+                      </tr>
+                      <tr>
+                          <td width="250px">Enterprise jave beans (EJBs)</td>
+                          <td>Services, modèle de données et messages asynchrones</td>
+                      </tr>
+                      <tr>
+                          <td>Java server pages (JSPs)</td>
+                          <td>Le moteur de templating afin de créer les pages HTML</td>
+                      </tr>
+                      <tr>
+                          <td>Portlets</td>
+                          <td>Fragment de page dans un conteneur de portlets</td>
+                      </tr>
+                  </table>
+                  <p>Les composants sont des classes java qui adhèrent à une interface définissant un <b>cycle de vie</b>.<p>
+	        	<pre>
+public void init() {...}
+
+public void doGet() {...}
+
+public void destroy() {...}</pre>
+                  <p>Les spécifications récentes ont levé cette rigidité et les composants évoluent vers plus de flexibilité (annotations / injection de dépendances).</p>
+              </section>
+          </div>
+
+          <div class="slide">
+              <header>Les servlets</header>
+              <section>
+                  <p>L'api de la classe HttpServlet possède les méthodes suivantes</p>
+	        	<pre>
+init(ServletConfig config)
+
+destroy()
+
+doGet(HttpServletRequest req, HttpServletResponse resp)
+
+doPost(HttpServletRequest req, HttpServletResponse resp)
+
+doPut(HttpServletRequest req, HttpServletResponse resp)
+
+doDelete(HttpServletRequest req, HttpServletResponse resp)
+
+doHead(HttpServletRequest req, HttpServletResponse resp)
+
+doOptions(HttpServletRequest req, HttpServletResponse resp)
+
+doTrace(HttpServletRequest req, HttpServletResponse resp)</pre>
+                  <p>La servlet propose un mapping complet des méthodes HTTP.</p>
+                  <p>En pratique, seuls doGet et doPost servent généralement.</p>
+              </section>
+          </div>
+
+          <div class="slide">
+              <header>Le protocole HTTP en objets</header>
+              <section>
+                  <p>Les objets centraux du package <b>javax.servlet.http</b> sont une correspondance directe des concepts et protocoles.</p>
+                  <table class="refTable">
+                      <thead>
+                      <tr>
+                          <td>classe</td>
+                          <td>utilisation</td>
+                      </tr>
+                      </thead>
+                      <colgroup style="width:200px;">
+                          <tr>
+                              <td>HttpServletRequest</td>
+                              <td>La requête HTTP : path, paramètres, body...</td>
+                          </tr>
+                          <tr>
+                              <td>HttpServletResponse</td>
+                              <td>La réponse HTTP : écriture de la réponse, des headers, des cookies...</td>
+                          </tr>
+                          <tr>
+                              <td>Cookie</td>
+                              <td>Une paire clé / valeur (+ maxAge, path, domain, secure).</td>
+                          </tr>
+                  </table>
+                  <p>Et les composants jee qui les manipulent.</p>
+                  <table class="refTable">
+                      <thead>
+                      <tr>
+                          <td>classe</td>
+                          <td>utilisation</td>
+                      </tr>
+                      </thead>
+                      <colgroup style="width:200px;">
+                          <tr>
+                              <td>HttpServletContext</td>
+                              <td>Le context d'éxecution des servlets contenant la configuration.</td>
+                          </tr>
+                          <tr>
+                              <td>HttpServlet</td>
+                              <td>Le composant de base capable de gérer des requêtes et de générer une réponse.</td>
+                          </tr>
+                          <tr>
+                              <td>HttpSession</td>
+                              <td>Une session afin de stoquer des données. Le suivi de la session se fait via un cookie jsessionid.</td>
+                          </tr>
+                          <tr>
+                              <td>Filter</td>
+                              <td>La possibilité d'intercepter les requêtes avant qu'elle arrivent aux servlets.</td>
+                          </tr>
+                  </table>
+              </section>
+          </div>
+
+          <div class="slide">
+              <header>Les fichiers jsp</header>
+              <section>
+                  <p>Les fichiers jsp sont le moteur de templating des conteneurs de servlets.</p>
+	          	<pre class="prettyprint">
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                                              "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+   &lt;head&gt;&lt;/head&gt;
+   &lt;body&gt;
+      Hello ${name} !&lt;br&gt;
+      Hello &lt%=name%&gt; !&lt;br&gt;
+   &lt;/body&gt;
+&lt;/html&gt;</pre>
+                  <p>Ils disposent de mécaniques puissantes afin de créer le rendu html pour une page web.</p>
+                  <p>Ils peuvent également générer n'importe quel type de contenu textuel, comme du XML par exemple.</p>
+                  <p>Les jsp sont compilées en servlet au moment de leur interprétation, avant d'être exécutées.</p>
+              </section>
+          </div>
+
+          <div class="slide">
+              <header>Les outils des jsp</header>
+              <section>
+                  <h2>Les directives</h2>
+                  <pre>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;</pre>
+                  <pre>&lt;%@ include file="autre_fichier.jsp" %&gt;</pre>
+                  <h2>Les actions</h2>
+                  <pre>&lt;jsp:include page="autre_fichier.jsp" &gt;
+   &lt;jsp:param name="monParam" value="valeur" /&gt;
+&lt;/jsp:include&gt;</pre>
+                  <h2>Expression language</h2>
+                  <pre>${cart.items[2].name}</pre>
+                  <h2>Custom tags et Fonctions</h2>
+                  <pre>&lt;fmt:formatDate value="${task.date}" pattern="dd MMM yyyy" /&gt;</pre>
+                  <pre>${fn:escapeXml(task.text)}</pre>
+                  <p>Avec bien sûr la jstl</p>
+              </section>
+              <p class="source">http://fr.wikipedia.org/wiki/JavaServer_Pages</p>
+          </div>
+	     
+	  </div>
+      <!-- slides -->
+
+    </div> <!-- presentation -->
+    
+  	</body>
+</html>

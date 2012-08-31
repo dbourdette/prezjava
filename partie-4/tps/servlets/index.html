@@ -12,10 +12,10 @@
     <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/prettify.js"></script>
 
 </head>
-<body>
+<body onload="prettyPrint();"
 <div class="presentation">
     <div id="project">
         <h1>Les servlets</h1>
@@ -97,7 +97,7 @@ on project todooz: Error assembling WAR: <b>webxml attribute is required
 
         <p>Pour maven, il faut donc écrire ce web.xml dans le répertoire src/main/webapp/WEB-INF.</p>
 
-        <pre>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+        <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
@@ -128,7 +128,7 @@ maven-archiver          todooz-1.0-SNAPSHOT     todooz-1.0-SNAPSHOT.war</pre>
 
         <p>Il faut donc ajouter cette api dans notre pom.</p>
 
-        <pre><span class="comment">&lt;!-- provided by the container --&gt;</span>
+        <pre class="prettyprint"><span class="comment">&lt;!-- provided by the container --&gt;</span>
 &lt;dependency&gt;
     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
     &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
@@ -152,7 +152,7 @@ maven-archiver          todooz-1.0-SNAPSHOT     todooz-1.0-SNAPSHOT.war</pre>
 
         <p>Et notre première servlet.</p>
 
-        <pre>package fr.todooz.web.servlet;
+        <pre class="prettyprint">package fr.todooz.web.servlet;
 
 import java.io.IOException;
 
@@ -175,7 +175,7 @@ public class HelloWorldServlet extends HttpServlet {
 
         <p>Il faut ensuite configurer le mapping dans le web.xml</p>
 
-        <pre>&lt;servlet&gt;
+        <pre class="prettyprint">&lt;servlet&gt;
    &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
    &lt;servlet-class&gt;fr.todooz.web.servlet.HelloWorldServlet&lt;/servlet-class&gt;
 &lt;/servlet&gt;
@@ -187,8 +187,10 @@ public class HelloWorldServlet extends HttpServlet {
         <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
 
         <h2>Les paramètres</h2>
+
 		<p>Il est possible d'exploiter les paramètres depuis la servlet.</p>
-	    <pre>
+
+	    <pre class="prettyprint">
 public class HelloWorldSerlvet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -201,10 +203,12 @@ public class HelloWorldSerlvet extends HttpServlet {
     }
 }</pre>
 	      <p>Ce qui donne en résultat sur <a href="http://localhost:8080/HelloWorldServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldServlet?name=Steven</a>.</p>
+
 	      <h2>Le redirect</h2>
+
 	      <p>On crée une seconde servlet, HelloWorldRedirectServlet, qui va faire un redirect vers HelloWorldSerlvet</p>
-	          <pre>
-public class HelloWorldRedirectServlet extends HttpServlet {
+
+          <pre class="prettyprint">public class HelloWorldRedirectServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -216,7 +220,7 @@ public class HelloWorldRedirectServlet extends HttpServlet {
         
         <p>Avec la configuration du web.xml</p>
         
-        <pre>&lt;servlet&gt;
+        <pre class="prettyprint">&lt;servlet&gt;
    &lt;servlet-name&gt;HelloWorldRedirectServlet&lt;/servlet-name&gt;
    &lt;servlet-class&gt;fr.todooz.web.servlet.HelloWorldRedirectServlet&lt;/servlet-class&gt;
 &lt;/servlet&gt;
@@ -230,7 +234,7 @@ public class HelloWorldRedirectServlet extends HttpServlet {
 			<p>On note aussi que le paramètre name est perdu dans la redirection.</p>
 			<h2>Les sessions</h2>
 			<p>On crée une servlet, HelloWorldSessionServlet, afin de stoquer le nom passé en paramètre en session.</p>
-	          <pre>
+	          <pre  class="prettyprint">
 public class HelloWorldSessionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -246,14 +250,13 @@ public class HelloWorldSessionServlet extends HttpServlet {
 
         <p>Il faut écrire la déclaration et le mapping dans le web.xml.</p>
 
-        <pre>...</pre>
+        <pre  class="prettyprint">...</pre>
 
 		<p>La nouvelle servlet <a href="http://localhost:8080/HelloWorldSessionServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldSessionServlet?name=Steven</a>.</p>
 
         <p>Modifions notre première servlet afin qu'elle en profite</p>
 
-<pre>
-public class HelloWorldSerlvet extends HttpServlet {
+        <pre class="prettyprint">public class HelloWorldSerlvet extends HttpServlet {
     @Override
     protected void doGet(...) ... {
     	String name = request.getParameter("name");
@@ -272,7 +275,7 @@ public class HelloWorldSerlvet extends HttpServlet {
 
         <p>Il est possible de faire du html depuis une servlet.</p>
 
-        <pre>
+        <pre class="prettyprint">
 public class HelloWorldSerlvet extends HttpServlet {
     @Override
     protected void doGet(...) ... {
@@ -298,7 +301,7 @@ public class HelloWorldSerlvet extends HttpServlet {
 
         <p>Pour afficher la page html que nous avons préparé, il suffit d'utiliser l'API.</p>
 
-        <pre>public class HelloWorldServlet extends HttpServlet {
+        <pre class="prettyprint">public class HelloWorldServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -318,7 +321,7 @@ public class HelloWorldSerlvet extends HttpServlet {
 
         <p>Malheureusement, la librairie n'est pas disponible dans le repo maven central. Nous ajoutons donc des repositories comme indiqué dans la <a href="http://code.google.com/p/javamelody/wiki/UserGuide#Dependencies" target="_blank" class="external">documentation javamelody</a></p>
 
-        <pre>
+        <pre class="prettyprint">
 &lt;repositories&gt;
     &lt;!-- for javamelody --&gt;
     &lt;repository&gt;
@@ -347,7 +350,7 @@ public class HelloWorldSerlvet extends HttpServlet {
 
         <p>Et le jar dans les dépendances.</p>
 
-        <pre>
+        <pre  class="prettyprint">
 &lt;dependency&gt;
    &lt;groupId&gt;net.bull.javamelody&lt;/groupId&gt;
    &lt;artifactId&gt;javamelody-core&lt;/artifactId&gt;
@@ -356,7 +359,7 @@ public class HelloWorldSerlvet extends HttpServlet {
 
         <p>Il ne reste plus qu'a configurer le filtre javamelody dans le web.xml.</p>
 
-        <pre>
+        <pre  class="prettyprint">
 &lt;filter&gt;
    &lt;filter-name&gt;monitoring&lt;/filter-name&gt;
    &lt;filter-class&gt;net.bull.javamelody.MonitoringFilter&lt;/filter-class&gt;
@@ -372,7 +375,9 @@ public class HelloWorldSerlvet extends HttpServlet {
         <p>Il existe <a href="http://code.google.com/p/javamelody/wiki/UserGuide#6._Optional_parameters" class="external" target="_blank">quelques paramètres</a> afin de configurer javamelody en fonction de son besoin.</p>
 
         <p>Javamelody analyse tout ce qui se passe dans le serveur et est capable de fournir énormément d'information sur l'application.</p>
+
         <p>Après quelques requêtes, on peut lire un rapport sur <a href="http://localhost:8080/monitoring" target="_blank">http://localhost:8080/monitoring</a>.</p>
+
         <p>Dans notre cas, nous avons peu de composants. Dans une application réelle, javamelody fournit des informations sur tous les services standards et les librairies les plus utilisées.</p>
 
     </div>

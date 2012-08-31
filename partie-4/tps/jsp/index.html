@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Application web</title>
+    <title>Java Server Pages</title>
 
     <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
     <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
@@ -12,317 +12,19 @@
     <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/js/prettify.js"></script>
 
 </head>
-<body>
+<body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
-        <h1>Application web</h1>
+        <h1>Java Server Pages</h1>
 
-        <p>Nous allons ajouter nos premiers composants dans notre application web.</p>
-
-        <img src="img/container.png" alt="" style="margin: 0 160px">
-
-        <p>Les servlets sont les composants qui recoivent les requêtes http et générent les réponses.</p>
-
-        <h2>web.xml</h2>
-
-        <p>La premier chose a ajouter afin de faire un war est le web.xml</p>
-
-        <p>C'est le <b>descripteur de déploiement</b> : il décrit les composants de l'application.</p>
-
-        <p>Si on essaye de faire un package, maven nous le dira aussi :</p>
-
-        <pre class="shell">todooz &gt; mvn package
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] Building todooz 1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ todooz ---
-[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] skip non existing resourceDirectory /Users/dbourdette/Documents/prezjava-todooz/src/main/resources
-[INFO]
-[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ todooz ---
-[INFO] Nothing to compile - all classes are up to date
-[INFO]
-[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ todooz ---
-[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] skip non existing resourceDirectory /Users/dbourdette/Documents/prezjava-todooz/src/test/resources
-[INFO]
-[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ todooz ---
-[INFO] No sources to compile
-[INFO]
-[INFO] --- maven-surefire-plugin:2.7.2:test (default-test) @ todooz ---
-[INFO] No tests to run.
-[INFO] Surefire report directory: /Users/dbourdette/Documents/prezjava-todooz/target/surefire-reports
-
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-There are no tests to run.
-
-Results :
-
-Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
-
-[INFO]
-[INFO] --- maven-war-plugin:2.1.1:war (default-war) @ todooz ---
-[INFO] Packaging webapp
-[INFO] Assembling webapp [todooz] in [/Users/dbourdette/Documents/prezjava-todooz/target/todooz-1.0-SNAPSHOT]
-[INFO] Processing war project
-[INFO] Copying webapp resources [/Users/dbourdette/Documents/prezjava-todooz/src/main/webapp]
-[INFO] Webapp assembled in [40 msecs]
-[INFO] Building war: /Users/dbourdette/Documents/prezjava-todooz/target/todooz-1.0-SNAPSHOT.war
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 2.284s
-[INFO] Finished at: Mon Aug 27 17:06:41 CEST 2012
-[INFO] Final Memory: 5M/81M
-[INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-war-plugin:2.1.1:war (default-war)
-on project todooz: Error assembling WAR: <b>webxml attribute is required
-(or pre-existing WEB-INF/web.xml if executing in update mode)</b> -> [Help 1]
-[ERROR]
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR]
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException</pre>
-
-        <p>D'après la spécification, le fichier web.xml va dans répertoire WEB-INF, à la racine du war.</p>
-
-        <p>Pour maven, il faut donc écrire ce web.xml dans le répertoire src/main/webapp/WEB-INF.</p>
-
-        <pre>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
-&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-  version="2.5"&gt;
-
-   &lt;display-name&gt;todooz&lt;/display-name&gt;
-
-&lt;/web-app&gt;</pre>
-
-        <p>Ce fichier ne dit pas grand chose : nous sommes en version 2.5 de la spécification des servlets et notre application s'appelle todooz.</p>
-
-        <p>Avec ce fichier en place, on peut maitenant faire un mvn package et obtenir notre war, versionné, dans le répertoire target.</p>
-
-        <pre class="shell">todooz &gt; ls target
-classes                 surefire                todooz-1.0-SNAPSHOT.jar tomcat
-maven-archiver          todooz-1.0-SNAPSHOT     todooz-1.0-SNAPSHOT.war</pre>
-
-        <p>Nous pouvons maintenant développer avec mvn tomcat:run et produire un war pour l'archivage et la mise en production.</p>
-
-        <h2>Servlet API</h2>
-
-        <p>L'API des servlets est un ensemble de classes java disponibles dans un conteneur de servlets.</p>
-
-        <p>Tomcat va donc nous fournir toutes ses classes afin que l'on puisse répondre aux requêtes http.</p>
-
-        <p>Cependant, dans eclipse, ces classes ne sont pas disponibles au moment de l'écriture du code source.</p>
-
-        <p>Il faut donc ajouter cette api dans notre pom.</p>
-
-        <pre><span class="comment">&lt;!-- provided by the container --&gt;</span>
-&lt;dependency&gt;
-    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
-    &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
-    &lt;version&gt;2.5&lt;/version&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
-    &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
-    &lt;version&gt;2.0&lt;/version&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;</pre>
-
-        <p>On regénère ensuite le projet avec mvn eclipse:eclipse et on rafraîchit le projet sous eclipse afin que cette modification soit bien prise en compte par eclipse.</p>
-
-        <h2>HelloWorldServlet</h2>
-
-        <p>Il est donc temps de rajouter notre premier composant web.</p>
-
-        <p>Afin d'accueillir nos servlets, nous ajoutons un package fr.todooz.web.servlet.</p>
-
-        <p>Et notre première servlet.</p>
-
-        <pre>package fr.todooz.web.servlet;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class HelloWorldServlet extends HttpServlet {
-   private static final long serialVersionUID = 1L;
-
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	    			   throws ServletException, IOException {
-	   response.getWriter().write("Hello !");
-   }
-}</pre>
-
-        <p>C'est un composant java qui peut répondre à une requête http et produire une réponse.</p>
-
-        <p>Il faut ensuite configurer le mapping dans le web.xml</p>
-
-        <pre>&lt;servlet&gt;
-   &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
-   &lt;servlet-class&gt;fr.todooz.web.servlet.HelloWorldServlet&lt;/servlet-class&gt;
-&lt;/servlet&gt;
-&lt;servlet-mapping&gt;
-   &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
-   &lt;url-pattern&gt;/HelloWorldServlet&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</pre>
-
-        <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
-
-        <h2>Les paramètres</h2>
-		<p>Il est possible d'exploiter les paramètres depuis la servlet.</p>
-	    <pre>
-public class HelloWorldSerlvet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    	throws ServletException, IOException {
-    	<b>String name = request.getParameter("name");</b>
-
-        response.getWriter().write(<b>"Hello " + name + " !"</b>);
-    }
-}</pre>
-	      <p>Ce qui donne en résultat sur <a href="http://localhost:8080/HelloWorldServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldServlet?name=Steven</a>.</p>
-	      <h2>Le redirect</h2>
-	      <p>On crée une seconde servlet, HelloWorldRedirectServlet, qui va faire un redirect vers HelloWorldSerlvet</p>
-	          <pre>
-public class HelloWorldRedirectServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    	throws ServletException, IOException {
-    	response.sendRedirect("HelloWorldServlet");
-    }
-}</pre>
-        
-        <p>Avec la configuration du web.xml</p>
-        
-        <pre>&lt;servlet&gt;
-   &lt;servlet-name&gt;HelloWorldRedirectServlet&lt;/servlet-name&gt;
-   &lt;servlet-class&gt;edu.ecm.blog.web.servlet.HelloWorldRedirectServlet&lt;/servlet-class&gt;
-&lt;/servlet&gt;
-&lt;servlet-mapping&gt;
-   &lt;servlet-name&gt;HelloWorldRedirectServlet&lt;/servlet-name&gt;
-   &lt;url-pattern&gt;/HelloWorldRedirectServlet&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</pre>
-        
-			<p>Ce qui donne en résultat sur <a href="http://localhost:8080/HelloWorldRedirectServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldRedirectServlet?name=Steven</a>.</p>
-			<p>On peut voir le premier retour du serveur (302) sur le traceur de requête de Chrome.</p>
-			<p>On note aussi que le paramètre name est perdu dans la redirection.</p>
-			<h2>Les sessions</h2>
-			<p>On crée une servlet, HelloWorldSessionServlet, afin de stoquer le nom passé en paramètre en session.</p>
-	          <pre>
-public class HelloWorldSessionServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void doGet(...) ... {
-    	String name = request.getParameter("name");
-
-    	<b>request.getSession(true).setAttribute("name", name);</b>
-
-    	response.getWriter().write("Stored " + name + " !");
-    }
-}</pre>
-
-        <p>Il faut écrire la déclaration et le mapping dans le web.xml.</p>
-
-        <pre>...</pre>
-
-		<p>La nouvelle servlet <a href="http://localhost:8080/HelloWorldSessionServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldSessionServlet?name=Steven</a>.</p>
-
-        <p>Modifions notre première servlet afin qu'elle en profite</p>
-
-<pre>
-public class HelloWorldSerlvet extends HttpServlet {
-    @Override
-    protected void doGet(...) ... {
-    	String name = request.getParameter("name");
-
-        if (name == null) {
-           <b>name = (String) request.getSession(true).getAttribute("name");</b>
-        }
-
-        response.getWriter().write("Hello " + name + " !");
-    }
-}</pre>
-        <p>Notre première servlet supporte l'absence de paramètre <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a>
-        si la variable est en session.</p>
-
-        <h2>Générer du HTML</h2>
-
-        <p>Il est possible de faire du html depuis une servlet.</p>
-
-        <pre>
-public class HelloWorldSerlvet extends HttpServlet {
-    @Override
-    protected void doGet(...) ... {
-        ...
-
-        <span class="comment">// response.getWriter().write("Hello " + name + " !");</span>
-
-    	PrintWriter writer = response.getWriter();
-
-        writer.write("&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;Hello " + name + " !&lt;/body&gt;&lt;/html&gt;");
-    }
-}</pre>
-
-        <p>Le résultat sur <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> donne un arbre DOM parfaitement formé.</p>
-
-        <img alt="" src="img/dom-tree.png" style="margin:0 50px;"/>
-
-		<p>Mais cette méthode est complètement inadaptée dès que la page web dépasse quelques lignes.</p>
-
-        <h2>Le forward</h2>
-
-        <p>C'est l'action qui consiste a passer la main à un autre composant.</p>
-
-        <p>Pour afficher la page html que nous avons préparé, il suffit d'utiliser l'API.</p>
-
-        <pre>public class HelloWorldServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
-
-  @Override
-  protected void doGet(HttpServletRequest request,
-      HttpServletResponse response) throws ServletException, IOException {
-    <b>request.getRequestDispatcher("index.html").forward(request, response);</b>
-  }
-}</pre>
-
-        <p>On peut passer la main à tout autre composant géré par le conteneur.</p>
-
-        <p></p>
-
-
-
-        <h2>Les fichiers jsp</h2>
-
-        <p>Nous avons mis du html dans du java. Dès que le code html à générer est un peu plus riche, nous mettons du java dans du html.</p>
-
-        <p>C'est le rôle des fichiers jsp de générer du html.</p>
+        <p>Les fichiers jsp sont les composants spécialisés dans la génération de html.</p>
 
         <p>Au moment de générer le rendu, la servlet passe donc la main à une jsp.</p>
 
-	          <pre>
+	          <pre  class="prettyprint">
 public class HelloWorldSerlvet extends HttpServlet {
     @Override
     protected void doGet(...) ... {
@@ -330,14 +32,13 @@ public class HelloWorldSerlvet extends HttpServlet {
 
     	<b>request.setAttribute("name", request.getParameter("name"));</b>
 
-        <b>request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp")
-           .forward(request, response);</b>
+        <b>request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(request, response);</b>
     }
 }</pre>
 
         <p>Et le fichier hello.jsp dans le répertoire WEB-INF :</p>
 
-        <pre>
+        <pre class="prettyprint">
 &lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
 &lt;html&gt;
@@ -347,243 +48,274 @@ public class HelloWorldSerlvet extends HttpServlet {
 
         <p>Le résultat sur <a href="http://localhost:8080/HelloWorldServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldServlet?name=Steven</a>.</p>
 
-        <p>Les fichiers jsp sont compilés à la volée en fichiers java puis en bytecode (.class).</p>
+        <div class="note">Afin d'être sûr d'avoir la complétion dans les fichiers jsp, il faut utiliser la perspective Java EE</div>
 
-        <p>Un peu à l'image d'un fichier php, les fichiers jsp sont donc interprétés par le conteneur. Cela leur donne au moins une propriété intéressante : il n'est pas nécessaire de redémarrer le serveur tomcat afin qu'il prenne ne compte une modification.</p>
+        <h2>Techniquement</h2>
 
-        <h2>Les tag files</h2>
+        <p>Par convention, les fichiers jsp sont dans le répertoire WEB-INF/jsp du war.</p>
 
-        <p>Il est possible de factoriser du code jsp grâce aux tag files.</p>
+        <p>Sous maven, ils sont donc dans src/main/webapp/WEB-INF/jsp.</p>
 
-        <p>On ajoute le fichier hello.tag dans le répertoire WEB-INF/tags/widget.</p>
-	          <pre>
-&lt;%@ tag language="java" pageEncoding="UTF-8"%&gt;
+        <p>Les fichiers jsp sont compilés à la volée en fichiers servlets puis en bytecode (.class).</p>
 
-&lt;%@ attribute name="name" description="Name to display" required="true" type="java.lang.String" %&gt;
+        <p>Un peu à l'image d'un fichier php, les fichiers jsp sont donc interprétés par le conteneur.</p>
 
-Hello ${name} ! from tag</pre>
-			  <p>Ce qui nous autorise à faire l'appel suivant dans notre jsp.</p>
-			  <pre>
-&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+        <p>Avec la commande mvn tomcat:run, les modifications sont prises en compte à la volée.</p>
 
-<b>&lt;%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget" %&gt;</b>
+        <h2>Notre template</h2>
 
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-     "http://www.w3.org/TR/html4/loose.dtd"&gt;
-&lt;html&gt;
-   &lt;head&gt;&lt;/head&gt;
-   &lt;body&gt;<b>&lt;widget:hello name="${name}" /&gt;</b>&lt;/body&gt;
-&lt;/html&gt;</pre>
+        <p>Pour commencer, on déplace notre index.html vers WEB-INF/jsp/index.jsp.</p>
 
-        <p>Cela ressemble à définir de nouveaux tags html.</p>
+        <p>Avant la déclaration du DOCTYPE, on ajoute :</p>
+
+        <pre  class="prettyprint">&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;</pre>
+
+        <p>Cela indique au container que le code source est en utf-8 ainsi que le charset au runtime.</p>
+
+        <p>On rajoute la servlet IndexServlet</p>
+
+        <pre  class="prettyprint">public class IndexServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
+
+  @Override
+  protected void doGet(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException {
+    request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
+  }
+}</pre>
+
+        <p>Que l'on déclare dans le web.xml</p>
+
+        <pre  class="prettyprint">&lt;servlet&gt;
+    &lt;servlet-name&gt;index&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;fr.todooz.web.servlet.IndexServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;index&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/index.html&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre>
+
+        <p>Notre page est donc accessible sur <a href="http://localhost:8080/">http://localhost:8080/</a> en étant passé au travers de la servlet.</p>
+
+        <h2>Un peu de données</h2>
+
+        <p>Afin de jouer un peu avec les capacités des jsp, nous allons injecter quelques données depuis la servlet.</p>
+
+        <pre class="prettyprint">@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    request.setAttribute("tasks", DummyData.tasks());
+
+    request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
+}</pre>
+
+        <p>Et la classe DummyData</p>
+
+        <pre class="prettyprint">public class DummyData {
+  public static List&lt;Task&gt; tasks() {
+    private static final int TASK_COUNT = 10;
+
+    List&lt;Task&gt; tasks = new ArrayList&lt;Task&gt;();
+
+    for (int i = 0; i &lt; TASK_COUNT; i++) {
+        tasks.add(task());
+    }
+
+    return tasks;
+  }
+
+  private static Task task() {
+    Task task = new Task();
+
+    task.setDate(new Date());
+    task.setTitle("Read Effective Java");
+    task.setText("Read Effective Java before it's too late");
+    task.setTags("java,java");
+
+    return task;
+  }
+}</pre>
+
+        <p>Les attributs de la requête sont conservé tout au long du traitement de la requête.</p>
+
+        <p>Ils sont donc accessibles dans la jsp.</p>
+
+        <h2>Expression Language</h2>
+
+        <p>L'EL (Expression Language) est une notation permettant d'exploiter facilement les données.</p>
+
+        <pre class="prettyprint">${expression}</pre>
+
+        <p>Les capacités sont limités mais généralement suffisantes pour afficher des données.</p>
+
+        <p>Par exemple, on peut simplement afficher l'attribut tasks.</p>
+
+        <pre class="prettyprint">${tasks}</pre>
+
+        <p>Ce qui donne</p>
+
+        <pre class="prettyprint">[fr.todooz.domain.Task@16ff6348, fr.todooz.domain.Task@58cf17c3, fr.todooz.domain.Task@42130c2,
+fr.todooz.domain.Task@1f0812ac, fr.todooz.domain.Task@4b01ea1e, fr.todooz.domain.Task@6ab17e0a,
+fr.todooz.domain.Task@2ac9f93f, fr.todooz.domain.Task@320aad0b, fr.todooz.domain.Task@5ae6c6d7,
+fr.todooz.domain.Task@65087be0]</pre>
+
+        <p>Ce n'est pas très parlant (il faudrait implémenter la méthode toString() afin d'y voir plus en détails)</p>
+
+        <p>Les expressions suivantes sont valides.</p>
+
+        <pre class="prettyprint">${tasks[0].title}
+${empty tasks}
+${not empty task.date ? task.date : 'no date'}</pre>
+
+        <p>L'EL est une notation simple et puissante par rapport a du code java.</p>
+
+        <pre class="prettyprint">${cart.items[2].name}</pre>
+
+        <p>Synthétise un appel qui pourrait être écrit comme suit</p>
+
+	    <pre class="prettyprint">Cart cart = (Cart) request.getSession().getAttribute("cart");
+
+String name = cart.getItems().get(2).getName();
+
+response.getWriter().write(name);</pre>
 
         <h2>Les custom tags</h2>
 
-        <p>Les tag files sont parfaits afin d'écrire du code jsp réutilisable.</p>
+        <p>Ce sont des morceaux de code en java que l'on peut appeler depuis les jsp.</p>
 
-        <p>Dans d'autres cas, le code à réutiliser contient davantage de logique que de html et coder en jsp deviennent inadapté.</p>
+        <p>Ils permettent de faire du contrôle de flow (if, for each...) et de factoriser du code.</p>
 
-        <p>Les custom tags sont un peu plus compliqués à mettre en place mais ils sont écrit en java.</p>
+        <p>La librairie la plus utilisées est la jstl (java standard tag library) et il est assez simple de faire ses propres custom tags.</p>
 
-        <p>On ajout le fichier test.tld dans WEB-INF/tld.</p>
-			  <pre>
-&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
-&lt;taglib xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-	web-jsptaglibrary_2_0.xsd" version="2.0"&gt;
+        <p>Afin de pouvoir l'utiliser, on ajoute les libs dans le pom (+ mvn eclipse:eclipse).</p>
 
-  &lt;tlibversion&gt;1.0&lt;/tlibversion&gt;
-  &lt;jspversion&gt;2.0&lt;/jspversion&gt;
-  &lt;shortname&gt;link&lt;/shortname&gt;
-  &lt;uri&gt;<b>http://edu.ecm.blog/test</b>&lt;/uri&gt;
-  &lt;info&gt;Test taglib&lt;/info&gt;
-
-  &lt;tag&gt;
-    &lt;name&gt;hello&lt;/name&gt;
-    &lt;tagclass&gt;<b>edu.ecm.blog.web.tag.HelloTag</b>&lt;/tagclass&gt;
-    &lt;body-content&gt;empty&lt;/body-content&gt;
-    &lt;info&gt;Prints name&lt;/info&gt;
-    &lt;attribute&gt;
-      &lt;name&gt;name&lt;/name&gt;
-      &lt;required&gt;true&lt;/required&gt;
-      &lt;rtexprvalue&gt;true&lt;/rtexprvalue&gt;
-    &lt;/attribute&gt;
-  &lt;/tag&gt;
-
-&lt;/taglib&gt;</pre>
-			  <p>Ensuite on ajoute la clase HelloTag.</p>
-			  <pre>
-public class HelloTag extends SimpleTagSupport {
-
-  private String name;
-
-  @Override
-  public void doTag() throws JspException, IOException {
-    getJspContext().getOut().print("Hello " + name + " from custom tag");
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-}</pre>
-			  <p>Enfin on peut modifier notre fichier jsp.</p>
-			  <pre>
-&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
-
-&lt;%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget" %&gt;
-<b>&lt;%@ taglib uri="http://edu.ecm.blog/test" prefix="test" %&gt;</b>
-
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
-&lt;html&gt;
-  &lt;head&gt;&lt;/head&gt;
-  &lt;body&gt;
-    &lt;widget:hello name="${name}" /&gt;&lt;br&gt;
-    <b>&lt;test:hello name="${name}" /&gt;</b>
-  &lt;/body&gt;
-&lt;/html&gt;</pre>
-
-      <p>Custom tags et tag files sont des solutions complémentaires.</p>
-      <p>Les fichiers tld et les custom tags peuvent être facilement intégrés à des librairies (.jar) et donc être réutilisables entre plusieurs projets.</p>
-
-      <h2>La gestion d'erreur</h2>
-
-      <p>Le traitement d'un requête peut impliquer un nombre important d'objets et une erreur peut survenir à n'importe quel stade du traitement.</p>
-      <img alt="" src="img/error-handling.png" width="700" style="margin:0 80px;"/>
-
-      <p>Par défaut, il est donc intéressant d'avoir un mécanisme générique, une sorte de filet, qui récupère toutes ces erreurs.</p>
-      <p>Actuellement, si on génère une erreur, on obtient la page d'erreur par défaut.</p>
-      <pre>
-public class HelloWorldSerlvet extends HttpServlet {
-    @Override
-    protected void doGet(...) ... {
-    	throw new NullPointerException("ups !");
-    }
-}
-	          </pre>
-	          <p>Le résultat est assez sec <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a></p>
-	          <p>Une configuration simple du web.xml permet de traiter ce genre d'erreur.</p>
-	          <pre>
-&lt;error-page&gt;
-   &lt;error-code&gt;500&lt;/error-code&gt;
-   &lt;location&gt;/WEB-INF/jsp/500.jsp&lt;/location&gt;
-&lt;/error-page&gt;</pre>
-			<p>Et la jsp WEB-INF/jsp/500.jsp correspondant.</p>
-
-			<pre>
-&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
-&lt;html&gt;
-   &lt;head&gt;&lt;/head&gt;
-   &lt;body&gt;Erreur 500&lt;/body&gt;
-&lt;/html&gt;</pre>
-
-			<p>Ce qui permettrait de produire une réponse mise en forme sur <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a></p>
-
-            <h2>Les filtres</h2>
-
-			<p>Les filtres sont des composants qui interceptent les requêtes</p>
-			<p>Nous créons le filtre GuardFilter dans le package edu.ecm.blog.web.filter.</p>
-			<pre>
-public class GuardFilter implements Filter  {
-   @Override
-   public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
-      try {
-         chain.doFilter(request, response);
-      } catch (Exception e) {
-         response.getWriter().write("got you !");
-      }
-   }
-
-   @Override
-   public void init(FilterConfig arg0) throws ServletException {
-
-   }
-
-   @Override
-   public void destroy() {
-
-   }
-}</pre>
-			<p>En prenant soin de modifier le web.xml.</p>
-			<pre>
-&lt;filter&gt;
-  &lt;display-name&gt;GuardFilter&lt;/display-name&gt;
-  &lt;filter-name&gt;GuardFilter&lt;/filter-name&gt;
-  &lt;filter-class&gt;edu.ecm.blog.web.filter.GuardFilter&lt;/filter-class&gt;
-&lt;/filter&gt;
-&lt;filter-mapping&gt;
-  &lt;filter-name&gt;GuardFilter&lt;/filter-name&gt;
-  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;</pre>
-        <p>Sur la requête <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a>, le filtre a intercepté l'erreur et répondu.</p>
-        <p>Les filtres sont très pratiques afin d'implémenter des problématiques transverses telles que la sécurité ou la libération de ressources.</p>
-
-        <h2>Un exemple de librairie</h2>
-
-        <p><a href="http://code.google.com/p/javamelody" class="external" target="_blank">javamelody</a> est une librairie qui s'intègre à une application et permet de la monitorer.</p>
-
-        <p>Malheureusement, la librairie n'est pas disponible dans le repo maven central. Nous ajoutons donc des repositories comme indiqué dans la <a href="http://code.google.com/p/javamelody/wiki/UserGuide#Dependencies" target="_blank" class="external">documentation javamelody</a></p>
-
-        <pre>
-&lt;repositories&gt;
-    &lt;!-- for javamelody --&gt;
-    &lt;repository&gt;
-       &lt;id&gt;m.g.o-public&lt;/id&gt;
-       &lt;url&gt;http://maven.glassfish.org/content/groups/public/&lt;/url&gt;
-       &lt;releases&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-       &lt;/releases&gt;
-       &lt;snapshots&gt;
-          &lt;enabled&gt;false&lt;/enabled&gt;
-       &lt;/snapshots&gt;
-    &lt;/repository&gt;
-    &lt;!-- for jrobin --&gt;
-    &lt;repository&gt;
-       &lt;id&gt;opennms-repo&lt;/id&gt;
-       &lt;name&gt;OpenNMS Repository&lt;/name&gt;
-       &lt;url&gt;http://repo.opennms.org/maven2&lt;/url&gt;
-       &lt;releases&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-       &lt;/releases&gt;
-       &lt;snapshots&gt;
-          &lt;enabled&gt;false&lt;/enabled&gt;
-       &lt;/snapshots&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;</pre>
-
-        <p>Et le jar dans les dépendances.</p>
-
-        <pre>
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+    &lt;version&gt;1.1.2&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
 &lt;dependency&gt;
-   &lt;groupId&gt;net.bull.javamelody&lt;/groupId&gt;
-   &lt;artifactId&gt;javamelody-core&lt;/artifactId&gt;
-   &lt;version&gt;1.29.1&lt;/version&gt;
+   &lt;groupId&gt;taglibs&lt;/groupId&gt;
+   &lt;artifactId&gt;standard&lt;/artifactId&gt;
+   &lt;version&gt;1.1.2&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency></pre>
+
+        <p>Et on déclare les taglibs utilisées en haut du fichier jsp.</p>
+
+        <pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;</pre>
+
+        <p>Un <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" class="external" target="_blank">bon tutorial sur la jstl</a> est disponible sur le site de developpez.com</p>
+
+        <h2>Notre liste de tâches</h2>
+
+        <p>En utilisant les notations suivantes, mettre en forme la jsp afin qu'elle produise la liste des tâches.</p>
+
+        <p>L'itération :</p>
+
+        <pre class="prettyprint">&lt;c:forEach var="task" items="${tasks}"&gt;...&lt;/c:forEach&gt;</pre>
+
+        <p>L'expression language :</p>
+
+        <pre class="prettyprint">${task.title} ${task.text} ${task.tags}</pre>
+
+        <p>Le formattage de date :</p>
+
+        <pre class="prettyprint">&lt;fmt:formatDate value="${task.date}" pattern="dd MMM yyyy"/&gt;</pre>
+
+        <p>Et en utilisant la lib commons lang</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;commons-lang&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-lang&lt;/artifactId&gt;
+    &lt;version&gt;2.6&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Il ne reste plus qu'a configurer le filtre javamelody dans le web.xml.</p>
+        <p>On peut ajouter la méthode suivante dans la classe Task.</p>
 
-        <pre>
-&lt;filter&gt;
-   &lt;filter-name&gt;monitoring&lt;/filter-name&gt;
-   &lt;filter-class&gt;net.bull.javamelody.MonitoringFilter&lt;/filter-class&gt;
-&lt;/filter&gt;
-&lt;filter-mapping&gt;
-   &lt;filter-name&gt;monitoring&lt;/filter-name&gt;
-   &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;
-&lt;listener&gt;
-   &lt;listener-class&gt;net.bull.javamelody.SessionListener&lt;/listener-class&gt;
-&lt;/listener&gt;</pre>
+        <pre class="prettyprint">public String[] getTagArray() {
+  return StringUtils.split(tags, ",");
+}</pre>
 
-        <p>Il existe <a href="http://code.google.com/p/javamelody/wiki/UserGuide#6._Optional_parameters" class="external" target="_blank">quelques paramètres</a> afin de configurer javamelody en fonction de son besoin.</p>
+        <p>Et l'utiliser dans notre jsp.</p>
 
-        <p>Javamelody analyse tout ce qui se passe dans le serveur et est capable de fournir énormément d'information sur l'application.</p>
-        <p>Après quelques requêtes, on peut lire un rapport sur <a href="http://localhost:8080/monitoring" target="_blank">http://localhost:8080/monitoring</a>.</p>
-        <p>Dans notre cas, nous avons peu de composants. Dans une application réelle, javamelody fournit des informations sur tous les services standards et les librairies les plus utilisées.</p>
+        <p>La jsp itère donc dans notre modèle afin de construire le html.</p>
 
+        <h2>Les tag files</h2>
+
+        <p>Les tags files permettent de factoriser du code jsp.</p>
+
+        <p>On ne peut pas les packager dans un jar mais elles sont plus simples a mettre en place que les customs tags.</p>
+
+        <p>Par exemple, si on ajoute le fichier header.tag dans le répertoire WEB-INF/tags/widget.</p>
+	    
+        <pre  class="prettyprint">&lt;%@ tag language="java" pageEncoding="UTF-8"%&gt;
+
+&lt;div class="navbar navbar-inverse"&gt;
+    &lt;div class="navbar-inner"&gt;
+        &lt;span class="brand"&gt;Todooz&lt;/span&gt;
+        &lt;form class="navbar-search pull-left"&gt;
+            &lt;input type="text" class="search-query" placeholder="Search"&gt;
+        &lt;/form&gt;
+        &lt;a href="/add" class="btn btn-inverse pull-right"&gt;&lt;i class="icon-plus icon-white"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+
+        <p>On peut ajouter la déclaration suivante dans notre jsp.</p>
+
+        <pre class="prettyprint"><b>&lt;%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget" %&gt;</b></pre>
+
+        <p>Et faire l'appel suivant à la place de la navbar.</p>
+
+        <pre  class="prettyprint">&lt;widget:navbar /&gt;</pre>
+
+        <p>Cela ressemble à un include mais la synthaxe est élégante.</p>
+
+        <p>Sachant que la déclaration d'un attribut dans un tag file à la forme.</p>
+
+        <pre class="prettyprint">&lt;%@ attribute name="task" required="true" type="fr.todooz.domain.Task" %&gt;</pre>
+
+        <p>Faire un tag file task.tag qui affiche une tâche.</p>
+
+        <h2>Les fonctions</h2>
+
+        <p>Afin de tester les fonctions, nous allons régler un dernier petit problème</p>
+
+        <p>Si le titre d'une tâche contient un &lt; alors l'insert</p>
+
+        <pre class="prettyprint">${task.title}</pre>
+
+        <p>Va générer un html mal formé.</p>
+
+        <p>Afin de s'assurer que les chaînes de caractères sont bien escapées, on utilise la jstl functions.</p>
+
+        <pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;</pre>
+
+        <p>Et la méthode escapeXml</p>
+
+        <pre class="prettyprint">${fn:escapeXml(task.title)}</pre>
+
+        <p>Il faut faire de même avec les tags et le texte.</p>
+
+        <p>On note que l'on aurait pu afficher les tags en utilisant la fonctions split de la jstl.</p>
+
+        <h2>Une boite à outils</h2>
+
+        <p>Les jsp sont un outils riche (trop ?) pour intégrer du html.</p>
+
+        <p>On y retrouve :</p>
+
+        <ul>
+            <li>les directives jsp</li>
+            <li>l'expression language</li>
+            <li>les customs tags (tag et fonctions)</li>
+            <li>les tags files</li>
+        </ul>
+
+        <p>Elles sont très rarement exposées directement et marchent en couple avec des controleurs.</p>
     </div>
 </div>
 </body>

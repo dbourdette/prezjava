@@ -34,46 +34,58 @@
 
         <p>Task est la représentation d'une tâche dans une liste de choses à faire.</p>
 
-        <pre class="prettyprint">public class Task {
-  private Date createdAt;
+        <pre class="prettyprint">import java.util.Date;
 
-  private String text;
+public class Task {
+    private Date createdAt = new Date();
 
-  private Date date;
+    private String title;
 
-  private String tags;
+    private String text;
 
-  public Date getCreatedAt() {
-      return createdAt;
-  }
+    private Date date;
 
-  public void setCreatedAt(Date createdAt) {
-      this.createdAt = createdAt;
-  }
+    private String tags;
 
-  public Date getDate() {
-      return date;
-  }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-  public void setDate(Date date) {
-      this.date = date;
-  }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-  public String getTags() {
-      return tags;
-  }
+    public String getTitle() {
+        return title;
+    }
 
-  public void setTags(String tags) {
-      this.tags = tags;
-  }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-  public String getText() {
-      return text;
-  }
+    public Date getDate() {
+        return date;
+    }
 
-  public void setText(String text) {
-      this.text = text;
-  }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }</pre>
 
         <p>Cette classe ne présente que peu d'intêret techniquement mais elle est importante car elle représente notre domain métier.</p>

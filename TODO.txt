@@ -1,5 +1,11 @@
 
-interface http : décomposition d'une url (protocol...)
+interface http : décomposition d'une url (protocole...)
+
+Classpath entry M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar will not be exported or published. Runtime ClassNotFoundExceptions may result.  	prezjava-todooz		P/prezjava-todooz	Classpath Dependency Validator Message
+
+no scroll in servlets
+
+check prettyprint in pre
 
 Using platform encoding
 

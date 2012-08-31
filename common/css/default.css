@@ -312,7 +312,7 @@ section.middle {
 pre {
   text-align: left;
   font-family: 'Droid Sans Mono', Courier;
-  padding: 10px 20px;
+  padding: 10px 10px;
   background:rgba(133,143,179, 0.2);
   -webkit-border-radius: 8px;
   -khtml-border-radius: 8px;
