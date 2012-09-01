@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Java database connectivity</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1>Java database connectivity</h1>
+
+        <h2>Introduction</h2>
+
+        <p>JDBC est une spécification Sun qui existe depuis la version 1.1 de java.</p>
+
+        <p>C'est une API bas niveau qui permet de travailler avec les bases de données relationnelles.</p>
+
+        <img src="img/jdbc.png" alt="" style="margin: 0 250px;">
+
+        <p>Elle permet de converser avec les bases de données au travers du language SQL.</p>
+
+        <p>Il existe au moins une implémentation de JDBC pour chacune des bases de données majeures : oracle, sybase, mysql...</p>
+
+        <p>De nombreuses librairies permettent de travailler à plus haut niveau en s'abstrayant de JDBC et du SQL.</p>
+
+        <p>Cependant, les appels vers les bases de données passent toujours au travers d'une couche JDBC et il est toujours bon d'avoir des connaissances en SQL.</p>
+
+        <h2>Mise en place d'une base de test</h2>
+
+        <p>Afin de tester JDBC, nous allons écrire quelques tests unitaires.</p>
+
+        <p>Nous allons utliser <a href="http://db.apache.org/derby/" class="external" target="_blank">Derby</a> comme base de données embarquée.</p>
+
+        <p>Nous créons la classe DerbyTest dans le package fr.todooz.derby.</p>
+
+        <pre class="prettyprint">public class DerbyTest {
+   @Test
+   public void createDb() throws ClassNotFoundException, SQLException {
+      <span class="comment">// chargement du driver</span>
+      Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+
+      <span class="comment">// création d'une connexion</span>
+      DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
+   }
+}</pre>
+
+        <p>Ce code charge le driver et crée la base derby dans le répertoire target/testdb.</p>
+
+        <p>Si on exécute ce test, on obtient l'erreur suivante.</p>
+
+        <pre class="prettyprint">java.lang.<b>ClassNotFoundException: org.apache.derby.jdbc.EmbeddedDriver</b>
+    at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+    at java.security.AccessController.doPrivileged(Native Method)
+    at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:307)
+    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:248)
+    at java.lang.Class.forName0(Native Method)
+    at java.lang.Class.forName(Class.java:169)
+    at fr.todooz.derby.DerbyTest.createDb(DerbyTest.java:12)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    at java.lang.reflect.Method.invoke(Method.java:597)
+    at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+    at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:49)
+    at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+</pre>
+
+        <p>Le driver n'est pas dans le classpath, on l'ajoute donc dans le pom.</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
+  &lt;artifactId&gt;derby&lt;/artifactId&gt;
+  &lt;version&gt;10.8.1.2&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Un mvn eclipse:eclipse plus tard, le test passe.</p>
+
+        <p>Derby a créé un fichier derby.log à la racine. On l'ajoute dans le .gitignore afin que celui-ci ne soit pas versionné.</p>
+
+        <h2>Quelques requêtes</h2>
+
+        <p>Afin de faire des requêtes, il faut utiliser l'objet Connection issue du driver.</p>
+
+        <p>On teste la création d'une table.</p>
+
+        <pre class="prettyprint">@Test
+public void createTable() throws ClassNotFoundException, SQLException {
+   <span class="comment">// chargement du driver</span>
+   Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+
+   <span class="comment">// création d'une connexion</span>
+   Connection <b>connection</b> = DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
+
+   connection.createStatement().execute("create table test (firstname varchar(30), lastname varchar(30))");
+}</pre>
+
+        <p>Si on exécute ce test une seconde fois, la base va lever une erreur car la table 'test' existe déjà.</p>
+
+        <p>De plus, il y une forte duplication de code entre nos 2 tests.</p>
+
+        <p>Afin de corriger ces deux problèmes, on optimise notre classe de test.</p>
+
+        <pre class="prettyprint">public class DerbyTest {
+   private Connection connection;
+
+   @Before
+   public void init() throws ClassNotFoundException, SQLException {
+      <span class="comment">// chargement du driver</span>
+      Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+
+      <span class="comment">// création de la connexion</span>
+      connection = DriverManager.getConnection("jdbc:derby:target/testdb;create=true");
+
+      clean();
+   }
+
+   @After
+   public void clean() throws SQLException {
+      try {
+         connection.createStatement().execute("drop table test");
+      } catch (SQLException e) {
+         <span class="comment">// la table n'existait pas</span>
+         if (!e.getMessage().equals("'DROP TABLE' cannot be performed on 'TEST' because it does not exist.")) {
+            throw e;
+         }
+      }
+   }
+
+   @Test
+   public void createTable() throws ClassNotFoundException, SQLException {
+      connection.createStatement().execute("create table test (firstname varchar(30), lastname varchar(30))");
+   }
+}</pre>
+
+        <p>La table 'test' est supprimée entre chaque test.</p>
+
+        <p>On peut maintenant faire un test d'insertion.</p>
+
+        <pre class="prettyprint">@Test
+public void insert() throws ClassNotFoundException, SQLException {
+   createTable();
+
+   PreparedStatement stmt = connection.prepareStatement("insert into test (firstname, lastname) values (?, ?)");
+
+   stmt.setString(1, "Groucho");
+   stmt.setString(2, "Marx");
+
+   Assert.assertEquals(1, stmt.executeUpdate());
+}</pre>
+
+        <p>Et un select.</p>
+
+        <pre class="prettyprint">@Test
+public void select() throws ClassNotFoundException, SQLException {
+  insert();
+
+  PreparedStatement stmt = connection.prepareStatement("select firstname from test where lastname = ?");
+
+  stmt.setString(1, "Marx");
+
+  ResultSet rs = stmt.executeQuery();
+
+  rs.next();
+
+  Assert.assertEquals("Groucho", rs.getString("firstname"));
+}</pre>
+
+        <p>Et un delete.</p>
+
+        <pre class="prettyprint">@Test
+public void delete() throws ClassNotFoundException, SQLException {
+  insert();
+
+  PreparedStatement stmt = connection.prepareStatement("delete from test where lastname = ?");
+
+  stmt.setString(1, "Marx");
+
+  Assert.assertEquals(1, stmt.executeUpdate());
+}</pre>
+
+        <p>Les commandes create, update, select et delete constituent les 4 opérations nécessaires à l'édition de contenu.</p>
+
+        <p>Elles sont généralement regroupées sous l'acronyme <b>CRUD</b> (Create Request Update Delete).</p>
+
+        <h2>close()</h2>
+
+        <p>Nous n'avons pas été très rigoureux dans la gestion de nos resources. Les connexions, les resultsets et les statements ouverts devraient être fermés grâce à la méthode close().</p>
+
+        <p>Partout ou cela est nécessaire (quand la resource ne sert plus) il faut rajouter les appels suivants.</p>
+
+        <pre class="prettyprint">connection.close();
+
+...
+
+stmt.close();</pre>
+
+        <p>Comme nous sommes dans des tests unitaires, ce n'est pas très grave.</p>
+
+        <p>En production, cela ferait du connection leak (fuite de connexion) et bloquerait l'application rapidement.</p>
+
+        <h2>La gestion des erreurs</h2>
+
+        <p>Nous avons aussi passé sous silence la gestion d'erreur. Que se passe t il si une requête échoue et donc que la suite du programme ne s'exécute pas ?</p>
+
+        <p>Par exemple, dans le code suivant, si la requête échoue, la connexion n'est pas fermée.</p>
+
+        <pre class="prettyprint">connection = DriverManager.getConnection("...");
+
+PreparedStatement stmt = connection.prepareStatement("...");
+
+stmt.executeUpdate(); <span class="comment">//\/\ <b>boum</b> /\/\ !!!</span>
+
+stmt.close(); <span class="comment">// non exécuté</span>
+
+connection.close(); <span class="comment">// non exécuté</span>
+        </pre>
+
+        <p>Le code correct afin de gérer ces cas est de la forme try {} finally {} afin d'assurer la libération des resources.</p>
+
+        <pre class="prettyprint">Connection connection = null;
+PreparedStatement stmt = null;
+
+<b>try</b> {
+    connection = DriverManager.getConnection("...");
+
+    stmt = connection.prepareStatement("...");
+
+    stmt.execute();
+} <b>finally</b> {
+    if (stmt != null) {
+        stmt.close();
+    }
+
+    if (connection != null) {
+        connection.close();
+    }
+}</pre>
+
+        <p>Enfin, il faudrait ajouter à cela la gestion des transactions.</p>
+
+        <p>Ce qui semblait simple au début se transforme donc rapidement en enfer.</p>
+
+        <p>Les frameworks modernes prennent en charge tous ces aspects répétitifs afin de garder un code simple.</p>
+
+        <h2>La persitence des objets</h2>
+
+        <p>Prenons un peu de recul et essayons d'imaginer un service de persitance pour une classe Person.</p>
+
+        <pre class="prettyprint">public class Person {
+   private String firstname;
+
+   private String lastname;
+
+   // getters and setters
+}</pre>
+
+        <p>Ce modèle est assez proche de notre table 'test'.</p>
+
+        <p>Une méthode save(Person) dans un service aurait donc la forme suivante.</p>
+
+        <pre class="prettyprint">public void save(Person person) {
+   connection = DriverManager.getConnection("...");
+
+   PreparedStatement stmt = connection.prepareStatement("insert into test (firstname, lastname) values (?, ?)");
+
+   stmt.setString(1, person.getFirstname());
+   stmt.setString(2, person.getLastname());
+
+   stmt.executeUpdate();
+}</pre>
+
+        <p>Il faudrait que ce service</p>
+
+        <ul>
+            <li>Gère bien la libération des resources</li>
+            <li>Permettre d'ajouter facilement de nouvelles propriétés</li>
+            <li>Gère les opérations de type CRUD et des méthodes de sélection spécialisées</li>
+            <li>Soit capable de lire et d'écrire des attributs plus complexes que des String</li>
+            <li>Puisse participer à des transactions en cours ou démarrer son propre contexte transactionel</li>
+            <li>...</li>
+        </ul>
+
+        <p>Nous n'allons donc pas coder cela en JDBC, ce serait trop long.</p>
+
+        <h2>En résumé</h2>
+
+        <p>JDBC est assez simple et portable.</p>
+
+        <p>Mais nous allons avoir besoin d'un peu plus de puissance si on veut gagner en productivité.</p>
+    </div>
+</div>
+</body>
+</html>
