@@ -212,13 +212,13 @@ public void cleanDb() {
 
         <p>Les tests unitaires devraient encore passer.</p>
 
-        <h2>PostService v1.1</h2>
+        <h2>TaskService v1.1</h2>
 
         <p>Ensuite on ajoute notre service dans le contexte spring.</p>
 
-        <pre class="prettyprint">&lt;bean class="fr.todooz.service.PostService" /&gt;</pre>
+        <pre class="prettyprint">&lt;bean class="fr.todooz.service.TaskService" /&gt;</pre>
 
-        <p>Au démarrage du contexte spring, une instance de la classe PostService sera donc instanciée.</p>
+        <p>Au démarrage du contexte spring, une instance de la classe TaskService sera donc instanciée.</p>
 
         <p>On profite du fait que notre bean soit géré par spring afin de supprimer la méthode setSessionFactory de notre PostService.</p>
 
@@ -227,17 +227,17 @@ private SessionFactory sessionFactory;</pre>
 
         <p>Et dans le test unitaire, plus besoin d'instancier notre service nous même. On échange donc :</p>
 
-        <pre class="prettyprint"><s>PostService postService = new PostService();
-postService.setSessionFactory(sessionFactory);</s></pre>
+        <pre class="prettyprint"><s>TaskService taskService = new TaskService();
+taskService.setSessionFactory(sessionFactory);</s></pre>
 
         <p>contre</p>
 
         <pre class="prettyprint">@Inject
-private PostService postService;</pre>
+private TaskService taskService;</pre>
 
         <p>Les tests passent encore, on a gagné quelques lignes de code.</p>
 
-        <h2>PostService v2.0</h2>
+        <h2>TaskService v2.0</h2>
 
         <p>Nous allons maintenant nous séparer de la gestion des fermetures de sessions (session.close()) et cela fonctionnera même en cas d'erreur.</p>
 
@@ -249,34 +249,34 @@ private PostService postService;</pre>
 
         <p>Heureusement, eclipse va nous aider un peu.</p>
 
-        <p>Dans elipse, on fait un rename de la classe PostService vers PostServiceImpl (clic droit sur la classe).</p>
+        <p>Dans elipse, on fait un rename de la classe TaskService vers TaskServiceImpl (clic droit sur la classe).</p>
 
         <img src="img/rename.png" style="margin:0 80px;" />
 
-        <p>Puis on extrait une interface PostService à partir de notre classe (clic droit sur la classe).</p>
+        <p>Puis on extrait une interface TaskService à partir de notre classe (clic droit sur la classe).</p>
 
         <img src="img/extract-interface.png" style="margin:0 65px;" />
 
-        <p>Il faut sélectionner les 4 méthodes et ne pas prendre l'option "Declare interface methods as 'abstract'".</p>
+        <p>Il faut sélectionner les 5 méthodes et ne pas prendre l'option "Declare interface methods as 'abstract'".</p>
 
         <p>Ne reste qu'à changer la définition du bean à instancier dans le contexte.</p>
 
-        <pre class="prettyprint">&lt;bean class="fr.todooz.service.PostServiceImpl" /&gt;</pre>
+        <pre class="prettyprint">&lt;bean class="fr.todooz.service.TaskServiceImpl" /&gt;</pre>
 
-        <p>En effet PostService est maintenant une interface, donc on ne peut pas l'instancier.</p>
+        <p>En effet TaskService est maintenant une interface, donc on ne peut pas l'instancier.</p>
 
         <p>Une interface plus tard, les tests passent toujours.</p>
 
-        <p>Maintenant on ajoute une annotation <b>@Transactional</b> sur les 4 méthodes de l'implémentation et on peut retirer toute la gestion de la fermeture de la session.</p>
+        <p>Maintenant on ajoute une annotation <b>@Transactional</b> sur les 5 méthodes de l'implémentation et on peut retirer toute la gestion de la fermeture de la session.</p>
 
         <p>Par exemple, la méthode save devient :</p>
 
         <pre class="prettyprint">@Override
 @Transactional
-public void save(Post post) {
+public void save(Task task) {
     Session session = sessionFactory.<b>getCurrentSession()</b>;
 
-    session.save(post);
+    session.save(task);
 }</pre>
 
         <p>Cela simplifie grandement nos méthodes, nous libérant ainsi d'une partie répétitive et sujette à bugs.</p>
@@ -309,7 +309,7 @@ public void save(Post post) {
 
         <ul>
             <li>L'ouverture et la fermeture des session (pas de connection leak)</li>
-            <li>La transaction SQL</li>
+            <li>Les transactions SQL</li>
         </ul>
 
         <p>Si tout va bien, les test passent toujours.</p>
@@ -415,7 +415,7 @@ public class TagCloudServiceTest {
 
       Transaction transaction = session.beginTransaction();
 
-      session.createQuery("delete from Post").executeUpdate();
+      session.createQuery("delete from Task").executeUpdate();
 
       transaction.commit();
 
@@ -423,8 +423,15 @@ public class TagCloudServiceTest {
    }
 
    @Test
+   public void buildEmptyTagCloud() {
+      TagCloud tagCloud = tagCloudService.buildTagCloud();
+
+      Assert.assertEquals(0, tagCloud.size());
+   }
+
+   @Test
    public void buildTagCloud() {
-      saveSomePosts();
+      saveSomeTasks();
 
       <b>TagCloud tagCloud = tagCloudService.buildTagCloud();</b>
 
@@ -434,28 +441,30 @@ public class TagCloudServiceTest {
       Assert.assertTrue(tagCloud.contains("nodejs"));
    }
 
-   private void saveSomePosts() {
+   private void saveSomeTasks() {
       Session session = sessionFactory.openSession();
 
       Transaction transaction = session.beginTransaction();
 
-      session.save(buildPost("java,cobol"));
-      session.save(buildPost("java,python"));
-      session.save(buildPost("ruby,python"));
-      session.save(buildPost("nodejs"));
+      session.save(buildTask("java,cobol"));
+      session.save(buildTask("java,python"));
+      session.save(buildTask("ruby,python"));
+      session.save(buildTask("nodejs"));
 
       transaction.commit();
 
       session.close();
    }
 
-   private Post buildPost(String tags) {
-      Post post = new Post();
+   private Task buildTask(String tags) {
+      Task task = new Task();
 
-      post.setTitle("test title");
-      post.setTags(tags);
+      task.setDate(new Date());
+      task.setTitle("Read Effective Java");
+      task.setText("Read Effective Java before it's too late");
+      task.setTags(tags);
 
-      return post;
+      return task;
    }
 }</pre>
 
@@ -467,7 +476,7 @@ public class TagCloudServiceTest {
             <li>TagCloudServiceImpl doit implémenter TagCloudService.</li>
             <li>Le service doit aller chercher tous les tags en base.</li>
             <li>Il est possible de faire un import d'un contexte dans un autre via un tag xml, par ex : <br>&lt;import resource="test-context.xml" /&gt;</li>
-            <li>Utiliser la méthode org.apache.commons.lang.StringUtils.split afin de découper un String en un tableau de String (on peut trouver le jar commons-lang dans le <a href="http://search.maven.org" class="external" target="_blank">repo maven</a>.</li>
+            <li>Utiliser la méthode org.apache.commons.lang.StringUtils.split afin de découper un String en un tableau de String.</li>
         </ul>
     </div>
 </div>
