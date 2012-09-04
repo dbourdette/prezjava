@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Spring MVC</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC</h1>
+
+        <h2>La gestion des billets</h2>
+
+        <p>Nous allons construire un CRUD (Create Request Update Delete) pour les billets.</p>
+
+        <p>Nous commençons par créer un nouveau Controller</p>
+
+        <pre class="prettyprint">@Controller
+public class AdminController {
+}</pre>
+
+        <p>Celui va devoir supporter les opérations suivantes :</p>
+
+        <ul>
+            <li>Liste des billets actuellement en base avec un lien "nouveau"</li>
+            <li>Le formulaire pour un nouveau billet</li>
+            <li>La sauvegarde du nouveau billet</li>
+            <li>Le formulaire pour l'édition d'un billet</li>
+            <li>La sauvegarde d'une billet</li>
+            <li>La suppression d'un billet</li>
+        </ul>
+
+        <h3>La liste des billets</h3>
+
+        <p>Ecrire une méthode qui réponde sur /admin/posts qui injecte la totalité des billets dans le modèle.</p>
+
+        <p>Cette méthode doit ensuite rediriger vers la vue /WEB-INF/jsp/admin/posts.jsp/</p>
+
+        <p>En s'inspirant de la page d'index, écrire le fichier jsp en le remplissant avec la liste des titres des billets.</p>
+
+        <p>Le lien sur le titre du billet doit pointer vers /admin/post/{id du billet}.</p>
+
+        <p>Un lien en haut de la jsp doit pointer vers /admin/post avec un texte "nouveau".</p>
+
+        <h3>Un nouveau billet</h3>
+
+        <p>On ajoute une méthode au Controller pour la création d'un nouveau billet.</p>
+
+        <pre class="prettyprint">@RequestMapping("/admin/post")
+public String post(Model model) {
+    <span class="comment">// on injecte un Post vierge dans le modèle</span>
+    model.addAttribute("post", new Post());
+
+    return "admin/post";
+}</pre>
+
+        <p>La vue est <a href="files/form.jsp">un formulaire</a> qui permet d'éditer les attributs du billet.</p>
+
+        <p>On y trouve l'appel à la taglib de spring pour les formulaires.</p>
+
+        <pre class="prettyprint">&lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;</pre>
+
+        <p>Le formulaire qui reprend le nom du bean dans le modèle, l'url cible et la méthode HTTP.</p>
+
+        <pre class="prettyprint">&lt;form:form commandName="post" action="/admin/post" method="post"&gt;</pre>
+
+        <p>Un champs input est facile à définir.</p>
+
+        <pre class="prettyprint">&lt;form:input path="title" /&gt;</pre>
+
+        <p>Avec un zone prévue pour afficher les messages d'erreurs.</p>
+
+        <pre class="prettyprint">&lt;form:errors path="title" /&gt;</pre>
+
+        <p>En attendant le HTML 5 (et encore, cela ne sera pas fantastique), les inputs html sont un peu limités.</p>
+
+        <p>Les formulaires spring sont extrêmement proche des formulaires html standards.</p>
+
+        <h3>La gestion du POST</h3>
+
+        <p>Coté jsp, tout est en place. Il reste a gérer la réception des données coté serveur.</p>
+
+        <p>Le mapping suivant permet de recevoir l'appel.</p>
+
+        <pre class="prettyprint">@RequestMapping(value = "/admin/post", method = RequestMethod.<b>POST</b>)
+public String post(<b>@ModelAttribute("post")</b> Post post, <b>BindingResult</b> bindingResult, Model model) {
+   ...
+}</pre>
+
+        <p>En recevant l'appel, spring va "binder" le contenu de la requête http à notre objet.</p>
+
+        <p>BindingResult contient toutes les erreurs de validation. C'est ce qui permet l'affichage des erreurs dans la jsp.</p>
+
+        <p>Le minimum vital pour notre billet est le titre. On fait donc une vérification et on sauve le billet en base.</p>
+
+        <pre class="prettyprint">if (StringUtils.isEmpty(post.getTitle())) {
+    bindingResult.rejectValue("title", "field.empty", "Le titre est obligatoire");
+
+    return "admin/post";
+}
+
+postService.save(post);
+
+return "redirect:/admin/posts";</pre>
+
+        <p>StringUtils vient de la librairie commons lang qu'il faut ajouter au pom si il n'est pas déjà présent.</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;commons-lang&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-lang&lt;/artifactId&gt;
+    &lt;version&gt;2.6&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Si on tente de sauvegarder un billet en l'état avec une date, nous avons un message d'erreur nous indiquant que spring ne parvient pas a convertir une chaîne de caractères en date.</p>
+
+        <pre class="prettyprint">Failed to convert property value of type java.lang.String to required type java.util.Date for property date;
+nested exception is org.springframework.core.convert.ConversionFailedException:
+Unable to convert value "" from type java.lang.String to type java.util.Date;
+nested exception is java.lang.IllegalArgumentException</pre>
+
+        <p>En effet spring n'adopte pas de convention par défaut et ne sait pas quel est le format littéral d'une date.</p>
+
+        <p>Il faut alors configurer le binder dans notre Controller.</p>
+
+        <pre class="prettyprint">@InitBinder
+public void binder(WebDataBinder binder) {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+}</pre>
+
+        <p>Le format de date est donc "dd/MM/yyyy HH:mm" et il est possible d'avoir une date vide.</p>
+
+        <p>Désormais, la sauvegarde fonctionne.</p>
+
+        <p>Afin de nous simplifier l'édition, on peut d'ailleurs initialiser le champs date à la date courante dans le modèle.</p>
+
+        <pre class="prettyprint">@Column
+@Temporal(TemporalType.TIMESTAMP)
+private Date date = new Date();</pre>
+
+        <h3>L'édition</h3>
+
+        <p>A ce point, l'édition d'un billet est simple. Il faut ajouter le mapping dans le Controller.</p>
+
+        <pre class="prettyprint">@RequestMapping("/admin/post/{id}")
+public String post(@PathVariable Long id, Model model) {
+    // on injecte le post
+    model.addAttribute("post", postService.<b>findById</b>(id));
+
+    return "admin/post";
+}</pre>
+
+        <p>Il faut créer la méthode findById dans le service afin que ce code fonctionne.</p>
+
+        <p>Dans le cas de l'édition d'un billet, on utilise le même formulaire.</p>
+
+        <p>Il faut juste rajouter le champs id afin que le celui-ci soit renvoyé au moment du post du formulaire.</p>
+
+        <pre class="prettyprint">&lt;form:hidden path="id" /&gt;</pre>
+
+        <p>Un dernier point : la méthode save de PostServiceImpl fait un session.save(post). Cela crée un nouvel enregistrement en base même si le billet a un déjà un id.</p>
+
+        <p>On remplace session.save(post) par session.saveOrUpdate(post) et l'édition de billet fonctionne.</p>
+
+        <h3>La suppression</h3>
+
+        <p>Rajouter un mapping sur /admin/post/{id}/delete qui supprime un post.</p>
+
+        <p>Ajouter un lien pour chaque billet dans le listing.</p>
+
+        <h3>Un peu d'ordre</h3>
+
+        <p>En jouant avec l'édition des billets, on observe qu'ils ne sont pas classés par date.</p>
+
+        <p>Cela se corrige simplement en ajoutant une clause order dans la méthode find du service :</p>
+
+        <pre class="prettyprint">criteria.addOrder(Order.desc("date"));</pre>
+
+        <p>Les billets les plus récents sont en premier.</p>
+
+        <h3>JSR 303</h3>
+
+        <p>Nous avons effectué la validation dans le Controller.</p>
+
+        <p>Cette possibilité est simple mais deviendrait dense si il fallait valider beaucoup de champs.</p>
+
+        <p>Nous allons maintenant utiliser une technique beaucoup plus concise : la <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank" class="external">JSR 303</a> (spécification bean validation).</p>
+
+        <p>Tout d'abord, il faut importer une librairie d'implémentation de la spécification.</p>
+
+        <pre class="prettyprint"><span class="comment">&lt;!-- hibernate validator --&gt;</span>
+&lt;dependency&gt;
+   &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+   &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
+   &lt;version&gt;4.2.0.Final&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Hibernate validator est l'implémentation de référence.</p>
+
+        <p>Nous pouvons alors modifier l'AdminController</p>
+
+        <pre class="prettyprint">@RequestMapping(value = "/admin/post", method = RequestMethod.POST)
+public String post(@ModelAttribute("post") <b>@Valid</b> Post post, BindingResult bindingResult, Model model) {
+   <s>if (StringUtils.isEmpty(post.getTitle())) {
+       bindingResult.rejectValue("title", "field.empty", "Le titre est obligatoire");
+
+       return "admin/post";
+   }</s>
+
+   <b>if (bindingResult.hasErrors()) {
+       return "admin/post";
+   }</b>
+
+   postService.save(post);
+
+   return "redirect:/admin/posts";
+}</pre>
+
+        <p>L'annotation @Valid indique a spring qu'il doit exécuter un validateur sur l'attribut.</p>
+
+        <p>Il nous suffit alors d'annoter le champs title de la class Post :</p>
+
+        <pre class="prettyprint">@Column
+<b>@NotEmpty</b>
+private String title;</pre>
+
+        <p>En tant qu'implémentation de la JSR 303, hibernate validator vient avec la prise en charge des annotations et un jeu de messages d'erreur localisé.</p>
+
+        <img src="img/jsr-303.png" alt="" style="margin: 0 100px">
+
+        <p>Il est maintenant très simple de rajouter d'autres @NotEmpty ou bien @Length ou @Email.</p>
+
+        <p>Il est même possible d'écrire ses propres annotations afin de rendre réutilisable simplement ses éléments de validation.</p>
+
+        <h2>En peu de recul</h2>
+
+        <p>L'utilisation des Controllers est simple mais il nous a fallu bien des librairies et quelques fichiers de configuration pour arriver à ce résultat.</p>
+
+        <p>Dans le cadre d'un projet maven + spring mvc, obtenir sa première page n'est pas instantané.</p>
+
+        <p>D'autres frameworks (rails, grails, roo, play...) offrent un démarrage rapide et beaucoup de vitesse pour les besoins classiques (le CRUD est un des exemples courants)</p>
+
+        <p>Spring mvc de son coté est un peu plus lourd à manipuler mais est d'une très grande flexibilité.</p>
+
+        <p>Selon les projets, on peut donc choisir la technologie la plus adaptée.</p>
+
+        <h2>Le reste</h2>
+
+        <p>Il resterait beaucoup a faire afin d'avoir une application complète.</p>
+
+        <p>Voici quelques pistes / questions pour la suite :</p>
+
+        <ul>
+            <li>La page d'index est /index. Comment pourrait on faire pour que / réponde également comme page d'index ?</li>
+            <li>Comment devrait on gérer la pagination ? Quelle ergonomie dans la page ? Quelles modifications dans le service ?</li>
+            <li>Comment pourrait on gérer convenablement le bloc de tag ?</li>
+            <li>Comment lister les billets par tags (et donc pour mettre des liens sur les tags) ?</li>
+            <li>Comment faire fonctionner le bloc des derniers billets ?</li>
+            <li>La gestion des auteurs est un élément délicat. Comment gérer la relation @ManyToOne dans le formulaire d'édition ? Comment gérer cela dans le controller et le service ?</li>
+            <li>La gestion des cas d'erreur : que faire de http://localhost:8080/billet/not-existing-post ou bien http://localhost:8080/admin/post/aaa ?</li>
+            <li>Si notre blog devait supporter beaucoup de trafic, que pourrait on faire pour l'aider à tenir la charge ?</li>
+        </ul>
+
+    </div>
+</div>
+</body>
+</html>

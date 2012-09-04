@@ -1,0 +1,123 @@
+
+body {
+    width: 900px;
+    margin: auto;
+    background-color: #858FB3;
+    font: 14px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #274787;
+}
+
+#header {
+    width: 900px;
+    height: 50px;
+    border-bottom: 1px gray solid;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom-left-radius: 0px 0px;
+    border-bottom-right-radius: 0px 0px;
+    border-top-left-radius: 20px 20px;
+    border-top-right-radius: 0px 0px;
+    border: 1px #284B7E solid;
+    font-size: 16px;
+    background-color: white;
+    box-shadow: 5px 5px #444;
+}
+
+#header .title {
+    font-size: 20px;
+    position:relative;
+    top:10px;
+    left: 30px;
+}
+
+#posts {
+    float: left;
+    width: 687px;
+    padding:5px;
+    border-right: 1px gray solid;
+    border-bottom-left-radius: 20px 20px;
+    border-bottom-right-radius: 20px 20px;
+    border: 1px #284B7E solid;
+    background-color: white;
+    box-shadow: 5px 5px #444;
+}
+
+.post {
+    margin-bottom:20px;
+    border-bottom: 1px #C2C2C2 solid;
+    padding-bottom: 10px;
+}
+
+.post .date {
+    font-style: italic;
+}
+
+.post .title {
+    font-weight: bold;
+}
+
+.post p {
+    margin: 10px 0 10px 0;
+}
+
+.post .tags {
+
+}
+
+.post .author {
+    float:right;
+    font-weight: bold;
+}
+
+#right {
+    float: right;
+    width: 190px;
+}
+
+.tagcloud {
+    border-bottom-left-radius: 0px 0px;
+    border-bottom-right-radius: 20px 20px;
+    border-top-left-radius: 0px 0px;
+    border-top-right-radius: 0px 0px;
+    border: 1px #284B7E solid;
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 5px;
+    box-shadow: 5px 5px #444;
+}
+
+.tagcloud ul li {
+    margin: 0px;
+}
+
+.latest {
+    border-bottom-left-radius: 0px 0px;
+    border-bottom-right-radius: 20px 20px;
+    border-top-left-radius: 0px 0px;
+    border-top-right-radius: 0px 0px;
+    border: 1px #284B7E solid;
+    background-color: white;
+    padding: 5px;
+    box-shadow: 5px 5px #444;
+}
+
+#form {
+    float: left;
+    width: 689px;
+    padding:5px;
+    border-bottom-left-radius: 0px 0px;
+    border-bottom-right-radius: 20px 20px;
+    border-top-left-radius: 0px 0px;
+    border-top-right-radius: 0px 0px;
+    border: 1px #284B7E solid;
+    background-color: white;
+    box-shadow: 5px 5px #444;
+}
