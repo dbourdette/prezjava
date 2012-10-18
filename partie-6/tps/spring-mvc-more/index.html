@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Spring MVC</title>
+    <title>Spring MVC Mappings</title>
 
     <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
     <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
@@ -18,28 +18,27 @@
 <body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
-        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC</h1>
+        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC mappings</h1>
 
-        <h2>La gestion des billets</h2>
+        <p>Nous allons ajouter quelques méthodes afin de pouvoir naviguer un peu plus dans nos billets.</p>
 
-        <p>Nous allons construire un CRUD (Create Request Update Delete) pour les billets.</p>
-
-        <p>Nous commençons par créer un nouveau Controller</p>
-
-        <pre class="prettyprint">@Controller
-public class AdminController {
-}</pre>
-
-        <p>Celui va devoir supporter les opérations suivantes :</p>
+        <p>L'interface html nous propose 3 entrées que nous allons implémenter :</p>
 
         <ul>
-            <li>Liste des billets actuellement en base avec un lien "nouveau"</li>
-            <li>Le formulaire pour un nouveau billet</li>
-            <li>La sauvegarde du nouveau billet</li>
-            <li>Le formulaire pour l'édition d'un billet</li>
-            <li>La sauvegarde d'une billet</li>
-            <li>La suppression d'un billet</li>
+            <li>Le moteur de recherche dans le header</li>
+            <li>La navigation par tags</li>
+            <li>La naviagtion par date</li>
         </ul>
+
+        <h2>La recherche</h2>
+
+        <p>Notre service propose déjà une méthode pour faire de la recheche.</p>
+
+        <pre class="prettyprint">public List&lt;Task&gt; findByQuery(String query);</pre>
+
+        <p>Nous pouvons donc l'utiliser afin de proposer simplement le mapping suivant dans notre Controller</p>
+
+        <pre class="prettyprint"></pre>
 
         <h3>La liste des billets</h3>
 
