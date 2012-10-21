@@ -94,7 +94,7 @@ public String tag(@PathVariable String tag, Model model) {
 
         <p>Pour manipuler des dates et des intervalles en java, le mieux est d'utiliser <a href="http://joda-time.sourceforge.net/" class="external">joda time</a> (artefact joda-time sur le <a href="http://search.maven.org" class="external">repository central</a>)</p>
 
-        <p>Par exemple, pour aujourd'hui</p>
+        <p>Par exemple, pour aujourd'hui :</p>
 
         <pre class="prettyprint">private Interval todayInterval() {
     DateMidnight today = new DateMidnight();
@@ -105,6 +105,48 @@ public String tag(@PathVariable String tag, Model model) {
         <div class="note">new DateMidnight() est aujourd'hui a 00h00</div>
 
         <p>Coté service, il existe une Restrictions.between afin de construire la requête.</p>
+
+        <h3>@ModelAttribute</h3>
+
+        <p>Normalement, le code de notre controller ressemble au code suivant :</p>
+
+        <pre class="prettyprint">@RequestMapping({ "/", "/index" })
+public String index(Model model) {
+    model.addAttribute("tagCloud", tagCloudService.buildTagCloud());
+
+    ...
+}
+
+@RequestMapping("/search")
+public String search(String query, Model model) {
+    model.addAttribute("tagCloud", tagCloudService.buildTagCloud());
+
+    ...
+}
+
+@RequestMapping("/tag/{tag}")
+public String tag(@PathVariable String tag, Model model) {
+    model.addAttribute("tagCloud", tagCloudService.buildTagCloud());
+
+    ...
+}
+
+...</pre>
+
+        <p>Pour ce genre duplication, spring MVC propose la factorisation suivante :</p>
+
+        <pre class="prettyprint">@ModelAttribute
+public TagCloud tagCloud() {
+    return tagCloudService.buildTagCloud();
+}</pre>
+
+        <p>Ainsi un attribut tagCloud va être ajouté au modèle quelle que soit la méthode appelée.</p>
+
+        <p>Suite à l'ajout de cette méthode, il faut supprimer tous les appels inutiles.</p>
+
+        <h3>Et ?</h3>
+
+        <p>Y a t il un autre duplication / optimisation que l'on peut proposer pour notre controller ?</p>
 
 
     </div>
