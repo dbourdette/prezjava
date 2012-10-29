@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Spring MVC</title>
+    <title>Spring MVC Forms</title>
 
     <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
     <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
@@ -18,11 +18,13 @@
 <body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
-        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC</h1>
+        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC Forms</h1>
 
-        <h2>La gestion des billets</h2>
+        <p>Nous avons vu comment attacher des méthodes à des paths et afficher des données.</p>
 
-        <p>Nous allons construire un CRUD (Create Request Update Delete) pour les billets.</p>
+        <p>Nous allons maintenant fournir une interface web pour éditer ces données</p>
+
+        <h2>La gestion des tâches</h2>
 
         <p>Nous commençons par créer un nouveau Controller</p>
 
@@ -33,173 +35,286 @@ public class AdminController {
         <p>Celui va devoir supporter les opérations suivantes :</p>
 
         <ul>
-            <li>Liste des billets actuellement en base avec un lien "nouveau"</li>
-            <li>Le formulaire pour un nouveau billet</li>
-            <li>La sauvegarde du nouveau billet</li>
-            <li>Le formulaire pour l'édition d'un billet</li>
-            <li>La sauvegarde d'une billet</li>
-            <li>La suppression d'un billet</li>
+            <li>Afficher un formulaire d'ajout d'une tâche</li>
+            <li>La sauvegarde d'une nouvelle tâche</li>
+            <li>Afficher un formulaire pour l'édition d'une tâche</li>
+            <li>La sauvegarde de la tâche</li>
+            <li>La suppression d'une tâche</li>
         </ul>
 
-        <h3>La liste des billets</h3>
+        <h3>Une nouvelle tâche</h3>
 
-        <p>Ecrire une méthode qui réponde sur /admin/posts qui injecte la totalité des billets dans le modèle.</p>
+        <p>On ajoute une méthode au Controller pour la création d'une nouvelle tâche.</p>
 
-        <p>Cette méthode doit ensuite rediriger vers la vue /WEB-INF/jsp/admin/posts.jsp/</p>
+        <pre class="prettyprint">@RequestMapping("/add")
+public String add(Model model) {
+    <span class="comment">// on injecte une Task vierge dans le modèle</span>
+    model.addAttribute("task", new Task());
 
-        <p>En s'inspirant de la page d'index, écrire le fichier jsp en le remplissant avec la liste des titres des billets.</p>
-
-        <p>Le lien sur le titre du billet doit pointer vers /admin/post/{id du billet}.</p>
-
-        <p>Un lien en haut de la jsp doit pointer vers /admin/post avec un texte "nouveau".</p>
-
-        <h3>Un nouveau billet</h3>
-
-        <p>On ajoute une méthode au Controller pour la création d'un nouveau billet.</p>
-
-        <pre class="prettyprint">@RequestMapping("/admin/post")
-public String post(Model model) {
-    <span class="comment">// on injecte un Post vierge dans le modèle</span>
-    model.addAttribute("post", new Post());
-
-    return "admin/post";
+    return "edit";
 }</pre>
 
-        <p>La vue est <a href="files/form.jsp">un formulaire</a> qui permet d'éditer les attributs du billet.</p>
+        <p>La vue est <a href="html/template.html">un formulaire</a> qui permet d'éditer les attributs du billet.</p>
 
-        <p>On y trouve l'appel à la taglib de spring pour les formulaires.</p>
+        <p>Elle utilise la <a href="http://twitter.github.com/bootstrap/base-css.html#forms" class="external" target="_blank">css de bootstrap</a> afin d'afficher un formulaire aéré et lisible.</p>
+
+        <p>Il faut porter ce formulaire faire une jsp (edit.jsp) vers laquelle pointe le controller.</p>
+
+        <p>Le + dans le header affiche donc maintenant un formulaire vide.</p>
+
+        <div class="note">Attention, il faut penser à remprendre les éléments nécessaires à la colonne de droite.</div>
+
+        <h3>Le post</h3>
+
+        <p>Si on regarde le tag form de la page, on voit que celui-ci pointe vers /edit en méthode "post"</p>
+
+        <p>la méthode de ce formulaire indique que les données seront envoyés avec la méthode HTTP POST.</p>
+
+        <p>C'est classique pour un formulaire qui mets à jour des données dans une base.</p>
+
+        <ul>
+            <li>C'est sémantiquement correct</li>
+            <li>Cela permet de transférer des données qui ne passeraient pas en GET (fichiers, beaucoup de texte...)</li>
+            <li>Cela informe le navigateur que ce n'est pas une action sans conséquences.</li>
+        </ul>
+
+        <p>Le mapping coté serveur est donc le suivant</p>
+
+        <pre class="prettyprint">@RequestMapping(value = "/edit", method = RequestMethod.POST)
+public String post(Task task) {
+    taskService.save(task);
+
+    return "redirect:/";
+}</pre>
+
+        <p>On note plusieurs choses</p>
+
+        <ul>
+            <li>L'ajout de method = RequestMethod.POST dans l'annotation</li>
+            <li>L'attribut task de la méthode qui est remplit automatique par spring</li>
+            <li>La sauvergarde du billet</li>
+            <li>Le redirect (vers la home) après un post</li>
+        </ul>
+
+        <p>Si on utilise le formulaire en l'état, sans fournir de date, on obtient un jolie exception :</p>
+
+        <pre>org.springframework.validation.<b>BindException</b>: org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'task' on field 'date': rejected value []; codes
+[typeMismatch.task.date,typeMismatch.date,typeMismatch.java.util.Date,typeMismatch]; arguments
+[org.springframework.context.support.DefaultMessageSourceResolvable: codes [task.date,date]; arguments [];
+default message [date]]; default message [<b>Failed to convert property value of type 'java.lang.String' to
+required type 'java.util.Date' for property 'date'</b>; nested exception is
+org.springframework.core.convert.ConversionFailedException:
+Unable to convert value "" from type 'java.lang.String' to type 'java.util.Date';
+nested exception is java.lang.IllegalArgumentException]
+    at org.springframework.web.bind.annotation.support.HandlerMethodInvoker.doBind(HandlerMethodInvoker.java:810)
+    ...
+        </pre>
+
+        <p>Spring ne parvient pas a convertir une String vide en Date et il ne sait pas quoi faire.</p>
+
+        <h3>Le binding</h3>
+
+        <p>L'opération qui consiste a convertir des String et a injecter les valeurs dans notre Objet est appelée binding.</p>
+
+        <p>Lors de celle-ci, il peut se produire des erreurs.</p>
+
+        <p>La première chose à faire est de prendre la main lorsqu'une erreur survient.</p>
+
+        <pre class="prettyprint">@RequestMapping(value = "/edit", method = RequestMethod.POST)
+public String post(@ModelAttribute Task task, BindingResult result) {
+    if (result.hasErrors()) {
+        return "edit";
+    }
+
+    taskService.save(task);
+
+    return "redirect:/";
+}</pre>
+
+        <div class="note">Notre attribut task a maintenant une annotation @ModelAttribute qui va permettre d'injecter l'objet dans le model.</div>
+
+        <div class="note">BindingResult contient tout le résultat du binding pour l'objet qui le précéde dans la liste des paramètres de la méthode.</div>
+
+        <p>On ajoute la taglib de spring pour les formulaires dans la jsp.</p>
 
         <pre class="prettyprint">&lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;</pre>
 
-        <p>Le formulaire qui reprend le nom du bean dans le modèle, l'url cible et la méthode HTTP.</p>
+        <p>Le formulaire doit maintenant être un tag spring</p>
 
-        <pre class="prettyprint">&lt;form:form commandName="post" action="/admin/post" method="post"&gt;</pre>
+        <pre class="prettyprint">&lt;form:form commandName="task" action="/edit" method="post"&gt;
+    ...
+&lt;form:form&gt;</pre>
 
-        <p>Un champs input est facile à définir.</p>
+        <div class="note">L'attribut commandName du formulaire reprend le nom du bean dans le modèle.</div>
 
-        <pre class="prettyprint">&lt;form:input path="title" /&gt;</pre>
+        <p>Et finalement l'affichage de l'erreur</p>
 
-        <p>Avec un zone prévue pour afficher les messages d'erreurs.</p>
+        <pre class="prettyprint">&lt;label for="date"&gt;Date &lt;form:errors path="date" cssStyle="color: red" /&gt;&lt;/label&gt;</pre>
 
-        <pre class="prettyprint">&lt;form:errors path="title" /&gt;</pre>
+        <div class="note">L'attribut path permet de choisir pour quel champs on affiche l'erreur. On peut utiliser * pour "toutes"</div>
 
-        <p>En attendant le HTML 5 (et encore, cela ne sera pas fantastique), les inputs html sont un peu limités.</p>
+        <p>Cela étant fait pour la date, prévoir dès maintenant la même chose pour tous les champs.</p>
 
-        <p>Les formulaires spring sont extrêmement proche des formulaires html standards.</p>
+        <h3>Un meilleur message d'erreur</h3>
 
-        <h3>La gestion du POST</h3>
-
-        <p>Coté jsp, tout est en place. Il reste a gérer la réception des données coté serveur.</p>
-
-        <p>Le mapping suivant permet de recevoir l'appel.</p>
-
-        <pre class="prettyprint">@RequestMapping(value = "/admin/post", method = RequestMethod.<b>POST</b>)
-public String post(<b>@ModelAttribute("post")</b> Post post, <b>BindingResult</b> bindingResult, Model model) {
-   ...
-}</pre>
-
-        <p>En recevant l'appel, spring va "binder" le contenu de la requête http à notre objet.</p>
-
-        <p>BindingResult contient toutes les erreurs de validation. C'est ce qui permet l'affichage des erreurs dans la jsp.</p>
-
-        <p>Le minimum vital pour notre billet est le titre. On fait donc une vérification et on sauve le billet en base.</p>
-
-        <pre class="prettyprint">if (StringUtils.isEmpty(post.getTitle())) {
-    bindingResult.rejectValue("title", "field.empty", "Le titre est obligatoire");
-
-    return "admin/post";
-}
-
-postService.save(post);
-
-return "redirect:/admin/posts";</pre>
-
-        <p>StringUtils vient de la librairie commons lang qu'il faut ajouter au pom si il n'est pas déjà présent.</p>
-
-        <pre class="prettyprint">&lt;dependency&gt;
-    &lt;groupId&gt;commons-lang&lt;/groupId&gt;
-    &lt;artifactId&gt;commons-lang&lt;/artifactId&gt;
-    &lt;version&gt;2.6&lt;/version&gt;
-    &lt;scope&gt;compile&lt;/scope&gt;
-&lt;/dependency&gt;</pre>
-
-        <p>Si on tente de sauvegarder un billet en l'état avec une date, nous avons un message d'erreur nous indiquant que spring ne parvient pas a convertir une chaîne de caractères en date.</p>
+        <p>Pour le moment, le message d'erreur est un peu riche est pourtant peu compréhensible.</p>
 
         <pre class="prettyprint">Failed to convert property value of type java.lang.String to required type java.util.Date for property date;
 nested exception is org.springframework.core.convert.ConversionFailedException:
-Unable to convert value "" from type java.lang.String to type java.util.Date;
-nested exception is java.lang.IllegalArgumentException</pre>
+Unable to convert value "" from type java.lang.String to type java.util.Date; nested exception is
+java.lang.IllegalArgumentException</pre>
 
-        <p>En effet spring n'adopte pas de convention par défaut et ne sait pas quel est le format littéral d'une date.</p>
+        <p>Il serait possible de configurer un meilleur message dans un fichier de localisation mais pour notre besoin, nous pouvons faire simplement.</p>
 
-        <p>Il faut alors configurer le binder dans notre Controller.</p>
+        <pre>&lt;label for="date"&gt;
+    Date
+    &lt;form:errors path="date"&gt;&lt;span style="color:red"&gt;La date n'est pas correcte&lt;/span&gt;&lt;/form:errors>
+&lt;/label&gt;</pre>
+
+        <p>C'est plus court et plus clair.</p>
+
+        <h3>Un binding qui marche</h3>
+
+        <p>Spring n'a pas de soucis pour binder un String dans un String mais peine pour la Date.</p>
+
+        <p>En effet, spring ne choisit pas de format de date par défaut et connait encore moins notre propre format.</p>
+
+        <p>Il nous revient donc de configurer le binder dans le controller.</p>
 
         <pre class="prettyprint">@InitBinder
-public void binder(WebDataBinder binder) {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+public void initBinder(DataBinder binder) {
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormatter, true));
 }</pre>
 
-        <p>Le format de date est donc "dd/MM/yyyy HH:mm" et il est possible d'avoir une date vide.</p>
+        <div class="note">Le booléen true indique que le binder va accepter une date vide.</div>
 
-        <p>Désormais, la sauvegarde fonctionne.</p>
-
-        <p>Afin de nous simplifier l'édition, on peut d'ailleurs initialiser le champs date à la date courante dans le modèle.</p>
-
-        <pre class="prettyprint">@Column
-@Temporal(TemporalType.TIMESTAMP)
-private Date date = new Date();</pre>
+        <p>Avec cela, on peut sauver des tâches avec ou sans date.</p>
 
         <h3>L'édition</h3>
 
-        <p>A ce point, l'édition d'un billet est simple. Il faut ajouter le mapping dans le Controller.</p>
+        <p>Pour commencer, on rajoute le lien sur le titre des tâches dans task.tag</p>
 
-        <pre class="prettyprint">@RequestMapping("/admin/post/{id}")
-public String post(@PathVariable Long id, Model model) {
-    // on injecte le post
-    model.addAttribute("post", postService.<b>findById</b>(id));
+        <pre class="prettyprint">&lt;span class="lead"&gt;&lt;a href="/edit/${task.id}"&gt;${fn:escapeXml(task.title)}&lt;/a&gt;&lt;/span&gt;</pre>
 
-    return "admin/post";
+        <p>La pattern est /edit/{id} que l'on rajoute dans le controller</p>
+
+        <pre class="prettyprint">@RequestMapping("/edit/{id}")
+public String edit(@PathVariable Long id, Model model) {
+    model.addAttribute("task", taskService.findById(id));
+
+    return "edit";
 }</pre>
 
-        <p>Il faut créer la méthode findById dans le service afin que ce code fonctionne.</p>
+        <p>On va donc chercher la tâche dans la base et on la donne à la vue.</p>
 
-        <p>Dans le cas de l'édition d'un billet, on utilise le même formulaire.</p>
+        <p>Faire en sorte que cela fonctionne.</p>
 
-        <p>Il faut juste rajouter le champs id afin que le celui-ci soit renvoyé au moment du post du formulaire.</p>
+        <p>Dans le formulaire, on rajoute un champs caché qui contient l'id de l'entité éditée</p>
 
         <pre class="prettyprint">&lt;form:hidden path="id" /&gt;</pre>
 
-        <p>Un dernier point : la méthode save de PostServiceImpl fait un session.save(post). Cela crée un nouvel enregistrement en base même si le billet a un déjà un id.</p>
+        <div class="note">Un input de type hidden permet d'ajouter des données qui ne sont pas affichés sur le navigateur.</div>
 
-        <p>On remplace session.save(post) par session.saveOrUpdate(post) et l'édition de billet fonctionne.</p>
+        <p>Il reste encore à afficher la valeur des attributs dans notre tâche.</p>
 
-        <h3>La suppression</h3>
+        <p>Le plus simple est encore d'utiliser les tags spring, par exemple :</p>
 
-        <p>Rajouter un mapping sur /admin/post/{id}/delete qui supprime un post.</p>
+        <pre class="prettyprint"><s>&lt;input type="text" id="title" name="title" class="span9"&gt;</s>
+&lt;form:input id="title" path="title" class="span9" /&gt;</pre>
 
-        <p>Ajouter un lien pour chaque billet dans le listing.</p>
+        <p>Faire de même pour tous les champs et constater que les données sont bien affichées à l'édition.</p>
 
-        <h3>Un peu d'ordre</h3>
+        <p>Enfin, afin que le bouton ait le bon message en fonction de la situation, on le change légèrement</p>
 
-        <p>En jouant avec l'édition des billets, on observe qu'ils ne sont pas classés par date.</p>
+        <pre class="prettyprint"><s>&lt;button type="submit" class="btn"&gt;Add&lt;/button&gt;</s>
+&lt;button type="submit" class="btn"&gt;${empty task.id ? 'Add' : 'Update'}&lt;/button&gt;</pre>
 
-        <p>Cela se corrige simplement en ajoutant une clause order dans la méthode find du service :</p>
+        <h3>save or update ?</h3>
 
-        <pre class="prettyprint">criteria.addOrder(Order.desc("date"));</pre>
+        <p>Si on sauve une tâche, elle est dupliquée en base.</p>
 
-        <p>Les billets les plus récents sont en premier.</p>
+        <p>La raison est simple, l'implémentation de save de taskServiceImpl est la suivante</p>
 
-        <h3>JSR 303</h3>
+        <pre class="prettyprint">@Override
+@Transactional
+public void save(Task task) {
+    Session session = sessionFactory.getCurrentSession();
 
-        <p>Nous avons effectué la validation dans le Controller.</p>
+    session.save(task);
+}</pre>
 
-        <p>Cette possibilité est simple mais deviendrait dense si il fallait valider beaucoup de champs.</p>
+        <p>La méthode <a href="http://docs.jboss.org/hibernate/core/3.6/javadocs/org/hibernate/Session.html#save(java.lang.Object)" class="external" target="_blank">save</a> de la session sauve une nouvelle entité à chaque fois.</p>
 
-        <p>Nous allons maintenant utiliser une technique beaucoup plus concise : la <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank" class="external">JSR 303</a> (spécification bean validation).</p>
+        <p>La solution n'est pas loin mais on va s'assurer que l'on corrige bien le problème avec un test unitaire.</p>
 
-        <p>Tout d'abord, il faut importer une librairie d'implémentation de la spécification.</p>
+        <pre class="prettyprint">@Test
+public void udpate() {
+    Task task = task();
+
+    taskService.save(task);
+    taskService.save(task);
+
+    Assert.assertEquals(1, taskService.count());
+}</pre>
+
+        <p>Il faut maintenant proposer un changement de la méthode save qui fasse passer ce test.</p>
+
+        <p>Avec ce code, l'édition de tâche est fonctionnelle.</p>
+
+        <h3>Une aide à la saisie de la date</h3>
+
+        <p>Pour la date, nous pouvons proposer une petite optimisation afin d'aider la saisie.</p>
+
+        <p>Spring fait du binding dans les 2 sens</p>
+
+        <ul>
+            <li>Lors du POST, les données du formulaire vers les attributs de l'objet</li>
+            <li>Lors de l'affichage du formulaire, les attributs de l'objet vers la page web</li>
+        </ul>
+
+        <p>En effet, pour /add, une tâche est injectée dans la vue via le controller</p>
+
+        <pre class="prettyprint">model.addAttribute("task", new Task());</pre>
+
+        <p>Pour pré remplir le champs date avec la date courante (ou une autre), il suffit d'initialiser l'attribut :</p>
+
+        <pre class="prettyprint">@Column
+private Date date = new Date();</pre>
+
+        <p>C'est une toute petite modification qui peut faire gagner beaucoup de temps aux utilisateurs.</p>
+
+        <h3>La validation</h3>
+
+        <p>Pour le moment, tout les champs peuvent être vide.</p>
+
+        <p>La seule contrainte existant concerne le format de la date.</p>
+
+        <p>Cependant, une tâche sans titre et sans date est indésirable.</p>
+
+        <p>Il est possible (et simple) de faire cette validation à la main.</p>
+
+        <pre class="prettyprint">@RequestMapping(value = "/edit", method = RequestMethod.POST)
+public String post(@ModelAttribute Task task, BindingResult result) {
+    if (task.getTitle() == null || task.getTitle().isEmpty()) {
+        result.rejectValue("title", "field.empty", "Le titre est obligatoire");
+    }
+
+    if (result.hasErrors()) {
+        return "edit";
+    }
+
+    taskService.save(task);
+
+    return "redirect:/";
+}</pre>
+
+        <p>Il n'y aurait rien a changer dans le code jsp.</p>
+
+        <p>Nous allons opter pour une solution plus simple et plus standard : la <a href="http://jcp.org/en/jsr/detail?id=303" class="external" target="_blank">JSR 303</a> (bean validation)</p>
+
+        <p>Pour commencer, il faut importer une librairie d'implémentation de la spécification.</p>
 
         <pre class="prettyprint"><span class="comment">&lt;!-- hibernate validator --&gt;</span>
 &lt;dependency&gt;
@@ -211,40 +326,103 @@ public String post(@PathVariable Long id, Model model) {
 
         <p>Hibernate validator est l'implémentation de référence.</p>
 
-        <p>Nous pouvons alors modifier l'AdminController</p>
+        <p>On rajoute ensuite l'annotation @Valid dans le controller</p>
 
-        <pre class="prettyprint">@RequestMapping(value = "/admin/post", method = RequestMethod.POST)
-public String post(@ModelAttribute("post") <b>@Valid</b> Post post, BindingResult bindingResult, Model model) {
-   <s>if (StringUtils.isEmpty(post.getTitle())) {
-       bindingResult.rejectValue("title", "field.empty", "Le titre est obligatoire");
+        <pre class="prettyprint">@RequestMapping(value = "/edit", method = RequestMethod.POST)
+public String post(@ModelAttribute @Valid Task task, BindingResult result) {
+    if (result.hasErrors()) {
+        return "edit";
+    }
 
-       return "admin/post";
-   }</s>
+    taskService.save(task);
 
-   <b>if (bindingResult.hasErrors()) {
-       return "admin/post";
-   }</b>
-
-   postService.save(post);
-
-   return "redirect:/admin/posts";
+    return "redirect:/";
 }</pre>
 
-        <p>L'annotation @Valid indique a spring qu'il doit exécuter un validateur sur l'attribut.</p>
+        <p>Cela indique a spring de chercher une implémentation de la JSR 303 dans le classpath et de l'appliquer à notre objet.</p>
 
-        <p>Il nous suffit alors d'annoter le champs title de la class Post :</p>
+        <p>Il nous reste donc a ajouter nos contraintes dans la classe du domaine</p>
 
         <pre class="prettyprint">@Column
-<b>@NotEmpty</b>
-private String title;</pre>
+@NotBlank
+@Size(min = 1, max = 255)
+private String title;
 
-        <p>En tant qu'implémentation de la JSR 303, hibernate validator vient avec la prise en charge des annotations et un jeu de messages d'erreur localisé.</p>
+@Column(length = 4000, nullable = true)
+@Size(max = 4000)
+private String text;
 
-        <img src="img/jsr-303.png" alt="" style="margin: 0 100px">
+@Column
+@NotNull
+private Date date = new Date();</pre>
 
-        <p>Il est maintenant très simple de rajouter d'autres @NotEmpty ou bien @Length ou @Email.</p>
+        <p>L'implémentation hibernate-validator vient avec des messages localisés en français.</p>
 
-        <p>Il est même possible d'écrire ses propres annotations afin de rendre réutilisable simplement ses éléments de validation.</p>
+        <p>Elle est donc utilisable rapidement.</p>
+
+        <p>Notre modèle est maintenant annoté pour la validation et cela pourrait reservir dans un cadre plus large que juste notre controller.</p>
+
+        <p>
+            Sur la documentation d'hibernate,
+            <a href="http://docs.jboss.org/hibernate/validator/4.2/reference/en-US/html/validator-usingvalidator.html#validator-defineconstraints-spec" class="external" target="_blank">les annotations standards</a>
+            et
+            <a href="http://docs.jboss.org/hibernate/validator/4.2/reference/en-US/html/validator-usingvalidator.html#validator-defineconstraints-hv-constraints" class="external" target="_blank">les extensions</a>
+        </p>
+
+        <h3>La suppression</h3>
+
+        <p>Nous n'avons pas de possibilité de supprimer les tâches pour le moment.</p>
+
+        <p>En utilisant un <a href="http://twitter.github.com/bootstrap/base-css.html#buttons" class="external" target="_blank">bouton bootstrap</a>, proposer une ergonomie afin de permettre cela.</p>
+
+        <p>Le path pour ce service pourrait être /edit/{id}/delete.</p>
+
+        <h3>Un peu d'ordre</h3>
+
+        <p>En jouant avec l'édition des tâches, on observe qu'ils ne sont pas classés par date.</p>
+
+        <p>Cela se corrige simplement en ajoutant une clause order dans les méthodes du service :</p>
+
+        <pre class="prettyprint">criteria.addOrder(Order.desc("date"));</pre>
+
+        <p>Les tâches sont maintenant par ordre chronologique.</p>
+
+        <h3>flash attributes</h3>
+
+        <p>Tout est presque bien.</p>
+
+        <p>Mais il reste un petit point afin de rendre l'edition plus ergonomique.</p>
+
+        <p>Lorsque l'on sauve une tâche, on revient vers la home. On sait qu'il n'y a pas eu d'erreur car sinon on aurait de nouveau le formulaire avec un message.</p>
+
+        <p>Pourtant, un message indiquant le succès de la mise à jour serait un plus.</p>
+
+        <p>Il existe un pattern pour ce genre de besoin : le flash scope.</p>
+
+        <p>Le controller range une donnée dans le flash scope et celle-ci est accessible uniquement pour la requête suivante.</p>
+
+        <p>Dans le controller, il suffit de rajouter un paramètre à la méthode afin d'avoir accès à ce scope</p>
+
+        <pre class="prettyprint">@RequestMapping(value = "/edit", method = RequestMethod.POST)
+public String post(@ModelAttribute @Valid Task task, BindingResult result, RedirectAttributes redirectAttributes) {
+    if (result.hasErrors()) {
+        return "edit";
+    }
+
+    taskService.save(task);
+
+    redirectAttributes.addFlashAttribute("message", "La sauvegarde a réussi");
+
+    return "redirect:/";
+}</pre>
+
+        <p>Dans index.jsp, après le redirect, on a donc accès a un attribut "flashMessage"</p>
+
+        <pre class="prettyprint">&lt;c:if test="${not empty flashMessage}"&gt;
+    &lt;div class="alert"&gt;${flashMessage}&lt;/div&gt;
+&lt;/c:if&gt;</pre>
+
+        <p>Faire pareil pour la suppression.</p>
 
         <h2>En peu de recul</h2>
 
@@ -257,23 +435,6 @@ private String title;</pre>
         <p>Spring mvc de son coté est un peu plus lourd à manipuler mais est d'une très grande flexibilité.</p>
 
         <p>Selon les projets, on peut donc choisir la technologie la plus adaptée.</p>
-
-        <h2>Le reste</h2>
-
-        <p>Il resterait beaucoup a faire afin d'avoir une application complète.</p>
-
-        <p>Voici quelques pistes / questions pour la suite :</p>
-
-        <ul>
-            <li>La page d'index est /index. Comment pourrait on faire pour que / réponde également comme page d'index ?</li>
-            <li>Comment devrait on gérer la pagination ? Quelle ergonomie dans la page ? Quelles modifications dans le service ?</li>
-            <li>Comment pourrait on gérer convenablement le bloc de tag ?</li>
-            <li>Comment lister les billets par tags (et donc pour mettre des liens sur les tags) ?</li>
-            <li>Comment faire fonctionner le bloc des derniers billets ?</li>
-            <li>La gestion des auteurs est un élément délicat. Comment gérer la relation @ManyToOne dans le formulaire d'édition ? Comment gérer cela dans le controller et le service ?</li>
-            <li>La gestion des cas d'erreur : que faire de http://localhost:8080/billet/not-existing-post ou bien http://localhost:8080/admin/post/aaa ?</li>
-            <li>Si notre blog devait supporter beaucoup de trafic, que pourrait on faire pour l'aider à tenir la charge ?</li>
-        </ul>
 
     </div>
 </div>

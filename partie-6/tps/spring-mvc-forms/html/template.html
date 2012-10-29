@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todooz</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <span class="brand">Todooz</span>
+            <form class="navbar-search pull-left">
+                <input type="text" class="search-query" placeholder="Search">
+            </form>
+            <a href="/add" class="btn btn-inverse pull-right"><i class="icon-plus icon-white"></i></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span9">
+            <legend>Edit</legend>
+
+            <form action="/edit" method="post">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="span9">
+                <label for="date">Date</label>
+                <div class="input-append">
+                    <input type="text" id="date" name="date" class="span3">
+                    <span class="add-on">dd/MM/yyyy</span>
+                </div>
+                <label for="tags">Tags</label>
+                <input type="text" id="tags" name="tags" class="span9">
+                <label for="text">Text</label>
+                <textarea id="text" name="text" cols="60" rows="10" class="span9"></textarea>
+                <button type="submit" class="btn">Add</button>
+            </form>
+        </div>
+        <div class="span3">
+            <div>
+                <legend>Quick links</legend>
+                <ul>
+                    <li><a href="/today">Today's</a></li>
+                    <li><a href="/today">Tomorrow's</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <legend>Tags</legend>
+                <a href="/tag/java" style="font-size:14px">java</a>
+                <a href="/tag/java" style="font-size:20px">java</a>
+                <a href="/tag/java" style="font-size:16px">java</a>
+                <a href="/tag/java" style="font-size:12px">java</a>
+                <a href="/tag/java" style="font-size:10px">java</a>
+                <a href="/tag/java" style="font-size:22px">java</a>
+                <a href="/tag/java" style="font-size:12px">java</a>
+                <a href="/tag/java" style="font-size:14px">java</a>
+                <a href="/tag/java" style="font-size:18px">java</a>
+                <a href="/tag/java" style="font-size:24px">java</a>
+                <a href="/tag/java" style="font-size:12px">java</a>
+                <a href="/tag/java" style="font-size:10px">java</a>
+                <a href="/tag/java" style="font-size:14px">java</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

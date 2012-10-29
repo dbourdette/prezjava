@@ -5,3 +5,5 @@ presentation.odp
 *.iws
 .idea
 .DS_Store
+derby.log
+target
