@@ -1,5 +1,7 @@
 .project
 presentation.odp
 *.iml
+*.ipr
+*.iws
 .idea
 .DS_Store
