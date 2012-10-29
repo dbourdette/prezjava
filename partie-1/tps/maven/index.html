@@ -194,6 +194,47 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
         <p>Lors de la première exécution, le téléchargement de ressources prend un peu de temps.</p>
 
+        <h2>build is platform dependent!</h2>
+
+        <p>Lors du build, maven nous indique que notre build est dépendant de l'encoding de notre machine.</p>
+
+        <pre class="shell">[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!</pre>
+
+        <p>Afin de corriger ce point, il faut dire à maven l'<a href="http://maven.apache.org/general.html#encoding-warning" class="external" target="_blank">encoding du projet</a>.</p>
+
+        <pre class="prettyprint">&lt;project&gt;
+    ...
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    ...
+&lt;/project&gt;</pre>
+
+        <h2>Version de java</h2>
+
+        <p>Il convient aussi d'indiquer à maven quel version utiliser pour la compilation des sources java.</p>
+
+        <pre class="prettyprint">&lt;project&gt;
+    ...
+    &lt;build&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.5.1&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;source&gt;1.6&lt;/source&gt;
+                &lt;target&gt;1.6&lt;/target&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/build&gt;
+
+    &lt;dependencies&gt;
+        ...
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+
+        <p>Nos sources seront donc compilées pour une version de java égale ou supérieure à 1.6.</p>
+
         <h2>lifecycles</h2>
 
         <p>mvn package est la commande de base qui permet de passer par toutes les étapes du lifecycle package et construire l'artefact.</p>
