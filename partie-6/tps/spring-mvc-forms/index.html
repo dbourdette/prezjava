@@ -24,6 +24,66 @@
 
         <p>Nous allons maintenant fournir une interface web pour éditer ces données</p>
 
+        <h2>L'encoding</h2>
+
+        <p>Lorsque le navigateur envoie des données vers le serveur, il encode les charactères en utilisant le charset de la page courante.</p>
+
+        <p>Cependant, il ne spécifie pas l'encoding utilisé dans les headers de la requête.</p>
+
+        <p>Coté serveur, les paramètres sont décodés en utilsant l'encoding par défaut, ce qui n'est pas correct.</p>
+
+        <p>Afin de forcer l'encoding lors de la lecture des paramètres, on utilise le filtre suivant dans le web.xml.</p>
+
+        <pre class="prettyprint">&lt;!-- Spring UTF-8 filter --&gt;
+&lt;filter&gt;
+    &lt;filter-name&gt;encoding-filter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;encoding&lt;/param-name&gt;
+        &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;forceEncoding&lt;/param-name&gt;
+        &lt;param-value&gt;true&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;encoding-filter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</pre>
+
+        <p>Le code source du <a href="http://static.springsource.org/spring/docs/3.1.x/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html" class="external" target="_blank">CharacterEncodingFilter</a> de spring est très simple.</p>
+
+        <pre class="prettyprint">public class CharacterEncodingFilter extends OncePerRequestFilter {
+
+    private String encoding;
+    private boolean forceEncoding = false;
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    public void setForceEncoding(boolean forceEncoding) {
+        this.forceEncoding = forceEncoding;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+        throws ServletException, IOException {
+
+        if (this.encoding != null && (this.forceEncoding || request.getCharacterEncoding() == null)) {
+            request.setCharacterEncoding(this.encoding);
+            if (this.forceEncoding) {
+                response.setCharacterEncoding(this.encoding);
+            }
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}</pre>
+
+        <p>Ainsi, nous n'aurons pas de problèmes avec les accents.</p>
+
         <h2>La gestion des tâches</h2>
 
         <p>Nous commençons par créer un nouveau Controller</p>
@@ -426,15 +486,15 @@ public String post(@ModelAttribute @Valid Task task, BindingResult result, Redir
 
         <h2>En peu de recul</h2>
 
-        <p>L'utilisation des Controllers est simple mais il nous a fallu bien des librairies et quelques fichiers de configuration pour arriver à ce résultat.</p>
+        <p>Les controllers spring sont simples et puissants.</p>
 
-        <p>Dans le cadre d'un projet maven + spring mvc, obtenir sa première page n'est pas instantané.</p>
+        <p>Il faut néanmoins quelques fichiers de configurations et obtenir sa première page n'est pas instantané.</p>
 
-        <p>D'autres frameworks (rails, grails, roo, play...) offrent un démarrage rapide et beaucoup de vitesse pour les besoins classiques (le CRUD est un des exemples courants)</p>
+        <p>Il faut également relancer le tomcat lors de modifications des classes.</p>
 
-        <p>Spring mvc de son coté est un peu plus lourd à manipuler mais est d'une très grande flexibilité.</p>
+        <p>D'autres frameworks (rails, grails, roo, play...) offrent un démarrage plus rapide et beaucoup de facilités.</p>
 
-        <p>Selon les projets, on peut donc choisir la technologie la plus adaptée.</p>
+        <p>En fonction du projet, il convient donc de choisir la technologie la plus adaptée.</p>
 
     </div>
 </div>
