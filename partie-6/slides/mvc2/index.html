@@ -19,7 +19,7 @@
         <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
 
   	</head>
-  	<body>
+  	<body onload="prettyPrint();">
     <div class="presentation">
       <div id="presentation-counter">Chargement...</div>
       <div style="display: block;" class="slides">
@@ -42,7 +42,7 @@
 	        	<img alt="" src="img/jee-mvc2-container.png" width="300px" style="margin:0 250px;"/>
 	        	<p>Il offre des services supplémentaires facilant la création d'applications web :</p>
 	        	<ul>
-	        		<li><b>Request dispatching</b> (URL mapping) : routage de la requête vers le bon traitements.</li>
+	        		<li><b>Request dispatching</b> (URL mapping) : routage de la requête vers le bon traitement.</li>
 	        		<li><b>Binding et validation</b> : conversion des paramètres, affectation et gestion des erreurs.</li>
 	        		<li>Gestion de <b>formulaires</b> : simplification et gestion des erreurs</li>
 	        		<li><b>Rendering</b> : aide à la création des fichiers jsp ou autres technologies.</li>
@@ -62,9 +62,8 @@
 	      <div class="slide">
 	      	<header>Quelques frameworks</header>
 	        <section>
-	        	<p>Une brève histoire des frameworks MVC :</p>
+	        	<p>Une brève histoire de l'écosystème des frameworks web :</p>
 	        	<img alt="" src="img/frameworks.png" width="840px"/>
-	        	<p>L'écosystème est riche et dynamique.</p>
 	        </section>
 	      </div>
 	
@@ -76,10 +75,8 @@
 	        	<p>Dans une application web avec spring MVC, on retrouve donc.</p>
 	        	<ul>
 	        		<li>Un descripteur de déploiement web jee (web.xml)
-	        		<li>Des contextes spring (1 contexte parent et 1 contexte par dispatcher spring)
+	        		<li>Des contextes spring
 	        	</ul>
-                <p>Pour une application spring, la configuration est relativement aisée.</p>
-                <p>En comparaison d'autres frameworks nativement web, cette configuration est un peu lourde.</p>
 	        </section>
 	      </div>
 	
@@ -117,8 +114,7 @@
 <span class="comment">&lt;!-- Enregistrement de convertisseurs et formatteurs spécifiques au mvc --&gt;</span>
 &lt;mvc:annotation-driven /&gt;
 
-<span class="comment">&lt;!-- Forwarde les demandes de fichiers statiques
-   vers la servlet par défaut du conteneur --&gt;</span>
+<span class="comment">&lt;!-- Gestion des fichiers statiques --&gt;</span>
 &lt;mvc:default-servlet-handler /&gt;
 
 <span class="comment">&lt;!-- Définition de la Locale pour les opération de formattage --&gt;</span>
@@ -150,7 +146,7 @@ public class HelloWorldController {
 }</pre>
 				<p>Grâce au scan de composants, on peut donc déclarer facilement de nouveaux contrôleurs.</p>
 				<p>L'annotation @RequestMapping permet de mapper une méthode sur une uri.</p>
-				<p>Il n'y a pas d'héritage et de signature de méthode imposée.</p>
+				<p>Tout se fait par annotations et conventions.</p>
 	        </section>
 	      </div>
 	
@@ -207,14 +203,13 @@ public class HelloWorldController {
  }
 }</pre>
 				<p>Cela permet de construire des urls de service élégantes.</p>
-                <p>C'est un point important du référencement naturel : la capacité a remonter naturellement dans les moteurs de recherche.</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
 	      	<header>Paramètres injectés</header>
 	        <section>
-	        	<p>Les liste des paramètres injectables est longue.</p>
+	        	<p>Les liste des paramètres injectables :</p>
 	        	<ul style="float:left;">
 	        		<li>HttpServletRequest</li>
 	        		<li>HttpServletResponse</li>
@@ -253,7 +248,7 @@ public class HelloWorldController {
 	      <div class="slide">
 	      	<header>Retours supportés</header>
 	        <section>
-	        	<p>La liste des retours possible est aussi longue.</p>
+	        	<p>Les retours possibles :</p>
 	        	<ul style="float:left;">
 	        		<li>ModelAndView</li>
 	        		<li>Model / Map</li>
@@ -358,7 +353,7 @@ public class PersonForm {
    <span class="comment">... getters and setters</span>
 }
 </pre>
-	        	<p>Par convention, il est pratique d'utliser le suffixe Form.</p>
+	        	<p>Par convention, il est pratique d'utiliser le suffixe Form.</p>
 	        	<p>Cependant, n'importe quelle classe avec les accesseurs disponibles pour les champs du formulaire ferait l'affaire.</p>
 	        	<p>Il est même possible d'utiliser des objets du domaine métier qui serviront à la persistance.</p>
 	        </section>
@@ -421,7 +416,7 @@ public String post(@ModelAttribute("person") @Valid PersonForm form,
 	      	<header>Redirect after POST</header>
 	        <section>
 	          <p>Lors du POST du formulaire, des données sont envoyées au serveur.</p>
-	          <p>En cas de succès, une modification est inscrite dans la base de données du serveur.</p>
+	          <p>L'état de la base de données change.</p>
               <p>Faire un refresh sur un navigateur consiste a refaire la même requête.</p>
               <p>Dans notre cas, un refresh ferait une deuxième écriture en base.</p>
 	          <p>Il est donc impératif que le contrôleur fasse un <b>redirect</b> après une modification en base.</p>
