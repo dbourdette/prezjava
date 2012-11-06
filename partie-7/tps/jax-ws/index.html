@@ -29,7 +29,14 @@
 
         <p>La force de SOAP est l'interopérabilité : un client .NET peut parler à un serveur java.</p>
 
-        <div class="note">On crée la branche jax-ws : git checkout -b jax-rs</div>
+        <h2>Branche git</h2>
+
+        <p>On crée la branche jax-ws à partir de la branche master.</p>
+
+        <pre class="shell">&gt; git checkout master
+Switched to branch 'master'
+&gt; git checkout -b jax-ws
+Switched to a new branch 'jax-ws'</pre>
 
         <h2>Metro</h2>
 
@@ -238,6 +245,8 @@ public void getTasks() {
     ...</pre>
 
         <p>Malgré nos efforts, le TaskService n'est pas correctement injecté dans notre service web.</p>
+
+        <h2 id="spring-context">context spring père</h2>
 
         <p>L'explication est un peu technique et est liée au fonctionnement des contextes spring dans un environnement web.</p>
 
