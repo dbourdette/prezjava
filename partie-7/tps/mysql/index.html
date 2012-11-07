@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Mysql</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1><img src="img/mysql.gif" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;"> <span style="color:#004D61;">My</span><span style="color:#E67914">SQL</span></h1>
+
+        <h2>Introduction</h2>
+
+        <p>Les bases de données relationnelles sont les plus répandues en production.</p>
+
+        <p>Elles ont survécues aux bases de données objets et aux bases xml.</p>
+
+        <p>Parmis celle-ci Mysql a toujours eut une place a part : la base libre, simple et performante.</p>
+
+        <p>Cependant, le rachat par Oracle, tend à promouvoir postgreSQL.</p>
+
+        <h2>Installation</h2>
+
+        <p>L'installation de myqsl est simple, il suffit de suivre les instructions disponibles sur <a href="http://www.mysql.fr/downloads/mysql/" target="_blank" class="external">www.mysql.fr/</a></p>
+
+        <p>Une fois installée, il suffit de démarrer mysql.</p>
+
+        <h2>création de la base</h2>
+
+        <p>Afin de pouvoir gérer la base de données mysql, on récupère MySQL Workbench sur le site de mysql.</p>
+
+        <p>Une fois le workbench lancé, on crée une nouvelle connexion sur localhost</p>
+
+        <img src="img/mysql-connexion.png" alt="" style="margin: 0 50px;">
+
+        <p>On se connecte sur le serveur en local et on demande la création d'un nouveau schéma.</p>
+
+        <img src="img/mysql-schema.png" alt="" style="margin: 0 20px;">
+
+        <p>Le schéma tasks existe et il ne contient aucune table.</p>
+
+        <h2>Branche git</h2>
+
+        <p>On crée la branche mysql à partir de la branche master.</p>
+
+        <pre class="shell">&gt; git checkout master
+Switched to branch 'master'
+&gt; git checkout -b mysql
+Switched to a new branch 'mysql'</pre>
+
+        <h2>Changements dans l'application</h2>
+
+        <p>La première chose à faire est de rajouter le driver mysql.</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+    &lt;version&gt;5.1.18&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Dans notre application, la définition de la connexion à la base est pour le moment :</p>
+
+        <pre class="prettyprint">&lt;!-- pool de connexion --&gt;
+&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+   &lt;property name="url" value="jdbc:derby:target/taskdb;create=true"/&gt;
+   &lt;property name="username" value=""/&gt;
+   &lt;property name="password" value=""/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+   &lt;property name="dataSource" ref="dataSource"/&gt;
+   &lt;property name="hibernateProperties"&gt;
+       &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+          &lt;property name="properties"&gt;
+             &lt;props&gt;
+                &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/prop&gt;
+                &lt;prop key="hibernate.hbm2ddl.auto"&gt;update&lt;/prop&gt;
+             &lt;/props&gt;
+          &lt;/property&gt;
+       &lt;/bean&gt;
+   &lt;/property&gt;
+   &lt;property name="packagesToScan" value="fr.todooz.domain"/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Pour mysql, l'url est de la forme :</p>
+
+        <pre class="prettyprint">jdbc:mysql://host:port/dbname</pre>
+
+        <p>Pour se connecter sur notre base fraîchement créée, on a donc la configuration suivante.</p>
+
+        <pre class="prettyprint">&lt;!-- pool de connexion --&gt;
+&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+   &lt;property name="url" value="<b>jdbc:mysql://localhost/tasks</b>"/&gt;
+   &lt;property name="username" value="<b>root</b>"/&gt;
+   &lt;property name="password" value="<b></b>"/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Il faut également changer le dialect hibernate en :</p>
+
+        <pre class="prettyprint">org.hibernate.dialect.MySQL5Dialect</pre>
+
+        <p>Si on redémarre, notre application est connectée à la base mysql et elle a créée les tables.</p>
+
+        <p>Sous le workbench, on peut voir notre table.</p>
+
+        <img src="img/mysql-tables.png" alt="" style="margin: 0 260px;">
+
+        <p>Afin de se connecter à d'autres bases, il suffit d'avoir le driver et la bonne url jdbc.</p>
+
+        <p>Hibernate et jdbc permettent de s'abstraire de beaucoup des différences existantes entre les bases.</p>
+
+        <h2>Mise à jour du schéma</h2>
+
+        <p>Actuellement, le schéma de la base de données est mis à jour au démarrage de l'application.</p>
+
+        <pre class="prettyprint">&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+   &lt;property name="dataSource" ref="dataSource"/&gt;
+   &lt;property name="hibernateProperties"&gt;
+       &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+          &lt;property name="properties"&gt;
+             &lt;props&gt;
+                &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.MySQL5Dialect&lt;/prop&gt;
+                &lt;prop key="hibernate.hbm2ddl.auto"&gt;<b>update</b>&lt;/prop&gt;
+             &lt;/props&gt;
+          &lt;/property&gt;
+       &lt;/bean&gt;
+   &lt;/property&gt;
+   &lt;property name="packagesToScan" value="fr.todooz.domain"/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Lorsque l'on ajoute des attributs au model, les colonnes sont automatiquement crées.</p>
+
+        <p>De même, lors de la suppression, la base perd des colonnes.</p>
+
+        <p>En production, perdre une colonne au déploiement d'une nouvelle version peut être désastreux.</p>
+
+        <p>Pour ne pas faire d'erreur, on passe donc le hbm2ddl (Hibernate model to data definition language) en none.</p>
+
+        <p>Oui mais comment demander a hibernate de nous aider quand même un peu ?</p>
+
+        <p>En fait, on peut utiliser le code d'hibernate pour générer le sql nécessaire.</p>
+
+        <pre class="prettyprint">Configuration configuration = new Configuration();
+
+configuration.addAnnotatedClass(Task.class);
+
+for (String string : configuration.generateSchemaCreationScript(new MySQL5Dialect())) {
+   System.out.println(string + ";");
+}</pre>
+
+        <p>Il est facile de placer ce code dans un main ou un test unitaire afin de générer le code avec le bon dialect.</p>
+
+        <p>On obtient le code ddl (Data definition language) suivant que l'on pourrait exécuter via le workbench.</p>
+
+        <pre class="prettyprint">create table task (
+            id bigint not null auto_increment,
+            createdAt datetime,
+            date datetime not null,
+            tags varchar(255),
+            text varchar(4000),
+            title varchar(255) not null,
+            primary key (id)
+);</pre>
+    </div>
+</div>
+</body>
+</html>
