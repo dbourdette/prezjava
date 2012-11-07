@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Java Naming and Directory Interface</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1 style="line-height: 55px;padding-left: 10px;"><img src="img/java.png" height="50px" style="float:left"/>Java Naming and Directory Interface</h1>
+
+        <h2>Introduction</h2>
+
+        <p>JNDI est une des technologies centrales de JEE.</p>
+
+        <p>C'est un registre, une base de données en forme d'arbre.</p>
+
+        <p>Les serveurs d'applications y rangent les composants afin de les mettre à disposition des applications.</p>
+
+        <p>On y retrouve les services de base de données, de mail, des realms pour l'authentification...</p>
+
+        <h2>Coté pattern</h2>
+
+        <p>C'est une implémentation du pattern Service Locator.</p>
+
+        <img src="img/service-locator.png" alt="" style="margin: 0 140px;">
+
+        <p>Comme avec spring, cela permet de découpler la contruction des composants de leurs interactions.</p>
+
+        <h2>Concrètement</h2>
+
+        <p>Pour récupérer une référence sur un service du jndi</p>
+
+        <pre>Context ctx = new InitialContext();
+DataSource ds = (DataSource) ctx.lookup("jdbc/mabase");</pre>
+
+        <p>Le container fournit une DataSource qu'il a préalablement instancié.</p>
+
+        <p>Sans changer notre code, on peut utiliser des bases de données différentes en dev et en prod.</p>
+
+        <p>La configuration de connexion est faite au niveau du serveur.</p>
+
+        <h2>JNDI et Spring</h2>
+
+        <p>Spring et l'injection de dépendances est une alternative au service locator.</p>
+
+        <p>De plus, utiliser jndi dans des tests unitaires n'est pas une chose aisée.</p>
+
+        <p>Spring offre donc un pont entre son modèle d'injection et jndi.</p>
+
+        <h2>Branche git</h2>
+
+        <p>On crée la branche jax-ws à partir de la branche master.</p>
+
+        <pre class="shell">&gt; git checkout master
+Switched to branch 'master'
+&gt; git checkout -b jndi
+Switched to a new branch 'jndi'</pre>
+
+        <h2>Le pool de connexion</h2>
+
+        <p>Actuellement, la définition de notre pool de connexion est la suivante :</p>
+
+        <pre class="prettyprint">&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+   &lt;property name="url" value="jdbc:derby:target/blogdb;create=true"/&gt;
+   &lt;property name="username" value=""/&gt;
+   &lt;property name="password" value=""/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Nous utilisons une base derby en mémoire.</p>
+
+        <p>Le but est de passer cette configuration sous jndi.</p>
+
+        <p>Au démarrage de l'application, tomcat remplit le registre jndi en lisant le fichier context.xml.</p>
+
+        <p>Par défaut, il va chercher le fichier context.xml dans le répertoire META-INF de l'application web.</p>
+
+        <p>Pour notre besoin, il faut donc définir le fircher webapp/META-INF/context.xml suivant.</p>
+
+        <pre class="prettyprint">&lt;Context&gt;
+   &lt;Resource name="jdbc/taskdb"
+          auth="Container"
+          type="javax.sql.DataSource"
+          username=""
+          password=""
+          driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
+          url="jdbc:derby:target/taskdb;create=true"
+          maxActive="10"
+          maxIdle="2"/&gt;
+&lt;/Context&gt;</pre>
+
+        <p>La configuration est la même que celle du fichier spring.</p>
+
+        <p>Maintenant on modifie notre context spring afin d'utiliser jdbc/taskdb depuis le jndi.</p>
+
+        <pre class="prettyprint">&lt;bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"&gt;
+   &lt;property name="jndiName" value="java:comp/env/jdbc/taskdb" /&gt;
+&lt;/bean&gt;</pre>
+
+        <p>La configuration spring devient plus simple et indépendante de l'environnement.</p>
+
+        <p>Et encore une fois, nos composants n'ont pas été affectés par cette modification.</p>
+
+        <h2>jndi namespace</h2>
+
+        <p>On peut simplifier un peu la configuration spring.</p>
+
+        <p>Spring dispose d'un namespace jee afin de faciliter la récupération de références dans le jndi.</p>
+
+        <pre class="prettyprint">&lt;beans <span class="comment">...</span> xmlns:jee="http://www.springframework.org/schema/jee" xsi:schemaLocation="
+   <span class="comment">...</span>
+   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"&gt;</pre>
+
+        <p>On peut ensuite écrire.</p>
+
+        <pre class="prettyprint">&lt;jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/taskdb" /&gt;</pre>
+
+        <h2>Déploiement dans tomcat</h2>
+
+        <p>Notre context.xml est bien lu par le plugin maven car il est présent dans le META-INF de notre application.</p>
+
+        <p>Dans un tomcat installé indépendamment, il est possible de mettre ces fichiers dans le $CATALINA_BASE.</p>
+
+        <p>Extrait de la <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/context.html" target="_blank" class="external">documentation tomcat</a> :</p>
+        
+        <pre>Context elements may be explicitly defined:
+
+In the $CATALINA_BASE/conf/context.xml file: the Context element information will be loaded by all webapps.
+In the $CATALINA_BASE/conf/[enginename]/[hostname]/context.xml.default file: the Context element information
+   will be loaded by all webapps of that host.
+In individual files (with a ".xml" extension) in the <b>$CATALINA_BASE/conf/[enginename]/[hostname]/</b> directory.
+    The name of the file (less the .xml extension) will be used as the context path.
+    Multi-level context paths may be defined using #, e.g. foo#bar.xml for a context path of /foo/bar.
+    The default web application may be defined by using a file called ROOT.xml.
+Only if a context file does not exist for the application in the $CATALINA_BASE/conf/[enginename]/[hostname]/,
+    in an individual file at /META-INF/context.xml inside the application files.
+    If the web application is packaged as a WAR then /META-INF/context.xml will be copied to
+    $CATALINA_BASE/conf/[enginename]/[hostname]/ and renamed to match the application's context path.
+    Once this file exists, it will not be replaced if a new WAR with a newer /META-INF/context.xml is placed
+    in the host's appBase.
+Inside a Host element in the main conf/server.xml.</pre>
+
+        <p>La solution préférée est un fichier context dans $CATALINA_BASE/conf/[enginename]/[hostname]/.</p>
+
+        <p>Par défaut, enginename est "Catalina" et hostname est "localhost".</p>
+
+        <p>Par exemple, si notre application ROOT.war est déposée dans $CATALINA_BASE/webapps, tomcat va aller chercher un fichier $CATALINA_BASE/conf/Catalina/localhost/ROOT.xml.</p>
+
+        <p>Il est donc possible de configurer l'application au travers de ce fichier context.xml</p>
+
+        <h2>META-INF/context.xml</h2>
+
+        <p>Tomcat ne prendra pas en compte notre META-INF/context.xml si un fichier contexte est déjà présent dans $CATALINA_BASE.</p>
+
+        <p>Cependant, ce n'est pas très propre d'envoyer un fichier servant aux tests en production.</p>
+
+        <p>Nous allons donc utiliser maven afin de filter ce fichier au moment du build.</p>
+
+        <pre class="prettyprint">&lt;plugin&gt;
+   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+   &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+   &lt;version&gt;2.1.1&lt;/version&gt;
+   &lt;configuration&gt;
+       &lt;packagingExcludes&gt;META-INF/context.xml&lt;/packagingExcludes&gt;
+   &lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+
+        <p>Avec un mvn package, le fichier context.xml est donc exlu de notre war.</p>
+
+        <p>Nous applciation utilise jndi et notre war est davantage portable.</p>
+
+        <h2>Les autres app serv</h2>
+
+        <p>Chaque serveur d'application ou conteneur de servlet dispose de ses propres moyens de configuration.</p>
+
+        <p>Il faut donc regarder les moyens offerts par chaque serveur afin de configurer au mieux l'application.</p>
+    </div>
+</div>
+</body>
+</html>
