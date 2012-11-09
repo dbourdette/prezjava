@@ -1,0 +1,370 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Spring AOP</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring AOP (Aspect Oriented Programming) </h1>
+
+        <h2>Introduction</h2>
+
+        <p>La programmation orientée aspect est une technique de factorisation du code.</p>
+
+        <p>Une module (un aspect) peut être injecté à différents endroits dans une application.</p>
+
+        <p>Ces apects sont des morceaux de logique (concerns) qui sont souvent orthogonaux à l'éxecution de l'application.</p>
+
+        <p>Le logging est l'exemple par excellence. On peut aussi citer la sécurité et la gestion des transactions.</p>
+
+        <h2>Branche git</h2>
+
+        <p>On crée la branche aop à partir de la branche master.</p>
+
+        <pre class="shell">&gt; git checkout master
+Switched to branch 'master'
+&gt; git checkout -b aop
+Switched to a new branch 'aop'</pre>
+
+        <h2>Un exemple simple</h2>
+
+        <p>L'exemple canonique de l'AOP est le logging.</p>
+
+        <p>Admettons que nous souhaitions avoir un log aux entrées et sorties des méthodes dans nos services.</p>
+
+        <pre class="prettyprint">public void doSomething() {
+   log.trace("Entering in doSomething()");
+
+   <span class="comment">...</span>
+
+   log.trace("Leaving doSomething()");
+}</pre>
+
+        <p>Imaginons que nous ayons des centaines des services et dons des milliers de méthodes : )</p>
+
+        <p>Il n'y a pas de mécanisme en programmation objet afin de faire cela simplement.</p>
+
+        <p>L'AOP prend donc le problème à l'envers : on isole le logging dans un aspect et on l'applique partout.</p>
+
+        <pre class="prettyprint">public void aFaireAutourDeLa(Method method) {
+   log.trace("Entering in " + method.getSignature());
+
+   method.call();
+
+   log.trace("Leaving " + method.getSignature());
+}</pre>
+
+        <p>Il reste donc a savoir comment faire en pratique.</p>
+
+        <h2>Aspectj</h2>
+
+        <p>Avec spring, nous allons utiliser aspectj, qui est la librairie de référence pour l'AOP en java.</p>
+
+        <p>L'action d'injecter des aspects est appelée weaving</p>
+
+        <p>En java, il existe 3 façons de le faire :</p>
+
+        <ul>
+            <li>compile time : à la compilation</li>
+            <li>load time : au chargement des classes</li>
+            <li>runtime : pendant l'exécution</li>
+        </ul>
+
+        <p>Nous allons le faire au runtime, cela offre moins de possibilité mais c'est plus simple à mettre en place.</p>
+
+        <p>La détection d'aspects est activée avec la configuration spring suivante.</p>
+
+        <pre class="prettyprint">&lt;!-- Support d'aspectj --&gt;
+&lt;aop:aspectj-autoproxy/&gt;</pre>
+
+        <p>Il faut aussi ajouter la librairie spring-aop</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+   &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Et aspectj</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+   &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+   &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt;
+   &lt;version&gt;1.6.12&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+   &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+   &lt;artifactId&gt;aspectjrt&lt;/artifactId&gt;
+   &lt;version&gt;1.6.12&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Et cglib (librairie de manipulation de byte code)</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+   &lt;groupId&gt;cglib&lt;/groupId&gt;
+   &lt;artifactId&gt;cglib&lt;/artifactId&gt;
+   &lt;version&gt;2.2.2&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <h2>Un aspect simple</h2>
+
+        <p>Nous créons le package fr.todooz.aop et on l'ajoute au component scan</p>
+
+        <pre class="prettyprint">&lt;context:component-scan base-package="fr.todooz.aop"/&gt;</pre>
+
+        <p>Voici un aspect qui affiche le temps d'exécution de chaque méthode.</p>
+
+        <pre class="prettyprint">
+@Aspect
+@Component
+public class TraceAspect {
+   @Around("within(fr.todooz..*)")
+   public Object trace(ProceedingJoinPoint pjp) throws Throwable {
+      long t1 = System.currentTimeMillis();
+
+      <b>Object value = pjp.proceed()</b>;
+
+      long t2 = System.currentTimeMillis();
+
+      System.out.println("Executed " + pjp.getSignature() + " in " + (t2 - t1) + "ms");
+
+      return value;
+   }
+}</pre>
+
+        <p>L'aspect est un composant spring.</p>
+
+        <p>@Aspect indique que le composant est un aspect.</p>
+
+        <p>@Around indique que notre aspect doit s'exécuter autour des méthodes des classes de fr.todooz.</p>
+
+        <p>ProceedingJoinPoint est un objet qui décrit l'appel en cours.</p>
+
+        <p>Avec cette aspect en place, on obtient le log suivant lors de l'appel de http://localhost:8080/index.</p>
+
+        <pre class="prettyprint">Executed TagCloud fr.todooz.service.TagCloudService.buildTagCloud() in 119ms
+Executed TagCloud fr.todooz.web.controller.IndexController.tagCloud() in 139ms
+Executed List fr.todooz.service.TaskService.findAll() in 3ms
+Executed String fr.todooz.web.controller.IndexController.index(Model) in 3ms</pre>
+
+        <p>En modifiant la règle de matching, on peut atteindre du code des librairies</p>
+
+        <pre class="prettyprint">@Around("within(org.hibernate..*)")</pre>
+
+        <p>Donne</p>
+
+        <pre class="prettyprint">Executed Session org.hibernate.SessionFactory.openSession() in 0ms
+Executed Session org.hibernate.SessionFactory.getCurrentSession() in 0ms
+Executed Session org.hibernate.SessionFactory.openSession() in 0ms
+Executed Session org.hibernate.SessionFactory.getCurrentSession() in 0ms</pre>
+
+        <p>Assez efficace pour quelques lignes de codes.</p>
+
+        <h2>Mécanique runtime</h2>
+
+        <p>Pour rendre possible l'AOP au runtime, spring utilise une technique simple : il intercale un proxy entre l'appelant et la cible.</p>
+
+        <img src="img/aspect-proxy.png" alt="" style="margin: 0 200px;">
+
+        <p>Au runtime, il n'est donc possible de faire de l'AOP qui si il y a un appel de méthode.</p>
+
+        <p>En conséquence, seule les méthodes publiques peuvent être concernées, ce qui est généralement suffisant.</p>
+
+        <p>Pour plus de possibilités, il faut se tourner vers le weaving au moment de la compilation.</p>
+
+        <p>Pour faire un proxy java, il existe 2 méthodes :</p>
+
+        <ul>
+            <li>La mécanique java standard : il faut que la classe cible implémente une interface</li>
+            <li>La manipulation de bytecode (ce que fait cglib) : peut s'appliquer à toutes les classes</li>
+        </ul>
+
+        <h2>@Transactional</h2>
+
+        <p>Une simple annotation avec spring et une méthode devient transactionnelle.</p>
+
+        <p>La technique utilisée est la même : spring ajoute un proxy qui va suivre la transaction.</p>
+
+        <p>La prise en compte de @Transactional ne nécessite ni aspectj ni cglib.</p>
+
+        <p>Spring utilise la mécanique standard java qui permet de faire un proxy à partir d'une interface.</p>
+
+        <ul>
+            <li>Le service annoté doit donc hériter ses methodes d'une interface.</li>
+            <li>Seules les méthodes de l'interface (publiques par nature) peuvent être annotées.</li>
+        </ul>
+
+        <p>Spring a donc nativement des capacités d'AOP mais elle sont limitées.</p>
+
+        <h2>Lexique</h2>
+
+        <p>Les termes liés à l'AOP sont complexes mais bien établis.</p>
+
+        <ul>
+            <li>Aspect : un module contenant le code qui pourra être injecté</li>
+            <li>Cross cutting : Découpage de d'éléments réutilisables orthogonaux à l'application</li>
+            <li>join point : un point d'exécution de l'application pendant lequel un aspect peut être injecté</li>
+            <li>Advice : type d'injection pour un point d'exécution. Par exemple : around, before, after, exception...</li>
+            <li>Pointcut : un prédicat qui permet de désigner des join points.</li>
+            <li>Target object : l'objet qui va être altéré pas l'injection d'aspects.</li>
+            <li>AOP proxy : objet injecté entre l'appelant et la cible afin d'implémenter la mécanique AOP.</li>
+            <li>Weaving : action d'injecter les aspects en respectant les pointcuts et advices.</li>
+        </ul>
+
+        <p>En pratique, la connaissance des termes n'est pas un pré requis à faire de l'AOP.</p>
+
+        <h2>Aspects et annotations</h2>
+
+        <p>Les aspects n'ont pas de rapport direct avec les annotations.</p>
+
+        <p>Cependant, il est possible d'utiliser les annotations comme prédicats (pointcut).</p>
+
+        <p>Il me suffit alors d'annoter un élément afin d'injecter un aspect (à la façon de @Transational).</p>
+
+        <h2>Cachons nous</h2>
+
+        <p>La problématique de cache est un élément d'une application facile à impléménter via AOP.</p>
+
+        <p>Nous allons ajouter les mécaniques suivantes :</p>
+
+        <ul>
+            <li>Ajouter un cache aux méthodes findAll, findByQuery, findByTag, findByInterval et count du TaskService.</li>
+            <li>Lorsque que les méthodes save et delete sont appelées, le cache doit être vidé (flush).</li>
+        </ul>
+
+        <p>Nous allons utiliser ehcache comme librairie de cache.</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+   &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
+   &lt;artifactId&gt;ehcache-core&lt;/artifactId&gt;
+   &lt;version&gt;2.4.6&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Son utilisation est simple. Elle est même capable de devenir distribuée au travers de <a href="http://www.terracotta.org/" target="_blank" class="external">terracotta</a></p>
+
+        <p>La configuration spring</p>
+
+        <pre class="prettyprint">&lt;bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"&gt;
+   &lt;property name="configLocation" value="/WEB-INF/ehcache.xml" /&gt;
+&lt;/bean&gt;
+
+&lt;bean id="tasksCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"&gt;
+   &lt;property name="cacheManager" ref="cacheManager" /&gt;
+   &lt;property name="cacheName" value="tasksCache" /&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Et le fichier WEB-INF/ehcache.xml associé</p>
+
+        <pre class="prettyprint">&lt;ehcache&gt;
+   &lt;defaultCache maxElementsInMemory="500" eternal="true" overflowToDisk="false" memoryStoreEvictionPolicy="LFU"/&gt;
+   &lt;cache name="tasksCache" maxElementsInMemory="500" eternal="true" overflowToDisk="false"
+            memoryStoreEvictionPolicy="LRU"/&gt;
+&lt;/ehcache&gt;</pre>
+
+        <p>Nous avons donc maintenant un cache tasksCache disponible.</p>
+
+        <p>Nous définissons 2 annotations dans le package fr.todooz.annotation</p>
+
+        <pre class="prettyprint">@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface UseCache {
+}</pre>
+
+        <pre class="prettyprint">@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface FlushCache {
+}</pre>
+
+        <p>Elles nous servent a annoter les méthodes du TaskServiceImpl</p>
+
+        <pre class="prettyprint">@UseCache
+public List&lt;Task&gt; findAll() {
+   <span class="comment">...</span>
+}</pre>
+
+        <p>Il nous faut alors définir notre Aspect.</p>
+
+        <pre class="prettyprint">@Aspect
+@Component
+public class CacheAspect {
+   @Inject
+   private Ehcache postsCache;
+
+   @Around("@annotation(useCache)")
+   public Object cache(ProceedingJoinPoint pjp, UseCache useCache) throws Throwable {
+       // ?
+
+       return pjp.proceed();
+   }
+
+   @Around("@annotation(flushCache)")
+   public Object flush(ProceedingJoinPoint pjp, FlushCache flushCache) throws Throwable {
+       // ?
+
+       return pjp.proceed();
+   }
+
+   private class CacheKey {
+      private String signature;
+
+      private Object[] args;
+
+      public CacheKey(ProceedingJoinPoint pjp) {
+         signature = pjp.getSignature().toString();
+         args = pjp.getArgs();
+      }
+
+      @Override
+      public boolean equals(Object o) {
+         if (this == o) return true;
+         if (o == null || getClass() != o.getClass()) return false;
+
+         CacheKey cacheKey = (CacheKey) o;
+
+         // Probably incorrect - comparing Object[] arrays with Arrays.equals
+         if (!Arrays.equals(args, cacheKey.args)) return false;
+         if (signature != null ? !signature.equals(cacheKey.signature) : cacheKey.signature != null) return false;
+
+         return true;
+      }
+
+      @Override
+      public int hashCode() {
+         int result = signature != null ? signature.hashCode() : 0;
+         result = 31 * result + (args != null ? Arrays.hashCode(args) : 0);
+         return result;
+      }
+   }
+}</pre>
+
+        <p>Proposer une implémentation pour ces 2 méthodes.</p>
+
+        <h2>Oui mais...</h2>
+
+        <p>Ce que nous avons mis en place est simple et peut évoluer facilement.</p>
+
+        <p>Mais depuis peu, spring propose une <a href="http://static.springsource.org/spring/docs/3.1.0.M1/spring-framework-reference/html/cache.html" target="_blank" class="external">abstraction pour le cache</a></p>
+
+        <p>Elle propose ce que nous venons d'implémenter en beaucoup plus souple.</p>
+    </div>
+</div>
+</body>
+</html>
