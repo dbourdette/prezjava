@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Spring Security</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring Security</h1>
+
+        <h2>Introduction</h2>
+
+        <p>La sécurité pour une application se divise en 2 phases :</p>
+
+        <ul>
+            <li>Authentification : identification de l'utilisateur</li>
+            <li>Autorisation : vérification des permissions</li>
+        </ul>
+
+        <p>Durant l'authentification, on prend les données fournies par l'utilisateur (login/pass, token...) et on tente de le charger à partir d'un espace d'utilisateurs (realm).</p>
+
+        <p>Ces mécaniques sont assez simple à mettre en place initialement mais évoluent assez mal.</p>
+
+        <p>Spring security offre une solution indépendante de spring mvc.</p>
+
+        <h2>Nomenclature</h2>
+
+        <ul>
+            <li>Principal : entité réprésentant l'utilisateur et qui est chargée lors du processus d'authentification</li>
+            <li>Authority : un rôle donné à un Principal</li>
+        </ul>
+
+        <p>Le contrôle des accès se base donc sur les authorities.</p>
+
+        <h2>Branche git</h2>
+
+        <p>On crée la branche aop à partir de la branche master.</p>
+
+        <pre class="shell">&gt; git checkout master
+Switched to branch 'master'
+&gt; git checkout -b security
+Switched to a new branch 'security'</pre>
+
+        <h2>Dépendances</h2>
+
+        <p>Spring security repose sur spring mais peut fonctionner sans spring mvc.</p>
+
+        <p>Les dépendances :</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-security-core&lt;/artifactId&gt;
+    &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-security-config&lt;/artifactId&gt;
+    &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-security-web&lt;/artifactId&gt;
+    &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+        
+        <h2>La configuration</h2>
+
+        <p>La configuration se fait via un contexte spring que l'on configure dans le web.xml.</p>
+
+        <pre class="prettyprint">&lt;!-- Chargement des contextes spring --&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;/WEB-INF/spring-security.xml&lt;/param-value&gt;
+&lt;/context-param&gt;
+
+&lt;!-- Filtre Spring Security --&gt;
+&lt;filter&gt;
+    &lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</pre>
+
+        <p>Afin de sécuriser l'application, un filtre intercepte toutes les requêtes.</p>
+
+        <p>La configuration spring-security.xml :</p>
+
+        <pre class="prettyprint">&lt;beans:beans xmlns="http://www.springframework.org/schema/security"
+                  xmlns:beans="http://www.springframework.org/schema/beans"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/security
+   http://www.springframework.org/schema/security/spring-security-3.1.xsd"&gt;
+
+    &lt;http&gt;
+        &lt;intercept-url pattern="/**" access="ROLE_USER" /&gt;
+        &lt;form-login /&gt;
+        &lt;logout /&gt;
+    &lt;/http&gt;
+
+    &lt;authentication-manager&gt;
+        &lt;authentication-provider&gt;
+            &lt;user-service&gt;
+                &lt;user name="test" password="user" authorities="ROLE_USER" /&gt;
+            &lt;/user-service&gt;
+        &lt;/authentication-provider&gt;
+    &lt;/authentication-manager&gt;
+
+&lt;/beans:beans&gt;</pre>
+
+        <p>Le filtre s'assure donc que l'utilsateur est authentifié et a le ROLE_USER.</p>
+
+        <p>Pour nos tests, on configure un authentication manager avec un utiliseur en dur.</p>
+
+        <p>Si on accède à n'importe quelle page du site, on a donc le formulaire :</p>
+
+        <img src="img/login-form.png" alt="" style="margin-left: 250px">
+
+        <h2>Les fichiers statiques</h2>
+
+        <p>Les images, css et js ne doivent pas être sécurisé : nous allons en avoir besoin sans être connecté.</p>
+
+        <p>Pour y accéder sans login, il suffit d'écrire une règle http supplémentaire.</p>
+
+        <pre class="prettyprint">&lt;http pattern="/css/**" security="none"/&gt;
+&lt;http pattern="/img/**" security="none"/&gt;
+&lt;http pattern="/js/**" security="none"/&gt;
+&lt;http pattern="/favicon.ico" security="none"/&gt;</pre>
+
+        <h2>Logout</h2>
+
+        <p>Un fois connecté, il faudrait pouvoir faire l'opération inverse.</p>
+
+        <p>L'url par défaut pour se déconnecter est /j_spring_security_logout, ce qui est assez vilain.</p>
+
+        <p>On change donc cette url :</p>
+
+        <pre class="prettyprint">&lt;http&gt;
+    &lt;intercept-url pattern="/**" access="ROLE_USER" /&gt;
+    &lt;form-login /&gt;
+    &lt;logout logout-url="/logout" /&gt;
+&lt;/http&gt;</pre>
+
+        <p>On peut donc ajouter ce bloc a notre colonne de droite :</p>
+
+        <pre class="prettyprint">&lt;div&gt;
+    &lt;legend&gt;Test user&lt;/legend&gt;
+    &lt;a href="/logout"&gt;Logout &lt;i class="icon-off"&gt;&lt;/i&gt;&lt;/a&gt;
+&lt;/div&gt;</pre>
+
+        <p>Il est maintenant possible de se connecter / déconnecter simplement.</p>
+
+        <h2>Le formulaire</h2>
+
+        <p>Il reste que le formulaire est moche.</p>
+
+        <p>Si on regarde le source de ce formulaire généré : </p>
+
+        <pre class="prettyprint">&lt;html&gt;&lt;head&gt;&lt;title&gt;Login Page&lt;/title&gt;&lt;/head&gt;&lt;body onload='document.f.j_username.focus();'&gt;
+&lt;h3&gt;Login with Username and Password&lt;/h3&gt;&lt;form name='f' action='/j_spring_security_check' method='POST'&gt;
+    &lt;table&gt;
+        &lt;tr&gt;&lt;td&gt;User:&lt;/td&gt;&lt;td&gt;&lt;input type='text' name='j_username' value=''&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input type='password' name='j_password'/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td colspan='2'&gt;&lt;input name="submit" type="submit" value="Login"/&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+        <p>Il est donc possible de faire la même chose avec notre propre html :</p>
+
+        <ul>
+            <li>Il faut faire un POST sur /j_spring_security_check</li>
+            <li>Les paramètres importants sont j_username et j_password</li>
+        </ul>
+
+        <p>On créer donc le fichier /WEB-INF/jsp/login.jsp à partir du fragment html suivant :</p>
+
+        <pre class="prettyprint">&lt;form class="form-horizontal"&gt;
+    &lt;div class="control-group"&gt;
+        &lt;label class="control-label" for="username"&gt;Email&lt;/label&gt;
+        &lt;div class="controls"&gt;
+            &lt;input type="text" id="username" placeholder="Username"&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="control-group"&gt;
+        &lt;label class="control-label" for="password"&gt;Password&lt;/label&gt;
+        &lt;div class="controls"&gt;
+            &lt;input type="password" id="password" placeholder="Password"&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="control-group"&gt;
+        &lt;div class="controls"&gt;
+            &lt;button type="submit" class="btn"&gt;Login&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/form&gt;</pre>
+
+        <p>Avec un mapping correspondant.</p>
+
+        <pre class="prettyprint">@RequestMapping("/login")
+public String login() {
+    return "login";
+}</pre>
+
+        <p>Il reste donc la configuration à changer :</p>
+
+        <pre class="prettyprint">&lt;http pattern="/login" security="none"/&gt;
+
+&lt;http&gt;
+    &lt;intercept-url pattern="/**" access="ROLE_USER" /&gt;
+    &lt;form-login login-page="/login" /&gt;
+    &lt;logout logout-url="/logout" /&gt;
+&lt;/http&gt;</pre>
+
+        <p>Ce qui donne un formulaire un peu plus au goût de notre site.</p>
+
+        <img src="img/better-login-form.png" alt="" style="margin-left: 50px">
+
+        <h2>Custom tags</h2>
+
+        <p>Nous voulons afficher le vrai nom de l'utilisateur loggué à la place de "Test user"</p>
+
+        <p>Spring security propose une librairie de tags qui va permettre de faire cela simplement.</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-security-taglibs&lt;/artifactId&gt;
+    &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Et dans la jsp</p>
+
+        <pre class="prettyprint">&lt;%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %&gt;
+        
+&lt;div&gt;
+    &lt;legend&gt;&lt;sec:authentication property="principal.username" /&gt;&lt;/legend&gt;
+    &lt;a href="/logout"&gt;Logout &lt;i class="icon-off"&gt;&lt;/i&gt;&lt;/a&gt;
+&lt;/div&gt;</pre>
+
+        <h2>Sécuriser l'édition</h2>
+
+        <p>Utiliser spring security pour :</p>
+
+        <ul>
+            <li>Sécuriser uniquement la partie liée à l'édition</li>
+            <li>Afficher le lien logout que si la personne est logguée</li>
+        </ul>
+
+        <h2>Vers la base de données</h2>
+
+        <p>Spring security est extrêmement flexible afin de s'adapter à toutes les situations.</p>
+
+        <p>Il y a beaucoup d'implémentation de base pour beaucoup de système : jdbc, ldap, radius, kerberos, oauth...</p>
+
+        <p>Il est assez simple de coder une extension à partir du moment ou on sait à quel niveau injecter le code.</p>
+
+        <p>Afin d'explorer une possibilité, nous allons échanger notre user service conteu un service jdbc.</p>
+
+        <p>Afin d'aller chercher nos utilisateurs en base, il suffit d'écrire.</p>
+
+        <pre class="prettyprint">&lt;authentication-manager&gt;
+    &lt;authentication-provider&gt;
+        &lt;jdbc-user-service data-source-ref="dataSource" /&gt;
+    &lt;/authentication-provider&gt;
+&lt;/authentication-manager&gt;
+
+&lt;beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+    &lt;beans:property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+    &lt;beans:property name="url" value="jdbc:derby:target/taskdb;create=true"/&gt;
+    &lt;beans:property name="username" value=""/&gt;
+    &lt;beans:property name="password" value=""/&gt;
+&lt;/beans:bean&gt;</pre>
+
+        <p>Dans un vrai projet, il faudrait probablement factoriser les 2 datasources (spring-security.xml et spring-servlet.xml).</p>
+
+        <p>En l'état, la base étant vide, on ne peut plus se connecter.</p>
+
+        <p>jdbc-user-service utilise la classe
+            <a href="http://www.jarvana.com/jarvana/view/org/springframework/security/spring-security-core/3.0.2.RELEASE/spring-security-core-3.0.2.RELEASE-sources.jar!/org/springframework/security/core/userdetails/jdbc/JdbcDaoImpl.java?format=ok" class="external" target="_blank">JdbcDaoImpl</a>.</p>
+
+        <p>Le schema associé est le suivant :</p>
+
+        <ul>
+            <li>table users : username, password et enabled</li>
+            <li>table authorities : username, authority</li>
+        </ul>
+
+        <p>Il suffit donc de créer ces tables et de rajouter un utilisateur.</p>
+
+        <pre class="prettyprint">@PostConstruct
+public void initUsers() throws SQLException {
+    Connection connection = dataSource.getConnection();
+
+    try {
+        // create table users if missing
+        if (!tableExists("users")) {
+            connection.prepareStatement(
+                "create table users (username varchar(50), password varchar(50), enabled boolean)").execute();
+        }
+
+        // create table authorities if missing
+        if (!tableExists("authorities")) {
+            connection.prepareStatement(
+                "create table authorities (username varchar(50), authority varchar(50))").execute();
+        }
+
+        // fill tables with test data
+        connection.prepareStatement("delete from authorities").execute();
+        connection.prepareStatement("delete from users").execute();
+
+        connection.prepareStatement(
+            "insert into users (username, password, enabled) values ('test', 'user', true)").execute();
+        connection.prepareStatement(
+            "insert into authorities (username, authority) values ('test', 'ROLE_USER')").execute();
+    } finally {
+        connection.close();
+    }
+}
+
+private boolean tableExists(String name) throws SQLException {
+    Connection connection = dataSource.getConnection();
+
+    try {
+        DatabaseMetaData dbmd = connection.getMetaData();
+        ResultSet rs = dbmd.getTables(null, "APP", name.toUpperCase(), null);
+        return rs.next();
+    } finally {
+        connection.close();
+    }
+}</pre>
+
+        <p>Cela fonctionne même si le code mis en place est loin d'être satisfaisant. Ce code ne pourrait bien sûr pas aller en production.</p>
+
+        <p>Pour plus de flexibilité, il vaudrait mieux coder notre propre implémentation de UserDetailsService en utilisant des entités hibernate.</p>
+    </div>
+</div>
+</body>
+</html>
