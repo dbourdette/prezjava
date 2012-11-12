@@ -17,3 +17,5 @@ immutable et accessors
 cheat sheet : convention de repertoires maven
 cheat sheet : structure d'un war
 cheat sheets instead of prezs
+
+shell > -> $
