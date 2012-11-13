@@ -15,14 +15,146 @@
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
 
 </head>
-<body>
+<body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
         <h1>Java Persitence API</h1>
 
         <h2>Introduction</h2>
 
+        <p>JPA est le standard java pour la persistence dans des base de données relationnelles.</p>
 
+        <p>Cette spécification simplifie l'interaction avec les bases de données relationnelles.</p>
+
+        <p>Elle fournit une couche ORM : object relationnal mapping.</p>
+
+        <p>Elle est née a partir d'hibernate qui reste l'implémentation leader sur ce secteur.</p>
+
+        <h2>JPA vs Hibernate</h2>
+
+        <p>Hibernate implémente le standard JPA.</p>
+
+        <p>Il existe d'autres implémentations :</p>
+
+        <ul>
+            <li>EclipseLink (eclipse) (implémentation de référence)</li>
+            <li>Toplink (oracle)</li>
+            <li>OpenJPA (apache)</li>
+            <li>... ?</li>
+        </ul>
+
+        <p>En plus chaque implémentation propose ses extensions. Si on les utilise, on sort donc du pur standard pour devenir dépendant d'une impléméntation</p>
+
+        <p>En pratique, hibernate est tellement prepondérant que cela ne pose pas un réèl problème.</p>
+
+        <h2>Configuration</h2>
+
+        <p>La configuration des entités persistés se fait via annotations (javax.persistence).</p>
+
+        <p>C'est ce que nous avons fait jusqu'à présent, notre entité Task est donc 100% compatible JPA.</p>
+
+        <p>La DataSource jdbc ne change pas.</p>
+
+        <p>A la place de Session et SessionFactory, le standard JPA propose les classes suivantes :</p>
+
+        <ul>
+            <li>EntityManager : toutes les méthodes de persistance (save, find...)</li>
+            <li>EntitiyManagerFactory : la Factory pour l'EntityManager configuré par le persistence.xml</li>
+        </ul>
+
+        <p>Le fichier META-INF/persistence.xml définit une unité de persistance (persistence unit).</p>
+
+        <p>En voici un exemple tiré de la doc d'hibernate :</p>
+
+        <pre class="prettyprint">&lt;persistence ...&gt;
+    &lt;persistence-unit name="manager1" transaction-type="JTA"&gt;
+        &lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
+        &lt;jta-data-source&gt;java:/DefaultDS&lt;/jta-data-source&gt;
+        &lt;mapping-file&gt;ormap.xml&lt;/mapping-file&gt;
+        &lt;jar-file&gt;MyApp.jar&lt;/jar-file&gt;
+        &lt;class&gt;org.acme.Employee&lt;/class&gt;
+        &lt;class&gt;org.acme.Person&lt;/class&gt;
+        &lt;class&gt;org.acme.Address&lt;/class&gt;
+        &lt;shared-cache-mode&gt;ENABLE_SELECTOVE&lt;/shared-cache-mode&gt;
+        &lt;validation-mode&gt;CALLBACK&lt;/validation-mode&gt;
+        &lt;properties&gt;
+            &lt;property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/&gt;
+            &lt;property name="hibernate.hbm2ddl.auto" value="create-drop"/&gt;
+        &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;</pre>
+
+        <p>On y retrouve a peu près les mêmes chose que dans la configuration spring (en un peu moins souple).</p>
+
+        <h2>JPA vs Spring</h2>
+
+        <p>Quel est donc l'intérêt de passer par JPA et l'EntityManager plutôt que Spring et la SessionFactory ?</p>
+
+        <p>Si on fait du jee pur souche (sans spring), JPA est la solution de persistance.</p>
+
+        <p>Si on a déjà du spring dans le projet, l'intérêt est faible :</p>
+
+        <ul>
+            <li>utilisation du standard</li>
+            <li>meilleure portabilité des entités et des services</li>
+            <li>réutilisation d'une unité de persistance</li>
+        </ul>
+
+        <p>Nous allons donc juste faire un exercice de style, afin de tester JPA.</p>
+
+        <h2>Branche git</h2>
+
+        <p>On crée la branche jpa à partir de la branche master.</p>
+
+        <pre class="shell">&gt; git checkout master
+Switched to branch 'master'
+&gt; git checkout -b jpa
+Switched to a new branch 'jpa'</pre>
+
+        <h2>Persistence Unit</h2>
+
+        <p>Spring propose <a href="http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/orm.html#orm-jpa-setup" class="external" target="_blank">3 options</a> :</p>
+
+        <ul>
+            <li>LocalEntityManagerFactoryBean : chargement standard du persitence.xml</li>
+            <li>EntityManagerFactory : chargement du persitence.xml via jndi</li>
+            <li>LocalContainerEntityManagerFactoryBean : gestion par spring avec beaucoup de possibilités</li>
+        </ul>
+
+        <p>La dernière option est celle recommandée, c'est celle que nous choisissons.</p>
+
+        <p>Nous commençons par ajouter l'implémentation jpa pour hibernate.</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
+    &lt;version&gt;3.6.4.Final&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>On rajoute ensuite notre unité dans WEB-INF/classes/META-INF/persistence.xml</p>
+
+        <pre class="prettyprint">&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+  version="2.0"&gt;
+    &lt;persistence-unit name="manager" transaction-type="RESOURCE_LOCAL"&gt;
+        &lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
+        &lt;class&gt;fr.todooz.domain.Task&lt;/class&gt;
+        &lt;properties&gt;
+            &lt;property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/&gt;
+            &lt;property name="hibernate.hbm2ddl.auto" value="update"/&gt;
+        &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;</pre>
+
+        <p>Et enfin la configuration dans spring-servlet.xml</p>
+
+        <pre class="prettyprint">&lt;bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"&gt;
+    &lt;property name="dataSource" ref="dataSource"/&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Normalement, l'application ne fait rien de plus mais elle doit encore démarrer.</p>
     </div>
 </div>
 </body>
