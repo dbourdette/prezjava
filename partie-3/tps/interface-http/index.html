@@ -15,7 +15,7 @@
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
 
 </head>
-<body>
+<body onload="prettyPrint();">
 <div class="presentation">
     <div id="project">
         <h1>
@@ -33,7 +33,69 @@
 
         <p>Il permet d'échanger des données selon un mode requête - réponse.</p>
 
-        <h2>La vue d'ensemble</h2>
+        <h2>Telnet</h2>
+
+        <p>telnet est une application en ligne de commande qui permet de se connecter à des serveurs distants.</p>
+
+        <p>Par défaut, le port utilisé est 23.</p>
+
+        <p>Mais si on se connecte sur un serveur qui ne respecte pas le protocole attendu, le client bascule en mode raw TCP, pratique pour forger des requêtes HTTP</p>
+
+        <p>Par exemple</p>
+
+        <pre class="shell">$ telnet www.rtl.fr 80
+Trying 141.138.89.209...
+Connected to webcache.rtl.fr.
+Escape character is '^]'.
+</pre>
+
+        <p>A partir de là, le client est en attente, on tape GET / HTTP/1.1 et deux fois entrée.</p>
+
+        <pre class="shell">GET / HTTP/1.1↵
+↵
+HTTP/1.1 200 OK
+Content-Type: text/html;charset=UTF-8
+Content-Language: fr-FR
+Vary: Accept-Encoding
+X-Cacheable: Yes; Homepage, 60s
+Transfer-Encoding: chunked
+Date: Tue, 13 Nov 2012 08:56:13 GMT
+Age: 23
+Connection: close
+Server: Amber/1.1
+X-Object-ID: 1676037310 1676027370
+
+008000
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;
+
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr"&gt;
+&lt;head&gt;
+    &lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
+...</pre>
+
+        <p>Nous avons forgé une requête http et obtenu une réponse</p>
+
+        <h2>curl</h2>
+
+        <p>La commande curl permet de forger plus simplement des requêtes vers un serveur http.</p>
+
+        <pre class="shell">curl http://www.lemonde.fr</pre>
+
+        <p>Le contenu de la page s'affiche dans le terminal.</p>
+
+        <p>Si on souhaite voir les headers.</p>
+
+        <pre class="shell">curl --head http://www.lemonde.fr</pre>
+
+        <p>Ou ajouter des headers à la requête</p>
+
+        <pre class="shell">curl --header "Accept: text/html" http://www.lemonde.fr</pre>
+
+        <p>Plus d'exemples sont disponible sur le <a href="http://curl.haxx.se/docs/httpscripting.html" target="_blank" class="external">site de curl</a></p>
+
+        <p>Même si il est assez rare d'avoir besoin de forger des requêtes, il est interessant de noter la simplicité du protocole HTTP.</p>
+
+        <h2>Les navigateurs</h2>
 
         <p>Les navigateurs modernes permettent de voir facilement l'ensemble des requêtes et réponses http.</p>
 
@@ -58,7 +120,7 @@
             <li>Le temps mis pour récupérer les données</li>
         </ul>
 
-        <pre>Que veut dire un code de retour 200 ? un 302 ? un 404 ?</pre>
+        <div class="note">Que veut dire un code de retour 200 ? un 302 ? un 404 ?</div>
 
         <p>Une page web un peu riche peut facilement contenir plusieurs centaines de ressources.</p>
 
@@ -80,35 +142,11 @@
 
         <p>Dans les 2 cas, ce sont des couples (clé - valeur) qui sont en début de requête ou de réponse.</p>
 
-        <pre>Que signifient les headers de requête : Accept, Accept-Charset, If-Modified-Since, Referer, User-Agent ?
+        <div class="note">Que signifient les headers de requête : Accept, Accept-Charset, If-Modified-Since, Referer, User-Agent ?
 
-Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
+Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</div>
 
         <p>Il est possible de définir ses propres headers en étandant les headers standards (X- pour extended).</p>
-
-        <h2>curl</h2>
-
-        <p>Le navigateur est une aide au développement extrêmement précieuse.</p>
-
-        <p>Il est cependant possible de tester un serveur web en ligne de commande.</p>
-
-        <p>La commande curl permet de forger des requêtes vers un serveur http.</p>
-
-        <pre class="shell">curl http://www.lemonde.fr</pre>
-
-        <p>Le contenu de la page s'affiche dans le terminal.</p>
-
-        <p>Si on souhaite voir les headers.</p>
-
-        <pre class="shell">curl --head http://www.lemonde.fr</pre>
-
-        <p>Ou ajouter des headers à la requête</p>
-
-        <pre class="shell">curl --header "Accept: text/html" http://www.lemonde.fr</pre>
-
-        <p>Plus d'exemples sont disponible sur le <a href="http://curl.haxx.se/docs/httpscripting.html" target="_blank" class="external">site de curl</a></p>
-
-        <p>Il est assez rare d'avoir à forger soit même une requête http mais cela peut s'avèrer utile pour faire des tests.</p>
 
         <h2>HttpClient</h2>
 
@@ -118,7 +156,7 @@ Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
 
         <p>Pour faire un test, nous commençons par ajouter la dépendance dans le pom.xml</p>
 
-        <pre>&lt;dependency&gt;
+        <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
     &lt;artifactId&gt;httpclient&lt;/artifactId&gt;
     &lt;version&gt;4.1.2&lt;/version&gt;
@@ -127,7 +165,7 @@ Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</pre>
 
         <p>Ensuite on crée une classe de Test dans src/test/java dans le package fr.todooz.http</p>
 
-        <pre>public class HttpClientTest {
+        <pre class="prettyprint">public class HttpClientTest {
    @Test
    public void get() {
 
