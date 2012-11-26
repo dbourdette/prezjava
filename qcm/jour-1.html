@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 
     <link rel="stylesheet" href="../common/boostrap/css/bootstrap.min.css">
-    <script type="text/javascript" src="../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+    <script type="text/javascript" src="../common/jquery/jquery-1.4.4.min.js"></script>
 
     <style type="text/css">
         label.radio {
@@ -17,127 +17,190 @@
 <body>
 
     <div class="container">
-        <legend>QCM</legend>
+        <form action="#">
+            <legend>QCM</legend>
 
-        <label>L'intégration continue est une pratique</label>
-        <label class="radio">
-            <input type="radio" name="continuous">RUP
-        </label>
-        <label class="radio">
-            <input type="radio" name="continuous">Waterfall
-        </label>
-        <label class="radio">
-            <input type="radio" name="continuous">Agile
-        </label>
-        <label class="radio">
-            <input type="radio" name="continuous">ITIL
-        </label>
+            <label>Votre nom ou email ou callsign</label>
+            <input type="text" name="user">
 
-        <label>Quelle est la commande maven afin de faire un build ?</label>
-        <label class="radio">
-            <input type="radio" name="maven">mvn install
-        </label>
-        <label class="radio">
-            <input type="radio" name="maven">mvn clean
-        </label>
-        <label class="radio">
-            <input type="radio" name="maven">mvn dependency:tree
-        </label>
-        <label class="radio">
-            <input type="radio" name="maven">mvn package
-        </label>
+            <label>L'intégration continue est une pratique</label>
+            <label class="radio">
+                <input type="radio" name="continuous-integration-is">RUP
+            </label>
+            <label class="radio">
+                <input type="radio" name="continuous-integration-is">Waterfall
+            </label>
+            <label class="radio">
+                <input type="radio" name="continuous-integration-is">Agile
+            </label>
+            <label class="radio">
+                <input type="radio" name="continuous-integration-is">ITIL
+            </label>
 
-        <label>Laquelle de ces méthodes ne fait pas partie du protocol HTTP ?</label>
-        <label class="radio">
-            <input type="radio" name="http">PUT
-        </label>
-        <label class="radio">
-            <input type="radio" name="http">POST
-        </label>
-        <label class="radio">
-            <input type="radio" name="http">GET
-        </label>
-        <label class="radio">
-            <input type="radio" name="http">SET
-        </label>
+            <label>Qui est Kent Beck ?</label>
+            <label class="radio">
+                <input type="radio" name="kentbeck-is">Le prochain superman à l'écran
+            </label>
+            <label class="radio">
+                <input type="radio" name="kentbeck-is">Un membre des Black Eyed Peas
+            </label>
+            <label class="radio">
+                <input type="radio" name="kentbeck-is">Le créateur de XP et JUnit
+            </label>
+            <label class="radio">
+                <input type="radio" name="kentbeck-is">Une marque de céréales
+            </label>
 
-        <label>La dernière version du language HTML est la</label>
-        <label class="radio">
-            <input type="radio" name="webpattern">2.0
-        </label>
-        <label class="radio">
-            <input type="radio" name="webpattern">4
-        </label>
-        <label class="radio">
-            <input type="radio" name="webpattern">4.1
-        </label>
-        <label class="radio">
-            <input type="radio" name="webpattern">5
-        </label>
+            <label>Quelle est la commande maven afin de faire un build ?</label>
+            <label class="radio">
+                <input type="radio" name="create-build-with-maven">mvn install
+            </label>
+            <label class="radio">
+                <input type="radio" name="create-build-with-maven">mvn clean
+            </label>
+            <label class="radio">
+                <input type="radio" name="create-build-with-maven">mvn dependency:tree
+            </label>
+            <label class="radio">
+                <input type="radio" name="create-build-with-maven">mvn package
+            </label>
 
-        <label>Quel est le composant de base d'une application web jee ?</label>
-        <label class="radio">
-            <input type="radio" name="webcomponenent">devlets
-        </label>
-        <label class="radio">
-            <input type="radio" name="webcomponenent">servlets
-        </label>
-        <label class="radio">
-            <input type="radio" name="webcomponenent">applets
-        </label>
-        <label class="radio">
-            <input type="radio" name="webcomponenent">funlets
-        </label>
+            <label>Laquelle de ces méthodes ne fait pas partie du protocol HTTP ?</label>
+            <label class="radio">
+                <input type="radio" name="not-an-http-method">PUT
+            </label>
+            <label class="radio">
+                <input type="radio" name="not-an-http-method">POST
+            </label>
+            <label class="radio">
+                <input type="radio" name="not-an-http-method">GET
+            </label>
+            <label class="radio">
+                <input type="radio" name="not-an-http-method">SET
+            </label>
 
-        <label>Quel est le pattern central des applications web ?</label>
-        <label class="radio">
-            <input type="radio" name="webpattern">PVC
-        </label>
-        <label class="radio">
-            <input type="radio" name="webpattern">MVC
-        </label>
-        <label class="radio">
-            <input type="radio" name="webpattern">AVC
-        </label>
-        <label class="radio">
-            <input type="radio" name="webpattern">LOL
-        </label>
+            <label>La dernière version du language HTML est la</label>
+            <label class="radio">
+                <input type="radio" name="current-html-version">2.0
+            </label>
+            <label class="radio">
+                <input type="radio" name="current-html-version">4
+            </label>
+            <label class="radio">
+                <input type="radio" name="current-html-version">4.1
+            </label>
+            <label class="radio">
+                <input type="radio" name="current-html-version">5
+            </label>
 
-        <label>Hibernate est une implémentation de</label>
-        <label class="radio">
-            <input type="radio" name="hibernate">EJB
-        </label>
-        <label class="radio">
-            <input type="radio" name="hibernate">JSF
-        </label>
-        <label class="radio">
-            <input type="radio" name="hibernate">JPA
-        </label>
-        <label class="radio">
-            <input type="radio" name="hibernate">JMS
-        </label>
+            <label>Quel est le composant de base d'une application web jee ?</label>
+            <label class="radio">
+                <input type="radio" name="base-web-componenent">devlets
+            </label>
+            <label class="radio">
+                <input type="radio" name="base-web-componenent">servlets
+            </label>
+            <label class="radio">
+                <input type="radio" name="base-web-componenent">applets
+            </label>
+            <label class="radio">
+                <input type="radio" name="base-web-componenent">funlets
+            </label>
 
-        <label>Quel est votre personnage favori dans The big bang theory ?</label>
-        <label class="radio">
-            <input type="radio" name="tbbt">Sheldon Lee Cooper
-        </label>
-        <label class="radio">
-            <input type="radio" name="tbbt">Leonard Leakey Hofstadter
-        </label>
-        <label class="radio">
-            <input type="radio" name="tbbt">Howard Joel Wolowitz
-        </label>
-        <label class="radio">
-            <input type="radio" name="tbbt">Rajesh Ramayan Koothrappali
-        </label>
+            <label>Quel est le pattern central des applications web ?</label>
+            <label class="radio">
+                <input type="radio" name="central-web-pattern">PVC
+            </label>
+            <label class="radio">
+                <input type="radio" name="central-web-pattern">MVC
+            </label>
+            <label class="radio">
+                <input type="radio" name="central-web-pattern">AVC
+            </label>
+            <label class="radio">
+                <input type="radio" name="central-web-pattern">LOL
+            </label>
 
-        <div style="clear: both;"/>
-        <button type="submit" class="btn">Envoyer</button>
+            <label>Lequel n'est pas un framework web ?</label>
+            <label class="radio">
+                <input type="radio" name="is-not-a-web-framework">Play
+            </label>
+            <label class="radio">
+                <input type="radio" name="is-not-a-web-framework">Grails
+            </label>
+            <label class="radio">
+                <input type="radio" name="is-not-a-web-framework">Griffon
+            </label>
+            <label class="radio">
+                <input type="radio" name="is-not-a-web-framework">Rails
+            </label>
+
+            <label>Hibernate est une implémentation de</label>
+            <label class="radio">
+                <input type="radio" name="hibernate-implements">EJB
+            </label>
+            <label class="radio">
+                <input type="radio" name="hibernate-implements">JSF
+            </label>
+            <label class="radio">
+                <input type="radio" name="hibernate-implements">JPA
+            </label>
+            <label class="radio">
+                <input type="radio" name="hibernate-implements">JMS
+            </label>
+
+            <label>L'annotation standard (JSR 330) permettant d'obtenir une référence est</label>
+            <label class="radio">
+                <input type="radio" name="inject-with">@GiveItToMe
+            </label>
+            <label class="radio">
+                <input type="radio" name="inject-with">@Autowired
+            </label>
+            <label class="radio">
+                <input type="radio" name="inject-with">@Inject
+            </label>
+            <label class="radio">
+                <input type="radio" name="inject-with">@Dependency
+            </label>
+
+            <label>Quel est votre personnage favori dans The big bang theory ?</label>
+            <label class="radio">
+                <input type="radio" name="tbbt">Sheldon Lee Cooper
+            </label>
+            <label class="radio">
+                <input type="radio" name="tbbt">Leonard Leakey Hofstadter
+            </label>
+            <label class="radio">
+                <input type="radio" name="tbbt">Howard Joel Wolowitz
+            </label>
+            <label class="radio">
+                <input type="radio" name="tbbt">Rajesh Ramayan Koothrappali
+            </label>
+
+            <div style="clear: both;"/>
+            <input type="submit" class="btn" value="Envoyer" />
+        </form>
     </div>
 
     <script type="text/javascript">
         $(function() {
+            $("form").submit(function() {
+                var qcm = {};
+                qcm.answers = {}
 
+                $("input:radio:checked").each(function(index, input) {
+                    qcm.answers[input.name] = $.trim($(input).parent().text());
+                });
+
+                qcm.user = $("input[name=user]").val();
+
+                $.ajax( { url: "https://api.mongolab.com/api/1/databases/prezjava/collections/qcm?apiKey=4e4562755e4c1f31ad38855d",
+                    data: JSON.stringify( qcm ),
+                    type: "POST",
+                    contentType: "application/json" } );
+
+                return false;
+            });
         });
     </script>
 </body>
