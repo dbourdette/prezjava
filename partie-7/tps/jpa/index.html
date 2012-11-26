@@ -26,7 +26,7 @@
 
         <p>Cette spécification simplifie l'interaction avec les bases de données relationnelles.</p>
 
-        <p>Elle fournit une couche ORM : object relationnal mapping.</p>
+        <p>Elle fournit une couche ORM : Object Relationnal Mapping.</p>
 
         <p>Elle est née a partir d'hibernate qui reste l'implémentation leader sur ce secteur.</p>
 
@@ -132,7 +132,7 @@ Switched to a new branch 'jpa'</pre>
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>On rajoute ensuite notre unité dans WEB-INF/classes/META-INF/persistence.xml</p>
+        <p>On rajoute ensuite notre unité dans src/main/resources/persistence.xml</p>
 
         <pre class="prettyprint">&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -152,9 +152,244 @@ Switched to a new branch 'jpa'</pre>
 
         <pre class="prettyprint">&lt;bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"&gt;
     &lt;property name="dataSource" ref="dataSource"/&gt;
+    &lt;property name="persistenceXmlLocation" value="classpath:persistence.xml" /&gt;
 &lt;/bean&gt;</pre>
 
         <p>Normalement, l'application ne fait rien de plus mais elle doit encore démarrer.</p>
+
+        <h2>TaskServiceJPAImpl</h2>
+
+        <p>Nous créons une nouvelle implémentation de TaskService qui va utiliser l'EntityManager</p>
+
+        <pre class="prettyprint">public class TaskServiceJPAImpl implements TaskService {
+
+    @Override
+    public void save(Task task) {}
+
+    @Override
+    public void delete(Long id) {}
+
+    @Override
+    public List&lt;Task&gt; findAll() { return null; }
+
+    @Override
+    public List&lt;Task&gt; findByQuery(String query) { return null; }
+
+    @Override
+    public List&lt;Task&gt; findByTag(String tag) { return null; }
+
+    @Override
+    public List&lt;Task&gt; findByInterval(Interval interval) { return null; }
+
+    @Override
+    public int count() { return 0; }
+
+    @Override
+    public Task findById(Long id) { return null; }
+}</pre>
+
+        <h2>TaskServiceJPAImplTest</h2>
+
+        <p>Pour avancer sereinement, nous allons passer par des tests unitaires.</p>
+
+        <p>Dans les tests et les services, il existe 2 façons de travailler avec spring et JPA :</p>
+
+        <ul>
+            <li>Utiliser l'EntityManagerFactory comme on utilise la SessionFactory de spring</li>
+            <li>Utiliser un EntityManager partagé qui respecte les @Transactionnal</li>
+        </ul>
+
+        <p>Nous allons jouer avec les 2 en fonction du besoin.</p>
+
+        <p>Le début de nos tests unitaires.</p>
+
+        <pre class="prettyprint">@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+public class TaskServiceJPAImplTest {
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
+
+    @Inject
+    private TaskService taskService;
+
+    @After
+    public void cleanDb() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        entityManager.createQuery("delete from Task").executeUpdate();
+
+        transaction.commit();
+
+        entityManager.close();
+    }
+
+    @Test
+    public void save() {
+        taskService.save(task());
+    }
+
+    private Task task() {
+        return task("java,jpa");
+    }
+
+    private Task task(String tags) {
+        return task(new Date(), tags);
+    }
+
+    private Task task(Date date, String tags) {
+        Task task = new Task();
+        task.setDate(date);
+        task.setTitle("JPA EntityManager FTW!");
+        task.setText("Use some stuff about JPA");
+        task.setTags(tags);
+        return task;
+    }
+}</pre>
+
+        <p>Cette classe va beaucoup ressembler aux tests sur l'autre service.</p>
+
+        <p>La configuration associée TaskServiceJPAImplTest-context.xml</p>
+
+        <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+
+    &lt;import resource="test-context.xml" /&gt;
+    
+    &lt;bean class="fr.todooz.service.TaskServiceJPAImpl" /&gt;
+
+&lt;/beans&gt;</pre>
+
+        <p>Et l'ajout de l'entity manager dans test-context.xml</p>
+
+        <pre class="prettyprint">&lt;bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"&gt;
+    &lt;property name="dataSource" ref="dataSource"/&gt;
+    &lt;property name="persistenceXmlLocation" value="classpath:persistence.xml" /&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Normalement, notre unique test passe mais nous n'avons pas grand chose pour le moment.</p>
+
+        <h2>save</h2>
+
+        <p>L'implémentation de la méthode save devrait aussi simple que :</p>
+
+        <pre class="prettyprint">@PersistenceContext
+private EntityManager entityManager;
+
+@Override
+public void save(Task task) {
+    entityManager.persist(task);
+}</pre>
+
+        <p>Mais si on modifie notre test</p>
+
+        <pre class="prettyprint">@Test
+public void save() {
+    Task task = task();
+
+    taskService.save(task);
+
+    Assert.assertNotNull(task.getId());
+}</pre>
+
+        <p>On voit que l'id n'est pas calculé (et l'objet n'est pas persisté)</p>
+
+        <p>Comme pour hibernate, si on ne souhaite pas gérer les transaction à la main, nous allons devoir utiliser @Transationnal.</p>
+
+        <pre class="prettyprint">@Override
+@Transactionnal
+public void save(Task task) {
+    entityManager.persist(task);
+}</pre>
+
+        <p>Il faut donc rajouter un gestionnaire de transaction</p>
+
+        <pre class="prettyprint">&lt;!-- ajoute un gestionnaire de transactions lié à la entityManagerFactory --&gt;
+&lt;bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"&gt;
+    &lt;property name="entityManagerFactory" ref="entityManagerFactory" /&gt;
+    &lt;qualifier value="jpa" /&gt;
+&lt;/bean&gt;</pre>
+
+        <p>Le <b>qualifier</b> va permettre de distinguer les 2 gestionnaires.</p>
+
+        <p>On modifie ensuite l'annotation</p>
+
+        <pre class="prettyprint">@Override
+@Transactionnal("jpa")
+public void save(Task task) {
+    entityManager.persist(task);
+}</pre>
+
+        <p>Ainsi, spring va chercher le transaction manager indiqué.</p>
+
+        <p>On peut noter que les tests de TaskServiceTest passent encore.</p>
+
+        <p>En pratique, il est extrêmement rare d'avoir ce cas de figure avec 2 sources de données.</p>
+
+        <h2>Et le reste des méthodes</h2>
+
+        <p>Il reste donc a fini les tests et la classe TaskServiceJPAImpl</p>
+
+        <p>On peut largement s'inspirer de l'autre impléméntation.</p>
+
+        <p>La documentation sur l'<a href="http://docs.oracle.com/javaee/6/api/javax/persistence/EntityManager.html" class="external" target="_blank">entity manager</a>.</p>
+
+        <p>Un peu d'aide : </p>
+
+        <ul>
+            <li>Pour l'update, il faut faut faire un test sur la nullité de l'id et faire un persist ou un merge.</li>
+            <li>La criteria api de jpa est horrible.<br> Il faut utiliser la query api (ex: entityManager.createQuery("from Task order by date desc"))</li>
+            <li>
+                La méthode finvByQuery peut s'écrire
+                <pre class="prettyprint">@Override
+@Transactional(value = "jpa", readOnly = true)
+public List&lt;Task&gt; findByQuery(String query) {
+    return entityManager.createQuery("from Task where lower(title) LIKE :title order by date desc")
+                    .setParameter("title", "%" + query.toLowerCase() + "%")
+                    .getResultList();
+}</pre>
+            </li>
+        </ul>
+
+        <h2>Choisir entre les 2 implémentations</h2>
+
+        <p>La première chose a faire est de repporter notre jpaTransactionManager et d'ajouter un @Service à TaskServiceJPAImpl.</p>
+
+        <p>Maintenant, nous avons 2 instances de TaskService en mémoire et spring est mécontent.</p>
+
+        <pre class="shell">Caused by: org.springframework.beans.factory.BeanCreationException:
+ Could not autowire field: private fr.todooz.service.TaskService fr.todooz.web.controller.AdminController.taskService;
+ nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException:
+ No unique bean of type [fr.todooz.service.TaskService] is defined: expected single matching bean but found 2:
+    [taskServiceImpl, taskServiceJPAImpl]
+...</pre>
+
+        <p>Il ne sait pas lequel choisir pour les injections.</p>
+
+        <p>On l'aide en ajoutant une annotation à chaque service</p>
+
+        <pre class="prettyprint">@Service
+@Qualifier("hibernate")
+public class TaskServiceImpl implements TaskService { ... }
+
+@Service
+@Qualifier("jpa")
+public class TaskServiceJPAImpl implements TaskService { ... }</pre>
+
+        <p>En en qualifiant les injections:</p>
+
+        <pre class="prettyprint">@Inject
+@Qualifier("jpa")
+private TaskService taskService;</pre>
+
+        <p>Ainsi, l'application utilise maintenant l'API JPA au lieu de l'API hibernate.</p>
     </div>
 </div>
 </body>
