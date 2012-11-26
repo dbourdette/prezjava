@@ -34,9 +34,18 @@
             <li>@Stateful : les services avec état conversationel (gestion de session)</li>
         </ul>
 
-        <p></p>
+        <h2>Branche git</h2>
+
+        <p>On crée la branche ejb à partir de la branche master.</p>
+
+        <pre class="shell">&gt; git checkout master
+Switched to branch 'master'
+&gt; git checkout -b ejb
+Switched to a new branch 'ejb'</pre>
 
         <h2>Embedded Glassfish</h2>
+
+        <p>Pour faire des EJBs, le plus simple est d'utiliser un conteneur d'application.</p>
 
         <p>Glassfish est l'implémentation de référence produite par oracle.</p>
 
@@ -62,6 +71,8 @@
 
         <pre class="shell">mvn embedded-glassfish:run</pre>
 
+        <div class="note">Il se peut qu'il y ait besoin de faire un mvn clean puis mvn package avant de lancer cette commande</div>
+
         <p>Si on teste cette commande avec notre application, elle devrait tourner comme avec tomcat sur http://localhost:8080/index (attention le glassfish-embedded-all-3.1.1.jar est un peu long a récupérer).</p>
 
         <p>Le plugin fonctionne un peu différemment du plugin tomcat : la commande démarre le serveur, déploie l'application et passe en mode interactif.</p>
@@ -72,7 +83,7 @@
 
         <pre class="shell">export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
 
-        <p>Pour rappel</p>
+        <p>Les options Xmx et XX:MaxPermSize sont les zones indiqués sur le schéma suivant :</p>
 
         <img src="img/jvm-memory.png" alt="" style="margin: 0 170px;">
 
@@ -91,16 +102,16 @@
 
         <p>Attention, tout ce que nous allons écrire à partir d'ici ne fonctionnera pas sous tomcat mais uniquement dans des serveurs d'application.</p>
 
-        <p>Le fichier ejb-jar.xml étant optionnel, nous allons nous en passer.</p>
+        <p>Le fichier ejb-jar.xml (descripteur de déploiement des ejbs) étant optionnel, nous allons nous en passer.</p>
 
-        <p>Dans le package edu.ecm.blog.ejb on crée la classe suivante :</p>
+        <p>Dans le package fr.todooz.ejb on crée la classe suivante :</p>
 
         <pre class="prettyprint">@Singleton <span class="comment">// instance unique de ce service dans l'application</span>
 @Startup <span class="comment">// instancié au démarrage de l'application</span>
 public class HelloEJB {
     @PostConstruct
     public void hello() {
-        System.out.println("hello app serv");
+        System.out.println("\n\n\nhello app serv\n\n\n");
     }
 }</pre>
 
@@ -112,17 +123,17 @@ public class HelloEJB {
 
         <h2>Depuis une servlet</h2>
 
-        <p>Afin de rendre ce service interessant, il faut pouvoir l'utiliser depuis un autre composant.</p>
+        <p>Afin de rendre ce service un peu interessant, il faut pouvoir l'utiliser depuis un autre composant.</p>
 
         <p>Dans un conteneur EJB, on utilise la notation @EJB afin d'obtenir une référence.</p>
 
-        <pre>public class HelloEJB {
+        <pre class="prettyprint">public class HelloEJB {
    public String hello(String name) {
        return "Hi " + name;
    }
 }</pre>
 
-       <pre>@Singleton
+       <pre class="prettyprint">@Singleton
 public class MoreSeriousEJB {
    @EJB
    private HelloEJB helloEJB;
@@ -134,7 +145,7 @@ public class MoreSeriousEJB {
 
         Et depuis la servlet HelloWorldServlet.
 
-        <pre>public class HelloWorldServlet extends HttpServlet {
+        <pre class="prettyprint">public class HelloWorldServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
 
    @EJB
@@ -143,37 +154,57 @@ public class MoreSeriousEJB {
    @Override
    protected void doGet(HttpServletRequest request,
          HttpServletResponse response) throws ServletException, IOException {
-      response.getWriter().write(moreSeriousEJB.hello("Steven"));
+      response.getWriter().write(moreSeriousEJB.hello("EJBs"));
    }
 }</pre>
 
         <p>Si on regarde sur http://localhost:8080/HelloWorldServlet, on obtient bien le résultat attendu.</p>
 
-        <pre>Hi Steven</pre>
+        <pre>Hi EJBs</pre>
 
         <p>Notre servlet a donc bien trouvé le premier EJB qui a lui même trouvé le second.</p>
+
+        <p>Nous avons donc un conteneur qui fait de l'injection entre nos composants.</p>
 
         <p>Si on regarde coté nouvelles spécification jee, il serait même possible de se passer du web.xml et de tout faire par annotations (mais ce n'est pas le sujet ici).</p>
 
         <h2>Depuis un Controller spring</h2>
 
-        <p>L'utilisation depuis un composant spring est un peu moins simple (pour le moment ?)</p>
+        <p>Depuis un controller spring, c'est guère plus compliqué.</p>
+
+        <p>Dans le controller, on injecte l'EJB avec l'annotation standard.</p>
+
+        <pre class="prettyprint">@Controller
+public class IndexController {
+    @EJB(mappedName = "java:module/MoreSeriousEJB")
+    private MoreSeriousEJB moreSeriousEJB;
+
+    @RequestMapping("/hello")
+    @ResponseBody
+    public String hello(Model model) {
+        return moreSeriousEJB.hello("EJBs from Controller");
+    }
+}</pre>
+
+        <p>Le nom jndi est <a href="http://docs.oracle.com/cd/E19798-01/821-1841/girgn/index.html" class="external" target="_blank">standardisé</a> depuis les EJB 3.1 : il est le même quel que soit le serveur d'application.</p>
+
+        <h2>Depuis un Controller spring (bis)</h2>
+
+        <p>Il est aussi possible de récupérer un référence vers un ejb comme si c'était un composant spring.</p>
 
         <p>On commence par ajouter le namespace jee au contexte spring</p>
 
-        <pre>&lt;beans <span class="comment">...</span> xmlns:jee="http://www.springframework.org/schema/jee" xsi:schemaLocation="
+        <pre class="prettyprint">&lt;beans <span class="comment">...</span> xmlns:jee="http://www.springframework.org/schema/jee" xsi:schemaLocation="
 <span class="comment">...</span>
 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"&gt;</pre>
 
         <p>Ce qui nous permet d'écrire.</p>
 
-        <pre>&lt;jee:jndi-lookup id="moreSeriousEJB" jndi-name="java:global/myapp/MoreSeriousEJB" /&gt;</pre>
+        <pre class="prettyprint">&lt;jee:jndi-lookup id="moreSeriousEJB" jndi-name="java:module/MoreSeriousEJB" /&gt;</pre>
 
-        <p>Le jndi name est standardisé depuis les EJB 3.1. Ce nom est visible dans les logs de chargement de glassfish.</p>
+        <p>Et enfin dans le controller avec @Inject.</p>
 
-        <p>Et enfin dans le controller.</p>
-
-        <pre>@Controller
+        <pre class="prettyprint">@Controller
 public class HelloController {
    @Inject
    private MoreSeriousEJB moreSeriousEJB;
@@ -181,21 +212,21 @@ public class HelloController {
    @RequestMapping("/hello")
    @ResponseBody
    public String hello(Model model) {
-      return moreSeriousEJB.hello("Steven from Controller");
+      return moreSeriousEJB.hello("EJBs from Controller");
    }
 }</pre>
 
         <p>Sur http://localhost:8080/hello on a donc.</p>
 
-        <pre>Hi Steven from Controller</pre>
+        <pre>Hi EJBs from Controller</pre>
 
-        <p>L'intégration est donc relativement simple même si spring ne supporte pas l'annotation @EJB (pour le moment ?).</p>
+        <p>On a donc une intégration un peu plus complexe pour presque le même résultat.</p>
 
         <h2>@Schedule</h2>
 
         <p>Il est possible de planifier l'exécution d'une méthode par une simple annotation.</p>
 
-        <pre>private int count = 0;
+        <pre class="prettyprint">private int count = 0;
 
 @Schedule(hour = "*", minute = "*", second = "*/5")
 public void endlessly() {
@@ -216,14 +247,21 @@ Hi 3</pre>
 
         <p>L'annotation @Asynchronous permet d'exécuter une méthode en asynchrone.</p>
 
-        <p>Cela permet à l'appelant de récupérer la main immédiatement alors que le code de la méthode appelée sera exécuté dès que possible, en parallèle.</p>
+        <p>L'appel est donc instantané pour l'appelant.</p>
 
-        <p>Un exemple serait le déclenchement d'un calcul long (rapport hebdomadaire) depuis une interface web qui affichera alors que le calcul est en cours.</p>
+        <p>Pour l'exécution, le conteneur se charge d'exécuter la méthode dès que possible.</p>
+
+        <p>Pas exemple, la méthode est un processus long alors que l'on souhaite récupérer la main rapidement.</p>
 
         <p>La mise en place est simple.</p>
 
-        <pre>@Asynchronous
+        <pre class="prettyprint">@Asynchronous
 public void startSomethingLong() {
+    <span class="comment">...</span>
+}
+
+@Asynchronous
+public Future&lt;Result&gt; startSomethingLongToo() {
     <span class="comment">...</span>
 }</pre>
 
@@ -234,15 +272,23 @@ public void startSomethingLong() {
             <li>Future&lt;T&gt; : permet d'avoir un retour à la fin de l'exécution asynchrone (callback)</li>
         </ul>
 
+        <p>L'avantage important est que l'on ne manipule pas de Thread soit même.</p>
+
+        <p>Spring possède une annotation équivalente.</p>
+
         <h2>Un bémol</h2>
 
         <p>Il y a quelques années, il aurait fallu que ce tutorial soit 3 fois plus long afin de couvrir la même chose.</p>
 
+        <p>Les EJBs 1.0, 2.0 et 2.1 étaient un enfer.</p>
+
         <p>Les spécifications 3.0 et 3.1 ont apporté une simplication longuement attendue.</p>
 
-        <p>Cependant, même si les EJBs 1 sont morts, les EJBs 2.x sont encore dans la nature, en production dans bien des serveurs.</p>
+        <p>Les spécifications actuelles sont plus modulaires (JPA, CDI, EJB Lite...) et plus faciles a intégrer.</p>
 
-        <p>Les concepts sont sensiblement les mêmes mais la configuration et le packaging sont beaucoup plus douloureux.</p>
+        <p>Cependant, même si les EJBs 1 sont morts, beaucoup d'EJBs 2.x sont encore dans la nature.</p>
+
+        <p>Il faut donc s'attendre parfois à beaucoup de lourdeur par rapport à des spécifications plus récentes.</p>
     </div>
 </div>
 </body>
