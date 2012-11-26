@@ -3,6 +3,8 @@ spring context : main and servlet from the begining of the project
 
 interface http : décomposition d'une url (protocole...)
 
+curl -> utile pour teste du REST
+
 Classpath entry M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar will not be exported or published. Runtime ClassNotFoundExceptions may result.  	prezjava-todooz		P/prezjava-todooz	Classpath Dependency Validator Message
 
 no scroll in servlets
@@ -10,8 +12,6 @@ no scroll in servlets
 check prettyprint in pre
 
 java :
-toString
-equals et hashCode
 immutable et accessors
 
 cheat sheet : convention de repertoires maven
@@ -19,3 +19,6 @@ cheat sheet : structure d'un war
 cheat sheets instead of prezs
 
 shell > -> $
+
+Travaux pratiques -> null
+null -> Slides
