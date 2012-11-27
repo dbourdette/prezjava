@@ -1,15 +1,7 @@
 
-spring context : main and servlet from the begining of the project
-
 interface http : décomposition d'une url (protocole...)
 
-curl -> utile pour teste du REST
-
 Classpath entry M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar will not be exported or published. Runtime ClassNotFoundExceptions may result.  	prezjava-todooz		P/prezjava-todooz	Classpath Dependency Validator Message
-
-no scroll in servlets
-
-check prettyprint in pre
 
 java :
 immutable et accessors
@@ -22,3 +14,8 @@ shell > -> $
 
 Travaux pratiques -> null
 null -> Slides
+
+tps :
+- link to home in header on brand name
+- spring context : main and servlet from the begining of the project
+- more curl with headers and body (curl -> utile pour teste du REST)
