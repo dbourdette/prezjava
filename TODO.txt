@@ -18,4 +18,7 @@ null -> Slides
 tps :
 - link to home in header on brand name
 - spring context : main and servlet from the begining of the project
-- more curl with headers and body (curl -> utile pour teste du REST)
+
+next year
+- http client avec groovy (plus simple)
+- java 7 (try with resources sur les connections jdbc ?)
