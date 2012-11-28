@@ -10,6 +10,8 @@ cheat sheet : convention de repertoires maven
 cheat sheet : structure d'un war
 cheat sheets instead of prezs
 
+DRY, ACID, CAP, Law of demeter, Liskov principle
+
 shell > -> $
 
 Travaux pratiques -> null
