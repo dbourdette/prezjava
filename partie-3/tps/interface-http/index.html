@@ -79,21 +79,59 @@ X-Object-ID: 1676037310 1676027370
 
         <p>La commande curl permet de forger plus simplement des requêtes vers un serveur http.</p>
 
-        <pre class="shell">curl http://www.lemonde.fr</pre>
+        <pre class="shell">$ curl http://www.lemonde.fr
+...</pre>
 
         <p>Le contenu de la page s'affiche dans le terminal.</p>
 
+        <p>Cela équivaut à la requête http suivante sur www.lemonde.fr</p>
+
+        <pre class="shell">GET / HTTP/1.1</pre>
+
+        <h3>Headers</h3>
+
         <p>Si on souhaite voir les headers.</p>
 
-        <pre class="shell">curl --head http://www.lemonde.fr</pre>
+        <pre class="shell">$ curl --head http://www.lemonde.fr
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Cache-Control: max-age=60
+Content-Type: text/html
+Date: Wed, 28 Nov 2012 08:07:02 GMT
+Last-Modified: Wed, 28 Nov 2012 08:06:19 GMT
+Server: ECS (cdg/44C4)
+Via: 1.1 varnish
+X-Cache: HIT
+X-CDN: Served By EdgeCast
+X-Server: speed
+X-Varnish: 1364646405 1364646110
+X-Varnish-Cache: HIT
+X-Varnish-Server: speed.lemonde.fr
+Content-Length: 300860</pre>
 
         <p>Ou ajouter des headers à la requête</p>
 
-        <pre class="shell">curl --header "Accept: text/html" http://www.lemonde.fr</pre>
+        <pre class="shell">$ curl --header "Accept: text/html" http://www.lemonde.fr</pre>
 
-        <p>Plus d'exemples sont disponible sur le <a href="http://curl.haxx.se/docs/httpscripting.html" target="_blank" class="external">site de curl</a></p>
+        <h3>Autres options</h3>
 
-        <p>Même si il est assez rare d'avoir besoin de forger des requêtes, il est interessant de noter la simplicité du protocole HTTP.</p>
+        <p>Curl est extrêmement puissant et permet de forger toutes les requêtes http possibles.</p>
+
+        <p>Voici les options les plus intéressantes</p>
+
+        <pre class="shell">
+-X, --request &lt;command&gt;          comande HTTP (ex: -X POST)
+-H, --header &lt;header&gt;            ajout d'un header (ex: -H "Accept:text/html")
+-A, --user-agent &lt;agent string&gt;  header user-agent
+-I, --head                       affiche que les headers de la réponse
+-i, --include                    affiche les headers de la réponse
+-d, --data &lt;data&gt;                données du body</pre>
+
+        <p>Par exemple pour faire un post en envoyant des données json</p>
+
+        <pre class="shell">$ curl -i -X POST -H "Content-Type: application/json" -d '{"key": "value"}' http://my.site.fr/page</pre>
+
+        <p>Avec l'avènement de REST, il est devenu très utile de pouvoir forger ses requêtes afin de tester ses services.</p>
 
         <h2>Les navigateurs</h2>
 
