@@ -112,9 +112,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         <p>Et la classe DummyData</p>
 
         <pre class="prettyprint">public class DummyData {
-  public static List&lt;Task&gt; tasks() {
-    private static final int TASK_COUNT = 10;
+  private static final int TASK_COUNT = 10;
 
+  public static List&lt;Task&gt; tasks() {
     List&lt;Task&gt; tasks = new ArrayList&lt;Task&gt;();
 
     for (int i = 0; i &lt; TASK_COUNT; i++) {
@@ -250,7 +250,7 @@ response.getWriter().write(name);</pre>
 
         <p>On ne peut pas les packager dans un jar mais elles sont plus simples a mettre en place que les customs tags.</p>
 
-        <p>Par exemple, si on ajoute le fichier header.tag dans le répertoire WEB-INF/tags/widget.</p>
+        <p>Par exemple, si on ajoute le fichier navbar.tag dans le répertoire WEB-INF/tags/widget.</p>
 	    
         <pre  class="prettyprint">&lt;%@ tag language="java" pageEncoding="UTF-8"%&gt;
 
