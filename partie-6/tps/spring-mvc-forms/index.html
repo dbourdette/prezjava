@@ -471,7 +471,7 @@ public String post(@ModelAttribute @Valid Task task, BindingResult result, Redir
 
     taskService.save(task);
 
-    redirectAttributes.addFlashAttribute("message", "La sauvegarde a réussi");
+    redirectAttributes.addFlashAttribute("flashMessage", "La sauvegarde a réussi");
 
     return "redirect:/";
 }</pre>
