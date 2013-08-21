@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
     <title>Eclipse</title>
 
     <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
@@ -13,6 +12,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -167,11 +168,11 @@ public String toString() {
 
         <p>Ces 2 méthodes marchent en couple et sont capitales.</p>
 
-        <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur eclipse mais une description détaillée et simple est disponible dans le <a href="http://java.sun.com/developer/Books/effectivejava/Chapter3.pdf" class="external">chapitre 3 de effective java</a></p>
+        <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur eclipse mais une description détaillée est disponible dans le <a href="http://fr.scribd.com/doc/36454091/Effective-Java-Chapter3" class="external">chapitre 3 de effective java</a></p>
 
         <p>Les méthodes equals et hashCode permettent de comparer des objets 2 à 2. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
 
-        <p>Une mauvaise implémentation peut avoir des conséquences désatreuses pour une application.</p>
+        <p>Elles sont difficiles à bien implémenter et une mauvaise implémentation peut être fatale.</p>
 
         <p>Avec eclipse, il suffit de demander la génération de ces méthodes via Source &gt; Generate hashCode() and equals()...</p>
 
@@ -214,8 +215,10 @@ public boolean equals(Object obj) {
 
         <p>On va maintenant créer une classe avec une méthode main.</p>
 
-        <pre class="prettyprint language-java">public class Main {
-    public static final void main(String[] args) {
+        <pre class="prettyprint language-java">package fr.test;
+
+public class Main {
+    public static void main(String[] args) {
 
     }
 }</pre>
@@ -274,9 +277,9 @@ System.out.println(person);</pre>
 
         <p>Par exemple, si on tape control-shift-T puis "People", on peut ouvrir rapidement le fichier contenant la classe sans utiliser la souris.</p>
 
-        <h2>Plus de raccourçis</h2>
+        <h2>Plus de raccourcis</h2>
 
-        <p>Les raccourçis clavier sont indispensables afin d'être plus productif. En voici quelques uns :</p>
+        <p>Les raccourcis clavier sont indispensables afin d'être plus productif. En voici quelques uns :</p>
 
         <ul>
             <li>Ctrl+Space : invoquer l'assistant de complétion</li>
@@ -293,7 +296,7 @@ System.out.println(person);</pre>
             <li>Ctrl+Shift+F : formatter le code</li>
         </ul>
 
-        <p>Il est facile de trouver des listes de raccourçis sur le web. Par exemple, <a href="http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf" class="external" target="_blank">en suivant ce lien</a></p>
+        <p>Il est facile de trouver des listes de raccourcis sur le web. Par exemple, <a href="http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf" class="external">en suivant ce lien</a></p>
 </div>
 </body>
 </html>

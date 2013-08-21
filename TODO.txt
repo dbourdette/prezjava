@@ -3,14 +3,21 @@ interface http : décomposition d'une url (protocole...)
 
 Classpath entry M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar will not be exported or published. Runtime ClassNotFoundExceptions may result.  	prezjava-todooz		P/prezjava-todooz	Classpath Dependency Validator Message
 
+intellij
+
 java :
+object class : hashcode & equals, toString...
+conventions
+static, attributs, methods (public protected private)
+formattage de code, ex avec une phrase en francais.
+annotations
 immutable et accessors
 
 cheat sheet : convention de repertoires maven
 cheat sheet : structure d'un war
 cheat sheets instead of prezs
 
-DRY, ACID, CAP, Law of demeter, Liskov principle
+DRY, ACID, CAP, Law of demeter, Liskov principle, Hollywood principle
 
 shell > -> $
 
