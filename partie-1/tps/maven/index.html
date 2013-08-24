@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 </head>
 <body onload="prettyPrint();">
 <div class="presentation">
@@ -21,38 +23,36 @@
 
         <h2>Principes</h2>
 
-        <p>Maven est un outils de build : il transforme le code source en un artefact logiciel.</p>
+        <p>Maven est un outils de build : il transforme le code source en un produit logiciel.</p>
 
         <img src="img/build.png" alt="build" style="width: 400px;margin: 0 180px">
 
-        <p>Généralement les artefacts sont des librairies (.jar) ou des applications web (.war).</p>
+        <p>Généralement le produit est une librairie java (.jar) ou une application web (.war).</p>
 
-        <p>Faire un build doit pouvoir se faire en <b>une seule ligne de commande</b> et produire le livrable qui est un <b>unique fichier</b>.</p>
+        <p>En ligne de commande, le build est facilement automatisable, le produit peut être numéroté (ex : build-1.1.3.zip) et archivé.</p>
 
-        <p>Ainsi, le build est facilement automatisable, le résultat peut être numéroté (ex : build-1.1.3.zip) et archivé.</p>
+        <p>Idéalement, le build éxécute les tests et produit des rapports.</p>
 
-        <p>Idéalement, il exécute les jeux de tests et produit divers rapports qui sont exploités pour le suivi de qualité ou la documentation.</p>
+        <p>Pour construire le produit, on a besoin de librairies : les <b>dépendances</b>.</p>
 
-        <p>La particularité de maven est de gérer des <b>repositories</b> contenant les lirairies nécessaires aux projets.</p>
+        <p>Maven va les chercher dans des <b>repositories</b>.</p>
 
         <img src="img/maven.png" alt="build" style="width: 400px;margin: 0 180px">
 
-        <p>Lors du build, maven va donc aller chercher toutes les dépendances, compiler le code, exécuter les tests et générer l'artefact.</p>
-
-        <p>Un projet est entièrement décrit dans un fichier <b>pom.xml</b> (Project Object Model) à sa racine.</p>
+        <p>La configuration du build est dans un fichier <b>pom.xml</b> (Project Object Model) à la racine du projet.</p>
 
         <p>Les principales alternatives possibles en java sont</p>
 
         <ul>
-            <li>ant : le premier outils de build en java pour java. Il utilise un style impératif comme make. Le script de build est une liste de commandes en xml.</li>
-            <li>maven : un outils de build qui utilise un style déclaratif. Sa force réside dans sa gestion des dépendances et son intégration dans la chaîne de montage logicielle.</li>
-            <li>ivy : pas vraiment un outils de build mais plutôt un équivalent de la partie gestion de dépendances de maven.</li>
-            <li>gradle : assez proche de maven car c'est une approche déclarative. Plus moderne, il repose sur un DSL et est plus flexible. Il est cependance moins répendu et donc moins supporté pas les logiciels tiers.</li>
+            <li>ant : le premier outils de build en java pour java. Ce sont des scripts en xml.</li>
+            <li>gradle : un mix entre ant et maven mais qui utilise le language groovy.</li>
         </ul>
 
         <h2>Installation</h2>
 
         <p>La <a href="http://maven.apache.org/download.html" class="external" target="_blank">dernière version de maven 3.x</a> est disponible sur le site de maven</p>
+
+        <div class="note">Sous mac, il suffit de faire un brew install maven</div>
 
         <p>Il faut télécharger et installer maven en local. Voici l'extrait de la <a href="http://maven.apache.org/download.html#Installation" class="external" target="_blank">documentation maven</a> :</p>
 
@@ -66,7 +66,7 @@
             <li>Run mvn --version to verify that it is correctly installed.</li>
         </ol>
 
-        <pre class="shell">~ &gt; <b>mvn --version</b>
+        <pre class="shell">~ $ <b>mvn --version</b>
 Apache Maven 2.1.0 (r755702; 2009-03-18 20:10:27+0100)
 Java version: 1.6.0_20
 Java home: /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
@@ -75,40 +75,11 @@ OS name: "mac os x" version: "10.6.4" arch: "x86_64" Family: "mac"</pre>
 
         <h2>10 minutes test</h2>
 
-        <p>Nous allons maintenant créer un projet maven.</p>
-        <p>Pour cela, il suffit de se positionner dans le répertoire qui va contenir le projet et d'exécuter :</p>
+        <p>Nous allons maintenant créer un projet maven : le projet todooz.</p>
 
-        <pre class="shell">mvn archetype:generate -DgroupId=fr.todooz -DartifactId=todooz -DarchetypeArtifactId=maven-archetype-quickstart</pre>
+        <img src="img/create-todooz.png" alt="create project todooz" style="margin: 0 60px;"/>
 
-        <p>Pour la version, on garde la valeur par défaut : 1.0-SNAPSHOT</p>
-
-        <p>Le répertoire todooz a été créé et il contient la structure suivante :</p>
-
-        <pre class="shell">
-pom.xml
-src
-|--main
-|  |--java
-|     |--fr
-|       |--todooz
-|         |--App.java
-|--test
-|  |--java
-|     |--fr
-|       |--todooz
-|         |--AppTest.java
-
-        </pre>
-
-        <p>Cette structure se réfère à la <a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html" class="external" target="_blank">convention de repertoires maven</a></p>
-
-        <p>
-            Nous aurions pu (et dû) tout à fait créer ces répertoires et le pom.xml à la main.
-            En effet, il s'avère plus complexe de taper la bonne ligne de commande avec le bon archetype que de créer quelques réperoire et un fichier.
-            Cette commande archetype est cité ici afin de savoir qu'elle existe.
-        </p>
-
-        <p>Le pom.xml contient la description du projet :</p>
+        <p>A la racine du projet, on crée le fichier pom.xml</p>
 
         <pre class="prettyprint">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
@@ -118,81 +89,87 @@ src
   &lt;packaging&gt;jar&lt;/packaging&gt;
   &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
   &lt;name&gt;todooz&lt;/name&gt;
-  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
   &lt;dependencies&gt;
-    &lt;dependency&gt;
-      &lt;groupId&gt;junit&lt;/groupId&gt;
-      &lt;artifactId&gt;junit&lt;/artifactId&gt;
-      &lt;version&gt;3.8.1&lt;/version&gt;
-      &lt;scope&gt;test&lt;/scope&gt;
-    &lt;/dependency&gt;
+
   &lt;/dependencies&gt;
 &lt;/project&gt;</pre>
 
-        <p>En résumé, notre application todooz en version 1.0-SNAPSHOT sera compilée en librairie jar. Elle utilise la librairie junit 3.8.1.</p>
+        <p>Notre projet s'appelle donc todooz et nous avons choisi de le ranger dans le groupe fr.todooz.</p>
 
-        <p>La classe App.java contient le code suivant :</p>
+        <p>Depuis la racine on ajoute les répertoires suivants :</p>
 
-        <pre class="prettyprint">package fr.todooz;
+        <pre class="shell">
+pom.xml
+src
+|--main
+|  |--java
+|--test
+|  |--java</pre>
 
-/**
- * Hello world!
- *
- */
-public class App
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
-}</pre>
-
-        <p>La classe AppTest contient des test inutiles mais qui vont nous permettre de vérifier la bonne exécution du build.</p>
+        <p>Cette structure respecte la <a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html" class="external" target="_blank">convention de repertoires maven</a></p>
 
         <p>On peut alors lancer le build.</p>
 
-        <pre class="shell">todooz &gt; <b>mvn package</b>
+        <pre class="shell">todooz $ <b>mvn package</b>
 [INFO] Scanning for projects...
+[INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building todooz
-[INFO]    task-segment: [package]
+[INFO] Building todooz 1.0-SNAPSHOT
 [INFO] ------------------------------------------------------------------------
-[INFO] [resources:resources]
-[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] skip non existing resourceDirectory /Users/bourdette/idea-projects-perso/todooz/src/main/resources
-[INFO] [compiler:compile]
-[INFO] Compiling 1 source file to /Users/bourdette/idea-projects-perso/todooz/target/classes
-[INFO] [resources:testResources]
-[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] skip non existing resourceDirectory /Users/bourdette/idea-projects-perso/todooz/src/test/resources
-[INFO] [compiler:testCompile]
-[INFO] Compiling 1 source file to /Users/bourdette/idea-projects-perso/todooz/target/test-classes
-[INFO] [surefire:test]
-[INFO] Surefire report directory: /Users/bourdette/idea-projects-perso/todooz/target/surefire-reports
+[INFO]
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ todooz ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /Users/dbourdette/projects/todooz/src/main/resources
+[INFO]
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ todooz ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ todooz ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /Users/dbourdette/projects/todooz/src/test/resources
+[INFO]
+[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ todooz ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- maven-surefire-plugin:2.7.2:test (default-test) @ todooz ---
+[INFO] No tests to run.
+[INFO] Surefire report directory: /Users/dbourdette/projects/todooz/target/surefire-reports
 
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running fr.todooz.AppTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 sec
+There are no tests to run.
 
 Results :
 
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
 
-[INFO] [jar:jar]
-[INFO] Building jar: /Users/bourdette/idea-projects-perso/todooz/target/todooz-1.0-SNAPSHOT.jar
+[INFO]
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ todooz ---
+[WARNING] JAR will be empty - no content was marked for inclusion!
 [INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESSFUL
+[INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 4 seconds
-[INFO] Finished at: Tue May 24 17:00:00 CEST 2011
-[INFO] Final Memory: 21M/505M
+[INFO] Total time: 1.847s
+[INFO] Finished at: Fri Aug 23 21:39:52 CEST 2013
+[INFO] Final Memory: 9M/126M
 [INFO] ------------------------------------------------------------------------</pre>
 
-        <p>Tout compile et le test passe. Le répertoire target contient le résultat du build.</p>
+        <p>Le build passe et produit le jar target/todooz-1.0-SNAPSHOT.jar.</p>
 
-        <p>Lors de la première exécution, le téléchargement de ressources prend un peu de temps.</p>
+        <div class="note">Lors de la première exécution, le téléchargement de ressources génère plus de logs.</div>
+
+        <p>Comme nous l'indique le log, le jar est presque vide car nous n'avons pas de fichier .java</p>
+
+        <pre class="shell">todooz $ jar tf target/todooz-1.0-SNAPSHOT.jar
+META-INF/
+META-INF/MANIFEST.MF
+META-INF/maven/
+META-INF/maven/fr.todooz/
+META-INF/maven/fr.todooz/todooz/
+META-INF/maven/fr.todooz/todooz/pom.xml
+META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
         <h2>build is platform dependent!</h2>
 
@@ -200,14 +177,17 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
         <pre class="shell">[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!</pre>
 
-        <p>Afin de corriger ce point, il faut dire à maven l'<a href="http://maven.apache.org/general.html#encoding-warning" class="external" target="_blank">encoding du projet</a>.</p>
+        <p>Afin de corriger ce point, il faut indiquer à maven l'<a href="http://maven.apache.org/general.html#encoding-warning" class="external">encoding du projet</a>.</p>
 
         <pre class="prettyprint">&lt;project&gt;
     ...
     &lt;properties&gt;
         &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
     &lt;/properties&gt;
-    ...
+
+    &lt;dependencies&gt;
+
+    &lt;/dependencies&gt;
 &lt;/project&gt;</pre>
 
         <h2>Version de java</h2>
@@ -216,60 +196,86 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
         <pre class="prettyprint">&lt;project&gt;
     ...
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
     &lt;build&gt;
         &lt;plugins&gt;
             &lt;plugin&gt;
                 &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
                 &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
-                &lt;version&gt;2.5.1&lt;/version&gt;
+                &lt;version&gt;3.1&lt;/version&gt;
                 &lt;configuration&gt;
-                    &lt;source&gt;1.6&lt;/source&gt;
-                    &lt;target&gt;1.6&lt;/target&gt;
+                    &lt;source&gt;1.7&lt;/source&gt;
+                    &lt;target&gt;1.7&lt;/target&gt;
                 &lt;/configuration&gt;
             &lt;/plugin&gt;
         &lt;/plugins&gt;
     &lt;/build&gt;
 
     &lt;dependencies&gt;
-        ...
+
     &lt;/dependencies&gt;
 &lt;/project&gt;</pre>
 
-        <p>Nos sources seront donc compilées pour une version de java égale ou supérieure à 1.6.</p>
+        <p>Nos sources seront donc compilées pour une version de java égale ou supérieure à 1.7.</p>
 
         <h2>lifecycles</h2>
 
-        <p>mvn package est la commande de base qui permet de passer par toutes les étapes du lifecycle package et construire l'artefact.</p>
+        <p>mvn package est la commande de base qui construit tout le projet et génère le package produit.</p>
 
-        <p>Il est existe d'<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html" class="external" target="_blank">autres lifecycles</a>, comme mvn clean ou mvn site.</p>
+        <p>Il est existe d'<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html" class="external">autres lifecycles</a>, comme mvn clean ou mvn site.</p>
 
         <h2>Le repository local</h2>
 
-        <p>A chaque fois que le build a besoin d'une librairie, maven la télécharge depuis les repositories distants dans le repository local avant de l'utiliser. C'est une sorte de cache local des dépendances.</p>
+        <p>A chaque fois que le build a besoin d'une librairie, maven la télécharge dans le repository local.</p>
 
         <p>Il contient les librairies qui servent à l'application mais aussi les plugins de maven.</p>
 
-        <p>Ce repository est accessible dans ~/.m2/repository. Il y a une structure de répertoires avec toutes les librairies.</p>
+        <p>Par défaut il est dans le répertoire ~/.m2/repository.</p>
 
-        <p>Par défaut, maven télécharge ses librairies à partir du repository central <a href="http://repo1.maven.org" class="external" target="_blank">http://repo1.maven.org</a>.</p>
+        <h2>maven central</h2>
+
+        <p>Par défaut, maven télécharge ses librairies à partir du repository central <a href="http://repo1.maven.org" class="external">http://repo1.maven.org</a>.</p>
 
         <img src="img/search-maven.png" alt="search.maven.org" style="width: 800px;margin: 0 10px" />
 
         <h2>settings.xml</h2>
 
-        <p>Avec notre installation, maven utilise les réglages par défaut. Il est possible de changer cela en éditant le fichier ~/.m2/settings.xml</p>
+        <p>Pour des cas simples, les réglages par défaut sont suffisant.</p>
 
-        <p>C'est notamment dans ce fichier que l'on peut rajouter des repositories et des proxy http.</p>
+        <p>En entreprise, il n'est pas rare d'avoir à ajouter des repositories distants</p>
+
+        <p>Cela se fait en éditant le fichier ~/.m2/settings.xml</p>
 
         <p>Dans notre cas simple, nous n'utiliserons pas ce fichier.</p>
 
-        <h2>mvn eclipse:eclipse</h2>
+        <h2>Avec intellij</h2>
+
+        <p>Il suffit de faire un click droit sur le pom.xml et de choisir "Add as a Maven Project".</p>
+
+        <p>Intellij nous indique que l'on est passé en java 1.7 et nous demande de recharger le projet.</p>
+
+        <p>Les réperoires src/main/java et src/main/test sont indiquer respectivement comme répertoires de source et de test.</p>
+
+        <p>Dans les settings, on opte pour l'import automatique des modifications apportées au pom.xml</p>
+
+        <img src="img/import-maven.png" alt="import maven automatically" style="width: 840px"/>
+
+        <p>A partir de la, toute modification dans le pom.xml sera prise en compte automatiquement par intellij.</p>
+
+        <h2>Avec eclipse</h2>
+
+        <h3>mvn eclipse:eclipse</h3>
 
         <p>Cette commande permet de générer le projet eclipse</p>
 
         <pre class="shell">mvn eclipse:eclipse</pre>
 
         <p>On peut ensuite ouvrir simplement ce projet dans eclipse (File &gt New &gt Java Project en allant chercher le bon répertoire).</p>
+
+        <p>A chaque modification du pom, il faut également relancer la commande et rafraichir le projet.</p>
 
         <p>En fait cette commande génère le .project</p>
 
@@ -296,18 +302,17 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
     &lt;classpathentry kind="src" path="src/main/java" including="**/*.java"/&gt;
     &lt;classpathentry kind="output" path="target/classes"/&gt;
     &lt;classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/&gt;
-    &lt;classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/&gt;
 &lt;/classpath&gt;</pre>
 
         <p>Eclipse obtient donc la connaissance des répertoires et librairies gérées par maven.</p>
 
-        <h2>M2_REPO</h2>
+        <h3>M2_REPO</h3>
 
-        <p>Dans le .classpath, on peut voir que eclipse obtient une référence vers une librairie dont le chemin comment par M2_REPO.</p>
+        <p>Dans le .classpath, eclipse à des références vers des librairies dans le répertoire M2_REPO.</p>
 
-        <p>Maven évite les chemin absolu en dur lors de la production du .classpath pour eclipse.</p>
+        <p>Maven évite les chemin absolus en dur lors de la production du .classpath pour eclipse.</p>
 
-        <p>Il reste donc a informer eclipse du répertoire correspondant dans Eclipse &gt; Préférence &gt; Classpath Variables.</p>
+        <p>Il reste donc a configurer eclipse dans Eclipse &gt; Préférence &gt; Classpath Variables.</p>
 
         <img src="img/classpath-variables.png" alt="classpath variables" style="margin: 0 100px;">
 

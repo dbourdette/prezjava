@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -58,9 +60,9 @@
 
         <h2>git init</h2>
 
-        <p>Afin de pouvoir pusher notre projet vers github, il faut d'abord initializer notre répertoire projet.</p>
+        <p>Afin de pouvoir pusher notre projet vers github, il faut d'abord initialiser notre répertoire projet.</p>
 
-        <pre class="shell">todooz &gt; <b>git init</b>
+        <pre class="shell">todooz $ <b>git init</b>
 Initialized empty Git repository in /path/to/projects/todooz/.git/</pre>
 
         <h2>.gitignore</h2>
@@ -69,14 +71,24 @@ Initialized empty Git repository in /path/to/projects/todooz/.git/</pre>
 
         <p>On crée le fichier .gitignore à la racine du projet afin de les exclure.</p>
 
-        <pre>
-.project
-.classpath
-target/*</pre>
+        <pre># maven
+target/*
 
-        <p>.project et .classpath sont la défintion du projet eclipse et sont générés par maven (maven eclipse:eclipse).</p>
+# intellij
+.idea
+.iml
+
+# eclipse
+.project
+.classpath</pre>
 
         <p>Le répertoire target contient le résultat de la compilation et autres fichiers générés lors du build.</p>
+
+        <p>.idea et .iml sont la définition du module sous intellij.</p>
+
+        <p>.project et .classpath sont la définition du projet eclipse et sont générés par maven (maven eclipse:eclipse).</p>
+
+        <p>Il faudra ajouter d'éventuels autres patterns si le besoin se présentait.</p>
 
         <h2>git add</h2>
 

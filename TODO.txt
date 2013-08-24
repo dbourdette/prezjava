@@ -30,5 +30,6 @@ tps :
 
 next year
 - http client avec groovy (plus simple)
+- services en groovy
 - java 7 (try with resources sur les connections jdbc ?)
 - polyglot java (java, groovy, scala, clojure...)

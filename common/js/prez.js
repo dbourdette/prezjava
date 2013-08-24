@@ -4,6 +4,8 @@ $(document).ready(function() {
     });
 
     $('pre').each(function() {
-        $(this).wrap('<div class="prebubble" />');
+        if (!$(this).hasClass('shell')) {
+            $(this).wrap('<div class="prebubble" />');
+        }
     });
 });
