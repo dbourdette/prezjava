@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -22,17 +24,21 @@
 
         <h2>Quelques classes</h2>
 
-        <p>Notre projet est géré avec maven et il est stoqué sous github. Nous allons pouvoir commencer à écrire du code java.</p>
+        <p>Notre projet est géré avec maven et il est stoqué sous github.</p>
+
+        <p>Nous allons pouvoir commencer à écrire du code java.</p>
 
         <p>Nous allons juste mettre en place notre modèle de données pour les tps à venir.</p>
 
         <h2>Création du modèle de données</h2>
 
+        <p>Le code source java va dans src/main/java.</p>
+
         <p>Pour notre modèle, nous définissons une classe dans le package fr.todooz.domain : Task.</p>
 
-        <p>On utilise eclipse afin de générer les getters et les setters.</p>
+        <p>On utilise l'IDE afin de générer les getters et les setters.</p>
 
-        <p>Task est la représentation d'une tâche dans une liste de choses à faire.</p>
+        <p>Task est la représentation d'une tâche dans une todo list.</p>
 
         <pre class="prettyprint">import java.util.Date;
 
@@ -88,9 +94,9 @@ public class Task {
     }
 }</pre>
 
-        <p>Cette classe ne présente que peu d'intêret techniquement mais elle est importante car elle représente notre domain métier.</p>
+        <p>Cette classe ne présente que peu d'intêret techniquement, c'est un simple java Bean.</p>
 
-        <p>Les classes App et AppTest peuvent être supprimée.</p>
+        <p>Elle est importante car elle représente notre domain métier.</p>
 
         <h2>L'évolution</h2>
 
@@ -128,13 +134,13 @@ public class Task {
             </li>
             <li>java 8.0
                 <ul style="font-size: small">
-                    <li>closures ?</li>
+                    <li>lambdas (closures pour java)</li>
                 </ul>
             </li>
 
-            <p>A coté du language, les évolutions des apis et librairies ont été beaucoup plus importantes.</p>
+            <p>La jvm garde une forte compatibilité avec les versions passées</p>
 
-            <p>Cependant, java garde une forte compatibilité avec les versions passées</p>
+            <p>Coté apis et librairies, les évolutions ont été beaucoup plus importantes.</p>
         </ul>
     </div>
 </div>

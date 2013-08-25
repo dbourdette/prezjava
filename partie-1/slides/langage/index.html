@@ -18,6 +18,7 @@
 		<script src="../../../common/js/code.js"></script>
 		<script src="../../../common/js/prettify.js" ></script>
 
+        <script src="../../../common/js/prez.js"></script>
   	</head>
   	<body onload="prettyPrint();">
     <div class="presentation">
@@ -72,12 +73,12 @@
 				<section>
                     <p>L'exécution d'une classe java se fait avec la commande java</p>
                     <pre><b>java</b> -classpath lib1.jar;lib2.jar Hello</pre>
-                    <p>Afin de pouvoir être exécuté, cette classe Hello doit posséder une méthode main.</p>
+                    <p>Afin de pouvoir être exécutée, cette classe Hello doit posséder une méthode main.</p>
                     <pre>public static void <b>main</b>(String[] args) {
     ...
 }</pre>
                     <p>Le chargement du code java est dynamique : il est chargé au fur et à mesure du besoin.</p>
-                    <p>La machine virtuelle regarde dans le <b>classpath</b> afin de charger du code.</p>
+                    <p>La machine virtuelle regarde dans le <b>classpath</b> afin de charger les classes.</p>
                     <p>Si une classe demandée n'est pas définie dans le classpath alors une erreur est remontée.</p>
                     <pre>java.lang.ClassNotFoundException: path.to.my.unknown.Code
 Erreur
@@ -251,9 +252,9 @@ public void save() {
 				<header>Environnements managés</header>
 				<section>
                     <p>Une application jee est déployée dans un <b>conteneur d'applications</b>.</p>
-                    <p>Dans un conteneur les objets structurants sont souvent appelés <b>composants</b>.</p>
-                    <p>La création d'application jee se fait en implémentant des interfaces et non en déclarant une méthode main.</p>
-                    <p>C'est le conteneur qui charge les composants et les sollicite en fonction du besoin.</p>
+                    <p>Il fait tourner des applications qui utilisent les librairies jee</p>
+                    <p>Une application jee est constituée de <b>composants</b>.</p>
+                    <p>Le conteneur charge les composants et les sollicite en fonction du besoin.</p>
                     <p>La déclaration des composants se fait dans un <b>descripteurs de déploiement</b>.</p>
                     <br>
                     <p>Nous reviendrons plus tard dans la présentation sur jee et les conteneurs.</p>
@@ -266,6 +267,7 @@ public void save() {
                     <p><b>Effective java</b> : le guide des bonnes pratiques java et objet par Joshua Bloch.</p>
                     <img alt="" src="img/effective-java.jpg" width="200px;" style="margin-left:300px">
                     <p>Un catalogue de bonnes pratiques <b>essentielles</b>, simples et efficaces.</p>
+                    <p>Un livre à lire après avoir pris un peu d'expérience en java.</p>
                     <p>Disponible sur <a href="http://www.amazon.fr/Effective-Java-Joshua-Bloch/dp/0321356683/ref=sr_1_1?ie=UTF8&qid=1312385429&sr=8-1" class="external" target="_blank">amazon</a></p>
 				</section>
 			</div>

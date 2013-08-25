@@ -94,7 +94,7 @@ target/*
 
         <p>La command git status doit donc afficher à peu près cela.</p>
 
-        <pre class="shell">todooz &gt; <b>git status</b>
+        <pre class="shell">todooz $ <b>git status</b>
 # On branch master
 #
 # Initial commit
@@ -109,31 +109,31 @@ nothing added to commit but untracked files present (use "git add" to track)</pr
 
         <p>On ajoute donc tout nos fichiers et on commit.</p>
 
-        <pre class="shell">todooz &gt; <b>git add *</b>
-todooz &gt; <b>git add .gitignore</b>
-todooz &gt; <b>git commit -m "initial commit"</b></pre>
+        <pre class="shell">toddoz $ <b>git add *</b>
+toddoz $ <b>git add .gitignore</b>
+toddoz $ <b>git commit -m "initial commit"</b></pre>
 
         <h2>git remote add</h2>
 
         <p>Il nous reste donc a relier notre master local au origin/master</p>
 
-        <pre class="shell">todooz &gt; <b>git remote add origin git@github.com:{user}/todooz.git</b></pre>
+        <pre class="shell">toddoz $ <b>git remote add origin git@github.com:{user}/todooz.git</b></pre>
 
         <h2>git push</h2>
 
         <p>Afin d'envoyer les fichiers vers github, on utilise la commande push.</p>
 
-        <pre class="shell">todooz &gt; <b>git push origin master</b></pre>
+        <pre class="shell">toddoz $ <b>git push origin master</b></pre>
 
         <p>Les fichiers sont maintenant sur le repository github.</p>
 
         <p>Afin de simplifier les push et les pull, on peut ajouter un lien par défaut entre le master local et le master sur origin.</p>
 
-        <pre class="shell">todooz &gt; <b>git config branch.master.merge refs/heads/master</b></pre>
+        <pre class="shell">toddoz $ <b>git config branch.master.merge refs/heads/master</b></pre>
 
         <p>Maintenant git push et pit pull depuis la branche locale master travaillerons avec la branche master distante. La commande de push devient donc simplement :</p>
 
-        <pre class="shell">todooz &gt; <b>git push</b></pre>
+        <pre class="shell">toddoz $ <b>git push</b></pre>
 
         <p>A partir de maintenant, il est conseillé de commiter aussi souvent que nécessaire.</p>
     </div>
