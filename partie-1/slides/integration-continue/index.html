@@ -17,6 +17,9 @@
 
     <script src="../../../common/js/code.js"></script>
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
+
 </head>
 <body>
     <div class="presentation">
@@ -32,15 +35,15 @@
             <div class="slide">
 				<header>L'intégration</header>
 				<section>
-					<p>L'intégration logicielle est l'action qui consiste à faire un build prêt pour la production.</p>
-                    <p>Selon les projets et les pratiques, cela varie de <b>quelques secondes à plusieurs jours</b>.</p>
-                    <p>Si une erreur est détectée pendant l'intégration, le coût peut donc être lourd.</p>
+					<p>Réunir toutes les pièces afin de construire le logiciel à installer s'appelle l'intégration.</p>
+                    <p>Une intégration peut varier de <b>quelques secondes à plusieurs jours</b>.</p>
+                    <p>En cas d'erreur lors de l'intégration, le coût peut donc être lourd.</p>
                     <p>En cas de bug en production, une intégration lente empêche une correction rapide.</p>
-                    <p>On recommande donc une intégration <b>courte</b> et <b>automatisable</b>.</p>
+                    <p>On recommande donc une intégration <b>courte</b> et <b>automatisée</b>.</p>
                     <br>
                     <p>Sur des projets maven, cela se résume à une commande :</p>
                     <pre>mvn package</pre>
-                    <p>Mais sur des projets complexes avec de multiples modules, on tend toujours vers une augmentation de la durée.</p>
+                    <p>Sur des projets complexes, il peut y avoir plusieurs étapes qui allonge l'intégration.</p>
 				</section>
 			</div>
 
@@ -48,10 +51,10 @@
 				<header>Une pratique agile</header>
 				<section>
                     <p>L'intégration continue est une pratique mise en avant par les méthodologies agiles.</p>
-					<p>Le principe est de réaliser des intégrations aussi fréquemment que possible. la fluidité du process est une obsession des méthodologies agiles.</p>
-                    <p>La fréquence optimale est de déclencher l'intégration après chaque modification des sources.</p>
+					<p>Le principe est de réaliser des intégrations aussi fréquemment que possible.</p>
+                    <p>La fréquence optimale est de faire après chaque commit.</p>
                     <p>Le but est de détecter l'apparition d'anomalies le plus tôt possible.</p>
-                    <p>Diverses métriques sur la qualité du code peuvent être produites lors de l'intégration. Elles visent à l'amélioration continue du code.</p>
+                    <p>Quand le build passe en échec, c'est que l'erreur vient d'être introduite dans le code.</p>
                     <p style="font-size: 30px;font-style: italic;margin: 100px 150px">If it hurts, do it more often (Kent Beck)</p>
 				</section>
                 <p class="source">http://martinfowler.com/articles/continuousIntegration.html</p>
@@ -79,13 +82,12 @@
 					<p>Voici quelques pratiques associées à l'intégration continue:</p>
                     <ul>
                         <li>Un seul VCS pour le code source</li>
-                        <li>Le build est automatisé</li>
+                        <li>Le build est automatisé (rien de manuel)</li>
                         <li>Le build exécute les tests unitaires</li>
                         <li>Tout le monde commit quotidiennement dans la branche maitre</li>
                         <li>Tout le monde peut voir le résultat des builds</li>
                         <li>Chaque commit dans la branche maitre déclenche un build</li>
                         <li>Le build doit être rapide</li>
-                        <li>Les tests doivent être exécuté dans un environnement proche de la configuration de production</li>
                         <li>Les livrables sont disponibles facilement</li>
                     </ul>
                     <p>Cette liste n'est pas exhaustive mais définit un état d'esprit lié au build.</p>
@@ -95,8 +97,8 @@
 			<div class="slide">
 				<header>Dans la continuité</header>
 				<section>
-                    <p>Si on intègre en continu, pourquoi ne pas déployer en continu ?</p>
-                    <p>C'est une mouvance relativement récente mais qui gagne en popularité.</p>
+                    <p>Si on intègre en continu, pourquoi ne pas mettre en prod dans la foulée ?</p>
+                    <p>Le déploiement continue vise à mettre en prod le plus souvent possible.</p>
                     <p>Voici la chaîne en place chez RTL net :</p>
                     <img src="img/continuous-deployment.png" style="margin: 0 130px;">
                     <ul>

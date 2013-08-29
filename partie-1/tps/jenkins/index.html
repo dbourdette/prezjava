@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body>
@@ -29,12 +31,12 @@
         <p>Quelques autres serveurs d'intégration continue existants : </p>
 
         <ul>
-            <li>Hudson : Jenkins et Hudson partage la même histoire et un fork récent les a séparé. Hudson est un produit Oracle.</li>
+            <li>Hudson : Jenkins et Hudson sont issu de la même souche. Hudson est un produit Oracle.</li>
             <li>Continuum et Gump : 2 serveurs d'intégration continue de la fondation apache.</li>
             <li>Bamboo : Le serveur d'intégration d'Atlassian (jira, confluence...). Très complet mais payant.</li>
         </ul>
 
-        <p>Plus d'exemples sur la <a href="http://en.wikipedia.org/wiki/Continuous_integration" class="external" target="_blank">page de wikipedia (continuous integration)</a>.</p>
+        <p>Plus d'exemples sur la <a href="http://en.wikipedia.org/wiki/Continuous_integration" class="external">page de wikipedia (continuous integration)</a>.</p>
 
         <p>Dans un premier temps, nous allons tester jenkins avec un projet de référence simple.</p>
 
@@ -42,7 +44,7 @@
 
         <h2>Installation</h2>
 
-        <p>Il faut télécharger le .war depuis le <a href="http://jenkins-ci.org/" class="external" target="_blank">site de jenkins</a></p>
+        <p>Il faut télécharger le .war depuis le <a href="http://jenkins-ci.org/" class="external">site de jenkins</a></p>
 
         <p>Une fois téléchargé, il suffit de le lancer:</p>
         <pre class="shell">java -jar jenkins.war</pre>
@@ -145,7 +147,7 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
         <p>Notre projet todooz est sous <a href="../github/index.html">github</a> dans un repository git@github.com:{user}/todooz.git.</p>
 
-        <p>Configurer un job qui build ce projet comme il le fait avec le projet de référence.</p>
+        <p>Configurez un job qui build ce projet comme il le fait avec le projet de référence.</p>
 
         <p>Faire une modification dans le répository github et voir que jenkins relance bien le build.</p>
 
