@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -24,17 +26,17 @@
 
         <img src="img/container.png" alt="" style="margin: 0 160px">
 
-        <p>Les servlets sont les composants qui recoivent les requêtes http et générent les réponses.</p>
+        <p>Les servlets sont les composants qui répondent aux requête http.</p>
 
         <h2>web.xml</h2>
 
-        <p>La premier chose a ajouter afin de faire un war est le web.xml</p>
+        <p>Pour déployer un war il faut un <b>descripteur de déploiement</b> : le web.xml</p>
 
-        <p>C'est le <b>descripteur de déploiement</b> : il décrit les composants de l'application.</p>
+        <p>Il configure l'application web.</p>
 
         <p>Si on essaye de faire un package, maven nous le dira aussi :</p>
 
-        <pre class="shell">todooz &gt; mvn package
+        <pre class="shell">todooz $ mvn package
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
@@ -93,38 +95,36 @@ on project todooz: Error assembling WAR: <b>webxml attribute is required
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException</pre>
 
-        <p>D'après la spécification, le fichier web.xml va dans répertoire WEB-INF, à la racine du war.</p>
+        <p>Ce fichier web.xml va dans répertoire WEB-INF, à la racine du war.</p>
 
-        <p>Pour maven, il faut donc écrire ce web.xml dans le répertoire src/main/webapp/WEB-INF.</p>
+        <p>Dans notre source, il va dans le répertoire src/main/webapp/WEB-INF.</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
-&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-  version="2.5"&gt;
+&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
 
-   &lt;display-name&gt;todooz&lt;/display-name&gt;
+    &lt;display-name&gt;todooz&lt;/display-name&gt;
 
 &lt;/web-app&gt;</pre>
 
-        <p>Ce fichier ne dit pas grand chose : nous sommes en version 2.5 de la spécification des servlets et notre application s'appelle todooz.</p>
+        <p>Ce fichier ne dit pas grand chose : nous sommes en version 3.0 de la spécification des servlets et notre application s'appelle todooz.</p>
 
         <p>Avec ce fichier en place, on peut maitenant faire un mvn package et obtenir notre war, versionné, dans le répertoire target.</p>
 
-        <pre class="shell">todooz &gt; ls target
-classes                 surefire                todooz-1.0-SNAPSHOT.jar tomcat
-maven-archiver          todooz-1.0-SNAPSHOT     todooz-1.0-SNAPSHOT.war</pre>
+        <pre class="shell">todooz $ ls target
+classes			maven-archiver		surefire		todooz-1.0-SNAPSHOT.war
+generated-sources	maven-status		todooz-1.0-SNAPSHOT</pre>
 
-        <p>Nous pouvons maintenant développer avec mvn tomcat:run et produire un war pour l'archivage et la mise en production.</p>
+        <p>mvn tomcat7:run permet de tester notre application.</p>
+
+        <p>mvn package permet d'obtenir le fichier à installer en production.</p>
 
         <h2>Servlet API</h2>
 
-        <p>L'API des servlets est un ensemble de classes java disponibles dans un conteneur de servlets.</p>
+        <p>L'API des servlets est un ensemble de classes disponibles dans un conteneur de servlets.</p>
 
-        <p>Tomcat va donc nous fournir toutes ses classes afin que l'on puisse répondre aux requêtes http.</p>
+        <p>Tomcat contient déjà ces classes et notre war n'a pas besoin de les contenir.</p>
 
-        <p>Cependant, dans eclipse, ces classes ne sont pas disponibles au moment de l'écriture du code source.</p>
+        <p>Cependant, dans l'IDE, ces classes ne sont pas disponibles au moment de l'écriture du code source.</p>
 
         <p>Il faut donc ajouter cette api dans notre pom.</p>
 
@@ -133,22 +133,22 @@ maven-archiver          todooz-1.0-SNAPSHOT     todooz-1.0-SNAPSHOT.war</pre>
     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
     &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
     &lt;version&gt;2.5&lt;/version&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;scope&gt;<em>provided</em>&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
     &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
     &lt;version&gt;2.0&lt;/version&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;scope&gt;<em>provided</em>&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>On regénère ensuite le projet avec mvn eclipse:eclipse et on rafraîchit le projet sous eclipse afin que cette modification soit bien prise en compte par eclipse.</p>
+        <p>Ces dépendances sont en provided : elles sont disponibles pour la compilaton mais ne seront pas dans le war.</p>
 
         <h2>HelloWorldServlet</h2>
 
         <p>Il est donc temps de rajouter notre premier composant web.</p>
 
-        <p>Afin d'accueillir nos servlets, nous ajoutons un package fr.todooz.web.servlet.</p>
+        <p>Afin d'accueillir nos servlets, nous ajoutons un package fr.todooz.web.servlet dans src/main/java.</p>
 
         <p>Et notre première servlet.</p>
 
@@ -171,9 +171,9 @@ public class HelloWorldServlet extends HttpServlet {
    }
 }</pre>
 
-        <p>C'est un composant java qui peut répondre à une requête http et produire une réponse.</p>
+        <p>La servlet écrit simple un message comme réponse.</p>
 
-        <p>Il faut ensuite configurer le mapping dans le web.xml</p>
+        <p>Il faut ensuite ajouter le mapping dans le web.xml</p>
 
         <pre class="prettyprint">&lt;servlet&gt;
    &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
@@ -184,122 +184,15 @@ public class HelloWorldServlet extends HttpServlet {
    &lt;url-pattern&gt;/HelloWorldServlet&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
-
-        <h2>Les paramètres</h2>
-
-		<p>Il est possible d'exploiter les paramètres depuis la servlet.</p>
-
-	    <pre class="prettyprint">
-public class HelloWorldSerlvet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    	throws ServletException, IOException {
-    	<b>String name = request.getParameter("name");</b>
-
-        response.getWriter().write(<b>"Hello " + name + " !"</b>);
-    }
-}</pre>
-	      <p>Ce qui donne en résultat sur <a href="http://localhost:8080/HelloWorldServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldServlet?name=Steven</a>.</p>
-
-	      <h2>Le redirect</h2>
-
-	      <p>On crée une seconde servlet, HelloWorldRedirectServlet, qui va faire un redirect vers HelloWorldSerlvet</p>
-
-          <pre class="prettyprint">public class HelloWorldRedirectServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    	throws ServletException, IOException {
-    	response.sendRedirect("HelloWorldServlet");
-    }
-}</pre>
-        
-        <p>Avec la configuration du web.xml</p>
-        
-        <pre class="prettyprint">&lt;servlet&gt;
-   &lt;servlet-name&gt;HelloWorldRedirectServlet&lt;/servlet-name&gt;
-   &lt;servlet-class&gt;fr.todooz.web.servlet.HelloWorldRedirectServlet&lt;/servlet-class&gt;
-&lt;/servlet&gt;
-&lt;servlet-mapping&gt;
-   &lt;servlet-name&gt;HelloWorldRedirectServlet&lt;/servlet-name&gt;
-   &lt;url-pattern&gt;/HelloWorldRedirectServlet&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</pre>
-        
-			<p>Ce qui donne en résultat sur <a href="http://localhost:8080/HelloWorldRedirectServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldRedirectServlet?name=Steven</a>.</p>
-			<p>On peut voir le premier retour du serveur (302) sur le traceur de requête de Chrome.</p>
-			<p>On note aussi que le paramètre name est perdu dans la redirection.</p>
-			<h2>Les sessions</h2>
-			<p>On crée une servlet, HelloWorldSessionServlet, afin de stoquer le nom passé en paramètre en session.</p>
-	          <pre  class="prettyprint">
-public class HelloWorldSessionServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void doGet(...) ... {
-    	String name = request.getParameter("name");
-
-    	<b>request.getSession(true).setAttribute("name", name);</b>
-
-    	response.getWriter().write("Stored " + name + " !");
-    }
-}</pre>
-
-        <p>Il faut écrire la déclaration et le mapping dans le web.xml.</p>
-
-        <pre  class="prettyprint">...</pre>
-
-		<p>La nouvelle servlet <a href="http://localhost:8080/HelloWorldSessionServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldSessionServlet?name=Steven</a>.</p>
-
-        <p>Modifions notre première servlet afin qu'elle en profite</p>
-
-        <pre class="prettyprint">public class HelloWorldSerlvet extends HttpServlet {
-    @Override
-    protected void doGet(...) ... {
-    	String name = request.getParameter("name");
-
-        if (name == null) {
-           <b>name = (String) request.getSession(true).getAttribute("name");</b>
-        }
-
-        response.getWriter().write("Hello " + name + " !");
-    }
-}</pre>
-        <p>Notre première servlet supporte l'absence de paramètre <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a>
-        si la variable est en session.</p>
-
-        <h2>Générer du HTML</h2>
-
-        <p>Il est possible de faire du html depuis une servlet.</p>
-
-        <pre class="prettyprint">
-public class HelloWorldSerlvet extends HttpServlet {
-    @Override
-    protected void doGet(...) ... {
-        ...
-
-        <span class="comment">// response.getWriter().write("Hello " + name + " !");</span>
-
-    	PrintWriter writer = response.getWriter();
-
-        writer.write("&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;Hello " + name + " !&lt;/body&gt;&lt;/html&gt;");
-    }
-}</pre>
-
-        <p>Le résultat sur <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> donne un arbre DOM parfaitement formé.</p>
-
-        <img alt="" src="img/dom-tree.png" style="margin:0 50px;"/>
-
-		<p>Mais cette méthode est complètement inadaptée dès que la page web dépasse quelques lignes.</p>
+        <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" class="external">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
 
         <h2>Le forward</h2>
 
-        <p>C'est l'action qui consiste a passer la main à un autre composant.</p>
+        <p>La servlet contient du code java.</p>
 
-        <p>Pour afficher la page html que nous avons préparé, il suffit d'utiliser l'API.</p>
+        <p>C'est bien pour aller chercher des données en base mais peu adapté pour du html.</p>
+
+        <p>Pour faire du html, la servlet passe la main : elle forwarde la requête.</p>
 
         <pre class="prettyprint">public class HelloWorldServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
@@ -311,75 +204,17 @@ public class HelloWorldSerlvet extends HttpServlet {
   }
 }</pre>
 
+        <p>Sur <a href="http://localhost:8080/HelloWorldServlet" class="external">http://localhost:8080/HelloWorldServlet</a> on a donc maintenant notre page d'index.</p>
+
         <p>On peut passer la main à tout autre composant géré par le conteneur.</p>
 
-        <p>En pratique, on passe souvent la main à un template jsp (Java Server Page) plus adapté pour générer du html.</p>
+        <h2>Une collaboration de composants</h2>
 
-        <h2>Un exemple de librairie</h2>
+        <p>Les servlets sont des composants rapidement limités.</p>
 
-        <p><a href="http://code.google.com/p/javamelody" class="external" target="_blank">javamelody</a> est une librairie qui s'intègre à une application et permet de la monitorer.</p>
+        <p>L'API est lourde et il manque de nombreux éléments</p>
 
-        <p>Malheureusement, la librairie n'est pas disponible dans le repo maven central. Nous ajoutons donc des repositories comme indiqué dans la <a href="http://code.google.com/p/javamelody/wiki/UserGuide#Dependencies" target="_blank" class="external">documentation javamelody</a></p>
-
-        <pre class="prettyprint">
-&lt;repositories&gt;
-    &lt;!-- for javamelody --&gt;
-    &lt;repository&gt;
-       &lt;id&gt;m.g.o-public&lt;/id&gt;
-       &lt;url&gt;http://maven.glassfish.org/content/groups/public/&lt;/url&gt;
-       &lt;releases&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-       &lt;/releases&gt;
-       &lt;snapshots&gt;
-          &lt;enabled&gt;false&lt;/enabled&gt;
-       &lt;/snapshots&gt;
-    &lt;/repository&gt;
-    &lt;!-- for jrobin --&gt;
-    &lt;repository&gt;
-       &lt;id&gt;opennms-repo&lt;/id&gt;
-       &lt;name&gt;OpenNMS Repository&lt;/name&gt;
-       &lt;url&gt;http://repo.opennms.org/maven2&lt;/url&gt;
-       &lt;releases&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-       &lt;/releases&gt;
-       &lt;snapshots&gt;
-          &lt;enabled&gt;false&lt;/enabled&gt;
-       &lt;/snapshots&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;</pre>
-
-        <p>Et le jar dans les dépendances.</p>
-
-        <pre  class="prettyprint">
-&lt;dependency&gt;
-   &lt;groupId&gt;net.bull.javamelody&lt;/groupId&gt;
-   &lt;artifactId&gt;javamelody-core&lt;/artifactId&gt;
-   &lt;version&gt;1.29.1&lt;/version&gt;
-&lt;/dependency&gt;</pre>
-
-        <p>Il ne reste plus qu'a configurer le filtre javamelody dans le web.xml.</p>
-
-        <pre  class="prettyprint">
-&lt;filter&gt;
-   &lt;filter-name&gt;monitoring&lt;/filter-name&gt;
-   &lt;filter-class&gt;net.bull.javamelody.MonitoringFilter&lt;/filter-class&gt;
-&lt;/filter&gt;
-&lt;filter-mapping&gt;
-   &lt;filter-name&gt;monitoring&lt;/filter-name&gt;
-   &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;
-&lt;listener&gt;
-   &lt;listener-class&gt;net.bull.javamelody.SessionListener&lt;/listener-class&gt;
-&lt;/listener&gt;</pre>
-
-        <p>Il existe <a href="http://code.google.com/p/javamelody/wiki/UserGuide#6._Optional_parameters" class="external" target="_blank">quelques paramètres</a> afin de configurer javamelody en fonction de son besoin.</p>
-
-        <p>Javamelody analyse tout ce qui se passe dans le serveur et est capable de fournir énormément d'information sur l'application.</p>
-
-        <p>Après quelques requêtes, on peut lire un rapport sur <a href="http://localhost:8080/monitoring" target="_blank">http://localhost:8080/monitoring</a>.</p>
-
-        <p>Dans notre cas, nous avons peu de composants. Dans une application réelle, javamelody fournit des informations sur tous les services standards et les librairies les plus utilisées.</p>
-
+        <p>Cependant, pour la génération de html, elles peuvent compter sur d'autres éléments, accessibles via le forward.</p>
     </div>
 </div>
 </body>

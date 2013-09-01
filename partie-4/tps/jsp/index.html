@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -22,45 +24,21 @@
 
         <p>Les fichiers jsp sont les composants spécialisés dans la génération de html.</p>
 
-        <p>Au moment de générer le rendu, la servlet passe donc la main à une jsp.</p>
+        <p>Ils permettent de produire du html en mélant un peu de logique conditionnelle.</p>
 
-	          <pre  class="prettyprint">
-public class HelloWorldSerlvet extends HttpServlet {
-    @Override
-    protected void doGet(...) ... {
-        ...
+        <p>Ainsi, ils sont un bon complément des servlets pour la génération de la page web.</p>
 
-    	<b>request.setAttribute("name", request.getParameter("name"));</b>
-
-        <b>request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(request, response);</b>
-    }
-}</pre>
-
-        <p>Et le fichier hello.jsp dans le répertoire WEB-INF :</p>
-
-        <pre class="prettyprint">
-&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
-&lt;html&gt;
-   &lt;head&gt;&lt;/head&gt;
-   &lt;body&gt;Hello ${name} ! (from jsp file)&lt;/body&gt;
-&lt;/html&gt;</pre>
-
-        <p>Le résultat sur <a href="http://localhost:8080/HelloWorldServlet?name=Steven" target="_blank">http://localhost:8080/HelloWorldServlet?name=Steven</a>.</p>
-
-        <div class="note">Afin d'être sûr d'avoir la complétion dans les fichiers jsp, il faut utiliser la perspective Java EE</div>
-
-        <h2>Techniquement</h2>
+        <h2>Dans notre projet</h2>
 
         <p>Par convention, les fichiers jsp sont dans le répertoire WEB-INF/jsp du war.</p>
 
         <p>Sous maven, ils sont donc dans src/main/webapp/WEB-INF/jsp.</p>
 
-        <p>Les fichiers jsp sont compilés à la volée en fichiers servlets puis en bytecode (.class).</p>
+        <p>Les fichiers jsp sont compilés à la volée par tomcat.</p>
 
         <p>Un peu à l'image d'un fichier php, les fichiers jsp sont donc interprétés par le conteneur.</p>
 
-        <p>Avec la commande mvn tomcat:run, les modifications sont prises en compte à la volée.</p>
+        <p>En test avec mvn tomcat7:run, les modifications sont prises en compte à la volée.</p>
 
         <h2>Notre template</h2>
 
@@ -70,7 +48,7 @@ public class HelloWorldSerlvet extends HttpServlet {
 
         <pre  class="prettyprint">&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;</pre>
 
-        <p>Cela indique au container que le code source est en utf-8 ainsi que le charset au runtime.</p>
+        <p>Cela indique au container que le code source est en utf-8 et que cela produit une page en utf-8.</p>
 
         <p>On rajoute la servlet IndexServlet</p>
 
@@ -95,7 +73,7 @@ public class HelloWorldSerlvet extends HttpServlet {
     &lt;url-pattern&gt;/index.html&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>Notre page est donc accessible sur <a href="http://localhost:8080/">http://localhost:8080/</a> en étant passé au travers de la servlet.</p>
+        <p>Notre jsp est donc accessible sur <a href="http://localhost:8080/" class="external">http://localhost:8080/</a> en étant passé au travers de la servlet.</p>
 
         <h2>Un peu de données</h2>
 
@@ -109,13 +87,13 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
 }</pre>
 
-        <p>Et la classe DummyData</p>
+        <p>Et la classe DummyData que l'on place juste a coté.</p>
 
         <pre class="prettyprint">public class DummyData {
   private static final int TASK_COUNT = 10;
 
   public static List&lt;Task&gt; tasks() {
-    List&lt;Task&gt; tasks = new ArrayList&lt;Task&gt;();
+    List&lt;Task&gt; tasks = new ArrayList&lt;&gt;();
 
     for (int i = 0; i &lt; TASK_COUNT; i++) {
         tasks.add(task());
@@ -138,11 +116,11 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         <p>Les attributs de la requête sont conservé tout au long du traitement de la requête.</p>
 
-        <p>Ils sont donc accessibles dans la jsp.</p>
+        <p>Ils sont donc accessibles depuis la jsp.</p>
 
         <h2>Expression Language</h2>
 
-        <p>L'EL (Expression Language) est une notation permettant d'exploiter facilement les données.</p>
+        <p>L'EL (Expression Language) est une notation permettant de naviguer facilement dans les données.</p>
 
         <pre class="prettyprint">${expression}</pre>
 
@@ -152,7 +130,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         <pre class="prettyprint">${tasks}</pre>
 
-        <p>Ce qui donne</p>
+        <p>Ce qui donne dans la jsp</p>
 
         <pre class="prettyprint">[fr.todooz.domain.Task@16ff6348, fr.todooz.domain.Task@58cf17c3, fr.todooz.domain.Task@42130c2,
 fr.todooz.domain.Task@1f0812ac, fr.todooz.domain.Task@4b01ea1e, fr.todooz.domain.Task@6ab17e0a,
@@ -169,9 +147,9 @@ ${not empty task.date ? task.date : 'no date'}</pre>
 
         <p>L'EL est une notation simple et puissante par rapport a du code java.</p>
 
-        <pre class="prettyprint">${cart.items[2].name}</pre>
+        <pre class="prettyprint">${cart.items[2].name} // cart est un shopping cart en session</pre>
 
-        <p>Synthétise un appel qui pourrait être écrit comme suit</p>
+        <p>Synthétise un appel qui pourrait être écrit comme suit en java.</p>
 
 	    <pre class="prettyprint">Cart cart = (Cart) request.getSession().getAttribute("cart");
 
@@ -185,14 +163,14 @@ response.getWriter().write(name);</pre>
 
         <p>Ils permettent de faire du contrôle de flow (if, for each...) et de factoriser du code.</p>
 
-        <p>La librairie la plus utilisées est la jstl (java standard tag library) et il est assez simple de faire ses propres custom tags.</p>
+        <p>La librairie la plus utilisé est la jstl (java standard tag library) et il est assez simple de faire ses propres custom tags.</p>
 
-        <p>Afin de pouvoir l'utiliser, on ajoute les libs dans le pom (+ mvn eclipse:eclipse).</p>
+        <p>Afin de pouvoir l'utiliser, on ajoute les libs dans le pom.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
     &lt;artifactId&gt;jstl&lt;/artifactId&gt;
-    &lt;version&gt;1.1.2&lt;/version&gt;
+    &lt;version&gt;1.2&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
@@ -202,12 +180,12 @@ response.getWriter().write(name);</pre>
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency></pre>
 
-        <p>Et on déclare les taglibs utilisées en haut du fichier jsp.</p>
+        <p>Et on déclare les taglibs utilisées en haut du fichier jsp (sous la directive &lt;%@ page ... ).</p>
 
         <pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
 &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;</pre>
 
-        <p>Un <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" class="external" target="_blank">bon tutorial sur la jstl</a> est disponible sur le site de developpez.com</p>
+        <p>Un <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" class="external">bon tutorial sur la jstl</a> est disponible sur le site de developpez.com</p>
 
         <h2>Notre liste de tâches</h2>
 
@@ -242,25 +220,33 @@ response.getWriter().write(name);</pre>
 
         <p>Et l'utiliser dans notre jsp.</p>
 
-        <p>La jsp itère donc dans notre modèle afin de construire le html.</p>
+        <p>On obtient le même résultat mais c'est un peu plus dynamique.</p>
+
+        <div class="note">En développement, il n'est pas nécessaire de relancer le serveur tomcat en cas de modification d'une jsp</div>
 
         <h2>Les tag files</h2>
 
         <p>Les tags files permettent de factoriser du code jsp.</p>
 
-        <p>On ne peut pas les packager dans un jar mais elles sont plus simples a mettre en place que les customs tags.</p>
+        <p>C'est très simple a mettre en place mais malheureusement on ne peut les mettres dans des librairies.</p>
 
         <p>Par exemple, si on ajoute le fichier navbar.tag dans le répertoire WEB-INF/tags/widget.</p>
 	    
         <pre  class="prettyprint">&lt;%@ tag language="java" pageEncoding="UTF-8"%&gt;
 
-&lt;div class="navbar navbar-inverse"&gt;
-    &lt;div class="navbar-inner"&gt;
-        &lt;span class="brand"&gt;Todooz&lt;/span&gt;
-        &lt;form class="navbar-search pull-left"&gt;
-            &lt;input type="text" class="search-query" placeholder="Search"&gt;
+&lt;div class="navbar navbar-default"&gt;
+    &lt;div class="navbar-header"&gt;
+        &lt;a class="navbar-brand" href="/"&gt;Todooz&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="collapse navbar-collapse navbar-ex1-collapse"&gt;
+        &lt;form class="navbar-form navbar-left" role="search"&gt;
+            &lt;div class="form-group"&gt;
+                &lt;input type="text" class="form-control" placeholder="Search"&gt;
+            &lt;/div&gt;
         &lt;/form&gt;
-        &lt;a href="/add" class="btn btn-inverse pull-right"&gt;&lt;i class="icon-plus icon-white"&gt;&lt;/i&gt;&lt;/a&gt;
+        &lt;a href="/add" class="btn btn-default navbar-btn navbar-right"&gt;
+            &lt;span class="glyphicon glyphicon-plus"&gt;&lt;/span&gt;
+        &lt;/a&gt;
     &lt;/div&gt;
 &lt;/div&gt;</pre>
 
@@ -274,11 +260,13 @@ response.getWriter().write(name);</pre>
 
         <p>Cela ressemble à un include mais la synthaxe est élégante.</p>
 
-        <p>Sachant que la déclaration d'un attribut dans un tag file à la forme.</p>
+        <p>Si un tag file à besoin d'un attribut, on le déclare en haut du fichier :</p>
 
         <pre class="prettyprint">&lt;%@ attribute name="task" required="true" type="fr.todooz.domain.Task" %&gt;</pre>
 
         <p>Faire un tag file task.tag qui affiche une tâche.</p>
+
+        <p>Attention, il ne faut pas oublier les imports des lib c et fmt de la jstl.</p>
 
         <h2>Les fonctions</h2>
 
@@ -300,11 +288,9 @@ response.getWriter().write(name);</pre>
 
         <p>Il faut faire de même avec les tags et le texte.</p>
 
-        <p>On note que l'on aurait pu afficher les tags en utilisant la fonctions split de la jstl.</p>
-
         <h2>Une boite à outils</h2>
 
-        <p>Les jsp sont un outils riche (trop ?) pour intégrer du html.</p>
+        <p>Les jsp sont un outils riche pour générer du html.</p>
 
         <p>On y retrouve :</p>
 
@@ -315,7 +301,7 @@ response.getWriter().write(name);</pre>
             <li>les tags files</li>
         </ul>
 
-        <p>Elles sont très rarement exposées directement et marchent en couple avec des controleurs.</p>
+        <p>Mais elles sont très inefficaces pour aller chercher des données en base ou bien écrire un algorithme.</p>
     </div>
 </div>
 </body>

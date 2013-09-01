@@ -17,6 +17,8 @@
 
         <script src="../../../common/js/code.js"></script>
         <script src="../../../common/js/prettify.js"></script>
+        <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+        <script src="../../../common/js/prez.js"></script>
 
   	</head>
   	<body onload="prettyPrint();">
@@ -38,17 +40,18 @@
 	      <div class="slide">
 	      	<header>Les serveurs jee</header>
 	        <section>
-	        	<p>Un serveur jee est un serveur répondant aux <b>spécifications</b> jee : APIs et services utiles aux applications.</p>
-	        	<p>Les APIS permettent de définir des composants : on parle d'<b>environnements managés</b>.</p>
+	        	<p>Un serveur jee embarque des services qui permettent de faciliter l'écriture d'applications.</p>
+	        	<p>Une application est construite avec des composants managés par le serveur.</p>
 	        	<img alt="" src="img/jee-container.png" width="300px" style="margin:0 250px;"/>
 	          	<ul>
 	          		<li>Les composants : servlets, portlets, ejb, jsp...</li>
 	          		<li>Les services : JPA, JMS, JDBC, JNDI, JMX... </li>
 	          	</ul>
-	          	<p>La liste complète des <a href="http://www.oracle.com/technetwork/java/javaee/tech/index.html" class="external" target="_blank">spécifications jee 6</a> est disponible sur le site d'oracle.</p>
+	          	<p>La liste complète des <a href="http://www.oracle.com/technetwork/java/javaee/tech/index.html" class="external">spécifications jee 7</a> est disponible sur le site d'oracle.</p>
+                <p>Il est existe 2 types des serveurs :</p>
                 <ul>
                     <li>les <b>conteneur de servlets</b> : le minimum afin de faire des applications web
-                    <li>les <b>serveur d'application</b> : ils implémentent la totalité des spécifications
+                    <li>les <b>serveur d'application</b> : tous les services jee sont disponibles
                 </ul>
 	        </section>
 	        <p class="source">http://fr.wikipedia.org/wiki/Java_EE</p>
@@ -63,16 +66,17 @@
 	        		<li>J2EE 1.3 (2001) : EJBs (2.0 CMP), JCA
 	        		<li>J2EE 1.4 (2003) : EJBs (2.1 MDB), Web services, JAX-RPC, Deployment Specification
 	        		<li>JEE 5 (2006) : EJB (3.0 annotations), JPA, Annotations, JSF, JAX-WS
-	        		<li>JEE 6 (2009) : Profil web, EJB (3.1 singletons, lite, asynchronous), JAX-RS
+	        		<li>JEE 6 (2009) : Profil web, Servlet 3.0, EJB (3.1 singletons, lite, asynchronous), CDI, JAX-RS
+                    <li>JEE 7 (2013) : JMS 2.0, JAX-RS 2.0, Servlet 3.1, API JSON, WebSockets
 	        	</ul>
-	        	<p>La liste des technologies est beaucoup plus longue que ce résumé rapide.</p>
+	        	<p>La liste complète est beaucoup plus riche.</p>
 	        	<p>Plus généralement, l'évolution de jee peut être vu comme :</p>
 	        	<ul>
 	        		<li>Une base solide mais controversée (EJBs) en 2000
-	        		<li>Une évolution d'un monolithe vers une galaxie de services (ex CMP -> JPA)
+	        		<li>Une évolution d'un monolithe vers une galaxie de services (ex CMP -> JPA, EJB -> CDI)
 	        		<li>Le passage du tout xml vers les annotations depuis 2006
 	        	</ul>
-	        	<p>Aujourd'hui, jee a corrigé beaucoup de ses défauts et essaye d'allier entreprise et simplicité.</p>
+	        	<p>Aujourd'hui, jee a beacoup gagné en simplicité mais reste complexe à appréhender.</p>
 	        </section>
 	        <p class="source">http://en.wikipedia.org/wiki/Java_EE_version_history</p>
 	      </div>
@@ -100,25 +104,25 @@
 		        			<td>.jar</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="2">Modules réutilisables (avec possibilité de définir des ejbs dans le META-INF/ejb-jar.xml).</td>
+		        			<td colspan="2">Modules réutilisables.</td>
 		        		</tr>
 		        		<tr>
 		        			<td>Les applications web</td>
 		        			<td>.war</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="2">servlets et jsp avec un descripteur de déploiement WEB-INF/web.xml.</td>
+		        			<td colspan="2">Composants web (servlets, jsp) avec un descripteur de déploiement WEB-INF/web.xml.</td>
 		        		</tr>
 		        		<tr>
 		        			<td>Les applications entreprise</td>
 		        			<td>.ear</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="2">ejb avec un descripteur de déploiement META-INF/application.xml.</td>
+		        			<td colspan="2">Tous les composants jee possibles.</td>
 		        		</tr>
 		        	</tbody>
 	        	</table>
-                <p>Chacun de ces packagings peuvent contenir des descripteurs de déploiement.</p>
+                <p>Les descripteurs de déploiement décrivent les composants présents.</p>
                 <ul>
                     <li>web.xml pour les war</li>
                     <li>persitence.xml pour JPA</li>
@@ -174,14 +178,15 @@
                           <td>Fragment de page dans un conteneur de portlets</td>
                       </tr>
                   </table>
-                  <p>Les composants sont des classes java qui adhèrent à une interface définissant un <b>cycle de vie</b>.<p>
+                  <p>Les composants java qui adhèrent à une interface définissant un <b>cycle de vie</b>. Par ex :<p>
 	        	<pre>
 public void init() {...}
 
 public void doGet() {...}
 
 public void destroy() {...}</pre>
-                  <p>Les spécifications récentes ont levé cette rigidité et les composants évoluent vers plus de flexibilité (annotations / injection de dépendances).</p>
+                  <p>Ces interfaces permettent au serveur de piloter les composants.</p>
+                  <p>Les spécifications récentes sont moins rigide (annotations / injection de dépendances).</p>
               </section>
           </div>
 
@@ -208,14 +213,14 @@ doOptions(HttpServletRequest req, HttpServletResponse resp)
 
 doTrace(HttpServletRequest req, HttpServletResponse resp)</pre>
                   <p>La servlet propose un mapping complet des méthodes HTTP.</p>
-                  <p>En pratique, seuls doGet et doPost servent généralement.</p>
+                  <p>En général, seules doGet et doPost sont utiles.</p>
               </section>
           </div>
 
           <div class="slide">
               <header>Le protocole HTTP en objets</header>
               <section>
-                  <p>Les objets centraux du package <b>javax.servlet.http</b> sont une correspondance directe des concepts et protocoles.</p>
+                  <p>L'API <b>javax.servlet.http</b> permet la manipulation des requêts HTTP.</p>
                   <table class="refTable">
                       <thead>
                       <tr>
@@ -252,15 +257,15 @@ doTrace(HttpServletRequest req, HttpServletResponse resp)</pre>
                           </tr>
                           <tr>
                               <td>HttpServlet</td>
-                              <td>Le composant de base capable de gérer des requêtes et de générer une réponse.</td>
+                              <td>Gestion des requêtes / réponses.</td>
                           </tr>
                           <tr>
                               <td>HttpSession</td>
-                              <td>Une session afin de stoquer des données. Le suivi de la session se fait via un cookie jsessionid.</td>
+                              <td>Stockage de données en session. Le suivi de la session se fait via un cookie jsessionid.</td>
                           </tr>
                           <tr>
                               <td>Filter</td>
-                              <td>La possibilité d'intercepter les requêtes avant qu'elle arrivent aux servlets.</td>
+                              <td>La possibilité d'intercepter les requêtes avant qu'elles n'arrivent aux servlets.</td>
                           </tr>
                   </table>
               </section>
@@ -282,7 +287,7 @@ doTrace(HttpServletRequest req, HttpServletResponse resp)</pre>
    &lt;/body&gt;
 &lt;/html&gt;</pre>
                   <p>Ils disposent de mécaniques puissantes afin de créer le rendu html pour une page web.</p>
-                  <p>Ils peuvent également générer n'importe quel type de contenu textuel, comme du XML par exemple.</p>
+                  <p>Ils peuvent aussi générer du texte ou du xml mais c'est généralement du html.</p>
                   <p>Les jsp sont compilées en servlet au moment de leur interprétation, avant d'être exécutées.</p>
               </section>
           </div>
@@ -291,8 +296,8 @@ doTrace(HttpServletRequest req, HttpServletResponse resp)</pre>
               <header>Les outils des jsp</header>
               <section>
                   <h2>Les directives</h2>
-                  <pre>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;</pre>
-                  <pre>&lt;%@ include file="autre_fichier.jsp" %&gt;</pre>
+                  <pre>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="autre_fichier.jsp" %&gt;</pre>
                   <h2>Les actions</h2>
                   <pre>&lt;jsp:include page="autre_fichier.jsp" &gt;
    &lt;jsp:param name="monParam" value="valeur" /&gt;
@@ -300,9 +305,9 @@ doTrace(HttpServletRequest req, HttpServletResponse resp)</pre>
                   <h2>Expression language</h2>
                   <pre>${cart.items[2].name}</pre>
                   <h2>Custom tags et Fonctions</h2>
-                  <pre>&lt;fmt:formatDate value="${task.date}" pattern="dd MMM yyyy" /&gt;</pre>
-                  <pre>${fn:escapeXml(task.text)}</pre>
-                  <p>Avec bien sûr la jstl</p>
+                  <pre>&lt;fmt:formatDate value="${task.date}" pattern="dd MMM yyyy" /&gt;
+${fn:escapeXml(task.text)}</pre>
+                  <p>Avec bien sûr les libs c, fmt et fn de la jstl</p>
               </section>
               <p class="source">http://fr.wikipedia.org/wiki/JavaServer_Pages</p>
           </div>
