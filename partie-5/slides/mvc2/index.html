@@ -17,6 +17,8 @@
 
         <script src="../../../common/js/code.js"></script>
         <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+        <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+        <script src="../../../common/js/prez.js"></script>
 
   	</head>
   	<body onload="prettyPrint();">
@@ -40,7 +42,7 @@
 	        <section>
 	        	<p>Un framework MVC est un conteneur dans le conteneur jee.</p>
 	        	<img alt="" src="img/jee-mvc2-container.png" width="300px" style="margin:0 250px;"/>
-	        	<p>Il offre des services supplémentaires facilant la création d'applications web :</p>
+	        	<p>Il offre des services supplémentaires facilitant la création d'applications web :</p>
 	        	<ul>
 	        		<li><b>Request dispatching</b> (URL mapping) : routage de la requête vers le bon traitement.</li>
 	        		<li><b>Binding et validation</b> : conversion des paramètres, affectation et gestion des erreurs.</li>
@@ -53,7 +55,7 @@
 	      <div class="slide">
 	      	<header>L'architecture MVC 2</header>
 	        <section>
-	        	<p>L'architecture d'un framwork MVC 2 est simple et encourage la séparation des responsabilités.</p>
+	        	<p>L'architecture d'un framwork MVC 2 repose sur la séparation des responsabilités.</p>
 	        	<img alt="" src="img/mvc2.png" width="600px" style="margin:0 100px;"/>
 	        	<p>Le MVC 2 se distingue du MVC par l'introduction d'un <b>front controller</b> (<b>Dispatcher</b>).</p>
 	        </section>
@@ -117,7 +119,7 @@
 <span class="comment">&lt;!-- Gestion des fichiers statiques --&gt;</span>
 &lt;mvc:default-servlet-handler /&gt;
 
-<span class="comment">&lt;!-- Définition de la Locale pour les opération de formattage --&gt;</span>
+<span class="comment">&lt;!-- Définition de la Locale pour les opérations de formattage --&gt;</span>
 &lt;bean id="localeResolver" class="...FixedLocaleResolver"&gt;
    &lt;property name="defaultLocale" value="fr_FR" /&gt;
 &lt;/bean&gt;
@@ -179,7 +181,8 @@ public class HelloWorldController {
 @Controller
 public class HelloWorldController {
  @RequestMapping("/hello")
- public void hello(HttpServletResponse response, <b>Integer value</b>) throws IOException {
+ public void hello(HttpServletResponse response, <b>Integer value</b>)
+    throws IOException {
   response.getWriter().write("Hello " + value + " !");
  }
 }</pre>
@@ -202,7 +205,7 @@ public class HelloWorldController {
   response.getWriter().write("Hello " + name + " !");
  }
 }</pre>
-				<p>Cela permet de construire des urls de service élégantes.</p>
+				<p>Cela permet de construire des urls élégantes plutôt que de reposer sur des paramètres.</p>
 	        </section>
 	      </div>
 	
@@ -210,29 +213,29 @@ public class HelloWorldController {
 	      	<header>Paramètres injectés</header>
 	        <section>
 	        	<p>Les liste des paramètres injectables :</p>
-	        	<ul style="float:left;">
+                <ul style="float:left;width: 220px;">
 	        		<li>HttpServletRequest</li>
 	        		<li>HttpServletResponse</li>
 	        		<li>HttpSession</li>
 	        	</ul>
-	        	<ul style="float:left;">
+	        	<ul style="float:left;width: 230px;">
 	        		<li>InputStream / Reader</li>
 	        		<li>OutputStream / Writer</li>
 	        	</ul>
-	        	<ul style="float:left;">
+	        	<ul style="float:left;width: 140px;">
 	        		<li>Paramètres</li>
 	        		<li>Headers</li>
 	        	</ul>
-	        	<ul style="float:left;">
+	        	<ul style="float:left;width: 110px;">
 	        		<li>Locale</li>
 	        		<li>Principal</li>
 	        	</ul>
-	        	<ul style="float:left;">
+	        	<ul style="float:left;width: 90px;">
 	        		<li>Model</li>
 	        		<li>Errors</li>
 	        	</ul>
 	        	<div style="clear:both;"></div>
-	          	<p>On pourrait donc simplifier notre code</p>
+	          	<p>On pourrait donc simplifier notre code en utilisant le Writer</p>
 	          	<pre>
 @Controller
 public class HelloWorldController {
@@ -249,21 +252,21 @@ public class HelloWorldController {
 	      	<header>Retours supportés</header>
 	        <section>
 	        	<p>Les retours possibles :</p>
-	        	<ul style="float:left;">
+	        	<ul style="float:left;width: 200px;">
 	        		<li>ModelAndView</li>
 	        		<li>Model / Map</li>
 	        		<li>View</li>
 	        	</ul>
-	        	<ul style="float:left;">
+	        	<ul style="float:left;width: 260px;">
 	        		<li>String (logical view name)</li>
 	        		<li>void</li>
 	        	</ul>
-	        	<ul style="float:left;">
+	        	<ul style="float:left;width: 200px;">
 	        		<li>@ResponseBody</li>
 	        		<li>@ModelAttribute</li>
 	        	</ul>
 	        	<div style="clear:both;"></div>
-	          	<p>Ce qui nous permet de simplifier encore notre code</p>
+	          	<p>Ce qui nous permet de simplifier encore notre code avec @ResponseBody</p>
 	          	<pre>
 @Controller
 public class HelloWorldController {
@@ -273,7 +276,7 @@ public class HelloWorldController {
   return "Hello " + name + "!";
  }
 }</pre>
-                <p>Avec @ResponseBody, spring comprend que le retour de la méthode doit être écrit dans le corps de la réponse.</p>
+                <p>Avec @ResponseBody, spring comprend que le retour de la méthode est directement le corps de la réponse.</p>
 	        </section>
 	      </div>
 	

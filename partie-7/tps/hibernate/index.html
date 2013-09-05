@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -22,17 +24,35 @@
 
         <h2>Introduction</h2>
 
-        <p>Hibernate est un framework de persitence objet - base de données relationnelles.</p>
+        <p>Hibernate est un framework de persitence objet - base de données relationnelles (ORM).</p>
 
         <p>Il implémente et étend JPA (Java Persitance API), le standard de persistence jee.</p>
 
         <img src="img/another-layer.png" alt="" style="margin: 0 250px;">
         
-        <p>Techniquement, c'est une surcouche de JDBC qui en simplifie grandement l'usage.</p>
+        <p>Techniquement, c'est une surcouche des drivers JDBC (Java DataBase Connectivity).</p>
 
         <h2>Configuration hibernate</h2>
 
-        <p>Comme pour la configuration de derby, nous allons écrire un test unitaire afin de mettre en place notre couche de persistance.</p>
+        <p>Nous allons écrire un test unitaire afin de mettre en place notre couche de persistance.</p>
+
+        <p>En premier, on ajoute la librairie hibernate et le driver derby.</p>
+
+        <pre class="prettyprint">&lt;dependency&gt;
+  &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+  &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+  &lt;version&gt;4.2.5.Final&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
+  &lt;artifactId&gt;derby&lt;/artifactId&gt;
+  &lt;version&gt;10.10.1.1&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+
+        <p>Derby est une base de données embarquées qui va permettre d'écrire facilement des tests.</p>
 
         <p>Nous créons un test HibernateTest dans le package fr.todooz.hibernate.</p>
 
@@ -40,48 +60,26 @@
 public void createSessionFactory() {
    Configuration configuration = new Configuration();
 
-   configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+   configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyTenFiveDialect");
    configuration.setProperty("hibernate.connection.url", "jdbc:derby:target/testdb;create=true");
    configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
    configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
-   SessionFactory sessionFactory = configuration.buildSessionFactory();
+   ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).buildServiceRegistry();
+
+   SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 }</pre>
 
-        <p>C'est l'équivalent de la création de la connexion en JDBC. Un peu plus long mais aussi plus riche.</p>
+        <p>La SessionFactory est ce qui permet d'obtenir des connexions avec la base de données.</p>
 
-        <p>Le guide complet de la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/session-configuration.html" class="external" target="_blank">configuration de hibernate</a></p>
-
-        <p>Ce test ne passe que si on ajoute les entrées suivantes dans le pom.xml</p>
-
-        <pre class="prettyprint">&lt;dependency&gt;
-  &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
-  &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
-  &lt;version&gt;3.6.4.Final&lt;/version&gt;
-  &lt;scope&gt;compile&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-  &lt;groupId&gt;javassist&lt;/groupId&gt;
-  &lt;artifactId&gt;javassist&lt;/artifactId&gt;
-  &lt;version&gt;3.12.1.GA&lt;/version&gt;
-  &lt;scope&gt;compile&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-  &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-  &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
-  &lt;version&gt;1.6.1&lt;/version&gt;
-  &lt;scope&gt;compile&lt;/scope&gt;
-&lt;/dependency&gt;</pre>
+        <p>Le guide complet de la <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#session-configuration" class="external">configuration de hibernate</a></p>
 
         <p>Ce test génère pas mal de traces dans la console au démarrage d'hibernate.</p>
 
-        <p>La SessionFactory que l'on récupère est un wrapper autour des APIs JDBC.</p>
-
-        <p>Elle permet de récupérer une Session qui est le pendant d'une Connection JDBC.</p>
-
         <h2>Les classes du domaine</h2>
 
-        <p>Avant de pouvoir utiliser concrètement notre SessionFactory, il faut lui donner la configuration des classes que l'on veut persiter.</p>
+        <p>Nous souhaitons sauver des Tasks, il faut donc configurer cette classe pour d'hibernate.</p>
 
         <p>La façon la plus simple est de le faire via des annotations dans nos classes du domaine.</p>
 
@@ -184,26 +182,32 @@ public void saveTask() {
 
     Session session = sessionFactory.openSession();
 
+    Transaction transaction = session.beginTransaction();
+
     session.save(task);
+
+    transaction.commit();
 
     session.close();
 }</pre>
 
-        <p>Afin de pouvoir écrire ce test il faut avoir passé le test précédent (createSessionFactory) en @Before au lieu de @Test afin d'initialiser la SessionFactory.</p>
+        <p>Afin de pouvoir écrire ce test il faut avoir passé le test précédent (createSessionFactory) en @Before au lieu de @Test. On passe ainsi la variable sessionFactory en attribut de classe.</p>
 
         <p>Hibernate nous permet donc de sauver un objet dans une table sans que nous ayons à manipuler de SQL.</p>
 
-        <p>De même que pour les tests jdbc, nous ne fermons pas correctement notre Session si jamais une erreur survient.</p>
+        <p>Il manque un peu de gestion d'erreur mais pour des tests, cela est suffisant.</p>
 
-        <p>Comme nous sommes dans du code de test, cela est suffisant pour le moment.</p>
-
-        <p>Malgré cela, nous devons quand même bien nettoyer la base après notre test et fermer la SessionFactory.</p>
+        <p>Afin de laisser la base dans un bon état après chaque test, on ajoute la méthode @After suivante.</p>
 
         <pre class="prettyprint">@After
 public void cleanDb() {
     Session session = sessionFactory.openSession();
 
+    Transaction transaction = session.beginTransaction();
+
     session.createQuery("<b>delete from Task</b>").executeUpdate();
+
+    transaction.commit();
 
     session.close();
 
@@ -216,9 +220,9 @@ public void cleanDb() {
 
         <p>Rechercher un objet dans la base se fait tout aussi simplement que la persistence.</p>
 
-        <p>Pour les requêtes, hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html" class="external" target="_blank">HQL</a> (Hibernate Query Language).</p>
+        <p>Pour les requêtes, hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#queryhql" class="external">HQL</a> (Hibernate Query Language).</p>
 
-        <p>Le HQL permet de travailler avec le nom des attributs des classes au lieu du nom des colonnes en base.</p>
+        <p>Le HQL permet de travailler avec le nom des classes java au lieu du nom des colonnes en base.</p>
 
         <pre class="prettyprint">@Test
 public void findTask() {
@@ -238,12 +242,12 @@ public void findTask() {
     Assert.assertEquals("Read Effective Java", tasks.get(0).getTitle());
 }</pre>
 
-        <p>Avec hibernate on récupère directement nos objets à partir de la base (au lieu d'un ResultSet).</p>
+        <p>hibernate convertit donc nos objets en écriture et en lecture de la base.</p>
 
-        <p>En plus du HQL, il existe une autre API encore plus orientée objet : la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" class="external" target="_blank">Criteria API</a></p>
+        <p>En plus du HQL, il existe une autre API encore plus orientée objet : la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" class="external">Criteria API</a></p>
 
         <pre class="prettyprint">@Test
-public void findTaskCriteria() {
+public void findTaskWithCriteria() {
     saveTask();
 
     Session session = sessionFactory.openSession();
@@ -252,7 +256,7 @@ public void findTaskCriteria() {
 
     criteria.add(Restrictions.eq("title", "Read Effective Java"));
 
-    List&lt;TasK&gt; tasks = criteria.list();
+    List&lt;Task&gt; tasks = criteria.list();
 
     session.close();
 
@@ -264,7 +268,7 @@ public void findTaskCriteria() {
 
         <h2>TaskService</h2>
 
-        <p>Avec hibernate nous allons pouvoir écrire simplement notre service de gestion de tâches.</p>
+        <p>Nous avons maintenant suffisamment d'élements afin d'écrire notre service de gestion de tâches.</p>
 
         <p>Les opérations à supporter sont :</p>
 
@@ -291,14 +295,17 @@ public void findTaskCriteria() {
 
    public List&lt;Task&gt; findAll() {
       <span class="comment">// TODO</span>
+      return null;
    }
 
    public List&lt;Task&gt; findByQuery(String query) {
       <span class="comment">// TODO</span>
+      return null;
    }
 
    public int count() {
       <span class="comment">// TODO</span>
+      return 0;
    }
 }</pre>
 
@@ -311,14 +318,17 @@ public void findTaskCriteria() {
    public void createSessionFactory() {
       Configuration configuration = new Configuration();
 
-      configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+      configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyTenFiveDialect");
       configuration.setProperty("hibernate.connection.url", "jdbc:derby:target/testdb;create=true");
       configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
       configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
       configuration.addAnnotatedClass(Task.class);
 
-      sessionFactory = configuration.buildSessionFactory();
+      ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).buildServiceRegistry();
+
+      sessionFactory = configuration.buildSessionFactory(serviceRegistry);
    }
 
    @After
@@ -361,9 +371,9 @@ public void save() {
     taskService.save(task());
 }</pre>
 
-        <p>Faites en sorte que cela soit possible et que ce test passe en prenant soin de bien fermer la session.</p>
+        <p>Faites en sorte que cela soit possible et que ce test passe en prenant soin d'utiliser une transaction et de bien fermer la session.</p>
 
-        <p>Le delete (<a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html#queryhql-bulk" class="external" target="_blank">doc hibernate</a>).</p>
+        <p>Le delete (<a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#batch-direct" class="external">doc hibernate</a>).</p>
 
         <pre class="prettyprint">@Test
 public void delete() {
@@ -383,7 +393,7 @@ public void delete() {
     session.close();
 }</pre>
 
-        <p>Les find avec la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" class="external" target="_blank">criteria API</a></p>
+        <p>Les find avec la <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#querycriteria" class="external">criteria API</a></p>
 
         <pre class="prettyprint">@Test
 public void findAll() {
@@ -434,17 +444,19 @@ public void count() {
 
         <p>Hibernate est une aide précieuse lorsque l'on travaille avec des objets et une base de données relationelles.</p>
 
+        <p>Il ne faut pas se tromper non plus, le mapping base de données - objet est un sujet complexe.</p>
+
         <p>Mais notre code a encore quelques limitations :</p>
 
         <ul>
             <li>Gestion des ouvertures et fermetures de sessions à la main.</li>
+            <li>Gestion des transactions à la main.</li>
             <li>Il faut fournir la SessionFactory au service.</li>
-            <li>Pas de gestion de transaction.</li>
             <li>Nous n'utilisons pas de pool de connexion sérieux (hibernate fournit un pool par défaut suffisant pour les tests).</li>
             <li>La mise en place de la SessionFactory n'est pas facilement factorisable.</li>
         </ul>
 
-        <p>Avant de coder un second service, nous allons nous tourner vers le framework spring afin de régler tous ces problèmes.</p>
+        <p>Avant de coder un second service, nous allons essayer de régler tous ces problèmes.</p>
     </div>
 </div>
 </body>

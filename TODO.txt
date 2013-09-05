@@ -33,3 +33,4 @@ next year
 - services en groovy
 - java 7 (try with resources sur les connections jdbc ?)
 - polyglot java (java, groovy, scala, clojure...)
+- <span class="code">some code</span>

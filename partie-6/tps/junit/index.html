@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -22,13 +24,17 @@
 
         <h2>Introduction</h2>
 
-        <p>JUnit est une librairie de tests unitaires pour java.</p>
+        <p>Nous allons commencer à rajouter des services et nous aimerions avoir la garantie qu'ils fonctionnent.</p>
 
-        <p>Elle appartient à la famille des librairies <a href="http://en.wikipedia.org/wiki/XUnit" class="external" target="_blank">xUnit</a> initiée par Kent Beck et Erich Gamma.</p>
+        <p>Pour ce faire, nous allons utiliser la technique de développement par les tests.</p>
+
+        <p>JUnit est une librairie de tests unitaires pour java qui va nous aider dans ce but.</p>
+
+        <p>Elle appartient à la famille des librairies <a href="http://en.wikipedia.org/wiki/XUnit" class="external">xUnit</a> initiée par Kent Beck et Erich Gamma.</p>
 
         <p>Elle permet d'écrire simplement des tests unitaires qui valident le fonctionnement du code.</p>
 
-        <p>Elle fonctionne en utilisant des <b>assertions</b> qui testent le comportement du code testé.</p>
+        <p>Elle fonctionne en utilisant des <b>assertions</b> qui valident le comportement du code testé.</p>
 
         <pre class="prettyprint">public class PersonTest {
    @Test
@@ -43,22 +49,22 @@
 
         <p>Une fois le code écrit, c'est une protection contre les risques de regressions.</p>
 
+        <p>Pour nous exercer, nous allons coder une classe TagCloud par les tests.</p>
+
         <h2>Mise à jour de junit</h2>
 
-        <p>Avant de commencer à écrire du code, nous allons mettre à jour la version de junit utilisée dans le pom.xml</p>
+        <p>Avant de pouvoir écrire du code, nous devons ajouter junit</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
   &lt;groupId&gt;junit&lt;/groupId&gt;
   &lt;artifactId&gt;junit&lt;/artifactId&gt;
-  &lt;version&gt;<b>4.8.2</b>&lt;/version&gt;
+  &lt;version&gt;<b>4.11</b>&lt;/version&gt;
   &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
         <p>La version 4 de junit supporte les annotations qui permettent d'écrire les tests plus simplement.</p>
 
-        <p>Il est possible de chercher la dernière version disponible via <a href="http://search.maven.org" class="external" target="_blank">search.maven.org</a> en recherchant junit.</p>
-
-        <p>On regénère ensuite le projet avec mvn eclipse:eclipse et on rafraîchit le projet sous eclipse afin que cette modification soit bien prise en compte par eclipse.</p>
+        <p>Il est possible de chercher la dernière version disponible via <a href="http://search.maven.org" class="external">search.maven.org</a> en recherchant junit.</p>
 
         <h2>TagCloud</h2>
 
@@ -68,7 +74,7 @@
 
 }</pre>
 
-        <p>Cette classe pourrait nous servir afin d'afficher le tag cloud en colonne de droite du site.</p>
+        <p>Cette classe nous servira afin d'afficher le tag cloud en colonne de droite du site.</p>
 
         <p>Voici ce que nous voudrions qu'elle fasse pour le moment :</p>
 
@@ -84,11 +90,17 @@
 
         <p>Par convention, une classe de test porte le nom de la classe testée, suffixée par "Test".</p>
 
-        <p>Si il n'existe pas, on crée le répertoire src/test/java dans notre projet (il faut faire un mvn eclipse:eclipse afin que maven indique a eclipse que c'est un répertoire de fichiers sources).</p>
+        <p>Si il n'existe pas, on crée le répertoire src/test/java dans notre projet.</p>
 
-        <p>On ajoute le test JUnit (New &gt; JUnit Test Case) TagCloudTest dans le package fr.todooz.util mais coté sources de test (src/test/java).</p>
+        <p>On ajoute la classe TagCloudTest dans le package fr.todooz.util mais coté sources de test (src/test/java).</p>
 
-        <img src="img/new-junit-test.png" style="padding: 0 150px" />
+        <p>On peut faire ça rappidemebt avec le raccourcis Alt + Entrée depuis la classe :</p>
+
+        <img src="img/create-test.png" style="padding: 0 250px;" />
+
+        <p>Ce qui donne :</p>
+
+        <img src="img/create-test-dialog.png" style="padding: 0 150px;" />
 
         <h2>add</h2>
 
@@ -103,11 +115,15 @@
    }
 }</pre>
 
-        <p>On exécute le test en faisant un click droit sur la classe Run As &gt; JUnit Test.</p>
+        <p>On exécute le test en faisant un click droit sur la classe puis Run TagCloudTest.</p>
 
-        <img src="img/junit-failed.png" style="padding: 0 200px" />
+        <img src="img/launch-test.png" style="padding: 0 200px" />
 
-        <p>Actuellement, ce test ne passe pas car la méthode add n'existe pas dans notre TagCloud. Il suffit donc de la créer.</p>
+        <p>Actuellement, ce test ne passe pas car la méthode add n'existe pas dans notre TagCloud.</p>
+
+        <img src="img/cannot-find-symbol.png" style="padding: 0 100px" />
+
+        <p>Il suffit donc de la créer.</p>
 
         <pre class="prettyprint">public class TagCloud {
    public void add(String tag) {
@@ -115,7 +131,7 @@
    }
 }</pre>
 
-        <img src="img/junit-success.png" style="padding: 0 200px" />
+        <img src="img/test-ok.png" style="padding: 0 40px" />
 
         <p>Elle ne fait rien, mais le test passe. Ajoutons un autre test.</p>
 
@@ -135,7 +151,7 @@ public void size() {
         <p>Nous allons plutôt utiliser une List dès à présent.</p>
 
         <pre class="prettyprint">public class TagCloud {
-    private List&lt;String&gt; tags = new ArrayList&lt;String&gt;();
+    private List&lt;String&gt; tags = new ArrayList&lt;&gt;();
 
     public void add(String tag) {
         tags.add(tag);
@@ -150,9 +166,9 @@ public void size() {
 
         <h2>add(String...)</h2>
 
-        <p>Afin de pouvoir écrire plus facilement nos tests, nous allons ajouter une méthode add(String...).</p>
+        <p>Afin de pouvoir écrire plus facilement nos tests, on ajoute une méthode add(String...) avec un vararg.</p>
 
-        <p>A partir de maintenant, seuls les tests seront décrit ici, l'implémentation étant libre.</p>
+        <div class="note">A partir de maintenant, seuls les tests seront décrit ici, l'implémentation étant libre.</div>
 
         <pre class="prettyprint">@Test
 public void addMutiple() {
@@ -265,6 +281,10 @@ public void shuffle() {
 
    Assert.assertEquals(5, tagCloud.size());
    Assert.assertTrue(tagCloud.contains("java"));
+   Assert.assertTrue(tagCloud.contains("ruby"));
+   Assert.assertTrue(tagCloud.contains("python"));
+   Assert.assertTrue(tagCloud.contains("c#"));
+   Assert.assertTrue(tagCloud.contains("groovy"));
 }</pre>
 
         <p>On pourrait réfléchir à un algorithme pour implémenter cette méhtode, mais java.util.Collections.shuffle() va nous suffire.</p>
@@ -273,7 +293,7 @@ public void shuffle() {
 
         <p>Il n'y a pas de solution simple et nous souhaitons garder nos tests simples.</p>
 
-        <p>On se contente donc de tester quelques invariants : la taille et un peu du contenu.</p>
+        <p>On se contente donc de tester quelques invariants : la taille et le contenu.</p>
 
         <p>Si il devenait important de tester la bonne distribution de la méthode shuffle, comment pourrait on procéder ?</p>
 

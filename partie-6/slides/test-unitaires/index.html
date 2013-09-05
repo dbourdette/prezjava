@@ -17,6 +17,8 @@
 
 	<script src="../../../common/js/code.js"></script>
 	<script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -34,8 +36,8 @@
 			<div class="slide">
 				<header>Une pratique agile</header>
 				<section>
-					<p>C'est une pratique qui consiste à écrire du code client avant d'écrire le code de l'application.</p>
-                    <p>En anglais, on appelle cela le <b>Test Driven Development</b> (TDD) ou le Test First Development.</p>
+					<p>En pratique, on écrit un code de test avant d'écrire le code de l'application.</p>
+                    <p>En anglais, c'est le <b>Test Driven Development</b> (TDD) ou le Test First Development.</p>
                     <p>En se plaçant d'un point de vue externe à l'application, les tests permettent :</p>
                     <ul>
                         <li>De designer des interfaces (APIs) simples et efficaces.</li>
@@ -44,7 +46,7 @@
                         <li>De refactorer le code en limitant les risques de casser l'existant (régression).</li>
                     </ul>
                     <p>L'ensemble des tests unitaires en place pour un projet est appelé <b>la suite de tests</b>.</p>
-                    <p>Elle doit s'exécuter <b>rapidement</b> afin d'être une étape constituante du build.</p>
+                    <p>Elle doit s'exécuter <b>rapidement</b> afin de pouvoir être exécutée souvent.</p>
 				</section>
 			</div>
 
@@ -59,25 +61,24 @@
                     </ul>
                     <img src="img/red-green-refactoring.png" height="200px" style="margin: 20px 0px 20px 250px">
                     <p>On répète ce cycle jusqu'a obtenir le niveau de fonctionnalités souhaité.</p>
-                    <p>Les test couvrent idéalement les <b>cas canoniques</b> et les <b>cas aux limites</b>.</p>
+                    <p>Les test couvrent idéalement tout le code.</p>
 				</section>
 			</div>
 
 			<div class="slide">
 				<header>xUnit</header>
 				<section>
-                    <p>Contrairement à d'autres domaines, il existe peu de librairies de test unitaires en java.</p>
-                    <p>La famille des xUnit (JUnit pour java) initiée par Kent beck et Erich Gamma est la plus répandue.</p>
+                    <p>Il existe beaucoup de librairies de test unitaires.</p>
+                    <p>En java, c'est JUnit (de la famille des xUnit) initiée par Kent beck et Erich Gamma qui est la plus répandue.</p>
 					<p>Un test unitaire est une série d'assertions ciblant une méthode du code.</p>
                     <pre>public class PersonTest {
  @Test
- public void fullname() {
+ public void getFullname() {
   Person person = new Person("John", "Doe");
 
   Assert.assertEquals("fullname is incorrect", person.getFullname(), "John Doe");
  }
 }</pre>
-                    <p>Avant les annotations (java 1.5) l'écriture des tests unitaires était un peu plus pénible.</p>
 				</section>
 			</div>
 
@@ -86,7 +87,7 @@
 				<section>
                     <p>Lorsque l'on découvre une nouvelle librairie, il est possible d'écrire quelques tests unitaires afin d'apprendre à l'utiliser.</p>
                     <p>C'est une façon simple de découvrir une nouvelle API et de vérifier qu'elle répond bien au besoin.</p>
-                    <p>Les tests servent de tutorial simple pour l'équipe projet.</p>
+                    <p>Les tests servent de tutorial simple pour l'équipe.</p>
                     <p>Si la version de la librairie augmente, les tests permettent de détecter un changement d'API ou de comportement.</p>
 				</section>
 			</div>
@@ -106,10 +107,11 @@
 				<section>
                     <p>En complément de junit, voici quelques possibilités de compléments :</p>
                     <ul>
+                        <li>fest assert : permet d'écrire des asertions plus lisiblement.</li>
+                        <li>mockito : création de mocks (simulation de comportement).</li>
+                        <li>selenium : test d'interfaces web.</li>
                         <li>dbunit : pour les bases données relationelles.</li>
                         <li>xmlunit : comparaison d'arbres xml.</li>
-                        <li>selenium : test d'interfaces web.</li>
-                        <li>mockito, easymock... : création de mocks (simulation de comportement).</li>
                     </ul>
 				</section>
 			</div>

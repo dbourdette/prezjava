@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -20,35 +22,36 @@
     <div id="project">
         <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC</h1>
 
-        <p>Les conteneurs de servlets sont des outils très puissants et très ouverts.</p>
+        <p>Les servlets sont assez limitées et fastidieuses à configurer (web.xml).</p>
         
-        <p>Mais il ne serait pas pratique de construire une application riche avec des servlets.</p>
+        <p>Une application riche avec beaucoup de servlets serait douloureuse.</p>
+
+        <p>Les frameworks MVC java pour le web apportent la facilité et la puissance manquante.</p>
 
         <img src="img/container.png" alt="" style="margin: 0 150px;">
 
-        <p>Les frameworks MVC pour le web apportent la facilité manquante.</p>
+        <p>Il n'existe pas de technologie jee pour faire du MVC sur le web.</p>
 
         <p>Nous allons travailler avec spring MVC, le module MVC du framework spring.</p>
 
         <h2>Mise en place</h2>
 
-        <p>En premier, on rajoute les librairies pour spring mvc.</p>
+        <p>On rajoute la libraire spring-webmvc dans les dépendances.</p>
 
         <pre class="prettyprint">
 &lt;dependency&gt;
-    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
-    &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
-    &lt;scope&gt;compile&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
    &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
-   &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+   &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Dans le web.xml, on rajoute la servlet spring. Elle reçoit toutes les requêtes.</p>
+        <div class="note">
+            Spring MVC fait partie d'un framework beaucoup plus large. <br>
+            Mais grace aux dépendances transitives, demander spring-webmvc ramène tout les autres libs.
+        </div>
+
+        <p>Dans le web.xml, on remplace toutes les servlets par la servlet spring.</p>
         
         <pre class="prettyprint">
 <span class="comment">&lt;!-- Spring servlet --&gt;</span>
@@ -62,40 +65,40 @@
    &lt;url-pattern&gt;<b>/</b>&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>On supprime toutes les autres servlets au passage.</p>
+        <p>Elle est mappée sur / et donc reçoit toutes les requêtes.</p>
 
-        <p>Au démarrage de tomcat, cette servlet va aller charger un contexte spring (/WEB-INF/spring-servlet.xml) qu'il nous faut définir.</p>
+        <p>Au démarrage de tomcat, cette servlet va aller charger un fichier de configuration spring.</p>
+
+        <p>On place done le fichier spring-servlet.xml suivant dans src/main/webapp/WEB-INF/ :</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
    xmlns:context="http://www.springframework.org/schema/context"
    xmlns:mvc="http://www.springframework.org/schema/mvc"
-   xmlns:tx="http://www.springframework.org/schema/tx"
-   xmlns:p="http://www.springframework.org/schema/p"
-   xmlns:aop="http://www.springframework.org/schema/aop"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"&gt;
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"&gt;
 
    &lt;!-- Support des annotations --&gt;
    &lt;context:annotation-config /&gt;
    
-   &lt;!-- Création de composants classiques pour spring mvc --&gt;
+   &lt;!-- Création des composants classiques pour spring mvc --&gt;
    &lt;mvc:annotation-driven /&gt;
+
+   &lt;!-- Découverte des contrôleurs --&gt;
+   &lt;context:component-scan base-package="fr.todooz.web.controller" /&gt;
    
    &lt;!-- Forwarde les demandes de fichiers statiques vers la servlet par défaut du conteneur --&gt;
    &lt;mvc:default-servlet-handler /&gt;
 
-   &lt;!-- Définition de la Locale pour les opération de formattage --&gt;
+   &lt;!-- Définition de la Locale pour les opérations de formattage --&gt;
    &lt;bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver"&gt;
        &lt;property name="defaultLocale" value="fr_FR" /&gt;
    &lt;/bean&gt;
 
-   &lt;!-- Configuration de la technologie de rendu  --&gt;
+   &lt;!-- Configuration de la technologie de templating  --&gt;
    &lt;bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"&gt;
        &lt;property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /&gt;
        &lt;property name="prefix" value="/WEB-INF/jsp/" /&gt;
@@ -104,11 +107,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 &lt;/beans&gt;</pre>
 
-        <p>Il est temps de rajouter notre premier Controller.</p>
+        <p>La configuration de base est assez lourde (un peu à cause du format xml) mais elle va permettre beaucoup de choses.</p>
 
         <h2>IndexController</h2>
 
-        <p>Nous allons remplacer notre IndexServlet par la classe IndexController du package fr.todooz.web.controller.</p>
+        <p>Il est temps de rajouter notre premier Controller afin de remplacer notre IndexServlet.</p>
+
+        <p>On ajoute l'IndexController dans le package fr.todooz.web.controller.</p>
 
         <pre class="prettyprint">@Controller
 public class IndexController {
@@ -120,28 +125,22 @@ public class IndexController {
    }
 }</pre>
 
-        <p>L'annotation @Controller indique a spring qu'il s'agit d'un composant spécial qui répond aux requêtes http.</p>
+        <p>L'annotation @Controller indique a spring qu'il s'agit d'un composant qui répond aux requêtes http.</p>
 
-        <p>L'annotation @RequestMapping fait la liaison entre une url et la méthode cible de la classe.</p>
+        <p>L'annotation @RequestMapping fait la liaison entre une réquête et la bonne méthode.</p>
 
-        <p>Le Model est ce qui est rempli par le Controller et transmis à la vue (jsp).</p>
+        <p>Le Model est ce qui est transmis à la vue jsp.</p>
 
-        <p>Le retour "index" va être mappé pas le viewResolver (avec le prefix et suffix de la configuration spring) et interpreté comme /WEB-INF/jsp/index.jsp.</p>
+        <p>Le retour "index" indique la vue qui doit être utilisée (soit /WEB-INF/jsp/index.jsp).</p>
 
-        <p>La création d'un Controller est une opération simple et les annotations apportent de la souplesse.</p>
+        <p>Cela donne beaucoup de configuration pour un simple controller. Mais à partir de maintenant, on peut rajouter des nouveaux mappings sans toucher au web.xml.</p>
 
-        <p>Afin que ce composant soit chargé, il faut le définir dans le contexte spring.</p>
-
-        <p>Comme nous allons faire plusieurs Controller, nous utilisons un scan de package dans spring-servlet.xml.</p>
-
-        <pre class="prettyprint">&lt;!-- Découverte des contrôleurs --&gt;
-&lt;context:component-scan base-package="fr.todooz.web.controller" /&gt;</pre>
-
-        <p>Le Controller devrait répondre sur <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> en lançant l'application avec la commande mvn tomcat:run.</p>
+        <p>Le Controller devrait répondre sur <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> comme le faisait la servlet.</p>
 
         <p>Afin d'avoir un contrôleur qui réponde à la racine de notre application, on change le mapping.</p>
 
-        <pre class="prettyprint">@RequestMapping({"/", "/index"})</pre>
+        <pre class="prettyprint"><s>@RequestMapping("/index.html")</s>
+@RequestMapping({"/", "/index"})</pre>
 
         <p>Maintenant, <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>, <a href="http://localhost:8080/index" target="_blank">http://localhost:8080/index</a> et <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> répondent.</p>
 

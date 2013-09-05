@@ -17,6 +17,8 @@
 
         <script src="../../../common/js/code.js"></script>
         <script src="../../../common/js/prettify.js"></script>
+        <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+        <script src="../../../common/js/prez.js"></script>
 
     </head>
     <body onload="prettyPrint();">
@@ -57,10 +59,11 @@
                             <li><b>orientées objets</b> : visent à faciliter le passage objets &lt;-&gt; stockage.
                             <li><b>XML</b> : stoquage et interrogation native en XML.
                             <li><b>orientées documents</b> : stoquage d'objets avec des propriétés complexes.
+                            <li>...
                         </ul>
                         <p>les charges grandissantes et la flexibilité recherchée ont poussé certaines de ces solutions hors de la compétition.</p>
-                        <p>Les bases des données orientées documents gagnent en terrain sur le web car elles sont plus adaptée aux modèles de données et aux charges importantes.</p>
-                        <p>Ces bases sont aussi appelées bases <b><a href="http://fr.wikipedia.org/wiki/NoSQL" class="external" target="_blank">NoSQL</a></b> (mongoDB, cassandra et solr...)</p>
+                        <p>Les bases des données flexibles gagnent en terrain sur le web car elles sont plus adaptée aux modèles de données et aux charges importantes.</p>
+                        <p>Ces bases sont aussi appelées bases <b><a href="http://fr.wikipedia.org/wiki/NoSQL" class="external">NoSQL</a></b> (mongoDB, cassandra et solr...)</p>
                     </section>
                 </div>
 
@@ -73,7 +76,7 @@
                         <p>Le code client fait appel à une interface uniforme, quelle que soit la base de données.</p>
                         <p>La couche JDBC fait appel à un driver spécifique à la base de données.</p>
                         <p style="clear: both;"></p>
-                        <p>Techniquement c'est une impémentation du <a href="http://en.wikipedia.org/wiki/Bridge_pattern" class="external" target="_blank">pattern bridge</a>.</p>
+                        <p>Techniquement c'est une impémentation du <a href="http://en.wikipedia.org/wiki/Bridge_pattern" class="external">pattern bridge</a>.</p>
                     </section>
                 </div>
 
@@ -116,7 +119,7 @@ while (rs.hasNext()) {
                             <li>Apache OpenJPA</li>
                             <li>Oracle Toplink</li>
                         </ul>
-                        <p><a href="http://www.hibernate.org/" class="external" target="_blank">Hibernate</a> est la plus utilisée.</p>
+                        <p><a href="http://www.hibernate.org/" class="external">Hibernate</a> est la plus utilisée.</p>
                     </section>
                 </div>
 
@@ -141,7 +144,7 @@ while (rs.hasNext()) {
     public void setTitle(String title) { this.title = title; }
 }</pre>
                         <p>Ici nous prenons en exemple un évènement simple avec 3 attributs.</p>
-                        <p>Cet exemple est tiré de la documentation hibernate : <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html_single/#tutorial-firstapp" class="external" target="_blank">The first Hibernate Application</a></p>
+                        <p>Cet exemple est tiré de la documentation hibernate : <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html_single/#tutorial-firstapp" class="external">The first Hibernate Application</a></p>
                     </section>
                 </div>
 
@@ -242,10 +245,10 @@ List events = session.createQuery("from Event").list();</pre>
                             <li>one to many : un vers plusieurs</li>
                             <li>many to many : plusieurs à plusieurs</li>
                         </ul>
-                        <p>Une bonne qualification de la cardinalité permet à hibernate de persister et charger les objets.</p>
-                        <p>Cependant, des relations trop riches complexifient le code client à écrire.</p>
-                        <p>Il y a même un risque de charger beaucoup trop d'objets sans s'en rendre compte car il existe des relations entre les classes.</p>
-                        <p>Pour plus de détails, la documentation de hibernate sur le <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html_single/#associations" class="external" target="_blank">mapping d'assiociations</a> est beaucoup plus complète.</p>
+                        <p>Hibernate se charge de persister et charger les objets.</p>
+                        <p>Cependant, le nombre de ces relations rendent les choses complexes à gérer.</p>
+                        <p>Cela impacte la également la performance.</p>
+                        <p>Pour plus de détails, la documentation de hibernate sur le <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#associations" class="external">mapping d'assiociations</a> est beaucoup plus complète.</p>
                     </section>
                 </div>
 
@@ -253,9 +256,8 @@ List events = session.createQuery("from Event").list();</pre>
                     <header>Les limites</header>
                     <section>
                         <p>Hibernate n'est pas une librairie magique qui annihile la complexité.</p>
-                        <p>Elle ne dédouane d'apprendre le SQL, les contraintes des bases de données relationnelles et de faire attention à la performance.</p>
-                        <p>Un autre travers est la mise en place de classes du domain métier ne contenant que des attributs et des getters / setters.</p>
-                        <p>Le terme consacré est un modèle métier anémique, signe d'une mauvaise pratique du design orienté objet.</p>
+                        <p>Elle ne dédouane pas d'apprendre le SQL, les contraintes des bases de données relationnelles et de faire attention à la performance.</p>
+                        <p>Il faut donc apprécier ce qu'apporte l'ORM sans penser qu'il est tout puissant.</p>
                     </section>
                 </div>
 
