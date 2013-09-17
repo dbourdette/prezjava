@@ -398,7 +398,7 @@ div.example {
 div.note {
     display: block;
     padding: 5px 10px;
-    margin: 0px 10px;
+    margin: 10px;
     color: #5c5a1c;
     background: rgba(255, 254, 163, 0.40);
     -webkit-border-radius: 4px;

@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -20,14 +22,16 @@
     <div id="project">
         <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC mappings</h1>
 
-        <p>Nous allons ajouter quelques méthodes afin de pouvoir naviguer un peu plus dans nos billets.</p>
+        <p>Il va maintenant être plus simple d'ajouter des services sur nos contrôleurs</p>
+
+        <p>Nous allons ajouter quelques méthodes afin de pouvoir naviguer un peu plus dans nos tâches.</p>
 
         <p>L'interface html nous propose 3 entrées que nous allons implémenter :</p>
 
         <ul>
             <li>Le moteur de recherche dans le header</li>
             <li>La navigation par tags</li>
-            <li>La naviagtion par date</li>
+            <li>La navigation par date</li>
         </ul>
 
         <h2>La recherche</h2>
@@ -68,23 +72,21 @@ public String tag(@PathVariable String tag, Model model) {
 
         <ul>
             <li>Ajouter le tag cloud dans le model</li>
-            <li>Formatter le tag cloud à partir des données fournies par le controller</li>
-            <li>Ajouter la méthode utile findByTag dans le service</li>
+            <li>Formatter le tag cloud dans la jsp à partir des données fournies par le controller</li>
+            <li>Ajouter la méthode utile findByTag (avec un test unitaire) dans le service</li>
             <li>Implémenter la méthode du controller</li>
         </ul>
 
-        <p>On peut rajouter la méthode suivante dans le tag cloud</p>
+        <p>On peut rajouter la méthode suivante dans le tag cloud afin de pouvoir écrire le c:forEach du tag cloud</p>
 
         <pre class="prettyprint">public List&lt;String&gt; getTags() {
     return tags;
 }</pre>
 
-        <p>Afin de pouvoir écrire le c:forEach du tag cloud.</p>
-
         <div class="note">
             La feuille de style css/bootstrap.min.css est en relatif et le mapping /tag/{tag} est un cran plus bas dans l'arborescence.
             <br>
-            Il est donc nécessaire (et généralement préférable) d'utiliser une uri absolue : /css/bootstrap.min.css
+            Il peut donc être nécessaire d'utiliser un chemin absolu : /css/bootstrap.min.css
         </div>
 
         <h3>Le filtre par intervalle</h3>
@@ -98,17 +100,17 @@ public String tag(@PathVariable String tag, Model model) {
 
         <p>Implémenter tout ce qu'il faut afin que ces 2 liens fonctionnent.</p>
 
-        <p>Pour manipuler des dates et des intervalles en java, le mieux est d'utiliser <a href="http://joda-time.sourceforge.net/" class="external">joda time</a> (artefact joda-time sur le <a href="http://search.maven.org" class="external">repository central</a>)</p>
+        <p>Pour manipuler des dates et des intervalles en java, le mieux est d'utiliser <a href="http://www.joda.org/joda-time/" class="external">joda time</a> (artefact joda-time sur le <a href="http://search.maven.org" class="external">repository central</a>)</p>
 
         <p>Par exemple, pour aujourd'hui :</p>
 
         <pre class="prettyprint">private Interval todayInterval() {
-    DateMidnight today = new DateMidnight();
+    DateTime today = new DateTime().withTimeAtStartOfDay();
 
     return new Interval(today, today.plusDays(1));
 }</pre>
 
-        <div class="note">new DateMidnight() est aujourd'hui a 00h00</div>
+        <div class="note">new DateTime().withTimeAtStartOfDay() est aujourd'hui a 00h00</div>
 
         <p>Coté service, il existe une Restrictions.between afin de construire la requête.</p>
 
@@ -152,7 +154,7 @@ public TagCloud tagCloud() {
 
         <h3>Et ?</h3>
 
-        <p>Y a t il un autre duplication / optimisation que l'on peut proposer pour notre controller ?</p>
+        <p>Y a t il une autre duplication / optimisation que l'on peut proposer pour notre controller ?</p>
 
 
     </div>

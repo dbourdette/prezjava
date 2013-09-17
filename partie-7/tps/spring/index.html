@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -26,7 +28,9 @@
 
         <img src="img/container.png" alt="" style="margin: 0 200px;">
 
-        <p>C'est un conteneur dans le conteneur jee.</p>
+        <p>Nous avons déjà vu la partie MVC de spring, nous allons mantenant en voir plus.</p>
+
+        <p>Spring est un conteneur dans le conteneur jee.</p>
 
         <p>Les composants spring sont appelés <b>beans</b>.</p>
 
@@ -34,15 +38,13 @@
 
         <p>Les relations entre les composants sont appelées dépendances.</p>
 
+        <p>Dans les applications, cela peut devenir rapidement complexe.</p>
+
         <img src="img/class-diagram.png" alt="" style="margin: 0 140px;">
 
-        <p>Ce réseau de dépendances est mis en place au démarrage de l'application.</p>
+        <p>Spring prend en charge cette gestion des dépendances.</p>
 
-        <p>La mise en relation est appelée wiring (câblage) et c'est la spécialité de spring.</p>
-
-        <p>Cela permet de se concentrer sur chaque objet en faisant abstraction d'une partie de la complexité.</p>
-
-        <p>En conséquence, cela rend les composants plus simples et plus portables</p>
+        <p>Il nous reste donc à nous concentrer sur l'écriture des composants.</p>
 
         <h2>Dépendances</h2>
 
@@ -51,31 +53,31 @@
         <pre class="prettyprint">&lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
-  &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
-  &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
-  &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
-  &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
-  &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
   &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
@@ -84,7 +86,7 @@
   &lt;version&gt;1&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Et on peut faire un mvn eclipse:eclipse.</p>
+        <p>Une partie de ces dépendances venaient déjà avec spring-mvc.</p>
 
         <h2>Mise en place du contexte spring</h2>
 
@@ -106,7 +108,7 @@
 
         <p>C'est dans ce fichier que seront définis les beans pour les tests.</p>
 
-        <p>Afin que les fichiers xml dans src/test/java fassent partie du build, nous ajoutons la configuration suivante dans le pom (voir <a href="http://maven.apache.org/pom.html#Resources" class="external" target="_blank">configuration des resources</a>) :</p>
+        <p>Afin que les fichiers xml dans src/test/java fassent partie du build, nous ajoutons la configuration suivante dans le pom (voir <a href="http://maven.apache.org/pom.html#Resources" class="external">configuration des resources</a>) :</p>
 
         <pre class="prettyprint">&lt;build&gt;
     &lt;testResources&gt;
@@ -121,7 +123,7 @@
     ...
 &lt;/build&gt;</pre>
 
-        <p>Et dans le test unitaire, on rajoute les annotations suivantes :</p>
+        <p>Et dans le test unitaire TaskServiceTest, on rajoute les annotations suivantes :</p>
 
         <pre class="prettyprint"><b>@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration</b>
@@ -137,7 +139,9 @@ public class TaskServiceTest {
 
         <h2>AnnotationSessionFactoryBean</h2>
 
-        <p>La première chose que nous allons faire est de définir notre session factory dans le contexte spring. Dans TaskServiceTest-context.xml</p>
+        <p>La première chose que nous allons faire est de définir notre SessionFactory comme composant.</p>
+
+        <p>Dans TaskServiceTest-context.xml on ajoute.</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -146,15 +150,15 @@ public class TaskServiceTest {
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd" &gt;
 
 <span class="comment">&lt;!-- factory bean pour la SessionFactory hibernate --&gt;</span>
-<b>&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+<b>&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"&gt;
    &lt;property name="hibernateProperties"&gt;
       &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
          &lt;property name="properties"&gt;
             &lt;props&gt;
-               &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/prop&gt;
+               &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyTenFiveDialect&lt;/prop&gt;
                &lt;prop key="hibernate.connection.url"&gt;jdbc:derby:target/testdb;create=true&lt;/prop&gt;
                &lt;prop key="hibernate.connection.driver_class"&gt;org.apache.derby.jdbc.EmbeddedDriver&lt;/prop&gt;
-               &lt;prop key="hibernate.hbm2ddl.auto"&gt;update&lt;/prop&gt;
+               &lt;prop key="hibernate.hbm2ddl.auto"&gt;create-drop&lt;/prop&gt;
             &lt;/props&gt;
          &lt;/property&gt;
       &lt;/bean&gt;
@@ -164,20 +168,25 @@ public class TaskServiceTest {
 
 &lt;/beans&gt;</pre>
 
-        <p>C'est une configuration équivalente à ce que nous avions dans notre méthode createSessionFactory(). Nous pouvons donc supprimer cette méthode.</p>
+        <p>C'est une configuration équivalente à ce que nous avions dans notre méthode createSessionFactory().</p>
+
+        <p>Nous pouvons donc supprimer cette méthode.</p>
 
         <pre class="prettyprint"><s>@Before
 public void createSessionFactory() {
-  Configuration configuration = new Configuration();
+    Configuration configuration = new Configuration();
 
-  configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
-  configuration.setProperty("hibernate.connection.url", "jdbc:derby:target/testdb;create=true");
-  configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
-  configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+    configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+    configuration.setProperty("hibernate.connection.url", "jdbc:derby:target/testdb;create=true");
+    configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
+    configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
-  configuration.addAnnotatedClass(Task.class);
+    configuration.addAnnotatedClass(Task.class);
 
-  sessionFactory = configuration.buildSessionFactory();
+    ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+    .applySettings(configuration.getProperties()).buildServiceRegistry();
+
+    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 }</s></pre>
 
         <p>En échange, on injecte la session factory définie dans notre contexte de notre test.</p>
@@ -220,46 +229,50 @@ public void cleanDb() {
 
         <p>Au démarrage du contexte spring, une instance de la classe TaskService sera donc instanciée.</p>
 
-        <p>On profite du fait que notre bean soit géré par spring afin de supprimer la méthode setSessionFactory de notre PostService.</p>
+        <p>Nous avons une SessionFactory et un TaskService dans le contexte spring.</p>
+
+        <p>Il est donc possible d'inject la SessionFactory dans le TaskService.</p>
 
         <pre class="prettyprint"><b>@Inject</b>
-private SessionFactory sessionFactory;</pre>
+private SessionFactory sessionFactory;
 
-        <p>Et dans le test unitaire, plus besoin d'instancier notre service nous même. On échange donc :</p>
+<s>public void setSessionFactory(SessionFactory sessionFactory) {
+    this.sessionFactory = sessionFactory;
+}</s></pre>
+
+        <p>Et dans le test unitaire, plus besoin d'instancier notre service nous même. On échange donc tous nos :</p>
 
         <pre class="prettyprint"><s>TaskService taskService = new TaskService();
 taskService.setSessionFactory(sessionFactory);</s></pre>
 
-        <p>contre</p>
+        <p>contre un seul</p>
 
         <pre class="prettyprint">@Inject
 private TaskService taskService;</pre>
 
-        <p>Les tests passent encore, on a gagné quelques lignes de code.</p>
+        <p>Les tests passent encore, on commencer a gagner en lignes de code.</p>
 
         <h2>TaskService v2.0</h2>
 
-        <p>Nous allons maintenant nous séparer de la gestion des fermetures de sessions (session.close()) et cela fonctionnera même en cas d'erreur.</p>
-
-        <p>En bonus, nous allons rendre tout notre code transactionnel dans le même temps.</p>
+        <p>Nous allons maintenant nous éviter de gérer les sessions et les transactions nous même.</p>
 
         <p>En premier, nous devons extraire une interface à partir de notre service.</p>
 
-        <p>C'est une contrainte lié au langage java qui ne peut générer des <a href="http://en.wikipedia.org/wiki/Proxy_pattern" class="external" target="_blank">proxies</a> qu'a partir d'une interface.</p>
+        <p>C'est une contrainte lié au langage java qui ne peut générer des <a href="http://en.wikipedia.org/wiki/Proxy_pattern" class="external">proxies</a> qu'a partir d'une interface.</p>
 
-        <p>Heureusement, eclipse va nous aider un peu.</p>
+        <p>Heureusement, intellij va nous aider un peu.</p>
 
-        <p>Dans elipse, on fait un rename de la classe TaskService vers TaskServiceImpl (clic droit sur la classe).</p>
+        <p>On fait un extract interface de la classe TaskService (clic droit sur la classe).</p>
 
-        <img src="img/rename.png" style="margin:0 80px;" />
+        <img src="img/extract-interface.png" style="width:840px" />
 
-        <p>Puis on extrait une interface TaskService à partir de notre classe (clic droit sur la classe).</p>
+        <p>Et voici les options du refactoring.</p>
 
-        <img src="img/extract-interface.png" style="margin:0 65px;" />
+        <img src="img/extract-interface-options.png" style="margin:0 100px;" />
 
-        <p>Il faut sélectionner les 5 méthodes et ne pas prendre l'option "Declare interface methods as 'abstract'".</p>
+        <p>Il faut sélectionner les 5 méthodes et choisir "Rename original class and use interface where possible".</p>
 
-        <p>Ne reste qu'à changer la définition du bean à instancier dans le contexte.</p>
+        <p>Intellij a changé la définition du bean à instancier dans le contexte.</p>
 
         <pre class="prettyprint">&lt;bean class="fr.todooz.service.TaskServiceImpl" /&gt;</pre>
 
@@ -267,7 +280,7 @@ private TaskService taskService;</pre>
 
         <p>Une interface plus tard, les tests passent toujours.</p>
 
-        <p>Maintenant on ajoute une annotation <b>@Transactional</b> sur les 5 méthodes de l'implémentation et on peut retirer toute la gestion de la fermeture de la session.</p>
+        <p>Maintenant on ajoute une annotation <b>@Transactional</b> sur les 5 méthodes de l'implémentation et on peut retirer toute la gestion des sessions et transactions.</p>
 
         <p>Par exemple, la méthode save devient :</p>
 
@@ -279,31 +292,52 @@ public void save(Task task) {
     session.save(task);
 }</pre>
 
+        <p>Faites de même avec les autres méthodes.</p>
+
         <p>Cela simplifie grandement nos méthodes, nous libérant ainsi d'une partie répétitive et sujette à bugs.</p>
 
-        <p>Pour que les tests unitaires passent il faut quand même rajouter un peu de configuration dans le fichier xml.</p>
+        <p>Pour que les tests unitaires passent il faut quand même changer un peu la configuration (extraire une dataSource et ajouter le gestionnaire de transactions).</p>
 
-        <pre class="prettyprint">&lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	<b>xmlns:tx="http://www.springframework.org/schema/tx"</b>
-	xsi:schemaLocation="
-   http://www.springframework.org/schema/beans
-   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-   <b>http://www.springframework.org/schema/tx
-   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"</b> &gt;
+        <pre class="prettyprint">&lt;!-- pool de connexion --&gt;
+&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+    &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+    &lt;property name="url" value="jdbc:derby:target/testdb;create=true"/&gt;
+    &lt;property name="username" value=""/&gt;
+    &lt;property name="password" value=""/&gt;
+&lt;/bean&gt;
 
-   ...
+&lt;!-- factory bean pour la SessionFactory hibernate --&gt;
+&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"&gt;
+    &lt;property name="dataSource" ref="dataSource" /&gt;
+    &lt;property name="hibernateProperties"&gt;
+        &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+            &lt;property name="properties"&gt;
+                &lt;props&gt;
+                    &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyTenFiveDialect&lt;/prop&gt;
+                    &lt;prop key="hibernate.hbm2ddl.auto"&gt;create-drop&lt;/prop&gt;
+                &lt;/props&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="packagesToScan" value="fr.todooz.domain"/&gt;
+&lt;/bean&gt;
 
-<span class="comment">&lt;!-- ajoute un gestionnaire de transactions lié à la sessionFactory --&gt;</span>
-<b>&lt;bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"&gt;
+&lt;!-- ajoute un gestionnaire de transactions lié à la sessionFactory --&gt;
+&lt;bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"&gt;
     &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
-&lt;/bean&gt;</b>
+&lt;/bean&gt;
 
-<span class="comment">&lt;!-- active le support des annotations @Transactional --&gt;</span>
-<b>&lt;tx:annotation-driven transaction-manager="transactionManager"/&gt;</b>
+&lt;!-- active le support des annotations @Transactional --&gt;
+&lt;tx:annotation-driven transaction-manager="transactionManager"/&gt;</pre>
 
-   ...
+        <p>Et ajouter la dépendance :</p>
 
-&lt;/beans&gt;</pre>
+        <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;commons-dbcp&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-dbcp&lt;/artifactId&gt;
+    &lt;version&gt;1.4&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
 
         <p>C'est maintenant le contexte spring qui va gérer :</p>
 
@@ -317,7 +351,7 @@ public void save(Task task) {
         <p>La mise en place de la configuration spring peut sembler un peu lourde par rapport au gain en lignes de code mais :</p>
 
         <ul>
-            <li>la configuration est factorisée et le gain va donc croissant avec le l'augmentation du nombre de composants.</li>
+            <li>la configuration est factorisée et le gain va donc croissant avec l'augmentation du nombre de composants.</li>
             <li>Nos services sont "injectables" facilement afin de construire notre application.</li>
             <li>Le code ne conserve que la partie à forte valeur ajoutée.</li>
             <li>Notre code est maintenant transactionnel et peut participer simplement à des transactions englobants plusieurs service en même temps.</li>
@@ -335,56 +369,11 @@ public void save(Task task) {
 
         <p>Cela indique à spring (et donc aussi à hibernate) qu'il n'y aura pas d'écriture en base à la fin des opérations sql. Certaines vérifications n'auront donc pas à être appliquées et donc on gagnera un peu en performance.</p>
 
+        <p>Sémantiquement, on indique clairement que notre méthode ne fait que lire en base.</p>
+
         <p>Si on tente de marquer une méthode comme étant en read only alors que ce n'est pas le cas, on obtient une erreur.</p>
 
         <pre class="prettyprint">Caused by: ERROR 25502: An SQL data change is not permitted for a read-only connection, user or database.</pre>
-
-        <h2>DataSource</h2>
-
-        <p>Jusqu'a présent, nous avons utilisé le pool de connexion fourni par hibernate qui ne manque pas de nous le dire dans les logs :</p>
-
-        <pre class="prettyprint">Using Hibernate built-in connection pool (not for production use!)</pre>
-
-        <p>Un pool de connexion permet d'optimiser la gestion des connexions en prêtant un nombre fini de connexions à des demandeurs. Cela évite d'ouvrir et fermer des liaisons avec la base données, ce qui est assez couteux.</p>
-
-        <p>On utilise le pool fourni par la fondation apache.</p>
-
-        <pre class="prettyprint">&lt;dependency&gt;
-    &lt;groupId&gt;commons-dbcp&lt;/groupId&gt;
-    &lt;artifactId&gt;commons-dbcp&lt;/artifactId&gt;
-    &lt;version&gt;1.4&lt;/version&gt;
-    &lt;scope&gt;compile&lt;/scope&gt;
-&lt;/dependency&gt;</pre>
-
-        <p>On donc modifier la définition de la SessionFactory dans notre contexte spring.</p>
-
-        <pre class="prettyprint"><span class="comment">&lt;!-- pool de connexion --&gt;</span>
-&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
-    &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
-    &lt;property name="url" value="jdbc:derby:target/testdb;create=true"/&gt;
-    &lt;property name="username" value=""/&gt;
-    &lt;property name="password" value=""/&gt;
-&lt;/bean&gt;
-
-<span class="comment">&lt;!-- factory bean pour la SessionFactory hibernate --&gt;</span>
-&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
-    <b>&lt;property name="dataSource" ref="dataSource" /&gt;</b>
-    &lt;property name="hibernateProperties"&gt;
-        &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
-            &lt;property name="properties"&gt;
-                &lt;props&gt;
-                    &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/prop&gt;
-                    &lt;prop key="hibernate.hbm2ddl.auto"&gt;update&lt;/prop&gt;
-                &lt;/props&gt;
-            &lt;/property&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="packagesToScan" value="fr.todooz.domain"/&gt;
-&lt;/bean&gt;</pre>
-
-        <p>Nous avons un pool qui supporte la production et Hibernate est content.</p>
-
-        <p>De plus, nous n'avons pas eu a changer une seule ligne de notre test ou de notre service.</p>
 
         <h2>TagCloudService</h2>
 
@@ -398,7 +387,7 @@ public void save(Task task) {
 
         <p>Le but est donc de réaliser la classe TagCloudServiceImpl qui implémente se service.</p>
 
-        <p>Comme d'habitude, on commence par écrire un test unitaire.</p>
+        <p>Voici les tests possibles afin de guider l'écriture du service.</p>
 
         <pre class="prettyprint">@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -468,7 +457,7 @@ public class TagCloudServiceTest {
    }
 }</pre>
 
-        <p>Définissez le contexte spring et codez la classe TagCloudServiceImpl afin que ce test passe.</p>
+        <p>Définissez le contexte spring et codez la classe TagCloudServiceImpl afin que ces tests passent.</p>
 
         <p>Voici quelques indices :</p>
 

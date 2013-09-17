@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -28,24 +30,27 @@
 
         <p>Elle fournit une couche ORM : Object Relationnal Mapping.</p>
 
-        <p>Elle est née a partir d'hibernate qui reste l'implémentation leader sur ce secteur.</p>
+        <p>Elle est inspirée d'hibernate qui reste l'implémentation leader sur ce secteur.</p>
 
         <h2>JPA vs Hibernate</h2>
 
-        <p>Hibernate implémente le standard JPA.</p>
+        <p>JPA est un standard définie par une spécification (ensemble de documents).</p>
 
-        <p>Il existe d'autres implémentations :</p>
+        <p>Il existe plusieurs implémentations :</p>
 
         <ul>
             <li>EclipseLink (eclipse) (implémentation de référence)</li>
+            <li>Hibernate</li>
             <li>Toplink (oracle)</li>
             <li>OpenJPA (apache)</li>
             <li>... ?</li>
         </ul>
 
-        <p>En plus chaque implémentation propose ses extensions. Si on les utilise, on sort donc du pur standard pour devenir dépendant d'une impléméntation</p>
+        <p>Si on utilise ce qui fait partie de la spéc, on peut donc théoriquement passer d'une librairie à une autre.</p>
 
-        <p>En pratique, hibernate est tellement prepondérant que cela ne pose pas un réèl problème.</p>
+        <p>Mais chaque implémentation propose des extensions utiles.</p>
+
+        <p>En pratique, les extensions sont souvent utiles pour résoudre les problèmes non canoniques.</p>
 
         <h2>Configuration</h2>
 
@@ -116,8 +121,8 @@ Switched to a new branch 'jpa'</pre>
         <p>Spring propose <a href="http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/orm.html#orm-jpa-setup" class="external" target="_blank">3 options</a> :</p>
 
         <ul>
-            <li>LocalEntityManagerFactoryBean : chargement standard du persitence.xml</li>
-            <li>EntityManagerFactory : chargement du persitence.xml via jndi</li>
+            <li>LocalEntityManagerFactoryBean : chargement standard du persistence.xml</li>
+            <li>EntityManagerFactory : chargement du persistence.xml via jndi</li>
             <li>LocalContainerEntityManagerFactoryBean : gestion par spring avec beaucoup de possibilités</li>
         </ul>
 
@@ -128,7 +133,7 @@ Switched to a new branch 'jpa'</pre>
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
     &lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
-    &lt;version&gt;3.6.4.Final&lt;/version&gt;
+    &lt;version&gt;4.2.5.Final&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
@@ -142,13 +147,13 @@ Switched to a new branch 'jpa'</pre>
         &lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
         &lt;class&gt;fr.todooz.domain.Task&lt;/class&gt;
         &lt;properties&gt;
-            &lt;property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/&gt;
+            &lt;property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenFiveDialect"/&gt;
             &lt;property name="hibernate.hbm2ddl.auto" value="update"/&gt;
         &lt;/properties&gt;
     &lt;/persistence-unit&gt;
 &lt;/persistence&gt;</pre>
 
-        <p>Et enfin la configuration dans spring-servlet.xml</p>
+        <p>Et enfin la configuration dans spring-context.xml</p>
 
         <pre class="prettyprint">&lt;bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"&gt;
     &lt;property name="dataSource" ref="dataSource"/&gt;
@@ -196,7 +201,7 @@ Switched to a new branch 'jpa'</pre>
 
         <ul>
             <li>Utiliser l'EntityManagerFactory comme on utilise la SessionFactory de spring</li>
-            <li>Utiliser un EntityManager partagé qui respecte les @Transactionnal</li>
+            <li>Utiliser un EntityManager partagé qui respecte les @Transactional</li>
         </ul>
 
         <p>Nous allons jouer avec les 2 en fonction du besoin.</p>
@@ -304,7 +309,7 @@ public void save() {
         <p>Comme pour hibernate, si on ne souhaite pas gérer les transaction à la main, nous allons devoir utiliser @Transationnal.</p>
 
         <pre class="prettyprint">@Override
-@Transactionnal
+@Transactional
 public void save(Task task) {
     entityManager.persist(task);
 }</pre>
@@ -322,29 +327,29 @@ public void save(Task task) {
         <p>On modifie ensuite l'annotation</p>
 
         <pre class="prettyprint">@Override
-@Transactionnal("jpa")
+@Transactional("jpa")
 public void save(Task task) {
     entityManager.persist(task);
 }</pre>
 
-        <p>Ainsi, spring va chercher le transaction manager indiqué.</p>
+        <p>Ainsi, spring va chercher le transaction manager (jpa) indiqué.</p>
 
-        <p>On peut noter que les tests de TaskServiceTest passent encore.</p>
+        <p>On peut noter que les tests de TaskServiceTest passent de nouveau.</p>
 
         <p>En pratique, il est extrêmement rare d'avoir ce cas de figure avec 2 sources de données.</p>
 
         <h2>Et le reste des méthodes</h2>
 
-        <p>Il reste donc a fini les tests et la classe TaskServiceJPAImpl</p>
+        <p>Il reste donc a finir les tests et la classe TaskServiceJPAImpl</p>
 
-        <p>On peut largement s'inspirer de l'autre impléméntation.</p>
+        <p>On peut largement s'inspirer de l'autre implémentation.</p>
 
         <p>La documentation sur l'<a href="http://docs.oracle.com/javaee/6/api/javax/persistence/EntityManager.html" class="external" target="_blank">entity manager</a>.</p>
 
         <p>Un peu d'aide : </p>
 
         <ul>
-            <li>Pour l'update, il faut faut faire un test sur la nullité de l'id et faire un persist ou un merge.</li>
+            <li>Pour l'update, il faut faire un test sur la nullité de l'id et faire un persist ou un merge.</li>
             <li>La criteria api de jpa est horrible.<br> Il faut utiliser la query api (ex: entityManager.createQuery("from Task order by date desc"))</li>
             <li>
                 La méthode finvByQuery peut s'écrire
@@ -360,7 +365,7 @@ public List&lt;Task&gt; findByQuery(String query) {
 
         <h2>Choisir entre les 2 implémentations</h2>
 
-        <p>La première chose a faire est de repporter notre jpaTransactionManager et d'ajouter un @Service à TaskServiceJPAImpl.</p>
+        <p>La première chose a faire est de reporter notre jpaTransactionManager et d'ajouter un @Service à TaskServiceJPAImpl.</p>
 
         <p>Maintenant, nous avons 2 instances de TaskService en mémoire et spring est mécontent.</p>
 

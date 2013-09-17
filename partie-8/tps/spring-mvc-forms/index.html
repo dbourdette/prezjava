@@ -13,6 +13,8 @@
     <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
 
     <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
 
 </head>
 <body onload="prettyPrint();">
@@ -22,15 +24,15 @@
 
         <p>Nous avons vu comment attacher des méthodes à des paths et afficher des données.</p>
 
-        <p>Nous allons maintenant fournir une interface web pour éditer ces données</p>
+        <p>Nous allons maintenant fournir une interface web pour éditer ces données.</p>
 
         <h2>L'encoding</h2>
 
-        <p>Lorsque le navigateur envoie des données vers le serveur, il encode les charactères en utilisant le charset de la page courante.</p>
+        <p>Lorsque le navigateur envoie des données vers le serveur, l'encoding dépend de différents paramètres.</p>
 
-        <p>Cependant, il ne spécifie pas l'encoding utilisé dans les headers de la requête.</p>
+        <p>L'encoding par défaut est ISO-8859-1 (ISO Latin)</p>
 
-        <p>Coté serveur, les paramètres sont décodés en utilsant l'encoding par défaut, ce qui n'est pas correct.</p>
+        <p>Nous aimerions que toutes nos requetes soit traitées en UTF-8.</p>
 
         <p>Afin de forcer l'encoding lors de la lecture des paramètres, on utilise le filtre suivant dans le web.xml.</p>
 
@@ -52,7 +54,7 @@
     &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
 &lt;/filter-mapping&gt;</pre>
 
-        <p>Le code source du <a href="http://static.springsource.org/spring/docs/3.1.x/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html" class="external" target="_blank">CharacterEncodingFilter</a> de spring est très simple.</p>
+        <p>Le code source du <a href="http://static.springsource.org/spring/docs/3.1.x/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html" class="external">CharacterEncodingFilter</a> de spring est très simple.</p>
 
         <pre class="prettyprint">public class CharacterEncodingFilter extends OncePerRequestFilter {
 
@@ -92,7 +94,7 @@
 public class AdminController {
 }</pre>
 
-        <p>Celui va devoir supporter les opérations suivantes :</p>
+        <p>Celui ci va devoir supporter les opérations suivantes :</p>
 
         <ul>
             <li>Afficher un formulaire d'ajout d'une tâche</li>
@@ -114,23 +116,23 @@ public String add(Model model) {
     return "edit";
 }</pre>
 
-        <p>La vue est <a href="html/template.html">un formulaire</a> qui permet d'éditer les attributs du billet.</p>
+        <p>La vue est <a href="html/template.html" class="external">un formulaire</a> qui permet d'éditer les attributs du billet.</p>
 
-        <p>Elle utilise la <a href="http://twitter.github.com/bootstrap/base-css.html#forms" class="external" target="_blank">css de bootstrap</a> afin d'afficher un formulaire aéré et lisible.</p>
+        <p>Elle utilise la <a href="http://getbootstrap.com/css/#forms" class="external">css de bootstrap</a> afin d'afficher un formulaire aéré et lisible.</p>
 
         <p>Il faut porter ce formulaire faire une jsp (edit.jsp) vers laquelle pointe le controller.</p>
 
         <p>Le + dans le header affiche donc maintenant un formulaire vide.</p>
 
-        <div class="note">Attention, il faut penser à remprendre les éléments nécessaires à la colonne de droite.</div>
+        <div class="note">Attention, il faut penser à reprendre les éléments nécessaires à la colonne de droite.</div>
 
         <h3>Le post</h3>
 
         <p>Si on regarde le tag form de la page, on voit que celui-ci pointe vers /edit en méthode "post"</p>
 
-        <p>la méthode de ce formulaire indique que les données seront envoyés avec la méthode HTTP POST.</p>
+        <p>La méthode de ce formulaire indique que les données seront envoyés avec la méthode HTTP POST.</p>
 
-        <p>C'est classique pour un formulaire qui mets à jour des données dans une base.</p>
+        <p>C'est classique pour un formulaire qui met à jour des données dans une base.</p>
 
         <ul>
             <li>C'est sémantiquement correct</li>
@@ -151,25 +153,14 @@ public String post(Task task) {
 
         <ul>
             <li>L'ajout de method = RequestMethod.POST dans l'annotation</li>
-            <li>L'attribut task de la méthode qui est remplit automatique par spring</li>
-            <li>La sauvergarde du billet</li>
+            <li>L'attribut task de la méthode qui est remplit automatiquement (binding) par spring</li>
+            <li>La sauvergarde de la task</li>
             <li>Le redirect (vers la home) après un post</li>
         </ul>
 
-        <p>Si on utilise le formulaire en l'état, sans fournir de date, on obtient un jolie exception :</p>
+        <p>Si on utilise le formulaire en l'état, sans fournir de date, on obtient une réponse 400 :</p>
 
-        <pre>org.springframework.validation.<b>BindException</b>: org.springframework.validation.BeanPropertyBindingResult: 1 errors
-Field error in object 'task' on field 'date': rejected value []; codes
-[typeMismatch.task.date,typeMismatch.date,typeMismatch.java.util.Date,typeMismatch]; arguments
-[org.springframework.context.support.DefaultMessageSourceResolvable: codes [task.date,date]; arguments [];
-default message [date]]; default message [<b>Failed to convert property value of type 'java.lang.String' to
-required type 'java.util.Date' for property 'date'</b>; nested exception is
-org.springframework.core.convert.ConversionFailedException:
-Unable to convert value "" from type 'java.lang.String' to type 'java.util.Date';
-nested exception is java.lang.IllegalArgumentException]
-    at org.springframework.web.bind.annotation.support.HandlerMethodInvoker.doBind(HandlerMethodInvoker.java:810)
-    ...
-        </pre>
+        <img src="img/400.png" alt="" style="margin-left: 40px;"/>
 
         <p>Spring ne parvient pas a convertir une String vide en Date et il ne sait pas quoi faire.</p>
 
@@ -192,9 +183,9 @@ public String post(@ModelAttribute Task task, BindingResult result) {
     return "redirect:/";
 }</pre>
 
-        <div class="note">Notre attribut task a maintenant une annotation @ModelAttribute qui va permettre d'injecter l'objet dans le model.</div>
+        <div class="note">Notre attribut task a maintenant une annotation @ModelAttribute qui ajoute task dans le model.</div>
 
-        <div class="note">BindingResult contient tout le résultat du binding pour l'objet qui le précéde dans la liste des paramètres de la méthode.</div>
+        <div class="note">BindingResult contient le résultat du binding pour l'objet qui le précéde dans la liste des paramètres de la méthode.</div>
 
         <p>On ajoute la taglib de spring pour les formulaires dans la jsp.</p>
 
@@ -202,23 +193,32 @@ public String post(@ModelAttribute Task task, BindingResult result) {
 
         <p>Le formulaire doit maintenant être un tag spring</p>
 
-        <pre class="prettyprint">&lt;form:form commandName="task" action="/edit" method="post"&gt;
+        <pre class="prettyprint">&lt;form:form cssClass="form-horizontal" commandName="task" action="/edit" method="post"&gt;
     ...
 &lt;form:form&gt;</pre>
 
-        <div class="note">L'attribut commandName du formulaire reprend le nom du bean dans le modèle.</div>
+        <div class="note">L'attribut commandName du form correspond au nom du bean (task) dans le modèle.</div>
 
         <p>Et finalement l'affichage de l'erreur</p>
 
-        <pre class="prettyprint">&lt;label for="date"&gt;Date &lt;form:errors path="date" cssStyle="color: red" /&gt;&lt;/label&gt;</pre>
+        <pre class="prettyprint">&lt;c:set var="error"&gt;&lt;form:errors path="date" cssStyle="color:#B94A48" cssClass="help-block"/&gt;&lt;/c:set&gt;
+&lt;div class="form-group ${not empty error ? 'has-error' : ''}"&gt;
+    &lt;label for="date" class="col-lg-2 control-label"&gt;Date&lt;/label&gt;
+    &lt;div class="col-lg-4"&gt;
+        &lt;input type="text" class="form-control" name="date" id="date" placeholder="dd/MM/yyyy"&gt;
+        ${error}
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
 
         <div class="note">L'attribut path permet de choisir pour quel champs on affiche l'erreur. On peut utiliser * pour "toutes"</div>
+
+        <div class="note">Nous avons utilisé le code de la <a href="http://getbootstrap.com/css/#forms-control-states" class="external">doc bootstrap</a> pour afficher ces erreurs mais il existe de multiples façons de faire.</div>
 
         <p>Cela étant fait pour la date, prévoir dès maintenant la même chose pour tous les champs.</p>
 
         <h3>Un meilleur message d'erreur</h3>
 
-        <p>Pour le moment, le message d'erreur est un peu riche est pourtant peu compréhensible.</p>
+        <p>Pour le moment, le message d'erreur est un peu riche tout en étant peu compréhensible.</p>
 
         <pre class="prettyprint">Failed to convert property value of type java.lang.String to required type java.util.Date for property date;
 nested exception is org.springframework.core.convert.ConversionFailedException:
@@ -227,10 +227,7 @@ java.lang.IllegalArgumentException</pre>
 
         <p>Il serait possible de configurer un meilleur message dans un fichier de localisation mais pour notre besoin, nous pouvons faire simplement.</p>
 
-        <pre>&lt;label for="date"&gt;
-    Date
-    &lt;form:errors path="date"&gt;&lt;span style="color:red"&gt;La date n'est pas correcte&lt;/span&gt;&lt;/form:errors>
-&lt;/label&gt;</pre>
+        <pre>&lt;form:errors path="date"&gt;&lt;span style="color:#B94A48" class="help-block"&gt;La date n'est pas correcte&lt;/span&gt;&lt;/form:errors&gt;</pre>
 
         <p>C'est plus court et plus clair.</p>
 
@@ -238,7 +235,7 @@ java.lang.IllegalArgumentException</pre>
 
         <p>Spring n'a pas de soucis pour binder un String dans un String mais peine pour la Date.</p>
 
-        <p>En effet, spring ne choisit pas de format de date par défaut et connait encore moins notre propre format.</p>
+        <p>En effet, spring ne peut deviner quel est le format de notre date.</p>
 
         <p>Il nous revient donc de configurer le binder dans le controller.</p>
 
@@ -281,19 +278,19 @@ public String edit(@PathVariable Long id, Model model) {
 
         <p>Le plus simple est encore d'utiliser les tags spring, par exemple :</p>
 
-        <pre class="prettyprint"><s>&lt;input type="text" id="title" name="title" class="span9"&gt;</s>
-&lt;form:input id="title" path="title" class="span9" /&gt;</pre>
+        <pre class="prettyprint"><s>&lt;input type="text" class="form-control" name="title" id="title" placeholder="Titre"&gt;</s>
+&lt;form:input cssClass="form-control" path="title" id="title" placeholder="Titre" /&gt;</pre>
 
         <p>Faire de même pour tous les champs et constater que les données sont bien affichées à l'édition.</p>
 
         <p>Enfin, afin que le bouton ait le bon message en fonction de la situation, on le change légèrement</p>
 
-        <pre class="prettyprint"><s>&lt;button type="submit" class="btn"&gt;Add&lt;/button&gt;</s>
-&lt;button type="submit" class="btn"&gt;${empty task.id ? 'Add' : 'Update'}&lt;/button&gt;</pre>
+        <pre class="prettyprint"><s>&lt;button type="submit" class="btn btn-primary"&gt;Add&lt;/button&gt;</s>
+&lt;button type="submit" class="btn btn-primary"&gt;${empty task.id ? 'Add' : 'Update'}&lt;/button&gt;</pre>
 
         <h3>save or update ?</h3>
 
-        <p>Si on sauve une tâche, elle est dupliquée en base.</p>
+        <p>Si on sauve une tâche existante, elle est dupliquée en base.</p>
 
         <p>La raison est simple, l'implémentation de save de taskServiceImpl est la suivante</p>
 
@@ -305,7 +302,7 @@ public void save(Task task) {
     session.save(task);
 }</pre>
 
-        <p>La méthode <a href="http://docs.jboss.org/hibernate/core/3.6/javadocs/org/hibernate/Session.html#save(java.lang.Object)" class="external" target="_blank">save</a> de la session sauve une nouvelle entité à chaque fois.</p>
+        <p>La méthode <a href="http://docs.jboss.org/hibernate/core/4.2/javadocs/org/hibernate/Session.html#save(java.lang.Object)" class="external">save</a> de la session sauve une nouvelle entité à chaque fois.</p>
 
         <p>La solution n'est pas loin mais on va s'assurer que l'on corrige bien le problème avec un test unitaire.</p>
 
@@ -372,7 +369,7 @@ public String post(@ModelAttribute Task task, BindingResult result) {
 
         <p>Il n'y aurait rien a changer dans le code jsp.</p>
 
-        <p>Nous allons opter pour une solution plus simple et plus standard : la <a href="http://jcp.org/en/jsr/detail?id=303" class="external" target="_blank">JSR 303</a> (bean validation)</p>
+        <p>Nous allons opter pour une solution plus simple et plus standard : la <a href="http://jcp.org/en/jsr/detail?id=303" class="external">JSR 303</a> (bean validation)</p>
 
         <p>Pour commencer, il faut importer une librairie d'implémentation de la spécification.</p>
 
@@ -380,11 +377,11 @@ public String post(@ModelAttribute Task task, BindingResult result) {
 &lt;dependency&gt;
    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
    &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
-   &lt;version&gt;4.2.0.Final&lt;/version&gt;
+   &lt;version&gt;5.0.1.Final&lt;/version&gt;
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Hibernate validator est l'implémentation de référence.</p>
+        <p>Hibernate validator est l'implémentation de référence de bean validation.</p>
 
         <p>On rajoute ensuite l'annotation @Valid dans le controller</p>
 
@@ -424,16 +421,16 @@ private Date date = new Date();</pre>
 
         <p>
             Sur la documentation d'hibernate,
-            <a href="http://docs.jboss.org/hibernate/validator/4.2/reference/en-US/html/validator-usingvalidator.html#validator-defineconstraints-spec" class="external" target="_blank">les annotations standards</a>
+            <a href="http://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/chapter-bean-constraints.html#validator-defineconstraints-spec" class="external">les annotations standards</a>
             et
-            <a href="http://docs.jboss.org/hibernate/validator/4.2/reference/en-US/html/validator-usingvalidator.html#validator-defineconstraints-hv-constraints" class="external" target="_blank">les extensions</a>
+            <a href="http://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/chapter-bean-constraints.html#validator-defineconstraints-hv-constraints" class="external">les extensions</a>
         </p>
 
         <h3>La suppression</h3>
 
         <p>Nous n'avons pas de possibilité de supprimer les tâches pour le moment.</p>
 
-        <p>En utilisant un <a href="http://twitter.github.com/bootstrap/base-css.html#buttons" class="external" target="_blank">bouton bootstrap</a>, proposer une ergonomie afin de permettre cela.</p>
+        <p>En utilisant un lien avec la classe btn de <a href="http://getbootstrap.com/css/#buttons-tags" class="external">bootstrap</a>, proposer une ergonomie afin de permettre cela.</p>
 
         <p>Le path pour ce service pourrait être /edit/{id}/delete.</p>
 
@@ -479,23 +476,20 @@ public String post(@ModelAttribute @Valid Task task, BindingResult result, Redir
         <p>Dans index.jsp, après le redirect, on a donc accès a un attribut "flashMessage"</p>
 
         <pre class="prettyprint">&lt;c:if test="${not empty flashMessage}"&gt;
-    &lt;div class="alert"&gt;${flashMessage}&lt;/div&gt;
+    &lt;div class="alert alert-success"&gt;${flashMessage}&lt;/div&gt;
 &lt;/c:if&gt;</pre>
 
         <p>Faire pareil pour la suppression.</p>
 
-        <h2>En peu de recul</h2>
+        <h2>En conclusion</h2>
 
         <p>Les controllers spring sont simples et puissants.</p>
 
-        <p>Il faut néanmoins quelques fichiers de configurations et obtenir sa première page n'est pas instantané.</p>
+        <p>Cependant, cela nécessite quelques fichiers de configuration.</p>
 
-        <p>Il faut également relancer le tomcat lors de modifications des classes.</p>
+        <p>Il faut également relancer le tomcat lors d'une modification des classes.</p>
 
-        <p>D'autres frameworks (rails, grails, roo, play...) offrent un démarrage plus rapide et beaucoup de facilités.</p>
-
-        <p>En fonction du projet, il convient donc de choisir la technologie la plus adaptée.</p>
-
+        <p>Cette pile d'outils (conteneur de servlets + spring MVC + hibernate) a donc ses avantages et ses inconvénients.</p>
     </div>
 </div>
 </body>

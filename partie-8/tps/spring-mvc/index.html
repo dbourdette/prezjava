@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+    <title>Spring MVC</title>
+
+    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
+    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
+
+    <script src="../../../common/js/prettify.js"></script>
+    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
+    <script src="../../../common/js/prez.js"></script>
+
+</head>
+<body onload="prettyPrint();">
+<div class="presentation">
+    <div id="project">
+        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC</h1>
+
+        <p>Si tout va bien, notre projet ressemble à la structure suivante.</p>
+
+        <img src="img/project.png" alt="project tree" style="margin: 0 200px"/>
+
+        <p>Nous avons quasiment tous les éléments pour notre application, il nous reste à les assembler.</p>
+
+        <h2>Contexte spring</h2>
+
+        <p>Comme pour les tests unitaires, nous allons remplir un contexte spring avec nos beans.</p>
+
+        <p>Nous avons déjà un premier contexte pour nos controllers (spring-servlet.xml).</p>
+
+        <p>Pour les services, il est mieux d'en déclarer un second. Celui-ci va contenir nos services et la connexion à la base de données.</p>
+
+        <p>On commence par rajouter un appel dans le web.xml</p>
+
+        <pre class="prettyprint">&lt;!-- Spring context --&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;/WEB-INF/spring-context.xml&lt;/param-value&gt;
+&lt;/context-param&gt;</pre>
+
+        <p>Et le spring-context.xml dans WEB-INF correspondant :</p>
+
+        <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd" &gt;
+
+    &lt;bean class="fr.todooz.service.TaskServiceImpl" /&gt;
+    &lt;bean class="fr.todooz.service.TagCloudServiceImpl" /&gt;
+
+    &lt;!-- pool de connexion --&gt;
+    &lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+        &lt;property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+        &lt;property name="url" value="jdbc:derby:target/taskdb;create=true"/&gt;
+        &lt;property name="username" value=""/&gt;
+        &lt;property name="password" value=""/&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- factory bean pour la SessionFactory hibernate --&gt;
+    &lt;bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"&gt;
+        &lt;property name="dataSource" ref="dataSource" /&gt;
+        &lt;property name="hibernateProperties"&gt;
+            &lt;bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+                &lt;property name="properties"&gt;
+                    &lt;props&gt;
+                        &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.DerbyTenFiveDialect&lt;/prop&gt;
+                        &lt;prop key="hibernate.hbm2ddl.auto"&gt;create-drop&lt;/prop&gt;
+                    &lt;/props&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/property&gt;
+        &lt;property name="packagesToScan" value="fr.todooz.domain"/&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- ajoute un gestionnaire de transactions lié à la sessionFactory --&gt;
+    &lt;bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"&gt;
+        &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- active le support des annotations @Transactional --&gt;
+    &lt;tx:annotation-driven transaction-manager="transactionManager"/&gt;
+
+&lt;/beans&gt;</pre>
+
+        <p>Nous avons : nos 2 services, une DataSource, la SessionFactory hibernate et un gestionnaire de transaction.</p>
+
+        <p>Pour une application réelle, nous n'utiliserions pas une base embarquée.</p>
+
+        <p>Nous utiliserions une url qui pointe vers la base comme par exemple : jdbc:mysql://host:3306/taskdb.</p>
+
+        <h2>Component scan</h2>
+
+        <p>Comme pour les controllers, il va être plus simple de remplacer les déclarations de services par un component scan.</p>
+
+        <pre class="prettyprint"><s>&lt;bean class="fr.todooz.service.TaskServiceImpl" /&gt;
+&lt;bean class="fr.todooz.service.TagCloudServiceImpl" /&gt;</s>
+            
+&lt;!-- Découverte des services --&gt;
+&lt;context:component-scan base-package="fr.todooz.service"/&gt;</pre>
+
+        <p>Et les 2 implémentations des services doivent être annoté avec @Service</p>
+
+        <pre class="prettyprint">@Service
+public class TaskServiceImpl implements TaskService</pre>
+
+        <p>Ainsi les services du package seront chargés dans le contexte spring au démarrage de l'application.</p>
+
+        <h2>Bootstrap</h2>
+
+        <p>Il est maintenant possible d'injecter un service dans le contrôleur et d'en profiter.</p>
+
+        <pre class="prettyprint">@Controller
+public class IndexController {
+  @Inject
+  private TaskService taskService;
+
+  @RequestMapping({ "/", "/index" })
+  public String index(Model model) {
+    model.addAttribute("tasks", taskService.findAll());
+
+    return "index";
+  }
+}</pre>
+
+        <p>Désormais la page <a href="http://localhost:8080/" class="external">http://localhost:8080/</a> est un peu vide mais elle utilise bien le service.</p>
+
+        <p>On va donc remplir un peu la base au démarrage de l'application en attendant d'avoir un formulaire d'édition.</p>
+
+        <p>Dans la classe IndexController on rajoute une méthode bootstrap</p>
+
+        <pre class="prettyprint">@PostConstruct
+public void bootstrap() {
+
+}</pre>
+
+        <p>@PostConstruct est une annotation standard qui demande au conteneur d'appeler la méthode.</p>
+
+        <p>L'appel est fait après injection des dépendances.</p>
+
+        <p>L'alter ego de @PostConstruct est @PreDestroy, appelé juste avant la destruction du composant.</p>
+
+        <p>En utilisant le TaskService, implémentez le pseudo code suivant :</p>
+
+        <pre class="prettyprint">if (pas de tâche) {
+    créer 3 tâches différentes
+}</pre>
+
+        <p>En jouant un peu avec cette méthode, il est possible d'avoir un peu de richesse sur la page de home.</p>
+
+    </div>
+</div>
+</body>
+</html>
