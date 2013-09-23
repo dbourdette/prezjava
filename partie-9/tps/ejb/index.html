@@ -1,66 +1,57 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Session Beans</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Session Beans</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1 style="line-height: 55px;padding-left: 10px;"><img src="img/java.png" height="50px" style="float:left"/>Session Beans</h1>
+<body>
+<div class="container">
+<h1 style="line-height: 55px;padding-left: 10px;"><img src="img/java.png" height="50px" style="float:left"/>Session Beans</h1>
 
-        <h2>Introduction</h2>
+<p>Les session beans sont les composants EJBs qui définissent les services.</p>
 
-        <p>Les session beans sont les composants EJBs qui définissent les services.</p>
+<p>Ce sont les équivalents des <code>@Component</code> et <code>@Service</code> spring.</p>
 
-        <p>Ce sont les équivalents des @Component et @Service spring.</p>
+<p>Il y en a plusieurs types :</p>
 
-        <p>Il y en a plusieurs types :</p>
+<ul>
+    <li><code>@Singleton</code> : les services sans état</li>
+    <li><code>@Stateless</code> : les services sans état (disponibles dans un pool)</li>
+    <li><code>@Stateful</code> : les services avec état conversationel (gestion de session)</li>
+</ul>
 
-        <ul>
-            <li>@Singleton : les services sans état</li>
-            <li>@Stateless : les services sans état (disponibles dans un pool)</li>
-            <li>@Stateful : les services avec état conversationel (gestion de session)</li>
-        </ul>
+<h2>Branche git</h2>
 
-        <h2>Branche git</h2>
-
-        <p>On crée la branche ejb à partir de la branche master.</p>
+<p>On crée la branche ejb à partir de la branche master.</p>
 
         <pre class="shell">&gt; git checkout master
 Switched to branch 'master'
 &gt; git checkout -b ejb
 Switched to a new branch 'ejb'</pre>
 
-        <h2>Embedded Glassfish</h2>
+<h2>Embedded Glassfish</h2>
 
-        <p>Pour faire des EJBs, le plus simple est d'utiliser un conteneur d'application.</p>
+<p>Pour faire des EJBs, le plus simple est d'utiliser un conteneur d'application.</p>
 
-        <p>Glassfish est l'implémentation de référence produite par oracle.</p>
+<p>Glassfish est l'implémentation de référence produite par oracle.</p>
 
-        <p>Il est normalement dans les premiers à implémenter les nouvelles spécifications.</p>
+<p>Il est normalement dans les premiers à implémenter les nouvelles spécifications.</p>
 
-        <p>La version embedded (embarquée) permet de lancer une application sous glassfish en ligne de commande.</p>
+<p>La version embedded (embarquée) permet de lancer une application sous glassfish en ligne de commande.</p>
 
-        <p>On commence par ajouter le plugin qui permettra de lancer glassfish comme on le fait avec tomcat.</p>
+<p>On commence par ajouter le plugin qui permettra de lancer glassfish comme on le fait avec tomcat.</p>
 
         <pre class="prettyprint">&lt;plugin&gt;
-   &lt;groupId&gt;org.glassfish.embedded&lt;/groupId&gt;
+   &lt;groupId&gt;org.glassfish&lt;/groupId&gt;
    &lt;artifactId&gt;maven-embedded-glassfish-plugin&lt;/artifactId&gt;
-   &lt;version&gt;4.0&lt;/version&gt;
+   &lt;version&gt;3.1.1&lt;/version&gt;
    &lt;configuration&gt;
        &lt;ports&gt;
            &lt;http-listener&gt;8080&lt;/http-listener&gt;
@@ -69,31 +60,31 @@ Switched to a new branch 'ejb'</pre>
    &lt;/configuration&gt;
 &lt;/plugin&gt;</pre>
 
-        <p>La ligne de commande pour démarrer glassfish en embedded est : </p>
+<p>La ligne de commande pour démarrer glassfish en embedded est : </p>
 
-        <pre class="shell">mvn embedded-glassfish:run</pre>
+<pre class="shell">mvn embedded-glassfish:run</pre>
 
-        <div class="note">Il se peut qu'il y ait besoin de faire un mvn clean puis mvn package avant de lancer cette commande</div>
+<div class="alert alert-warning">Il se peut qu'il y ait besoin de faire un <b>mvn clean</b> puis <b>mvn package</b> avant de lancer cette commande</div>
 
-        <p>Si on teste cette commande avec notre application, elle devrait tourner comme avec tomcat sur http://localhost:8080/index (attention le glassfish-embedded-all-4.0.jar est un peu long a récupérer).</p>
+<p>Si on teste cette commande avec notre application, elle devrait tourner comme avec tomcat sur <a href="http://localhost:8080/index" target="_blank">http://localhost:8080/index</a> (attention le glassfish-embedded-all-4.0.jar est un peu long a récupérer).</p>
 
-        <p>Le plugin fonctionne un peu différemment du plugin tomcat : la commande démarre le serveur, déploie l'application et passe en mode interactif.</p>
+<p>Le plugin fonctionne un peu différemment du plugin tomcat : la commande démarre le serveur, déploie l'application et passe en mode interactif.</p>
 
-        <p>On peut donc simplement redéployer l'application en tapant ENTER.</p>
+<p>On peut donc simplement redéployer l'application en tapant ENTER.</p>
 
-        <p>Vu le fonctionnement du plugin, il vaut mieux monter un peu la taille mémoire de la jvm et définir :</p>
+<p>Vu le fonctionnement du plugin, il vaut mieux monter un peu la taille mémoire de la jvm et définir :</p>
 
-        <pre class="shell">export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
+<pre class="shell">export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
 
-        <p>Les options Xmx et XX:MaxPermSize sont les zones indiqués sur le schéma suivant :</p>
+<p>Les options Xmx et XX:MaxPermSize sont les zones indiqués sur le schéma suivant :</p>
 
-        <img src="img/jvm-memory.png" alt="" style="margin: 0 170px;">
+<img src="img/jvm-memory.png" alt="" style="margin: 0 170px;">
 
-        <h2>Un premier session bean</h2>
+<h2>Un premier session bean</h2>
 
-        <p>Nous allons nous servir de la spécification EJB 3.1 afin de pouvoir ajouter des EJBs dans notre war.</p>
+<p>Nous allons nous servir de la spécification EJB 3.1 afin de pouvoir ajouter des EJBs dans notre war.</p>
 
-        <p>Pour avoir les éléments de la spécification disponibles, nous utilisons le jar mis à disposition par redhat.</p>
+<p>Pour avoir les éléments de la spécification disponibles, nous utilisons le jar mis à disposition par redhat.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.jboss.spec.javax.ejb&lt;/groupId&gt;
@@ -102,11 +93,11 @@ Switched to a new branch 'ejb'</pre>
     &lt;scope&gt;provided&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Attention, tout ce que nous allons écrire à partir d'ici ne fonctionnera pas sous tomcat mais uniquement dans des serveurs d'application.</p>
+<p>Attention, tout ce que nous allons écrire à partir d'ici ne fonctionnera pas sous tomcat mais uniquement dans des serveurs d'application.</p>
 
-        <p>Le fichier ejb-jar.xml (descripteur de déploiement des ejbs) étant optionnel, nous allons nous en passer.</p>
+<p>Le fichier <b>ejb-jar.xml</b> (descripteur de déploiement des ejbs) étant optionnel, nous allons nous en passer.</p>
 
-        <p>Dans le package fr.todooz.ejb on crée la classe suivante :</p>
+<p>Dans le package <b>fr.todooz.ejb</b> on crée la classe suivante :</p>
 
         <pre class="prettyprint">@Singleton <span class="comment">// instance unique de ce service dans l'application</span>
 @Startup <span class="comment">// instancié au démarrage de l'application</span>
@@ -117,17 +108,17 @@ public class HelloEJB {
     }
 }</pre>
 
-        <p>Le message devrait s'afficher dans le flot de choses écrites dans la console.</p>
+<p>Le message devrait s'afficher dans le flot de choses écrites dans la console.</p>
 
-        <p>Attention : le plugin glassfish charge le war présent dans le répertoire target. Pour qu'une modification soit prise en compte, il faut donc faire un mvn package avant de taper ENTER.</p>
+<p>Attention : le plugin glassfish charge le war présent dans le répertoire target. Pour qu'une modification soit prise en compte, il faut donc faire un <b>mvn package</b> avant de taper <b>ENTER</b>.</p>
 
-        <p>Cela limite quelque peu la promesse de re déploiement à chaud.</p>
+<p>Cela limite quelque peu la promesse de re déploiement à chaud.</p>
 
-        <h2>Depuis une servlet</h2>
+<h2>Depuis une servlet</h2>
 
-        <p>Afin de rendre ce service un peu interessant, il faut pouvoir l'utiliser depuis un autre composant.</p>
+<p>Afin de rendre ce service un peu interessant, il faut pouvoir l'utiliser depuis un autre composant.</p>
 
-        <p>Dans un conteneur EJB, on utilise la notation @EJB afin d'obtenir une référence.</p>
+<p>Dans un conteneur EJB, on utilise la notation <code>@EJB</code> afin d'obtenir une référence.</p>
 
         <pre class="prettyprint">public class HelloEJB {
    public String hello(String name) {
@@ -135,7 +126,7 @@ public class HelloEJB {
    }
 }</pre>
 
-        <p>D'un EJB vers un autre</p>
+<p>D'un EJB vers un autre</p>
 
        <pre class="prettyprint">@Singleton
 public class MoreSeriousEJB {
@@ -147,7 +138,7 @@ public class MoreSeriousEJB {
    }
 }</pre>
 
-        <p>Et depuis la servlet HelloWorldServlet.</p>
+<p>Et depuis la servlet HelloWorldServlet.</p>
 
         <pre class="prettyprint">public class HelloWorldServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
@@ -162,21 +153,21 @@ public class MoreSeriousEJB {
    }
 }</pre>
 
-        <p>Si on regarde sur http://localhost:8080/HelloWorldServlet, on obtient bien le résultat attendu.</p>
+<p>Si on regarde sur <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a>, on obtient bien le résultat attendu.</p>
 
-        <pre>Hi EJBs</pre>
+<pre>Hi EJBs</pre>
 
-        <p>Notre servlet a donc bien trouvé le premier EJB qui a lui même trouvé le second.</p>
+<p>Notre servlet a donc bien trouvé le premier EJB qui a lui même trouvé le second.</p>
 
-        <p>Nous avons donc un conteneur qui fait de l'injection entre nos composants EJB.</p>
+<p>Nous avons donc un conteneur qui fait de l'injection entre nos composants EJB.</p>
 
-        <p>Si on regarde coté nouvelles spécification jee, il serait même possible de se passer du web.xml et de tout faire par annotations (mais ce n'est pas le sujet ici).</p>
+<p>Si on regarde coté nouvelles spécification jee, il serait même possible de se passer du web.xml et de tout faire par annotations (mais ce n'est pas le sujet ici).</p>
 
-        <h2>Depuis un Controller spring</h2>
+<h2>Depuis un Controller spring</h2>
 
-        <p>Depuis un controller spring, c'est guère plus compliqué.</p>
+<p>Depuis un controller spring, c'est guère plus compliqué.</p>
 
-        <p>Dans le controller, on injecte l'EJB avec l'annotation standard.</p>
+<p>Dans le controller, on injecte l'EJB avec l'annotation standard.</p>
 
         <pre class="prettyprint">@Controller
 public class IndexController {
@@ -190,23 +181,23 @@ public class IndexController {
     }
 }</pre>
 
-        <p>Le nom jndi (mappedName) est <a href="http://docs.oracle.com/cd/E19798-01/821-1841/girgn/index.html" class="external">standardisé</a> depuis les EJB 3.1 : il est le même quel que soit le serveur d'application.</p>
+<p>Le nom jndi (mappedName) est <a href="http://docs.oracle.com/cd/E19798-01/821-1841/girgn/index.html" target="_blank">standardisé</a> depuis les EJB 3.1 : il est le même quel que soit le serveur d'application.</p>
 
-        <h2>Depuis un Controller spring (bis)</h2>
+<h2>Depuis un Controller spring (bis)</h2>
 
-        <p>Il est aussi possible de récupérer un référence vers un ejb comme si c'était un composant spring.</p>
+<p>Il est aussi possible de récupérer un référence vers un ejb comme si c'était un composant spring.</p>
 
-        <p>On commence par ajouter le namespace jee au contexte spring</p>
+<p>On commence par ajouter le namespace jee au contexte spring</p>
 
         <pre class="prettyprint">&lt;beans <span class="comment">...</span> xmlns:jee="http://www.springframework.org/schema/jee" xsi:schemaLocation="
 <span class="comment">...</span>
 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"&gt;</pre>
 
-        <p>Ce qui nous permet d'écrire.</p>
+<p>Ce qui nous permet d'écrire.</p>
 
-        <pre class="prettyprint">&lt;jee:jndi-lookup id="moreSeriousEJB" jndi-name="java:module/MoreSeriousEJB" /&gt;</pre>
+<pre class="prettyprint">&lt;jee:jndi-lookup id="moreSeriousEJB" jndi-name="java:module/MoreSeriousEJB" /&gt;</pre>
 
-        <p>Et enfin dans le controller avec @Inject.</p>
+<p>Et enfin dans le controller avec <code>@Inject</code>.</p>
 
         <pre class="prettyprint">@Controller
 public class HelloController {
@@ -220,15 +211,15 @@ public class HelloController {
    }
 }</pre>
 
-        <p>Sur http://localhost:8080/hello on a donc.</p>
+<p>Sur <a href="http://localhost:8080/hello" target="_blank">http://localhost:8080/hello</a> on a donc.</p>
 
-        <pre>Hi EJBs from Controller</pre>
+<pre>Hi EJBs from Controller</pre>
 
-        <p>On a donc une intégration un tout petit peu plus complexe pour le même résultat.</p>
+<p>On a donc une intégration un tout petit peu plus complexe pour le même résultat.</p>
 
-        <h2>@Schedule</h2>
+<h2>@Schedule</h2>
 
-        <p>Il est possible de planifier l'exécution d'une méthode par une simple annotation.</p>
+<p>Il est possible de planifier l'exécution d'une méthode par une simple annotation.</p>
 
         <pre class="prettyprint">private int count = 0;
 
@@ -239,25 +230,25 @@ public void endlessly() {
     count++;
 }</pre>
 
-        <p>Ce qui donne</p>
+<p>Ce qui donne</p>
 
         <pre>Hi 1
 Hi 2
 Hi 3</pre>
 
-        <p>Spring possède une annotation équivalente.</p>
+<p>Spring possède une annotation équivalente.</p>
 
-        <h2>@Asynchronous</h2>
+<h2>@Asynchronous</h2>
 
-        <p>L'annotation @Asynchronous permet d'exécuter une méthode en asynchrone.</p>
+<p>L'annotation <code>@Asynchronous</code> permet d'exécuter une méthode en asynchrone.</p>
 
-        <p>L'appel est donc instantané pour l'appelant.</p>
+<p>L'appel est donc instantané pour l'appelant.</p>
 
-        <p>Pour l'exécution, le conteneur se charge d'exécuter la méthode dès que possible.</p>
+<p>Pour l'exécution, le conteneur se charge d'exécuter la méthode dès que possible.</p>
 
-        <p>Par exemple, la méthode est un processus long alors que l'on souhaite récupérer la main rapidement.</p>
+<p>Par exemple, la méthode est un processus long alors que l'on souhaite récupérer la main rapidement.</p>
 
-        <p>La mise en place est simple.</p>
+<p>La mise en place est simple.</p>
 
         <pre class="prettyprint">@Asynchronous
 public void startSomethingLong() {
@@ -269,29 +260,33 @@ public Future&lt;Result&gt; startSomethingLongToo() {
     <span class="comment">...</span>
 }</pre>
 
-        <p>En conséquence, le type de retour est limité aux types suivants :</p>
+<p>En conséquence, le type de retour est limité aux types suivants :</p>
 
-        <ul>
-            <li>void : pas de retour</li>
-            <li>Future&lt;T&gt; : permet d'avoir un retour à la fin de l'exécution asynchrone (callback)</li>
-        </ul>
+<ul>
+    <li><b>void</b> : pas de retour</li>
+    <li><b>Future&lt;T&gt;</b> : permet d'avoir un retour à la fin de l'exécution asynchrone (callback)</li>
+</ul>
 
-        <p>L'avantage important est que l'on ne manipule pas de Thread soit même.</p>
+<p>L'avantage important est que l'on ne manipule pas de Thread soit même.</p>
 
-        <p>Spring possède une annotation équivalente.</p>
+<p>Spring possède une annotation équivalente.</p>
 
-        <h2>Un bémol</h2>
+<h2>Un bémol</h2>
 
-        <p>Les EJBs 1.0, 2.0 et 2.1 étaient un enfer.</p>
+<p>Les EJBs 1.0, 2.0 et 2.1 étaient un enfer.</p>
 
-        <p>Les spécifications 3.0 et 3.1 ont apporté une simplication longuement attendue.</p>
+<p>Les spécifications 3.0 et 3.1 ont apporté une simplication longuement attendue.</p>
 
-        <p>Les spécifications actuelles sont plus modulaires (JPA, CDI, EJB Lite...) et plus faciles a intégrer.</p>
+<p>Les spécifications actuelles sont plus modulaires (JPA, CDI, EJB Lite...) et plus faciles a intégrer.</p>
 
-        <p>Cependant, même si les EJBs 1 sont morts, beaucoup d'EJBs 2.x sont encore dans la nature.</p>
+<p>Cependant, même si les EJBs 1 sont morts, beaucoup d'EJBs 2.x sont encore dans la nature.</p>
 
-        <p>Il faut donc s'attendre parfois à beaucoup de lourdeur par rapport à des spécifications plus récentes.</p>
-    </div>
+<p>Il faut donc s'attendre parfois à beaucoup de lourdeur par rapport à des spécifications plus récentes.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

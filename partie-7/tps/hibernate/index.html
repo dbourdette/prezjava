@@ -1,42 +1,33 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Hibernate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Hibernate</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1><img src="img/hibernate.png" width="300px"></h1>
+<body>
+<div class="container">
+<h1><img src="img/hibernate.png" style="width:300px;"></h1>
 
-        <h2>Introduction</h2>
+<p>Hibernate est un framework de persitence objet - base de données relationnelles (ORM).</p>
 
-        <p>Hibernate est un framework de persitence objet - base de données relationnelles (ORM).</p>
+<p>Il implémente et étend JPA (Java Persitance API), le standard de persistence jee.</p>
 
-        <p>Il implémente et étend JPA (Java Persitance API), le standard de persistence jee.</p>
+<img src="img/another-layer.png" alt="" class="img-responsive" style="margin: auto;">
 
-        <img src="img/another-layer.png" alt="" style="margin: 0 250px;">
-        
-        <p>Techniquement, c'est une surcouche des drivers JDBC (Java DataBase Connectivity).</p>
+<p>Techniquement, c'est une surcouche des drivers JDBC (Java DataBase Connectivity).</p>
 
-        <h2>Configuration hibernate</h2>
+<h2>Configuration hibernate</h2>
 
-        <p>Nous allons écrire un test unitaire afin de mettre en place notre couche de persistance.</p>
+<p>Nous allons écrire un test unitaire afin de mettre en place notre couche de persistance.</p>
 
-        <p>En premier, on ajoute la librairie hibernate et le driver derby.</p>
+<p>En premier, on ajoute la librairie hibernate et le driver derby.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
   &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
@@ -52,9 +43,9 @@
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Derby est une base de données embarquées qui va permettre d'écrire facilement des tests.</p>
+<p>Derby est une base de données embarquées qui va permettre d'écrire facilement des tests.</p>
 
-        <p>Nous créons un test HibernateTest dans le package fr.todooz.hibernate.</p>
+<p>Nous créons un test <b>HibernateTest</b> dans le package <b>fr.todooz.hibernate</b>.</p>
 
         <pre class="prettyprint">@Test
 public void createSessionFactory() {
@@ -71,19 +62,19 @@ public void createSessionFactory() {
    SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 }</pre>
 
-        <p>La SessionFactory est ce qui permet d'obtenir des connexions avec la base de données.</p>
+<p>La SessionFactory est ce qui permet d'obtenir des connexions avec la base de données.</p>
 
-        <p>Le guide complet de la <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#session-configuration" class="external">configuration de hibernate</a></p>
+<p>Le guide complet de la <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#session-configuration" target="_blank">configuration de hibernate</a></p>
 
-        <p>Ce test génère pas mal de traces dans la console au démarrage d'hibernate.</p>
+<p>Ce test génère pas mal de traces dans la console au démarrage d'hibernate.</p>
 
-        <h2>Les classes du domaine</h2>
+<h2>Les classes du domaine</h2>
 
-        <p>Nous souhaitons sauver des Tasks, il faut donc configurer cette classe pour d'hibernate.</p>
+<p>Nous souhaitons sauver des Tasks, il faut donc configurer cette classe pour d'hibernate.</p>
 
-        <p>La façon la plus simple est de le faire via des annotations dans nos classes du domaine.</p>
+<p>La façon la plus simple est de le faire via des annotations dans nos classes du domaine.</p>
 
-        <p>On ajoute les annotations @Entity, @Table, @Column.</p>
+<p>On ajoute les annotations <code>@Entity</code>, <code>@Table</code>, <code>@Column</code>.</p>
 
         <pre class="prettyprint">@Entity
 @Table(name = "task")
@@ -106,13 +97,13 @@ public class Task {
     ...
 }</pre>
 
-        <p>Il est aussi possible de tout configurer (hibernate et objets du domaine) via fichiers xml mais cela est beaucoup plus verbeux.</p>
+<p>Il est aussi possible de tout configurer (hibernate et objets du domaine) via fichiers xml mais cela est beaucoup plus verbeux.</p>
 
-        <p>Il ne reste qu'à informer hibernate de la présence de notre bean annoté.</p>
+<p>Il ne reste qu'à informer hibernate de la présence de notre bean annoté.</p>
 
-        <pre class="prettyprint">configuration.addAnnotatedClass(Task.class);</pre>
+<pre class="prettyprint">configuration.addAnnotatedClass(Task.class);</pre>
 
-        <p>Une exécution en l'état nous indique que :</p>
+<p>Une exécution en l'état nous indique que :</p>
 
         <pre class="prettyprint">org.hibernate.AnnotationException: No identifier specified for entity: fr.todooz.domain.Task
    at org.hibernate.cfg.InheritanceState.determineDefaultAccessType(InheritanceState.java:268)
@@ -147,7 +138,7 @@ public class Task {
    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)</pre>
 
-        <p>Pour corriger cette erreur, il suffit de rajouter un identifiant unique dans chaque classe.</p>
+<p>Pour corriger cette erreur, il suffit de rajouter un identifiant unique dans chaque classe.</p>
 
         <pre class="prettyprint">@Id
 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -161,15 +152,15 @@ public void setId(Long id) {
   this.id = id;
 }</pre>
 
-        <p>Cet identifiant servira de clé primaire dans la base de données.</p>
+<p>Cet identifiant servira de clé primaire dans la base de données.</p>
 
-        <p>Il utilise une stratégie de génération automatique : hibernate demandera à la base de générer des identifiants quand il en aura besoin.</p>
+<p>Il utilise une stratégie de génération automatique : hibernate demandera à la base de générer des identifiants quand il en aura besoin.</p>
 
-        <p>Désormais, ce test unitaire passe.</p>
+<p>Désormais, ce test unitaire passe.</p>
 
-        <h2>Persister un objet</h2>
+<h2>Persister un objet</h2>
 
-        <p>Afin de voir ce que peut faire hibernate, nous allons persister une Task. On ajoute le test suivant.</p>
+<p>Afin de voir ce que peut faire hibernate, nous allons persister une Task. On ajoute le test suivant.</p>
 
         <pre class="prettyprint">@Test
 public void saveTask() {
@@ -191,13 +182,13 @@ public void saveTask() {
     session.close();
 }</pre>
 
-        <p>Afin de pouvoir écrire ce test il faut avoir passé le test précédent (createSessionFactory) en @Before au lieu de @Test. On passe ainsi la variable sessionFactory en attribut de classe.</p>
+<p>Afin de pouvoir écrire ce test il faut avoir passé le test précédent (createSessionFactory) en <code>@Before</code> au lieu de <code>@Test</code>. On passe ainsi la variable sessionFactory en attribut de classe.</p>
 
-        <p>Hibernate nous permet donc de sauver un objet dans une table sans que nous ayons à manipuler de SQL.</p>
+<p>Hibernate nous permet donc de sauver un objet dans une table sans que nous ayons à manipuler de SQL.</p>
 
-        <p>Il manque un peu de gestion d'erreur mais pour des tests, cela est suffisant.</p>
+<p>Il manque un peu de gestion d'erreur mais pour des tests, cela est suffisant.</p>
 
-        <p>Afin de laisser la base dans un bon état après chaque test, on ajoute la méthode @After suivante.</p>
+<p>Afin de laisser la base dans un bon état après chaque test, on ajoute la méthode <code>@After</code> suivante.</p>
 
         <pre class="prettyprint">@After
 public void cleanDb() {
@@ -214,15 +205,15 @@ public void cleanDb() {
     sessionFactory.close();
 }</pre>
 
-        <p>Cette opération de delete est dite "bulk" (en masse) car elle affecte un nombre inconnu, à priori, d'entités.</p>
+<p>Cette opération de delete est dite "bulk" (en masse) car elle affecte un nombre inconnu, à priori, d'entités.</p>
 
-        <h2>Rechercher un objet</h2>
+<h2>Rechercher un objet</h2>
 
-        <p>Rechercher un objet dans la base se fait tout aussi simplement que la persistence.</p>
+<p>Rechercher un objet dans la base se fait tout aussi simplement que la persistence.</p>
 
-        <p>Pour les requêtes, hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#queryhql" class="external">HQL</a> (Hibernate Query Language).</p>
+<p>Pour les requêtes, hibernate utilise un language proche du SQL : le <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#queryhql" target="_blank">HQL</a> (Hibernate Query Language).</p>
 
-        <p>Le HQL permet de travailler avec le nom des classes java au lieu du nom des colonnes en base.</p>
+<p>Le HQL permet de travailler avec le nom des classes java au lieu du nom des colonnes en base.</p>
 
         <pre class="prettyprint">@Test
 public void findTask() {
@@ -242,9 +233,9 @@ public void findTask() {
     Assert.assertEquals("Read Effective Java", tasks.get(0).getTitle());
 }</pre>
 
-        <p>hibernate convertit donc nos objets en écriture et en lecture de la base.</p>
+<p>hibernate convertit donc nos objets en écriture et en lecture de la base.</p>
 
-        <p>En plus du HQL, il existe une autre API encore plus orientée objet : la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" class="external">Criteria API</a></p>
+<p>En plus du HQL, il existe une autre API encore plus orientée objet : la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" target="_blank">Criteria API</a></p>
 
         <pre class="prettyprint">@Test
 public void findTaskWithCriteria() {
@@ -264,25 +255,25 @@ public void findTaskWithCriteria() {
     Assert.assertEquals("Read Effective Java", tasks.get(0).getTitle());
 }</pre>
 
-        <p>Ces 2 APIs sont disponibles en fonction du besoin.</p>
+<p>Ces 2 APIs sont disponibles en fonction du besoin.</p>
 
-        <h2>TaskService</h2>
+<h2>TaskService</h2>
 
-        <p>Nous avons maintenant suffisamment d'élements afin d'écrire notre service de gestion de tâches.</p>
+<p>Nous avons maintenant suffisamment d'élements afin d'écrire notre service de gestion de tâches.</p>
 
-        <p>Les opérations à supporter sont :</p>
+<p>Les opérations à supporter sont :</p>
 
-        <ul>
-            <li>save(task) : persister une tâche en base</li>
-            <li>delete(id) : supprimer un tâche</li>
-            <li>findAll() : la liste complète des tâches</li>
-            <li>findByQuery(String query) : recherche de tâches</li>
-            <li>count() : le nombre total de tâches en base</li>
-        </ul>
+<ul>
+    <li><b>save(task)</b> : persister une tâche en base</li>
+    <li><b>delete(id)</b> : supprimer un tâche</li>
+    <li><b>findAll()</b> : la liste complète des tâches</li>
+    <li><b>findByQuery(String query)</b> : recherche de tâches</li>
+    <li><b>count()</b> : le nombre total de tâches en base</li>
+</ul>
 
-        <p>On pourra rajouter d'autres méthodes plus tard.</p>
+<p>On pourra rajouter d'autres méthodes plus tard.</p>
 
-        <p>On crée donc la classe TaskService dans fr.todooz.service.</p>
+<p>On crée donc la classe <b>TaskService</b> dans <b>fr.todooz.service</b>.</p>
 
         <pre class="prettyprint">public class TaskService {
    public void save(Task task) {
@@ -309,7 +300,7 @@ public void findTaskWithCriteria() {
    }
 }</pre>
 
-        <p>Afin d'implémenter ces méthodes, nous allons passer par des tests unitaires.</p>
+<p>Afin d'implémenter ces méthodes, nous allons passer par des tests unitaires.</p>
 
         <pre class="prettyprint">public class TaskServiceTest {
    private SessionFactory sessionFactory;
@@ -361,7 +352,7 @@ public void findTaskWithCriteria() {
    }
 }</pre>
 
-        <p>Et nous commençons par la méthode save. Nous souhaiterions pouvoir écrire :</p>
+<p>Et nous commençons par la méthode save. Nous souhaiterions pouvoir écrire :</p>
 
         <pre class="prettyprint">@Test
 public void save() {
@@ -371,9 +362,9 @@ public void save() {
     taskService.save(task());
 }</pre>
 
-        <p>Faites en sorte que cela soit possible et que ce test passe en prenant soin d'utiliser une transaction et de bien fermer la session.</p>
+<p>Faites en sorte que cela soit possible et que ce test passe en prenant soin d'utiliser une transaction et de bien fermer la session.</p>
 
-        <p>Le delete (<a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#batch-direct" class="external">doc hibernate</a>).</p>
+<p>Le delete (<a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#batch-direct" target="_blank">doc hibernate</a>).</p>
 
         <pre class="prettyprint">@Test
 public void delete() {
@@ -393,7 +384,7 @@ public void delete() {
     session.close();
 }</pre>
 
-        <p>Les find avec la <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#querycriteria" class="external">criteria API</a></p>
+<p>Les find avec la <a href="http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html_single/#querycriteria" target="_blank">criteria API</a></p>
 
         <pre class="prettyprint">@Test
 public void findAll() {
@@ -419,7 +410,7 @@ public void findByQuery() {
     Assert.assertEquals(0, taskService.findByQuery("driven").size());
 }</pre>
 
-        <p>Et le count</p>
+<p>Et le count</p>
 
         <pre class="prettyprint">@Test
 public void count() {
@@ -432,32 +423,36 @@ public void count() {
     Assert.assertEquals(2, taskService.count());
 }</pre>
 
-        <p>Après ce test, notre service est donc suffisament opérationnel pour le moment.</p>
+<p>Après ce test, notre service est donc suffisament opérationnel pour le moment.</p>
 
-        <p>Cependant, nous avons un peu de duplication de code dans nos tests unitaires et le code reste assez verbeux.</p>
+<p>Cependant, nous avons un peu de duplication de code dans nos tests unitaires et le code reste assez verbeux.</p>
 
-        <p>Sans casser les tests, il serait possible de grandement simplifier ce code.</p>
+<p>Sans casser les tests, il serait possible de grandement simplifier ce code.</p>
 
-        <h2>Les limites</h2>
+<h2>Les limites</h2>
 
-        <p>Tout ce que nous avons écrit aurait été très verbeux en SQL.</p>
+<p>Tout ce que nous avons écrit aurait été très verbeux en SQL.</p>
 
-        <p>Hibernate est une aide précieuse lorsque l'on travaille avec des objets et une base de données relationelles.</p>
+<p>Hibernate est une aide précieuse lorsque l'on travaille avec des objets et une base de données relationelles.</p>
 
-        <p>Il ne faut pas se tromper non plus, le mapping base de données - objet est un sujet complexe.</p>
+<p>Il ne faut pas se tromper non plus, le mapping base de données - objet est un sujet complexe.</p>
 
-        <p>Mais notre code a encore quelques limitations :</p>
+<p>Mais notre code a encore quelques limitations :</p>
 
-        <ul>
-            <li>Gestion des ouvertures et fermetures de sessions à la main.</li>
-            <li>Gestion des transactions à la main.</li>
-            <li>Il faut fournir la SessionFactory au service.</li>
-            <li>Nous n'utilisons pas de pool de connexion sérieux (hibernate fournit un pool par défaut suffisant pour les tests).</li>
-            <li>La mise en place de la SessionFactory n'est pas facilement factorisable.</li>
-        </ul>
+<ul>
+    <li>Gestion des ouvertures et fermetures de sessions à la main.</li>
+    <li>Gestion des transactions à la main.</li>
+    <li>Il faut fournir la SessionFactory au service.</li>
+    <li>Nous n'utilisons pas de pool de connexion sérieux (hibernate fournit un pool par défaut suffisant pour les tests).</li>
+    <li>La mise en place de la SessionFactory n'est pas facilement factorisable.</li>
+</ul>
 
-        <p>Avant de coder un second service, nous allons essayer de régler tous ces problèmes.</p>
-    </div>
+<p>Avant de coder un second service, nous allons essayer de régler tous ces problèmes.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

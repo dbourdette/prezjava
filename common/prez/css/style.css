@@ -1,0 +1,44 @@
+body {
+    background-color: #858FB3;
+}
+
+h1 {
+    border-bottom: 1px solid #BBB;
+    padding-bottom: 10px;
+}
+
+h2 {
+    border-bottom: 1px solid #DDD;
+    padding-bottom: 4px;
+    font-size: 24px;
+}
+
+a[target='_blank']::after {
+    content: '';
+}
+
+pre {
+    font-size: 12px;
+}
+
+pre.shell {
+    background: rgba(0, 0, 0, 1);
+    color: #dfdede;
+    border: 3px #cccccc solid;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 900px;
+    }
+}
+
+.container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: #FFF;
+    border-width: 1px;
+    border-color: #DDD;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 0 20px #222;
+}

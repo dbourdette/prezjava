@@ -1,68 +1,60 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Java Server Pages</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Java Server Pages</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1>Java Server Pages</h1>
+<body>
+<div class="container">
+<h1>Java Server Pages</h1>
 
-        <p>Les fichiers jsp sont les composants spécialisés dans la génération de html.</p>
+<p>Les fichiers jsp sont les composants spécialisés dans la génération de html.</p>
 
-        <p>Ils permettent de produire du html en mélant un peu de logique conditionnelle.</p>
+<p>Ils permettent de produire du html en mélant un peu de logique conditionnelle.</p>
 
-        <p>Ainsi, ils sont un bon complément des servlets pour la génération de la page web.</p>
+<p>Ainsi, ils sont un bon complément des servlets pour la génération de la page web.</p>
 
-        <h2>Dans notre projet</h2>
+<h2>Dans notre projet</h2>
 
-        <p>Par convention, les fichiers jsp sont dans le répertoire WEB-INF/jsp du war.</p>
+<p>Par convention, les fichiers jsp sont dans le répertoire WEB-INF/jsp du war.</p>
 
-        <p>Sous maven, ils sont donc dans src/main/webapp/WEB-INF/jsp.</p>
+<p>Sous maven, ils sont donc dans src/main/webapp/WEB-INF/jsp.</p>
 
-        <p>Les fichiers jsp sont compilés à la volée par tomcat.</p>
+<p>Les fichiers jsp sont compilés à la volée par tomcat.</p>
 
-        <p>Un peu à l'image d'un fichier php, les fichiers jsp sont donc interprétés par le conteneur.</p>
+<p>Un peu à l'image d'un fichier php, les fichiers jsp sont donc interprétés par le conteneur.</p>
 
-        <p>En test avec mvn tomcat7:run, les modifications sont prises en compte à la volée.</p>
+<p>En test avec mvn tomcat7:run, les modifications sont prises en compte à la volée.</p>
 
-        <h2>Notre template</h2>
+<h2>Notre template</h2>
 
-        <p>Pour commencer, on déplace notre index.html vers WEB-INF/jsp/index.jsp.</p>
+<p>Pour commencer, on déplace notre index.html vers WEB-INF/jsp/index.jsp.</p>
 
-        <p>Avant la déclaration du DOCTYPE, on ajoute :</p>
+<p>Avant la déclaration du DOCTYPE, on ajoute :</p>
 
-        <pre  class="prettyprint">&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;</pre>
+<pre  class="prettyprint">&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;</pre>
 
-        <p>Cela indique au container que le code source est en utf-8 et que cela produit une page en utf-8.</p>
+<p>Cela indique au container que le code source est en utf-8 et que cela produit une page en utf-8.</p>
 
-        <p>On rajoute la servlet IndexServlet</p>
+<p>On rajoute la servlet IndexServlet</p>
 
         <pre  class="prettyprint">public class IndexServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void doGet(HttpServletRequest request,
-      HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
   }
 }</pre>
 
-        <p>Que l'on déclare dans le web.xml</p>
+<p>Que l'on déclare dans le web.xml</p>
 
         <pre  class="prettyprint">&lt;servlet&gt;
     &lt;servlet-name&gt;index&lt;/servlet-name&gt;
@@ -73,21 +65,20 @@
     &lt;url-pattern&gt;/index.html&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>Notre jsp est donc accessible sur <a href="http://localhost:8080/" class="external">http://localhost:8080/</a> en étant passé au travers de la servlet.</p>
+<p>Notre jsp est donc accessible sur <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a> en étant passé au travers de la servlet.</p>
 
-        <h2>Un peu de données</h2>
+<h2>Un peu de données</h2>
 
-        <p>Afin de jouer un peu avec les capacités des jsp, nous allons injecter quelques données depuis la servlet.</p>
+<p>Afin de jouer un peu avec les capacités des jsp, nous allons injecter quelques données depuis la servlet.</p>
 
         <pre class="prettyprint">@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     request.setAttribute("tasks", DummyData.tasks());
 
     request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
 }</pre>
 
-        <p>Et la classe DummyData que l'on place juste a coté.</p>
+<p>Et la classe DummyData que l'on place juste a coté.</p>
 
         <pre class="prettyprint">public class DummyData {
   private static final int TASK_COUNT = 10;
@@ -114,42 +105,42 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
   }
 }</pre>
 
-        <p>Les attributs de la requête sont conservé tout au long du traitement de la requête.</p>
+<p>Les attributs de la requête sont conservé tout au long du traitement de la requête.</p>
 
-        <p>Ils sont donc accessibles depuis la jsp.</p>
+<p>Ils sont donc accessibles depuis la jsp.</p>
 
-        <h2>Expression Language</h2>
+<h2>Expression Language</h2>
 
-        <p>L'EL (Expression Language) est une notation permettant de naviguer facilement dans les données.</p>
+<p>L'EL (Expression Language) est une notation permettant de naviguer facilement dans les données.</p>
 
-        <pre class="prettyprint">${expression}</pre>
+<pre class="prettyprint">${expression}</pre>
 
-        <p>Les capacités sont limités mais généralement suffisantes pour afficher des données.</p>
+<p>Les capacités sont limités mais généralement suffisantes pour afficher des données.</p>
 
-        <p>Par exemple, on peut simplement afficher l'attribut tasks.</p>
+<p>Par exemple, on peut simplement afficher l'attribut tasks.</p>
 
-        <pre class="prettyprint">${tasks}</pre>
+<pre class="prettyprint">${tasks}</pre>
 
-        <p>Ce qui donne dans la jsp</p>
+<p>Ce qui donne dans la jsp</p>
 
         <pre class="prettyprint">[fr.todooz.domain.Task@16ff6348, fr.todooz.domain.Task@58cf17c3, fr.todooz.domain.Task@42130c2,
 fr.todooz.domain.Task@1f0812ac, fr.todooz.domain.Task@4b01ea1e, fr.todooz.domain.Task@6ab17e0a,
 fr.todooz.domain.Task@2ac9f93f, fr.todooz.domain.Task@320aad0b, fr.todooz.domain.Task@5ae6c6d7,
 fr.todooz.domain.Task@65087be0]</pre>
 
-        <p>Ce n'est pas très parlant (il faudrait implémenter la méthode toString() afin d'y voir plus en détails)</p>
+<p>Ce n'est pas très parlant (il faudrait implémenter la méthode <code>toString()</code> afin d'y voir plus en détails)</p>
 
-        <p>Les expressions suivantes sont valides.</p>
+<p>Les expressions suivantes sont valides.</p>
 
         <pre class="prettyprint">${tasks[0].title}
 ${empty tasks}
 ${not empty task.date ? task.date : 'no date'}</pre>
 
-        <p>L'EL est une notation simple et puissante par rapport a du code java.</p>
+<p>L'EL est une notation simple et puissante par rapport a du code java.</p>
 
-        <pre class="prettyprint">${cart.items[2].name} // cart est un shopping cart en session</pre>
+<pre class="prettyprint">${cart.items[2].name} // cart est un shopping cart en session</pre>
 
-        <p>Synthétise un appel qui pourrait être écrit comme suit en java.</p>
+<p>Synthétise un appel qui pourrait être écrit comme suit en java.</p>
 
 	    <pre class="prettyprint">Cart cart = (Cart) request.getSession().getAttribute("cart");
 
@@ -157,15 +148,15 @@ String name = cart.getItems().get(2).getName();
 
 response.getWriter().write(name);</pre>
 
-        <h2>Les custom tags</h2>
+<h2>Les custom tags</h2>
 
-        <p>Ce sont des morceaux de code en java que l'on peut appeler depuis les jsp.</p>
+<p>Ce sont des morceaux de code en java que l'on peut appeler depuis les jsp.</p>
 
-        <p>Ils permettent de faire du contrôle de flow (if, for each...) et de factoriser du code.</p>
+<p>Ils permettent de faire du contrôle de flow (if, for each...) et de factoriser du code.</p>
 
-        <p>La librairie la plus utilisé est la jstl (java standard tag library) et il est assez simple de faire ses propres custom tags.</p>
+<p>La librairie la plus utilisé est la jstl (java standard tag library) et il est assez simple de faire ses propres custom tags.</p>
 
-        <p>Afin de pouvoir l'utiliser, on ajoute les libs dans le pom.</p>
+<p>Afin de pouvoir l'utiliser, on ajoute les libs dans le pom.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
@@ -180,30 +171,30 @@ response.getWriter().write(name);</pre>
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency></pre>
 
-        <p>Et on déclare les taglibs utilisées en haut du fichier jsp (sous la directive &lt;%@ page ... ).</p>
+<p>Et on déclare les taglibs utilisées en haut du fichier jsp (sous la directive &lt;%@ page ... ).</p>
 
         <pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
 &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;</pre>
 
-        <p>Un <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" class="external">bon tutorial sur la jstl</a> est disponible sur le site de developpez.com</p>
+<p>Un <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" target="_blank">bon tutorial sur la jstl</a> est disponible sur le site de developpez.com</p>
 
-        <h2>Notre liste de tâches</h2>
+<h2>Notre liste de tâches</h2>
 
-        <p>En utilisant les notations suivantes, mettre en forme la jsp afin qu'elle produise la liste des tâches.</p>
+<p>En utilisant les notations suivantes, mettre en forme la jsp afin qu'elle produise la liste des tâches.</p>
 
-        <p>L'itération :</p>
+<p>L'itération :</p>
 
-        <pre class="prettyprint">&lt;c:forEach var="task" items="${tasks}"&gt;...&lt;/c:forEach&gt;</pre>
+<pre class="prettyprint">&lt;c:forEach var="task" items="${tasks}"&gt;...&lt;/c:forEach&gt;</pre>
 
-        <p>L'expression language :</p>
+<p>L'expression language :</p>
 
-        <pre class="prettyprint">${task.title} ${task.text} ${task.tags}</pre>
+<pre class="prettyprint">${task.title} ${task.text} ${task.tags}</pre>
 
-        <p>Le formattage de date :</p>
+<p>Le formattage de date :</p>
 
-        <pre class="prettyprint">&lt;fmt:formatDate value="${task.date}" pattern="dd MMM yyyy"/&gt;</pre>
+<pre class="prettyprint">&lt;fmt:formatDate value="${task.date}" pattern="dd MMM yyyy"/&gt;</pre>
 
-        <p>Et en utilisant la lib commons lang</p>
+<p>Et en utilisant la lib commons lang</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;commons-lang&lt;/groupId&gt;
@@ -212,26 +203,26 @@ response.getWriter().write(name);</pre>
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>On peut ajouter la méthode suivante dans la classe Task.</p>
+<p>On peut ajouter la méthode suivante dans la classe Task.</p>
 
         <pre class="prettyprint">public String[] getTagArray() {
   return StringUtils.split(tags, ",");
 }</pre>
 
-        <p>Et l'utiliser dans notre jsp.</p>
+<p>Et l'utiliser dans notre jsp.</p>
 
-        <p>On obtient le même résultat mais c'est un peu plus dynamique.</p>
+<p>On obtient le même résultat mais c'est un peu plus dynamique.</p>
 
-        <div class="note">En développement, il n'est pas nécessaire de relancer le serveur tomcat en cas de modification d'une jsp</div>
+<div class="note">En développement, il n'est pas nécessaire de relancer le serveur tomcat en cas de modification d'une jsp</div>
 
-        <h2>Les tag files</h2>
+<h2>Les tag files</h2>
 
-        <p>Les tags files permettent de factoriser du code jsp.</p>
+<p>Les tags files permettent de factoriser du code jsp.</p>
 
-        <p>C'est très simple a mettre en place mais malheureusement on ne peut les mettres dans des librairies.</p>
+<p>C'est très simple a mettre en place mais malheureusement on ne peut les mettres dans des librairies.</p>
 
-        <p>Par exemple, si on ajoute le fichier navbar.tag dans le répertoire WEB-INF/tags/widget.</p>
-	    
+<p>Par exemple, si on ajoute le fichier navbar.tag dans le répertoire WEB-INF/tags/widget.</p>
+
         <pre  class="prettyprint">&lt;%@ tag language="java" pageEncoding="UTF-8"%&gt;
 
 &lt;div class="navbar navbar-default"&gt;
@@ -250,59 +241,63 @@ response.getWriter().write(name);</pre>
     &lt;/div&gt;
 &lt;/div&gt;</pre>
 
-        <p>On peut ajouter la déclaration suivante dans notre jsp.</p>
+<p>On peut ajouter la déclaration suivante dans notre jsp.</p>
 
-        <pre class="prettyprint"><b>&lt;%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget" %&gt;</b></pre>
+<pre class="prettyprint"><b>&lt;%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget" %&gt;</b></pre>
 
-        <p>Et faire l'appel suivant à la place de la navbar.</p>
+<p>Et faire l'appel suivant à la place de la navbar.</p>
 
-        <pre  class="prettyprint">&lt;widget:navbar /&gt;</pre>
+<pre  class="prettyprint">&lt;widget:navbar /&gt;</pre>
 
-        <p>Cela ressemble à un include mais la synthaxe est élégante.</p>
+<p>Cela ressemble à un include mais la synthaxe est élégante.</p>
 
-        <p>Si un tag file à besoin d'un attribut, on le déclare en haut du fichier :</p>
+<p>Si un tag file à besoin d'un attribut, on le déclare en haut du fichier :</p>
 
-        <pre class="prettyprint">&lt;%@ attribute name="task" required="true" type="fr.todooz.domain.Task" %&gt;</pre>
+<pre class="prettyprint">&lt;%@ attribute name="task" required="true" type="fr.todooz.domain.Task" %&gt;</pre>
 
-        <p>Faire un tag file task.tag qui affiche une tâche.</p>
+<p>Faire un tag file task.tag qui affiche une tâche.</p>
 
-        <p>Attention, il ne faut pas oublier les imports des lib c et fmt de la jstl.</p>
+<p>Attention, il ne faut pas oublier les imports des lib c et fmt de la jstl.</p>
 
-        <h2>Les fonctions</h2>
+<h2>Les fonctions</h2>
 
-        <p>Afin de tester les fonctions, nous allons régler un dernier petit problème</p>
+<p>Afin de tester les fonctions, nous allons régler un dernier petit problème</p>
 
-        <p>Si le titre d'une tâche contient un &lt; alors l'insert</p>
+<p>Si le titre d'une tâche contient un caractères interdit (par exemple &lt; ou &amp;) alors l'insert</p>
 
-        <pre class="prettyprint">${task.title}</pre>
+<pre class="prettyprint">${task.title}</pre>
 
-        <p>Va générer un html mal formé.</p>
+<p>Va générer un html mal formé.</p>
 
-        <p>Afin de s'assurer que les chaînes de caractères sont bien escapées, on utilise la jstl functions.</p>
+<p>Afin de s'assurer que les chaînes de caractères sont bien escapées, on utilise la jstl functions.</p>
 
-        <pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;</pre>
+<pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;</pre>
 
-        <p>Et la méthode escapeXml</p>
+<p>Et la méthode escapeXml</p>
 
-        <pre class="prettyprint">${fn:escapeXml(task.title)}</pre>
+<pre class="prettyprint">${fn:escapeXml(task.title)}</pre>
 
-        <p>Il faut faire de même avec les tags et le texte.</p>
+<p>Il faut faire de même avec les tags et le texte.</p>
 
-        <h2>Une boite à outils</h2>
+<h2>Une boite à outils</h2>
 
-        <p>Les jsp sont un outils riche pour générer du html.</p>
+<p>Les jsp sont un outils riche pour générer du html.</p>
 
-        <p>On y retrouve :</p>
+<p>On y retrouve :</p>
 
-        <ul>
-            <li>les directives jsp</li>
-            <li>l'expression language</li>
-            <li>les customs tags (tag et fonctions)</li>
-            <li>les tags files</li>
-        </ul>
+<ul>
+    <li>les directives jsp</li>
+    <li>l'expression language</li>
+    <li>les customs tags (tag et fonctions)</li>
+    <li>les tags files</li>
+</ul>
 
-        <p>Mais elles sont très inefficaces pour aller chercher des données en base ou bien écrire un algorithme.</p>
-    </div>
+<p>Mais elles sont très inefficaces pour aller chercher des données en base ou bien écrire un algorithme.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

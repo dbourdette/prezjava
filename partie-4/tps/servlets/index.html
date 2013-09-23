@@ -1,40 +1,33 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Les servlets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Les servlets</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1>Les servlets</h1>
+<body>
+<div class="container">
+    <h1>Les servlets</h1>
 
-        <p>Nous allons ajouter nos premiers composants dans notre application web.</p>
+    <p>Nous allons ajouter nos premiers composants dans notre application web.</p>
 
-        <img src="img/container.png" alt="" style="margin: 0 160px">
+    <img src="img/container.png" alt="" style="margin: 0 160px">
 
-        <p>Les servlets sont les composants qui répondent aux requête http.</p>
+    <p>Les servlets sont les composants qui répondent aux requête http.</p>
 
-        <h2>web.xml</h2>
+    <h2>web.xml</h2>
 
-        <p>Pour déployer un war il faut un <b>descripteur de déploiement</b> : le web.xml</p>
+    <p>Pour déployer un war il faut un <b>descripteur de déploiement</b> : le web.xml</p>
 
-        <p>Il configure l'application web.</p>
+    <p>Il configure l'application web.</p>
 
-        <p>Si on essaye de faire un package, maven nous le dira aussi :</p>
+    <p>Si on essaye de faire un package, maven nous le dira aussi :</p>
 
         <pre class="shell">todooz $ mvn package
 [INFO] Scanning for projects...
@@ -87,7 +80,7 @@ Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-war-plugin:2.1.1:war (default-war)
 on project todooz: Error assembling WAR: <b>webxml attribute is required
-(or pre-existing WEB-INF/web.xml if executing in update mode)</b> -> [Help 1]
+                (or pre-existing WEB-INF/web.xml if executing in update mode)</b> -> [Help 1]
 [ERROR]
 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
 [ERROR] Re-run Maven using the -X switch to enable full debug logging.
@@ -95,9 +88,9 @@ on project todooz: Error assembling WAR: <b>webxml attribute is required
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException</pre>
 
-        <p>Ce fichier web.xml va dans répertoire WEB-INF, à la racine du war.</p>
+    <p>Ce fichier web.xml va dans répertoire WEB-INF, à la racine du war.</p>
 
-        <p>Dans notre source, il va dans le répertoire src/main/webapp/WEB-INF.</p>
+    <p>Dans notre source, il va dans le répertoire src/main/webapp/WEB-INF.</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
@@ -106,27 +99,27 @@ on project todooz: Error assembling WAR: <b>webxml attribute is required
 
 &lt;/web-app&gt;</pre>
 
-        <p>Ce fichier ne dit pas grand chose : nous sommes en version 3.0 de la spécification des servlets et notre application s'appelle todooz.</p>
+    <p>Ce fichier ne dit pas grand chose : nous sommes en version 3.0 de la spécification des servlets et notre application s'appelle todooz.</p>
 
-        <p>Avec ce fichier en place, on peut maitenant faire un mvn package et obtenir notre war, versionné, dans le répertoire target.</p>
+    <p>Avec ce fichier en place, on peut maitenant faire un mvn package et obtenir notre war, versionné, dans le répertoire target.</p>
 
         <pre class="shell">todooz $ ls target
 classes			maven-archiver		surefire		todooz-1.0-SNAPSHOT.war
 generated-sources	maven-status		todooz-1.0-SNAPSHOT</pre>
 
-        <p>mvn tomcat7:run permet de tester notre application.</p>
+    <p>mvn tomcat7:run permet de tester notre application.</p>
 
-        <p>mvn package permet d'obtenir le fichier à installer en production.</p>
+    <p>mvn package permet d'obtenir le fichier à installer en production.</p>
 
-        <h2>Servlet API</h2>
+    <h2>Servlet API</h2>
 
-        <p>L'API des servlets est un ensemble de classes disponibles dans un conteneur de servlets.</p>
+    <p>L'API des servlets est un ensemble de classes disponibles dans un conteneur de servlets.</p>
 
-        <p>Tomcat contient déjà ces classes et notre war n'a pas besoin de les contenir.</p>
+    <p>Tomcat contient déjà ces classes et notre war n'a pas besoin de les contenir.</p>
 
-        <p>Cependant, dans l'IDE, ces classes ne sont pas disponibles au moment de l'écriture du code source.</p>
+    <p>Cependant, dans l'IDE, ces classes ne sont pas disponibles au moment de l'écriture du code source.</p>
 
-        <p>Il faut donc ajouter cette api dans notre pom.</p>
+    <p>Il faut donc ajouter cette api dans notre pom.</p>
 
         <pre class="prettyprint"><span class="comment">&lt;!-- provided by the container --&gt;</span>
 &lt;dependency&gt;
@@ -142,15 +135,15 @@ generated-sources	maven-status		todooz-1.0-SNAPSHOT</pre>
     &lt;scope&gt;<em>provided</em>&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Ces dépendances sont en provided : elles sont disponibles pour la compilaton mais ne seront pas dans le war.</p>
+    <p>Ces dépendances sont en provided : elles sont disponibles pour la compilaton mais ne seront pas dans le war.</p>
 
-        <h2>HelloWorldServlet</h2>
+    <h2>HelloWorldServlet</h2>
 
-        <p>Il est donc temps de rajouter notre premier composant web.</p>
+    <p>Il est donc temps de rajouter notre premier composant web.</p>
 
-        <p>Afin d'accueillir nos servlets, nous ajoutons un package fr.todooz.web.servlet dans src/main/java.</p>
+    <p>Afin d'accueillir nos servlets, nous ajoutons un package <b>fr.todooz.web.servlet</b> dans <b>src/main/java</b>.</p>
 
-        <p>Et notre première servlet.</p>
+    <p>Et notre première servlet.</p>
 
         <pre class="prettyprint">package fr.todooz.web.servlet;
 
@@ -165,15 +158,14 @@ public class HelloWorldServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
 
    @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	    			   throws ServletException, IOException {
-	   response.getWriter().write("Hello !");
+   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().write("Hello !");
    }
 }</pre>
 
-        <p>La servlet écrit simple un message comme réponse.</p>
+    <p>La servlet écrit simple un message comme réponse.</p>
 
-        <p>Il faut ensuite ajouter le mapping dans le web.xml</p>
+    <p>Il faut ensuite ajouter le mapping dans le web.xml</p>
 
         <pre class="prettyprint">&lt;servlet&gt;
    &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
@@ -184,38 +176,41 @@ public class HelloWorldServlet extends HttpServlet {
    &lt;url-pattern&gt;/HelloWorldServlet&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" class="external">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
+    <p>Si on relance le serveur tomcat, le service <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> dit bonjour.</p>
 
-        <h2>Le forward</h2>
+    <h2>Le forward</h2>
 
-        <p>La servlet contient du code java.</p>
+    <p>La servlet contient du code java.</p>
 
-        <p>C'est bien pour aller chercher des données en base mais peu adapté pour du html.</p>
+    <p>C'est bien pour aller chercher des données en base mais peu adapté pour du html.</p>
 
-        <p>Pour faire du html, la servlet passe la main : elle forwarde la requête.</p>
+    <p>Pour faire du html, la servlet passe la main : elle forwarde la requête.</p>
 
         <pre class="prettyprint">public class HelloWorldServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Override
-  protected void doGet(HttpServletRequest request,
-      HttpServletResponse response) throws ServletException, IOException {
-    <b>request.getRequestDispatcher("index.html").forward(request, response);</b>
-  }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        <b>request.getRequestDispatcher("index.html").forward(request, response);</b>
+    }
 }</pre>
 
-        <p>Sur <a href="http://localhost:8080/HelloWorldServlet" class="external">http://localhost:8080/HelloWorldServlet</a> on a donc maintenant notre page d'index.</p>
+    <p>Sur <a href="http://localhost:8080/HelloWorldServlet" target="_blank">http://localhost:8080/HelloWorldServlet</a> on a donc maintenant notre page d'index.</p>
 
-        <p>On peut passer la main à tout autre composant géré par le conteneur.</p>
+    <p>On peut passer la main à tout autre composant géré par le conteneur.</p>
 
-        <h2>Une collaboration de composants</h2>
+    <h2>Une collaboration de composants</h2>
 
-        <p>Les servlets sont des composants rapidement limités.</p>
+    <p>Les servlets sont des composants rapidement limités.</p>
 
-        <p>L'API est lourde et il manque de nombreux éléments</p>
+    <p>L'API est lourde et il manque de nombreux éléments</p>
 
-        <p>Cependant, pour la génération de html, elles peuvent compter sur d'autres éléments, accessibles via le forward.</p>
-    </div>
+    <p>Cependant, pour la génération de html, elles peuvent compter sur d'autres éléments, accessibles via le forward.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

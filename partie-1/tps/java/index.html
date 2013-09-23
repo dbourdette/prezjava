@@ -1,46 +1,39 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Java</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Java</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1 style="line-height: 55px;padding-left: 10px;"><img src="img/java.png" height="50px" style="float:left"/>Java</h1>
+<body>
+<div class="container">
+    <h1 style="line-height: 55px;"><img src="img/java.png" style="float:left;height:50px;margin: 0 10px"/>Java</h1>
 
-        <h2>Quelques classes</h2>
+    <h2>Quelques classes</h2>
 
-        <p>Notre projet est géré avec maven et il est stoqué sous github.</p>
+    <p>Notre projet est géré avec maven et il est stoqué sous github.</p>
 
-        <p>Nous allons pouvoir commencer à écrire du code java.</p>
+    <p>Nous allons pouvoir commencer à écrire du code java.</p>
 
-        <p>Nous allons juste mettre en place notre modèle de données pour les tps à venir.</p>
+    <p>Nous allons juste mettre en place notre modèle de données pour les tps à venir.</p>
 
-        <h2>Création du modèle de données</h2>
+    <h2>Création du modèle de données</h2>
 
-        <p>Le code source java va dans src/main/java.</p>
+    <p>Le code source java va dans src/main/java.</p>
 
-        <p>Pour notre modèle, nous définissons une classe dans le package fr.todooz.domain : Task.</p>
+    <p>Pour notre modèle, nous définissons une classe dans le package fr.todooz.domain : Task.</p>
 
-        <p>On utilise l'IDE afin de générer les getters et les setters.</p>
+    <p>On utilise l'IDE afin de générer les getters et les setters.</p>
 
-        <p>Task est la représentation d'une tâche dans une todo list.</p>
+    <p>Task est la représentation d'une tâche dans une todo list.</p>
 
-        <pre class="prettyprint">import java.util.Date;
+     <pre class="prettyprint">import java.util.Date;
 
 public class Task {
     private Date createdAt = new Date();
@@ -94,55 +87,59 @@ public class Task {
     }
 }</pre>
 
-        <p>Cette classe ne présente que peu d'intêret techniquement, c'est un simple java Bean.</p>
+    <p>Cette classe ne présente que peu d'intêret techniquement, c'est un simple java Bean.</p>
 
-        <p>Elle est importante car elle représente notre domain métier.</p>
+    <p>Elle est importante car elle représente notre domain métier.</p>
 
-        <h2>L'évolution</h2>
+    <h2>L'évolution</h2>
 
-        <p>En un peu plus de 10 ans, le language à subit peu d'évolution. En voici les principales :</p>
+    <p>En un peu plus de 10 ans, le language à subit peu d'évolution. En voici les principales :</p>
 
-        <ul>
-            <li>java 1.4 (2002)
-                <ul style="font-size: small">
-                    <li>assert : assertion </li>
-                </ul>
-            </li>
-            <li>java 1.5 / 5.0 (2004)
-                <ul style="font-size: small">
-                    <li>generiques <span class="comment">List&lt;T&gt;</span></li>
-                    <li>annotations <span class="comment">@Annotation</span></li>
-                    <li>autoboxing / unboxing <span class="comment">Integer i = 10; int j = i;</span></li>
-                    <li>enum <span class="comment">enum Sign {BELIER, LION...}</span></li>
-                    <li>varargs <span class="comment">public void tags(String... tags)</span></li>
-                    <li>imports statiques <span class="comment">import static org.junit.Assert.assertEquals</span></li>
-                    <li>for each loops <span class="comment">for (String tag : tags) {...}</span></li>
-                </ul>
-            </li>
-            <li>java 6.0 (2006)
+    <ul>
+        <li>java 1.4 (2002)
+            <ul>
+                <li>assert : assertion </li>
+            </ul>
+        </li>
+        <li>java 1.5 / 5.0 (2004)
+            <ul>
+                <li>generiques <span class="comment">List&lt;T&gt;</span></li>
+                <li>annotations <span class="comment">@Annotation</span></li>
+                <li>autoboxing / unboxing <span class="comment">Integer i = 10; int j = i;</span></li>
+                <li>enum <span class="comment">enum Sign {BELIER, LION...}</span></li>
+                <li>varargs <span class="comment">public void tags(String... tags)</span></li>
+                <li>imports statiques <span class="comment">import static org.junit.Assert.assertEquals</span></li>
+                <li>for each loops <span class="comment">for (String tag : tags) {...}</span></li>
+            </ul>
+        </li>
+        <li>java 6.0 (2006)
 
-            </li>
-            <li>java 7.0 (projet coin)
-                <ul style="font-size: small">
-                    <li>strings dans les switch</li>
-                    <li>notation plus lisible pour les numériques <span class="comment">int value = 100_000;</span></li>
-                    <li>multi catch <span class="comment">try { ... } catch (FirstException | SecondException ex) { ... }</span></li>
-                    <li>opérateur diamant <span class="comment">List&lt;String&gt; values = new ArrayList&lt;&gt;()</span></li>
-                    <li>try with resources <span class="comment">try (Statement stmt = con.createStatement()) { stmt.executeQuery(query); }</span></li>
-                    <li>varargs simplifiés</li>
-                </ul>
-            </li>
-            <li>java 8.0
-                <ul style="font-size: small">
-                    <li>lambdas (closures pour java)</li>
-                </ul>
-            </li>
+        </li>
+        <li>java 7.0 (projet coin)
+            <ul>
+                <li>strings dans les switch</li>
+                <li>notation plus lisible pour les numériques <span class="comment">int value = 100_000;</span></li>
+                <li>multi catch <span class="comment">try { ... } catch (FirstException | SecondException ex) { ... }</span></li>
+                <li>opérateur diamant <span class="comment">List&lt;String&gt; values = new ArrayList&lt;&gt;()</span></li>
+                <li>try with resources <span class="comment">try (Statement stmt = con.createStatement()) { stmt.executeQuery(query); }</span></li>
+                <li>varargs simplifiés</li>
+            </ul>
+        </li>
+        <li>java 8.0
+            <ul>
+                <li>lambdas (closures pour java)</li>
+            </ul>
+        </li>
+    </ul>
 
-            <p>La jvm garde une forte compatibilité avec les versions passées</p>
+    <p>La jvm garde une forte compatibilité avec les versions passées</p>
 
-            <p>Coté apis et librairies, les évolutions ont été beaucoup plus importantes.</p>
-        </ul>
-    </div>
+    <p>Coté apis et librairies, les évolutions ont été beaucoup plus importantes.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

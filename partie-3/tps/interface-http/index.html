@@ -1,47 +1,42 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>L'interface HTTP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>L'interface HTTP</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1>
-            <span style="font-size: 40px;text-shadow: 4px 4px #CCC;position: relative;left: 12px;color:#007000;">w</span>
-            <span style="font-size: 50px;text-shadow: 4px 4px #CCC;position: relative;color:#007000;">w</span>
-            <span style="font-size: 40px;text-shadow: 4px 4px #CCC;position: relative;right: 12px;color:#007000;">w</span>
-            L'interface HTTP
-        </h1>
+<body>
+<div class="container">
+<h1>
+    <span style="font-size: 40px;text-shadow: 4px 4px #CCC;position: relative;left: 12px;color:#007000;">w</span>
+    <span style="font-size: 50px;text-shadow: 4px 4px #CCC;position: relative;color:#007000;">w</span>
+    <span style="font-size: 40px;text-shadow: 4px 4px #CCC;position: relative;right: 12px;color:#007000;">w</span>
+    L'interface HTTP
+</h1>
 
-        <p>Le but de ce tp est de voir en pratique comment sont formés des requêtes et des réponses http.</p>
+<p>Le but de ce tp est de voir en pratique comment sont formés des requêtes et des réponses http.</p>
 
-        <p>L'HyperText Tranfert Protocol est un protocol simple, haut niveau et extensible.</p>
+<p>L'HyperText Tranfert Protocol est un protocol simple, haut niveau et extensible.</p>
 
-        <img src="img/request-response.png" alt="" style="margin: 0 140px;">
+<img src="img/request-response.png" alt="request response" class="img-responsive" style="margin: auto;">
 
-        <p>Il permet d'échanger des données selon un mode requête - réponse.</p>
+<p>Il permet d'échanger des données selon un mode requête - réponse.</p>
 
-        <h2>Telnet</h2>
+<h2>Telnet</h2>
 
-        <p>telnet est une application en ligne de commande qui permet de se connecter à des serveurs distants.</p>
+<p>telnet est une application en ligne de commande qui permet de se connecter à des serveurs distants.</p>
 
-        <p>Par défaut, le port utilisé est 23.</p>
+<p>Par défaut, le port utilisé est 23.</p>
 
-        <p>Mais si on se connecte sur un serveur qui ne respecte pas le protocole attendu, le client bascule en mode raw TCP, pratique pour forger des requêtes HTTP</p>
+<p>Mais si on se connecte sur un serveur qui ne respecte pas le protocole attendu, le client bascule en mode raw TCP, pratique pour forger des requêtes HTTP</p>
 
-        <p>Par exemple</p>
+<p>Par exemple</p>
 
         <pre class="shell">$ telnet www.rtl.fr 80
 Trying 141.138.89.209...
@@ -49,7 +44,7 @@ Connected to webcache.rtl.fr.
 Escape character is '^]'.
 </pre>
 
-        <p>A partir de là, le client est en attente, on tape GET / HTTP/1.1 et deux fois entrée.</p>
+<p>A partir de là, le client est en attente, on tape GET / HTTP/1.1 et deux fois entrée.</p>
 
         <pre class="shell">GET / HTTP/1.1↵
 ↵
@@ -73,24 +68,24 @@ X-Object-ID: 1676037310 1676027370
     &lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
 ...</pre>
 
-        <p>Nous avons forgé une requête http et obtenu une réponse</p>
+<p>Nous avons forgé une requête http et obtenu une réponse du serveur.</p>
 
-        <h2>curl</h2>
+<h2>curl</h2>
 
-        <p>La commande curl permet de forger plus simplement des requêtes vers un serveur http.</p>
+<p>La commande curl permet de forger plus simplement des requêtes vers un serveur http.</p>
 
         <pre class="shell">$ curl http://www.lemonde.fr
 ...</pre>
 
-        <p>Le contenu de la page s'affiche dans le terminal.</p>
+<p>Le contenu de la page s'affiche dans le terminal.</p>
 
-        <p>Cela équivaut à la requête http suivante sur www.lemonde.fr</p>
+<p>Cela équivaut à la requête http suivante sur www.lemonde.fr</p>
 
-        <pre class="shell">GET / HTTP/1.1</pre>
+<pre class="shell">GET / HTTP/1.1</pre>
 
-        <h3>Headers</h3>
+<h3>Headers</h3>
 
-        <p>Si on souhaite voir les headers.</p>
+<p>Si on souhaite voir les headers.</p>
 
         <pre class="shell">$ curl --head http://www.lemonde.fr
 HTTP/1.1 200 OK
@@ -109,15 +104,15 @@ X-Varnish-Cache: HIT
 X-Varnish-Server: speed.lemonde.fr
 Content-Length: 300860</pre>
 
-        <p>Ou ajouter des headers à la requête</p>
+<p>Ou ajouter des headers à la requête</p>
 
-        <pre class="shell">$ curl --header "Accept: text/html" http://www.lemonde.fr</pre>
+<pre class="shell">$ curl --header "Accept: text/html" http://www.lemonde.fr</pre>
 
-        <h3>Autres options</h3>
+<h3>Autres options</h3>
 
-        <p>Curl est extrêmement puissant et permet de forger toutes les requêtes http possibles.</p>
+<p>Curl est extrêmement puissant et permet de forger toutes les requêtes http possibles.</p>
 
-        <p>Voici les options les plus intéressantes</p>
+<p>Voici les options les plus intéressantes.</p>
 
         <pre class="shell">
 -X, --request &lt;command&gt;          comande HTTP (ex: -X POST)
@@ -127,72 +122,74 @@ Content-Length: 300860</pre>
 -i, --include                    affiche les headers de la réponse
 -d, --data &lt;data&gt;                données du body</pre>
 
-        <p>Par exemple pour faire un post en envoyant des données json</p>
+<p>Par exemple pour faire un post en envoyant des données json.</p>
 
-        <pre class="shell">$ curl -i -X POST -H "Content-Type: application/json" -d '{"key": "value"}' http://my.site.fr/page</pre>
+<pre class="shell">$ curl -i -X POST -H "Content-Type: application/json" -d '{"key": "value"}' http://mon.site.fr/page</pre>
 
-        <p>Avec l'avènement de REST, il est devenu très utile de pouvoir forger ses requêtes afin de tester ses services.</p>
+<p>Avec l'avènement de REST, il est devenu très utile de pouvoir forger ses requêtes afin de tester ses services.</p>
 
-        <h2>Les navigateurs</h2>
+<h2>Les navigateurs</h2>
 
-        <p>Les navigateurs modernes permettent de voir facilement l'ensemble des requêtes et réponses http.</p>
+<p>Les navigateurs modernes permettent de voir facilement l'ensemble des requêtes et réponses http.</p>
 
-        <p>Pour ce tp, nous allons utiliser chrome qui dispose d'un jeu d'outils très complet.</p>
+<p>Pour ce tp, nous allons utiliser chrome qui dispose d'un jeu d'outils très complet.</p>
 
-        <img src="img/dev-tools.png" style="margin: 0 40px" />
+<p><img src="img/dev-tools.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>Le raccourci est Crtl+Maj+I.</p>
+<p>Le raccourci est <b>Crtl+Maj+I</b>.</p>
 
-        <p>Lorsque l'on fait une requête vers un site, l'onglet network permet de voir toutes les requêtes effectuées.</p>
+<p>Lorsque l'on fait une requête vers un site, l'onglet network permet de voir toutes les requêtes effectuées.</p>
 
-        <img src="img/network.png" width="840px" />
+<p><img src="img/network.png" class="img-responsive" /></p>
 
-        <p>Pour chaque ressource, on y voit : </p>
+<p>Pour chaque ressource, on y voit : </p>
 
-        <ul>
-            <li>Le nom</li>
-            <li>La méthode http (ici GET pour tous)</li>
-            <li>Le code de retour : 200, 302...</li>
-            <li>Le type mime : text/html, text/plain...</li>
-            <li>La taille des données récupérées</li>
-            <li>Le temps mis pour récupérer les données</li>
-        </ul>
+<ul>
+    <li>Le nom</li>
+    <li>La méthode http (ici GET pour tous)</li>
+    <li>Le code de retour : 200, 302...</li>
+    <li>Le type mime : text/html, text/plain...</li>
+    <li>La taille des données récupérées</li>
+    <li>Le temps mis pour récupérer les données</li>
+</ul>
 
-        <div class="note">Que veut dire un code de retour 200 ? un 302 ? un 404 ?</div>
+<div class="note">Que veut dire un code de retour 200 ? un 302 ? un 404 ?</div>
 
-        <p>Une page web un peu riche peut facilement contenir plusieurs centaines de ressources.</p>
+<p>Une page web un peu riche peut facilement contenir plusieurs centaines de ressources.</p>
 
-        <p>L'affichage d'une page web peut donc prendre plusieurs secondes, le temps de récupérer toutes les données et de mettre en place les éléments dans la page interprétée.</p>
+<p>L'affichage d'une page web peut donc prendre plusieurs secondes, le temps de récupérer toutes les données et de mettre en place les éléments dans la page interprétée.</p>
 
-        <h2>Une ressource</h2>
+<h2>Une ressource</h2>
 
-        <p>Nous allons prendre un des éléments de la liste et regarder en détails le contenu de l'échange.</p>
+<p>Nous allons prendre un des éléments de la liste et regarder en détails le contenu de l'échange.</p>
 
-        <p>Toujours dans l'onglet network, si on clique sur une ressource, on obtient les informations suivantes.</p>
+<p>Toujours dans l'onglet network, si on clique sur une ressource, on obtient les informations suivantes.</p>
 
-        <img src="img/headers.png" width="820px" style="margin: 0 10px" />
+<p><img src="img/headers.png" class="img-responsive" /></p>
 
-        <p>On retrouve le nom, la méthode et le code de retour mais cette fois on voit les <b>headers http</b>.</p>
+<p>On retrouve le nom, la méthode et le code de retour mais cette fois on voit les <b>headers http</b>.</p>
 
-        <p>Les <b>Request Headers</b> sont les options envoyées par le navigateur vers le serveur.</p>
+<p>Les <b>Request Headers</b> sont les options envoyées par le navigateur vers le serveur.</p>
 
-        <p>Les <b>Response Headers</b> sont des informations complémentaires au contenu renvoyées par le serveur.</p>
+<p>Les <b>Response Headers</b> sont des informations complémentaires au contenu renvoyées par le serveur.</p>
 
-        <p>Dans les 2 cas, ce sont des couples (clé - valeur) qui sont en début de requête ou de réponse.</p>
+<p>Dans les 2 cas, ce sont des couples (clé - valeur) qui sont en début de requête ou de réponse.</p>
 
-        <div class="note">Que signifient les headers de requête : Accept, Accept-Charset, If-Modified-Since, Referer, User-Agent ?
+<div class="alert alert-info">
+    Que signifient les headers de requête : Accept, Accept-Charset, If-Modified-Since, Referer, User-Agent ?
+    <br>
+    Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?
+</div>
 
-Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</div>
+<p>Il est possible de définir ses propres headers en étandant les headers standards (X- pour extended).</p>
 
-        <p>Il est possible de définir ses propres headers en étandant les headers standards (X- pour extended).</p>
+<h2>HttpClient</h2>
 
-        <h2>HttpClient</h2>
+<p>Coté code, on peut aussi forger des requêtes http.</p>
 
-        <p>Coté code, on peut aussi forger des requêtes http.</p>
+<p>Le plus simple est d'utiliser une librairie cliente telle que la lib <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" target="_blank">HttpClient de la fondation apache</a></p>
 
-        <p>Le plus simple est d'utiliser une librairie cliente telle que la lib <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" target="_blank" class="external">HttpClient de la fondation apache</a></p>
-
-        <p>Pour faire un test, nous commençons par ajouter la dépendance dans le pom.xml</p>
+<p>Pour faire un test, nous commençons par ajouter la dépendance dans le pom.xml</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
@@ -201,7 +198,7 @@ Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</div>
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Ensuite on crée une classe de Test dans src/test/java dans le package fr.todooz.http</p>
+<p>Ensuite on crée une classe de Test dans src/test/java dans le package fr.todooz.http</p>
 
         <pre class="prettyprint">public class HttpClientTest {
    @Test
@@ -210,16 +207,20 @@ Et dans la réponse : Content-Type, Cache-Control, Age, X-CDN ?</div>
    }
 }</pre>
 
-        <p>En suivant le <a href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html/index.html" target="_blank" class="external">HttpClient Tutorial</a>, faire une requête vers www.lemonde.fr et vérifier le code de retour.</p>
+<p>En suivant le <a href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html/index.html" target="_blank" class="external">HttpClient Tutorial</a>, faire une requête vers www.lemonde.fr et vérifier le code de retour.</p>
 
-        <p>Les classes intéressantes sont HttpClient, HttpGet et HttpResponse.</p>
+<p>Les classes intéressantes sont HttpClient, HttpGet et HttpResponse.</p>
 
-        <p>Une fois le test en place, on ajoute un @Ignore sur le test afin qu'il ne soit pas exécuté à chaque build avec les tests unitaires.</p>
+<p>Une fois le test en place, on ajoute un @Ignore sur le test afin qu'il ne soit pas exécuté à chaque build avec les tests unitaires.</p>
 
-        <p>HttpClient est un client http complet qui permet de faire des requêtes http depuis du code java.</p>
+<p>HttpClient est un client http complet qui permet de faire des requêtes http depuis du code java.</p>
 
-        <p>Beaucoup d'options sont disponibles pour le comportement du client en lui même : pooling, timeouts...</p>
-    </div>
+<p>Beaucoup d'options sont disponibles pour le comportement du client en lui même : pooling, timeouts...</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

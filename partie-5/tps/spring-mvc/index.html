@@ -1,42 +1,35 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Spring MVC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Spring MVC</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC</h1>
+<body>
+<div class="container">
+    <h1 style="line-height: 40px;"><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;">Spring MVC</h1>
 
-        <p>Les servlets sont assez limitées et fastidieuses à configurer (web.xml).</p>
-        
-        <p>Une application riche avec beaucoup de servlets serait douloureuse.</p>
+    <p>Les servlets sont assez limitées et fastidieuses à configurer (web.xml).</p>
 
-        <p>Les frameworks MVC java pour le web apportent la facilité et la puissance manquante.</p>
+    <p>Une application riche avec beaucoup de servlets serait douloureuse.</p>
 
-        <img src="img/container.png" alt="" style="margin: 0 150px;">
+    <p>Les frameworks MVC java pour le web apportent la facilité et la puissance manquante.</p>
 
-        <p>Il n'existe pas de technologie jee pour faire du MVC sur le web.</p>
+    <p><img src="img/container.png" alt="" class="img-responsive" style="margin: auto;"></p>
 
-        <p>Nous allons travailler avec spring MVC, le module MVC du framework spring.</p>
+    <p>Il n'existe pas de technologie jee pour faire du MVC sur le web.</p>
 
-        <h2>Mise en place</h2>
+    <p>Nous allons travailler avec spring MVC, le module MVC du framework spring.</p>
 
-        <p>On rajoute la libraire spring-webmvc dans les dépendances.</p>
+    <h2>Mise en place</h2>
+
+    <p>On rajoute la libraire spring-webmvc dans les dépendances.</p>
 
         <pre class="prettyprint">
 &lt;dependency&gt;
@@ -46,13 +39,13 @@
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <div class="note">
-            Spring MVC fait partie d'un framework beaucoup plus large. <br>
-            Mais grace aux dépendances transitives, demander spring-webmvc ramène toutes les autres libs.
-        </div>
+    <div class="note">
+        Spring MVC fait partie d'un framework beaucoup plus large. <br>
+        Mais grace aux dépendances transitives, demander spring-webmvc ramène toutes les autres libs.
+    </div>
 
-        <p>Dans le web.xml, on remplace toutes les servlets par la servlet spring.</p>
-        
+    <p>Dans le <b>web.xml</b>, on remplace toutes les servlets par la servlet spring.</p>
+
         <pre class="prettyprint">
 <span class="comment">&lt;!-- Spring servlet --&gt;</span>
 &lt;servlet&gt;
@@ -65,11 +58,11 @@
    &lt;url-pattern&gt;<b>/</b>&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>Elle est mappée sur / et donc reçoit toutes les requêtes.</p>
+    <p>Elle est mappée sur / et donc reçoit toutes les requêtes.</p>
 
-        <p>Au démarrage de tomcat, cette servlet va aller charger un fichier de configuration spring.</p>
+    <p>Au démarrage de tomcat, cette servlet va aller charger un fichier de configuration spring.</p>
 
-        <p>On place done le fichier spring-servlet.xml suivant dans src/main/webapp/WEB-INF/ :</p>
+    <p>On place done le fichier <b>spring-servlet.xml</b> suivant dans <b>src/main/webapp/WEB-INF/</b> :</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
@@ -83,13 +76,13 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 
    &lt;!-- Support des annotations --&gt;
    &lt;context:annotation-config /&gt;
-   
+
    &lt;!-- Création des composants classiques pour spring mvc --&gt;
    &lt;mvc:annotation-driven /&gt;
 
    &lt;!-- Découverte des contrôleurs --&gt;
    &lt;context:component-scan base-package="fr.todooz.web.controller" /&gt;
-   
+
    &lt;!-- Forwarde les demandes de fichiers statiques vers la servlet par défaut du conteneur --&gt;
    &lt;mvc:default-servlet-handler /&gt;
 
@@ -107,46 +100,46 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 
 &lt;/beans&gt;</pre>
 
-        <p>La configuration de base est assez lourde (un peu à cause du format xml) mais elle va permettre beaucoup de choses.</p>
+    <p>La configuration de base est assez lourde (un peu à cause du format xml) mais elle va permettre beaucoup de choses.</p>
 
-        <h2>IndexController</h2>
+    <h2>IndexController</h2>
 
-        <p>Il est temps de rajouter notre premier Controller afin de remplacer notre IndexServlet.</p>
+    <p>Il est temps de rajouter notre premier Controller afin de remplacer notre IndexServlet.</p>
 
-        <p>On ajoute l'IndexController dans le package fr.todooz.web.controller.</p>
+    <p>On ajoute l'<b>IndexController</b> dans le package <b>fr.todooz.web.controller</b>.</p>
 
         <pre class="prettyprint">@Controller
 public class IndexController {
    @RequestMapping("/index.html")
    public String index(Model model) {
       model.addAttribute("tasks", DummyData.tasks());
-      
+
       return "index";
    }
 }</pre>
 
-        <p>L'annotation @Controller indique a spring qu'il s'agit d'un composant qui répond aux requêtes http.</p>
+    <p>L'annotation <code>@Controller</code> indique a spring qu'il s'agit d'un composant qui répond aux requêtes http.</p>
 
-        <p>L'annotation @RequestMapping fait la liaison entre une réquête et la bonne méthode.</p>
+    <p>L'annotation <code>@RequestMapping</code> fait la liaison entre une réquête et la bonne méthode.</p>
 
-        <p>Le Model est ce qui est transmis à la vue jsp.</p>
+    <p>Le Model est ce qui est transmis à la vue jsp.</p>
 
-        <p>Le retour "index" indique la vue qui doit être utilisée (soit /WEB-INF/jsp/index.jsp).</p>
+    <p>Le retour "<b>index</b>" indique la vue qui doit être utilisée (soit <b>/WEB-INF/jsp/index.jsp</b>).</p>
 
-        <p>Cela donne beaucoup de configuration pour un simple controller. Mais à partir de maintenant, on peut rajouter des nouveaux mappings sans toucher au web.xml.</p>
+    <p>Cela donne beaucoup de configuration pour un simple controller. Mais à partir de maintenant, on peut rajouter des nouveaux mappings sans toucher au web.xml.</p>
 
-        <p>Le Controller devrait répondre sur <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> comme le faisait la servlet.</p>
+    <p>Le Controller devrait répondre sur <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> comme le faisait la servlet.</p>
 
-        <p>Afin d'avoir un contrôleur qui réponde à la racine de notre application, on change le mapping.</p>
+    <p>Afin d'avoir un contrôleur qui réponde à la racine de notre application, on change le mapping.</p>
 
         <pre class="prettyprint"><s>@RequestMapping("/index.html")</s>
 @RequestMapping({"/", "/index"})</pre>
 
-        <p>Maintenant, <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>, <a href="http://localhost:8080/index" target="_blank">http://localhost:8080/index</a> et <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> répondent.</p>
+    <p>Maintenant, <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>, <a href="http://localhost:8080/index" target="_blank">http://localhost:8080/index</a> et <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> répondent.</p>
 
-        <h2>Hello world</h2>
+    <h2>Hello world</h2>
 
-        <p>Il est maintenant plus facile de rajouter un mapping</p>
+    <p>Il est maintenant plus facile de rajouter un mapping</p>
 
         <pre class="prettyprint">@RequestMapping("/hello")
 @ResponseBody
@@ -154,17 +147,20 @@ public String hello() {
     return "Hello world";
 }</pre>
 
-        <p>@ResponseBody indique que ce qui est retourné n'est pas la vue mais, directement la réponse.</p>
+    <p><code>@ResponseBody</code> indique que ce qui est retourné n'est pas la vue mais, directement la réponse.</p>
 
-        <p>Il est aussi plus facile de rajouter des controleurs.</p>
+    <p>Il est aussi plus facile de rajouter des controleurs.</p>
 
-        <h2>Et les données ?</h2>
+    <h2>Et les données ?</h2>
 
-        <p>Pour avoir une application intéressante, il faudrait aller chercher les données en base.</p>
+    <p>Pour avoir une application intéressante, il faudrait aller chercher les données en base.</p>
 
-        <p>Nous allons donc rajouter la possibilité de lire et écrire dans une base.</p>
-
-    </div>
+    <p>Nous allons donc rajouter la possibilité de lire et écrire dans une base.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

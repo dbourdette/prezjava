@@ -1,114 +1,108 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Intellij</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Intellij</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1 style="line-height:50px;padding-left:10px;"><img src="img/intellij-icon.jpeg" height="50" style="float:left;"/> Intellij</h1>
+<body>
+<div class="container">
+    <h1 style="line-height:50px;"><img src="img/intellij-icon.jpeg" style="float:left;width: 50px;margin: 0 10px"/> Intellij</h1>
 
-        <p>Un IDE est un environnement complet qui permet de travailler plus vite en regroupant de multiples outils de développement dans une même interface.</p>
+    <p>Un IDE est un environnement complet qui permet de travailler plus vite en regroupant de multiples outils de développement dans une même interface.</p>
 
-        <p>Intellij est développé par <a href="http://www.jetbrains.com/" class="external">JetBrains</a> qui maitient tout une suite de logiciels pour divers languages : php, python, ruby...</p>
+    <p>Intellij est développé par <a href="http://www.jetbrains.com/" target="_blank">JetBrains</a> qui maitient tout une suite de logiciels pour divers languages : php, python, ruby...</p>
 
-        <p>Intellij est un IDE qui existe en 2 versions : communautaire et ultimate.</p>
+    <p>Intellij est un IDE qui existe en 2 versions : communautaire et ultimate.</p>
 
-        <p>La version communautaire est suffisante pour faire du java, du groovy ou du scala.</p>
+    <p>La version communautaire est suffisante pour faire du java, du groovy ou du scala.</p>
 
-        <p>La version ultimate rajoute le web, jee et d'avantages de languages et plateformes (<a href="http://www.jetbrains.com/idea/features/index.html" class="external">feature list</a>).</p>
+    <p>La version ultimate rajoute le web, jee et d'avantages de languages et plateformes (<a href="http://www.jetbrains.com/idea/features/index.html" target="_blank">feature list</a>).</p>
 
-        <p>Il assez peu souvent nécessaire d'installer des plugins car intellij arrive tout équipé.</p>
+    <p>Il assez peu souvent nécessaire d'installer des plugins car intellij arrive tout équipé.</p>
 
-        <p>Intellij n'est pas gratuit mais ses qualités justifient amplement un tarif qui n'est pas très élevé.</p>
+    <p>Intellij n'est pas gratuit mais ses qualités justifient amplement un tarif qui n'est pas très élevé.</p>
 
-        <p>Les autres IDEs les plus utilisés sont : </p>
+    <p>Les autres IDEs les plus utilisés sont : </p>
 
-        <ul>
-            <li>Eclipse : l'IDE le plus utilisé car il est extrêmement complet et gratuit. Ses nombreux plugins font sa richesse.</li>
-            <li>Netbeans : c'est l'IDE de référence développé par Sun. Il est gratuit et suit très bien les spécifications jee. Ce n'est pourtant pas l'environnement de choix pour les utilisateurs avancés.</li>
-        </ul>
+    <ul>
+        <li><b>Eclipse</b> : l'IDE le plus utilisé car il est extrêmement complet et gratuit. Ses nombreux plugins font sa richesse.</li>
+        <li><b>Netbeans</b> : c'est l'IDE de référence développé par Sun. Il est gratuit et suit très bien les spécifications jee. Ce n'est pourtant pas l'environnement de choix pour les utilisateurs avancés.</li>
+    </ul>
 
-        <p>Le but de ce tp est de se familiariser avec l'interface d'intellij.</p>
+    <p>Le but de ce tp est de se familiariser avec l'interface d'intellij.</p>
 
-        <h2>Projets et modules</h2>
+    <h2>Projets et modules</h2>
 
-        <p>Un projet est la structure de base. C'est tout ce qu'on voit dans la fenêtre.</p>
+    <p>Un projet est la structure de base. C'est tout ce qu'on voit dans la fenêtre.</p>
 
-        <p>Il définit un sdk et un niveau de compatibilité du language java (1.5, 1.6...).</p>
+    <p>Il définit un sdk et un niveau de compatibilité du language java (1.5, 1.6...).</p>
 
-        <p>Il contient 1 ou plusieurs modules. Un module contient des fichiers sources</p>
+    <p>Il contient 1 ou plusieurs modules. Un module contient des fichiers sources</p>
 
-        <p>Un module peut avoir ses propres dépendances et sa propre structure</p>
+    <p>Un module peut avoir ses propres dépendances et sa propre structure</p>
 
-        <h2>Préférences</h2>
+    <h2>Préférences</h2>
 
-        <p>Les préférences sont accessibles via le menu File &gt; Other settings &gt; Default Settings...</p>
+    <p>Les préférences sont accessibles via le menu <b>File &gt; Other settings &gt; Default Settings...</b></p>
 
-        <p>Elles sont aussi disponibles via l'icône <img src="img/settings.png" alt="settings"/> de la barre d'outils ou bien via le raccourcis &#x2318; ,</p>
+    <p>Elles sont aussi disponibles via l'icône <img src="img/settings.png" alt="settings"/> de la barre d'outils ou bien via le raccourcis <b>&#x2318; ,</b></p>
 
-        <p>Elles permettent de régler beaucoup des aspects de l'IDE : formattage des sources, environnement java...</p>
+    <p>Elles permettent de régler beaucoup des aspects de l'IDE : formattage des sources, environnement java...</p>
 
-        <p>La définition des modules est accessible via l'icône <img src="img/modules.png" alt="modules"/>. On peut y voir les librairies utilisées et la configuration des modules.</p>
+    <p>La définition des modules est accessible via l'icône <img src="img/modules.png" alt="modules"/>. On peut y voir les librairies utilisées et la configuration des modules.</p>
 
-        <h2>Un projet java</h2>
+    <h2>Un projet java</h2>
 
-        <p>Afin de tester quelques fonctionnalités d'intellij, nous allons créer un projet java.</p>
+    <p>Afin de tester quelques fonctionnalités d'intellij, nous allons créer un projet java.</p>
 
-        <p>Un projet java se crée via le menu File &gt; New Project... et en choisissant un module Java.</p>
+    <p>Un projet java se crée via le menu <b>File &gt; New Project...</b> et en choisissant un module Java.</p>
 
-        <img src="img/new-java-module.png" style="margin: 0 60px" />
+    <p><img src="img/new-java-module.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>On entre un nom de projet "java" et on clique sur next.</p>
+    <p>On entre un nom de projet "java" et on clique sur next.</p>
 
-        <p>Dans la sélection des technologies, on ne sélectionne rien, on clique juste sur finish.</p>
+    <p>Dans la sélection des technologies, on ne sélectionne rien, on clique juste sur finish.</p>
 
-        <p>Un nouveau projet "java" est donc disponible avec un module "java" dedans. Un répertoire src contiendra les sources java.</p>
+    <p>Un nouveau projet "java" est donc disponible avec un module "java" dedans. Un répertoire src contiendra les sources java.</p>
 
-        <h2>Une classe</h2>
+    <h2>Une classe</h2>
 
-        <p>En faisant un clique droit sur le répertoire src, on peut créer le package fr.test</p>
+    <p>En faisant un clique droit sur le répertoire src, on peut créer le package fr.test</p>
 
-        <img src="img/new-package.png" style="margin: 0 140px" />
+    <p><img src="img/new-package.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>En faisant un clique droit sur le package fr.test, on peut créer la classe Person</p>
+    <p>En faisant un clique droit sur le package fr.test, on peut créer la classe Person</p>
 
-        <img src="img/new-java-class.png" style="margin: 0 120px" />
+    <p><img src="img/new-java-class.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>On obtient le code suivant :</p>
+    <p>On obtient le code suivant :</p>
 
-        <pre class="prettyprint language-java">package fr.test;
+    <pre class="prettyprint language-java">package fr.test;
 
 public class Person {
 }</pre>
 
-        <h2>Getters et Setters</h2>
+    <h2>Getters et Setters</h2>
 
-        <p>On ajoute les attributs suivants dans la classe.</p>
+    <p>On ajoute les attributs suivants dans la classe.</p>
 
-        <pre class="prettyprint language-java">private String firstname;
+    <pre class="prettyprint language-java">private String firstname;
 
 private String lastname;</pre>
 
-        <p>
-            Intellij est capable de générer les getters et setters pour ces attributs.
-            Il suffit de faire un clique droit dans l'éditeur dans la classe et d'utiliser le menu Generate.
-        </p>
+    <p>
+        Intellij est capable de générer les getters et setters pour ces attributs.
+        Il suffit de faire un clique droit dans l'éditeur dans la classe et d'utiliser le menu Generate.
+    </p>
 
-        <pre class="prettyprint language-java">public String getFirstname() {
+            <pre class="prettyprint language-java">public String getFirstname() {
     return firstname;
 }
 
@@ -124,19 +118,19 @@ public void setLastname(String lastname) {
     this.lastname = lastname;
 }</pre>
 
-        <p>Les getters et setters sont aussi appelés accesseurs.</p>
+    <p>Les getters et setters sont aussi appelés accesseurs.</p>
 
-        <p>Les getters permettent de muter l'état interne de l'objet (mutators).</p>
+    <p>Les getters permettent de muter l'état interne de l'objet (mutators).</p>
 
-        <h2>toString</h2>
+    <h2>toString</h2>
 
-        <p>La méthode toString() donne une représentation litérale (chaine de caractères) d'un Object.</p>
+    <p>La méthode <code>toString()</code> donne une représentation litérale (chaine de caractères) d'un Object.</p>
 
-        <p>Elle sert principalement à faire du débug mais peut être utile pour l'affichage dans des cas simples.</p>
+    <p>Elle sert principalement à faire du débug mais peut être utile pour l'affichage dans des cas simples.</p>
 
-        <p>Intellij peut également générer cette méthode via le menu contextuel</p>
+    <p>Intellij peut également générer cette méthode via le menu contextuel</p>
 
-        <pre class="prettyprint language-java">@Override
+            <pre class="prettyprint language-java">@Override
 public String toString() {
     return "Person{" +
             "firstname='" + firstname + '\'' +
@@ -144,19 +138,19 @@ public String toString() {
             '}';
 }</pre>
 
-        <h2>equals et hashCode</h2>
+    <h2>equals et hashCode</h2>
 
-        <p>Ces 2 méthodes marchent en couple et sont capitales.</p>
+    <p>Ces 2 méthodes marchent en couple et sont capitales.</p>
 
-        <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur intellij mais une description détaillée est disponible dans le <a href="http://fr.scribd.com/doc/36454091/Effective-Java-Chapter3" class="external">chapitre 3 de effective java</a></p>
+    <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur intellij mais une description détaillée est disponible dans le <a href="http://fr.scribd.com/doc/36454091/Effective-Java-Chapter3" target="_blank">chapitre 3 de effective java</a></p>
 
-        <p>Les méthodes equals et hashCode permettent de comparer des objets 2 à 2. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
+    <p>Les méthodes equals et hashCode permettent de comparer des objets 2 à 2. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
 
-        <p>Elles sont difficiles à bien implémenter et une mauvaise implémentation peut être fatale.</p>
+    <p>Elles sont difficiles à bien implémenter et une mauvaise implémentation peut être fatale.</p>
 
-        <p>Avec intellij, il suffit de demander la génération de ces méthodes via le menu contextuel.</p>
+    <p>Avec intellij, il suffit de demander la génération de ces méthodes via le menu contextuel.</p>
 
-        <pre class="prettyprint language-java">@Override
+            <pre class="prettyprint language-java">@Override
 public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
@@ -176,15 +170,15 @@ public int hashCode() {
     return result;
 }</pre>
 
-        <p>Les capacités de génération d'intellij vont bien au delà de ces simples exemples. Nous aurions pu faire tout ce code à la main et parfois cela est nécessaire.</p>
+    <p>Les capacités de génération d'intellij vont bien au delà de ces simples exemples. Nous aurions pu faire tout ce code à la main et parfois cela est nécessaire.</p>
 
-        <p>Cependant, java est un language verbeux et chaque fois que cela est possible, il est bon de pouvoir compter sur l'IDE.</p>
+    <p>Cependant, java est un language verbeux et chaque fois que cela est possible, il est bon de pouvoir compter sur l'IDE.</p>
 
-        <h2>main</h2>
+    <h2>main</h2>
 
-        <p>On va maintenant créer une classe avec une méthode main.</p>
+    <p>On va maintenant créer une classe avec une méthode main.</p>
 
-        <pre class="prettyprint language-java">package fr.test;
+            <pre class="prettyprint language-java">package fr.test;
 
 public class Main {
     public static void main(String[] args) {
@@ -192,80 +186,87 @@ public class Main {
     }
 }</pre>
 
-        <p>C'est un point de départ obligé pour toute application java.</p>
+    <p>C'est le point d'entrée pour toute application java.</p>
 
-        <div class="note">En pratique, pour le web, il est très rare d'avoir à écrire cette méthode.</div>
+    <div class="alert alert-warning">En pratique, pour le web, cette méthode est déjà écrite pour nous.</div>
 
-        <p>Afin de la tester un peu, on écrit dans la sortie standard (stdout).</p>
+    <p>Afin de la tester un peu, on écrit dans la sortie standard (stdout).</p>
 
-        <pre class="prettyprint language-java">System.out.println("Hello world !");</pre>
+    <pre class="prettyprint language-java">System.out.println("Hello world !");</pre>
 
-        <p>On peut lancer cette méthode via le menu contextuel de la classe.</p>
+    <p>On peut lancer cette méthode via le menu contextuel de la classe.</p>
 
-        <img src="img/run-main.png" style="margin: 0 120px" />
+    <p><img src="img/run-main.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>On peut utiliser notre class Person depuis le main.</p>
+    <p>On peut utiliser notre class Person depuis le main.</p>
 
-        <pre class="prettyprint language-java">Person person = new Person();
-
-person.setFirstname("alex");
-person.setLastname("luthor");
-
-System.out.println(person);</pre>
-
-        <p>Le menu Debug permet d'exécuter le même code en placant des points d'arret et en maitrisant l'éxécution pas à pas.</p>
-
-        <h2>Refactoring</h2>
-
-        <p>Les IDEs java profitent du fort typage du language afin d'offrir de grandes capacités de refactoring.</p>
-
-        <p>Imaginons que nous souhaitions renommer la classe Person en People.</p>
-
-        <p>Un clique droit sur la classe et on accède au menu Refactor &gt; Rename... qui permet de faire le changement de nom.</p>
-
-        <img src="img/refactor-rename.png" style="margin: 0 20px" />
-
-        <p>La classe main a été modifiée en fonction.</p>
-
-        <pre class="prettyprint language-java">People person = new People();
+            <pre class="prettyprint language-java">Person person = new Person();
 
 person.setFirstname("alex");
 person.setLastname("luthor");
 
 System.out.println(person);</pre>
 
-        <p>Encore une fois, les capacités d'intellij dépassent amplement cet exemple simple. Son éditeur de code et ses outils de refactoring sont très puissants.</p>
+    <p>Le menu Debug permet d'exécuter le même code en placant des points d'arret et en maitrisant l'éxécution pas à pas.</p>
 
-        <h2>Navigation</h2>
+    <h2>Refactoring</h2>
 
-        <p>Les capacités de navigation au sein de l'IDE sont nombreuses. Voici quelques façons de trouver ce que l'on cherche :</p>
+    <p>Les IDEs java profitent du fort typage du language afin d'offrir de grandes capacités de refactoring.</p>
 
-        <ul>
-            <li>control-click sur une référence, une variable ou une classe afin d'aller à la définition.</li>
-            <li>control-N (Class...) afin de rechercher une classe via un moteur de recherche.</li>
-            <li>clique droit sur une classe puis Find Usage pour avoir toutes les références à cette classe dans le projet.</li>
-        </ul>
+    <p>Imaginons que nous souhaitions renommer la classe Person en People.</p>
 
-        <p>Par exemple, si on tape control-N puis "Peo", on peut ouvrir rapidement le fichier contenant la classe sans utiliser la souris.</p>
+    <p>Un clique droit sur la classe et on accède au menu <b>Refactor &gt; Rename...</b> qui permet de faire le changement de nom.</p>
 
-        <h2>Plus de raccourcis</h2>
+    <p><img src="img/refactor-rename.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>Les raccourcis clavier sont indispensables afin d'être plus productif. En voici quelques uns :</p>
+    <p>La classe main a été modifiée en fonction.</p>
 
-        <ul>
-            <li>Ctrl+Space : invoquer l'assistant de complétion</li>
-            <li>Ctrl+N : recherche de classe</li>
-            <li>Ctrl+Shift+N : recherche de fichier</li>
-            <li>Ctrl+G : aller à la ligne</li>
-            <li>Ctrl+Alt+L : formatter le code</li>
-            <li>Ctrl+G : aller à la ligne</li>
-            <li>Ctrl+J : insérer un live template (génération de code)</li>
-            <li>Ctrl+Alt+J : encadrer avec un live template (génération de code)</li>
-            <li>Alt+Enter : utiliser le quick fix suggéré</li>
-        </ul>
+            <pre class="prettyprint language-java">People person = new People();
 
-        <p>Il est facile de trouver des listes de raccourcis sur le web. Par exemple pour <a href="http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf" class="external">windows / linux</a> ou
-            <a href="http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard_Mac.pdf" class="external">mac</a></p>
+person.setFirstname("alex");
+person.setLastname("luthor");
+
+System.out.println(person);</pre>
+
+    <p>Encore une fois, les capacités d'intellij dépassent amplement cet exemple simple. Son éditeur de code et ses outils de refactoring sont très puissants.</p>
+
+    <h2>Navigation</h2>
+
+    <p>Les capacités de navigation au sein de l'IDE sont nombreuses. Voici quelques façons de trouver ce que l'on cherche :</p>
+
+    <ul>
+        <li><b>control-click</b> sur une référence, une variable ou une classe afin d'aller à la définition.</li>
+        <li><b>control-N (Class...)</b> afin de rechercher une classe via un moteur de recherche.</li>
+        <li>clique droit sur une classe puis <b>Find Usage</b> pour avoir toutes les références à cette classe dans le projet.</li>
+    </ul>
+
+    <p>Par exemple, si on tape <b>control-N</b> puis "Peo", on peut ouvrir rapidement le fichier contenant la classe sans utiliser la souris.</p>
+
+    <h2>Plus de raccourcis</h2>
+
+    <p>Les raccourcis clavier sont indispensables afin d'être plus productif. En voici quelques uns :</p>
+
+    <ul>
+        <li><b>Ctrl+Space</b> : invoquer l'assistant de complétion</li>
+        <li><b>Ctrl+N</b> : recherche de classe</li>
+        <li><b>Ctrl+Shift+N</b> : recherche de fichier</li>
+        <li><b>Ctrl+Alt+L</b> : formatter le code</li>
+        <li><b>Ctrl+G</b> : aller à la ligne</li>
+        <li><b>Ctrl+W</b> : agrandir la sélection au mot</li>
+        <li><b>Ctrl+J</b> : insérer un live template (génération de code)</li>
+        <li><b>Ctrl+Alt+J</b> : encadrer avec un live template (génération de code)</li>
+        <li><b>Alt+Enter</b> : utiliser le quick fix suggéré</li>
+    </ul>
+
+    <p>
+        Il est facile de trouver des listes de raccourcis sur le web. Par exemple pour <a href="http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf" target="_blank">windows / linux</a> ou
+        <a href="http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard_Mac.pdf" target="_blank">mac</a>
+</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

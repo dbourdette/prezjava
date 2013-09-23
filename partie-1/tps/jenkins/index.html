@@ -1,62 +1,54 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Jenkins</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Jenkins</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
 <body>
-<div class="presentation">
-    <div id="project">
-        <h1><img src="img/jenkins_logo.png" width="398" height="128" alt="Jenkins"/></h1>
+<div class="container">
+    <h1><img src="img/jenkins_logo.png" width="398" height="128" alt="Jenkins"/></h1>
 
-        <p>Jenkins est un serveur d'intégration continue open source créé par Kohsuke Kawaguchi.</p>
+    <p>Jenkins est un serveur d'intégration continue open source créé par Kohsuke Kawaguchi.</p>
 
-        <p>Il est open source avec une communauté très dynamique.</p>
+    <p>Il est open source avec une communauté très dynamique.</p>
 
-        <p>Il dispose d'un très grand nombre de plugins et s'intègre nativement avec maven.</p>
+    <p>Il dispose d'un très grand nombre de plugins et s'intègre nativement avec maven.</p>
 
-        <p>Quelques autres serveurs d'intégration continue existants : </p>
+    <p>Quelques autres serveurs d'intégration continue existants : </p>
 
-        <ul>
-            <li>Hudson : Jenkins et Hudson sont issu de la même souche. Hudson est un produit Oracle.</li>
-            <li>Continuum et Gump : 2 serveurs d'intégration continue de la fondation apache.</li>
-            <li>Bamboo : Le serveur d'intégration d'Atlassian (jira, confluence...). Très complet mais payant.</li>
-        </ul>
+    <ul>
+        <li><b>Hudson</b> : Jenkins et Hudson sont issu de la même souche. Hudson est un produit Oracle.</li>
+        <li><b>Continuum</b> et <b>Gump</b> : 2 serveurs d'intégration continue de la fondation apache.</li>
+        <li><b>Bamboo</b> : Le serveur d'intégration d'Atlassian (jira, confluence...). Très complet mais payant.</li>
+    </ul>
 
-        <p>Plus d'exemples sur la <a href="http://en.wikipedia.org/wiki/Continuous_integration" class="external">page de wikipedia (continuous integration)</a>.</p>
+    <p>Plus d'exemples sur la <a href="http://en.wikipedia.org/wiki/Continuous_integration" target="_blank">page de wikipedia (continuous integration)</a>.</p>
 
-        <p>Dans un premier temps, nous allons tester jenkins avec un projet de référence simple.</p>
+    <p>Dans un premier temps, nous allons tester jenkins avec un projet de référence simple.</p>
 
-        <p>Ensuite, on ajoutera le projet todooz que nous sommes en train de développer.</p>
+    <p>Ensuite, on ajoutera le projet todooz que nous sommes en train de développer.</p>
 
-        <h2>Installation</h2>
+    <h2>Installation</h2>
 
-        <p>Il faut télécharger le .war depuis le <a href="http://jenkins-ci.org/" class="external">site de jenkins</a></p>
+    <p>Il faut télécharger le .war depuis le <a href="http://jenkins-ci.org/" target="_blank">site de jenkins</a></p>
 
-        <p>Une fois téléchargé, il suffit de le lancer:</p>
-        <pre class="shell">java -jar jenkins.war</pre>
+    <p>Une fois téléchargé, il suffit de le lancer:</p>
+    <pre class="shell">java -jar jenkins.war</pre>
 
-        <p>Par défaut, jenkins se lance sur le port 8080.<br>Afin de le lancer sur un autre port il suffit d'utiliser l'option --httpPort</p>
-        <pre class="shell">java -jar jenkins.war --httpPort=8081 --ajp13Port=8082</pre>
+    <p>Par défaut, jenkins se lance sur le port 8080.<br>Afin de le lancer sur un autre port il suffit d'utiliser l'option --httpPort</p>
+    <pre class="shell">java -jar jenkins.war --httpPort=8081</pre>
 
-        <p>AJP est un protocole alternatif à HTTP.</p>
-        <p>Les options de jenkins sont disponibles dans la <a href="https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins" class="external">documentation</a>
-            et notamment dans la partie <a href="https://wiki.jenkins-ci.org/display/JENKINS/Starting+and+Accessing+Jenkins" class="external">démarrage de jenkins</a></p>
+    <p>Les options de jenkins sont disponibles dans la <a href="https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins" target="_blank">documentation</a>
+        et notamment dans la partie <a href="https://wiki.jenkins-ci.org/display/JENKINS/Starting+and+Accessing+Jenkins" target="_blank">démarrage de jenkins</a></p>
 
-        <p>Ce qui donne la sortie suivante</p>
+    <p>Ce qui donne la sortie suivante</p>
         <pre class="shell">
 Running from: /Applications/Jenkins/jenkins.war
 webroot: $user.home/.jenkins
@@ -64,7 +56,6 @@ webroot: $user.home/.jenkins
 hudson home directory: /Users/bourdette/.jenkins found at: $user.home/.jenkins
 Using one-time self-signed certificate
 [Winstone 2011/05/23 16:45:49] - HTTP Listener started: port=8081
-[Winstone 2011/05/23 16:45:49] - AJP13 Listener started: port=8082
 [Winstone 2011/05/23 16:45:49] - Winstone Servlet Engine v0.9.10 running:...
 23 mai 2011 16:45:49 hudson.model.Hudson$5 onAttained
 INFO: Started initialization
@@ -84,75 +75,77 @@ INFO: Completed initialization
 INFO: JNLP slave agent listener started on TCP port 54703
         </pre>
 
-        <p>Jenkins tourne et sa configuration est dans $user.home/.jenkins</p>
+    <p>Jenkins tourne et sa configuration est dans $user.home/.jenkins</p>
 
-        <img src="img/jenkin-ui.png" style="margin: 10px 50px;" />
+    <img src="img/jenkin-ui.png" class="img-responsive" style="margin: auto" />
 
-        <h2>Ajout du plugin github</h2>
+    <h2>Ajout du plugin github</h2>
 
-        <p>Afin de pouvoir récupérer notre projet sur github, nous allons installer le plugin nécessaire.</p>
-        <p>Les plugins sont accessibles via Administrer Jenkins > Gestion des plugins > Disponibles.</p>
-        <p>Il faut installer le plugin github.</p>
+    <p>Afin de pouvoir récupérer notre projet sur github, nous allons installer le plugin nécessaire.</p>
+    <p>Les plugins sont accessibles via <b>Administrer Jenkins > Gestion des plugins > Disponibles</b>.</p>
+    <p>Il faut installer le plugin github.</p>
 
-        <img src="img/jenkins-github.png" width="840px" style="margin: 10px 0px;"/>
+    <p><img src="img/jenkins-github.png" class="img-responsive" style="margin: auto; width: 700px"/></p>
 
-        <h2>Configuration de maven</h2>
+    <h2>Configuration de maven</h2>
 
-        <p>Afin que jenkins puisse exécuter le build, il a besoin de savoir où est installé maven.</p>
-        <p>La configuration est accessible via Administrer Jenkins > Configurer le système.</p>
+    <p>Afin que jenkins puisse exécuter le build, il a besoin de savoir où est installé maven.</p>
+    <p>La configuration est accessible via <b>Administrer Jenkins > Configurer le système</b>.</p>
 
-        <img src="img/jenkins-maven.png" width="840px" style="margin: 10px 0px;" />
+    <p><img src="img/jenkins-maven.png" class="img-responsive" style="margin: auto; width: 800px" /></p>
 
-        <p>Il faut ajouter maven en configurant le MAVEN_HOME.</p>
+    <p>Il faut ajouter maven en configurant le MAVEN_HOME.</p>
 
-        <h2>Ajout d'un job</h2>
+    <div class="alert alert-warning">Afin de connaitre son maven home il est possible de faire un <b>mvn -version</b></div>
 
-        <p>Depuis la home de jenkins, on ajoute un job "presentation-jenkins" de type maven2.</p>
+    <h2>Ajout d'un job</h2>
 
-        <p>La configuration du repository github est git@github.com:dbourdette/prezjava-jenkins.git.</p>
+    <p>Depuis la home de jenkins, on ajoute un job "presentation-jenkins" de type maven2.</p>
 
-        <img src="img/jenkins-github-repo.png" width="840px" style="margin: 10px 0px;" />
+    <p>La configuration du repository github est <code>git@github.com:dbourdette/prezjava-jenkins.git</code>.</p>
 
-        <p>Tous les autres paramètres sont à laisser inchangés.</p>
+    <p><img src="img/jenkins-github-repo.png" class="img-responsive" style="margin: auto; width: 800px" /></p>
 
-        <h2>Exécution du job</h2>
+    <p>Tous les autres paramètres sont à laisser inchangés.</p>
 
-        <p>Depuis la home de jenkins, il est maintenant possible de lancer manuellement le job.</p>
+    <h2>Exécution du job</h2>
 
-        <img src="img/jenkins-job.png" style="margin: 10px 50px;" />
+    <p>Depuis la home de jenkins, il est maintenant possible de lancer manuellement le job.</p>
 
-        <p>Une fois le job exécuté, il est possible de naviguer et d'obtenir des informations sur le build.</p>
+    <p><img src="img/jenkins-job.png" class="img-responsive" style="margin: auto;" /></p>
 
-        <h2>Détection d'une modification</h2>
+    <p>Une fois le job exécuté, il est possible de naviguer et d'obtenir des informations sur le build.</p>
 
-        <p>Dans l'optique de l'intégration continue, on a souvent la configuration suivante :</p>
-        <ul>
-            <li>Un job qui fait le build à chaque commit</li>
-            <li>Un job quotidien qui génère les rapports plus lourds</li>
-        </ul>
+    <h2>Détection d'une modification</h2>
 
-        <p>Il nous faut changer la configuration du job afin qu'il scrute le repository.</p>
+    <p>Dans l'optique de l'intégration continue, nous souhaiterions qu'un build soit lancé après chaque commit</p>
 
-        <img src="img/jenkins-cron.png" width="840px" style="margin: 10px 0px;" />
+    <p>Il nous faut changer la configuration du job afin qu'il scrute le repository.</p>
 
-        <p>Jenkins est maintenant configuré pour exécuter le build à chaque modification.</p>
+    <p><img src="img/jenkins-cron.png" class="img-responsive" style="margin: auto;" /></p>
 
-        <h2>Jenkins dans la forge logicielle</h2>
+    <p>Jenkins est maintenant configuré pour exécuter le build à chaque modification.</p>
 
-        <p>Les capacités de Jenkins sont bien plus grandes que ce court exemple mais la configuration reste simple et rapide.</p>
+    <h2>Jenkins dans la forge logicielle</h2>
 
-        <p>Grâce aux plugins il est possible de faire communiquer Jenkins avec d'autres éléments de la forge logicielle.</p>
+    <p>Les capacités de Jenkins sont bien plus grandes que ce court exemple mais la configuration reste simple et rapide.</p>
 
-        <h2>Notre projet</h2>
+    <p>Grâce aux plugins il est possible de faire communiquer Jenkins avec d'autres éléments de la forge logicielle.</p>
 
-        <p>Notre projet todooz est sous <a href="../github/index.html">github</a> dans un repository git@github.com:{user}/todooz.git.</p>
+    <h2>Notre projet</h2>
 
-        <p>Configurez un job qui build ce projet comme il le fait avec le projet de référence.</p>
+    <p>Notre projet todooz est sous <a href="../github/index.html">github</a> dans un repository <code>git@github.com:{user}/todooz.git</code>.</p>
 
-        <p>Faire une modification dans le répository github et voir que jenkins relance bien le build.</p>
+    <p>Configurez un job qui build ce projet comme il le fait avec le projet de référence.</p>
 
-        <p>Une fois ce projet intégré dans jenkins, on peut supprimer le job pour le projet "presentation-jenkins".</p>
-    </div>
+    <p>Faire une modification dans le répository github et voir que jenkins relance bien le build.</p>
+
+    <p>Une fois ce projet intégré dans jenkins, on peut supprimer le job pour le projet "presentation-jenkins".</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

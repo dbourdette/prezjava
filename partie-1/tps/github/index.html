@@ -1,75 +1,65 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Github</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Github</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1 style="line-height: 60px;padding-left:10px;"><img src="img/github.png" height="60px" style="float:left"/>Github</h1>
+<body>
+<div class="container">
+    <h1 style="line-height: 60px;"><img src="img/github.png" style="float:left;height: 60px;margin: 0 10px"/>Github</h1>
 
-        <h2>Principes</h2>
+    <img src="img/vault.jpg" alt="vault" style="float:right;width: 120px;margin: 10px">
 
-        <img src="img/vault.jpg" alt="vault" style="float:right;width: 120px;margin: 10px">
+    <p>Un versioning control system (VCS) présente des qualités similaires à une base de données (consistance, durabilité, transactions...)</p>
 
-        <p>Un versioning control system (VCS) présente des qualités similaires à une base de données (consistance, durabilité, transactions...)</p>
+    <p>C'est le coffre fort d'une équipe de développement. C'est la que tout doit être rangé afin que l'on puisse tout y retrouver et dans n'importe quelle version.</p>
 
-        <p>C'est le coffre fort d'une équipe de développement. C'est la que tout doit être rangé afin que l'on puisse tout y retrouver et dans n'importe quelle version.</p>
+    <p>Il doit être simple d'interagir avec et simple de restaurer un état passé.</p>
 
-        <p>Il doit être simple d'interagir avec et simple de restaurer un état passé.</p>
+    <p>Tous types de sources peuvent être stoqués dans un VCS : code, fichiers de configuration, scritps utilitaires...</p>
 
-        <p>Tous types de sources peuvent être stoqués dans un VCS : code, fichiers de configuration, scritps utilitaires...</p>
+    <p>Les principaux gestionnaires de sources sont les suivants :</p>
 
-        <p>Les principaux gestionnaires de sources sont les suivants :</p>
+    <ul>
+        <li><b>CVS</b> : Le gestionnaire de sources gratuit "historique". Il est aujourd'hui très dépassé par des solutions comme subversion ou git.</li>
+        <li><b>Subversion</b> : Il reprend les mêmes principes que CVS mais en corrige les principaux défauts. Il propose des conventions simples et faciles à manipuler. Si il est installé derrière un serveur http apache 2, il est possible de naviguer dans les sources avec un browser.</li>
+        <li><b>Git</b> : Git est un distributed VCS (DVCS) et suit donc une philosophie différente. Il multiplie les capacités de travail dans des branches (locales ou distantes) permettant de travailler simultanément sur plusiseurs sujets en parallèle. Il est particulièrement adapté à du travail sur des projets open source où les bureaux sont dématérialisés et les collaborateurs multiples.</li>
+    </ul>
 
-        <ul>
-            <li>CVS : Le gestionnaire de sources gratuit "historique". Il est aujourd'hui très dépassé par des solutions comme subversion ou git.</li>
-            <li>Subversion : Il reprend les mêmes principes que CVS mais en corrige les principaux défauts. Il propose des conventions simples et faciles à manipuler. Si il est installé derrière un serveur http apache 2, il est possible de naviguer dans les sources avec un browser.</li>
-            <li>Git : Git est un distributed VCS (DVCS) et suit donc une philosophie différente. Il multiplie les capacités de travail dans des branches (locales ou distantes) permettant de travailler simultanément sur plusiseurs sujets en parallèle. Il est particulièrement adapté à du travail sur des projets open source où les bureaux sont dématérialisés et les collaborateurs multiples.</li>
-        </ul>
+    <h2>Compte github</h2>
 
-        <h2>Compte github</h2>
+    <p>Github est un site web qui propose une interface web communautaire par dessus git. Github est gratuit pour les projets open source et simple à utiliser. Cela en fait un outils de référence pour les projets open source.</p>
 
-        <p>Github est un site web qui propose une interface web communautaire par dessus git. Github est gratuit pour les projets open source et simple à utiliser. Cela en fait un outils de référence pour les projets open source.</p>
+    <p>C'est l'outils que nous allons utiliser pour notre projet.</p>
 
-        <p>C'est l'outils que nous allons utiliser pour notre projet.</p>
+    <p>Créer un compte github et configurer une clée ssh en suivant le tutorial <a href="https://github.com/" target="_blank">github</a></p>
 
-        <p>Créer un compte github et configurer une clée ssh en suivant le tutorial <a href="https://github.com/" class="external" target="_blank">github</a></p>
+    <h2>Création du repository todooz sur github</h2>
 
-        <h2>Création du repository todooz sur github</h2>
+    <p>Depuis le dashboard, créer un repository todooz.</p>
 
-        <p>Depuis le dashboard, créer un repository todooz.</p>
+    <p>On doit donc obtenir un repository de la forme <code>git@github.com:{user}/todooz.git</code></p>
 
-        <p>On doit donc obtenir un repository de la forme git@github.com:{user}/todooz.git</p>
+    <p>On peut choisir un autre nom pour le repository. Dans ce cas, il faut adapter les références à github pour toutes les manipulations à venir.</p>
 
-        <p>On peut choisir un autre nom pour le repository. Dans ce cas, il faut adapter les références à github pour toutes les manipulations à venir.</p>
+    <h2>git init</h2>
 
-        <h2>git init</h2>
-
-        <p>Afin de pouvoir pusher notre projet vers github, il faut d'abord initialiser notre répertoire projet.</p>
+    <p>Afin de pouvoir pusher notre projet vers github, il faut d'abord initialiser notre répertoire projet.</p>
 
         <pre class="shell">todooz $ <b>git init</b>
 Initialized empty Git repository in /path/to/projects/todooz/.git/</pre>
 
-        <h2>.gitignore</h2>
+    <h2>.gitignore</h2>
 
-        <p>Certains fichiers ne doivent pas être envoyé vers le VCS : les fichiers générés lors de la compilation ou bien les fichiers générés par maven ne font pas partie des sources.</p>
+    <p>Certains fichiers ne doivent pas être envoyé vers le VCS : les fichiers générés lors de la compilation ou bien les fichiers générés par maven ne font pas partie des sources.</p>
 
-        <p>On crée le fichier .gitignore à la racine du projet afin de les exclure.</p>
+    <p>On crée le fichier .gitignore à la racine du projet afin de les exclure.</p>
 
         <pre># maven
 target/*
@@ -82,17 +72,17 @@ target/*
 .project
 .classpath</pre>
 
-        <p>Le répertoire target contient le résultat de la compilation et autres fichiers générés lors du build.</p>
+    <p>Le répertoire target contient le résultat de la compilation et autres fichiers générés lors du build.</p>
 
-        <p>.idea et .iml sont la définition du module sous intellij.</p>
+    <p>.idea et .iml sont la définition du module sous intellij.</p>
 
-        <p>.project et .classpath sont la définition du projet eclipse et sont générés par maven (maven eclipse:eclipse).</p>
+    <p>.project et .classpath sont la définition du projet eclipse et sont générés par maven (maven eclipse:eclipse).</p>
 
-        <p>Il faudra ajouter d'éventuels autres patterns si le besoin se présentait.</p>
+    <p>Il faudra ajouter d'éventuels autres patterns si le besoin se présentait.</p>
 
-        <h2>git add</h2>
+    <h2>git add</h2>
 
-        <p>La command git status doit donc afficher à peu près cela.</p>
+    <p>La command git status doit donc afficher à peu près cela.</p>
 
         <pre class="shell">todooz $ <b>git status</b>
 # On branch master
@@ -100,43 +90,46 @@ target/*
 # Initial commit
 #
 # Untracked files:
-#   (use "git add <file>..." to include in what will be committed)
+#   (use "git add &lt;file&gt;..." to include in what will be committed)
 #
 #       .gitignore
 #       pom.xml
 #       src/
 nothing added to commit but untracked files present (use "git add" to track)</pre>
 
-        <p>On ajoute donc tout nos fichiers et on commit.</p>
+    <p>On ajoute donc tout nos fichiers et on commit.</p>
 
         <pre class="shell">toddoz $ <b>git add *</b>
 toddoz $ <b>git add .gitignore</b>
 toddoz $ <b>git commit -m "initial commit"</b></pre>
 
-        <h2>git remote add</h2>
+    <h2>git remote add</h2>
 
-        <p>Il nous reste donc a relier notre master local au origin/master</p>
+    <p>Il nous reste donc a relier notre master local au origin/master</p>
 
-        <pre class="shell">toddoz $ <b>git remote add origin git@github.com:{user}/todooz.git</b></pre>
+    <pre class="shell">toddoz $ <b>git remote add origin git@github.com:{user}/todooz.git</b></pre>
 
-        <h2>git push</h2>
+    <h2>git push</h2>
 
-        <p>Afin d'envoyer les fichiers vers github, on utilise la commande push.</p>
+    <p>Afin d'envoyer les fichiers vers github, on utilise la commande push.</p>
 
-        <pre class="shell">toddoz $ <b>git push origin master</b></pre>
+    <pre class="shell">toddoz $ <b>git push origin master</b></pre>
 
-        <p>Les fichiers sont maintenant sur le repository github.</p>
+    <p>Les fichiers sont maintenant sur le repository github.</p>
 
-        <p>Afin de simplifier les push et les pull, on peut ajouter un lien par défaut entre le master local et le master sur origin.</p>
+    <p>Afin de simplifier les push et les pull, on peut ajouter un lien par défaut entre le master local et le master sur origin.</p>
 
-        <pre class="shell">toddoz $ <b>git config branch.master.merge refs/heads/master</b></pre>
+    <pre class="shell">toddoz $ <b>git config branch.master.merge refs/heads/master</b></pre>
 
-        <p>Maintenant git push et pit pull depuis la branche locale master travaillerons avec la branche master distante. La commande de push devient donc simplement :</p>
+    <p>Maintenant git push et pit pull feront automatiqment le lien avec origin. La commande de push devient donc simplement :</p>
 
-        <pre class="shell">toddoz $ <b>git push</b></pre>
+    <pre class="shell">toddoz $ <b>git push</b></pre>
 
-        <p>A partir de maintenant, il est conseillé de commiter aussi souvent que nécessaire.</p>
-    </div>
+    <p>A partir de maintenant, il est conseillé de commiter aussi souvent que nécessaire.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

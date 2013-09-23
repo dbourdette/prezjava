@@ -1,142 +1,156 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Server side java</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Server side java</title>
-
-    <link href="common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="common/css/default.css" class="theme" rel="stylesheet">
-    <link href="common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="common/js/prettify.js" onload="prettyPrint();"></script>
-
 </head>
 <body>
-<div class="presentation">
-    <div id="project">
-        <h1>Server side java</h1>
+<div class="container">
+    <h1>Server side java</h1>
 
-        <h2>Partie 1 : La forge logicielle : pratiques et outils</h2>
+    <h2>Partie 1 : La forge logicielle : pratiques et outils</h2>
 
-        <p>Cette partie couvre la mise en place des outils et du projet.</p>
+    <p>Cette partie couvre la mise en place des outils et du projet.</p>
 
-        <ol class="toc">
-            <li><a href="partie-1/slides/process/index.html">Le process de développement</a></li>
-            <li><a href="partie-1/tps/eclipse/index.html">Eclipse</a> ou <a href="partie-1/tps/intellij/index.html">Intellij</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-1/tps/maven/index.html">Maven</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-1/tps/github/index.html">Github</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-1/tps/java/index.html">Java</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-1/slides/langage/index.html">Le Langage java</a></li>
-            <li><a href="partie-1/tps/jenkins/index.html">Jenkins</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-1/slides/integration-continue/index.html">L'intégration continue</a></li>
+    <div class="well well-sm">
+        <ol>
+            <li><a href="partie-1/slides/process/index.html">Le process de développement</a> <em class="text-muted"><small>Slides</small></em></li>
+            <li><a href="partie-1/tps/eclipse/index.html">Eclipse</a> ou <a href="partie-1/tps/intellij/index.html">Intellij</a></li>
+            <li><a href="partie-1/tps/maven/index.html">Maven</a> </li>
+            <li><a href="partie-1/tps/github/index.html">Github</a></li>
+            <li><a href="partie-1/tps/java/index.html">Java</a></li>
+            <li><a href="partie-1/slides/langage/index.html">Le Langage java</a> <em class="text-muted"><small>Slides</small></em></li>
+            <li><a href="partie-1/tps/jenkins/index.html">Jenkins</a></li>
+            <li><a href="partie-1/slides/integration-continue/index.html">L'intégration continue</a> <em class="text-muted"><small>Slides</small></em></li>
         </ol>
+    </div>
 
-        <h2>Partie 2 : Définition du produit</h2>
+    <h2>Partie 2 : Définition du produit</h2>
 
-        <p>Ici, nous établissons le cahier des charges et jettons les bases de l'application.</p>
+    <p>Ici, nous établissons le cahier des charges et jettons les bases de l'application.</p>
 
-        <ol class="toc">
+    <div class="well well-sm">
+        <ol>
             <li><a href="partie-2/slides/wireframe/index.html">wireframe</a></li>
-            <li><a href="partie-2/tps/tomcat/index.html">Tomcat</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-2/tps/template/index.html">Le template html</a><span class="note">Travaux pratiques</span></li>
+            <li><a href="partie-2/tps/tomcat/index.html">Tomcat</a></li>
+            <li><a href="partie-2/tps/template/index.html">Le template html</a></li>
         </ol>
+    </div>
 
-        <h2>Partie 3 : L'interface http</h2>
+    <h2>Partie 3 : L'interface http</h2>
 
-        <p>Un petit détour par le protocol essentiel au web.</p>
+    <p>Un petit détour par le protocol essentiel au web.</p>
 
-        <ol class="toc">
-            <li><a href="partie-3/tps/interface-http/index.html">L'interface http</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-3/slides/interface-http/index.html">L'interface http</a></li>
+    <div class="well well-sm">
+        <ol>
+            <li><a href="partie-3/tps/interface-http/index.html">L'interface http</a></li>
+            <li><a href="partie-3/slides/interface-http/index.html">L'interface http</a> <em class="text-muted"><small>Slides</small></em></li>
         </ol>
+    </div>
 
-        <h2>Partie 4 : Les composants jee</h2>
+    <h2>Partie 4 : Les composants jee</h2>
 
-        <p>Quelques composants jee : les servlets et les jsp.</p>
+    <p>Quelques composants jee : les servlets et les jsp.</p>
 
-        <ol class="toc">
-            <li><a href="partie-4/tps/servlets/index.html">Servlets</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-4/tps/jsp/index.html">Java Server Pages</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-4/slides/conteneurs/index.html">Les conteneurs jee</a></li>
+    <div class="well well-sm">
+        <ol>
+            <li><a href="partie-4/tps/servlets/index.html">Servlets</a></li>
+            <li><a href="partie-4/tps/jsp/index.html">Java Server Pages</a></li>
+            <li><a href="partie-4/slides/conteneurs/index.html">Les conteneurs jee</a> <em class="text-muted"><small>Slides</small></em></li>
         </ol>
+    </div>
 
-        <h2>Partie 5 : Les frameworks mvc</h2>
+    <h2>Partie 5 : Les frameworks mvc</h2>
 
-        <p>Faire mieux que les servlets.</p>
+    <p>Faire mieux que les servlets.</p>
 
-        <ol class="toc">
-            <li><a href="partie-5/tps/spring-mvc/index.html">Spring MVC</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-5/slides/mvc2/index.html">Les frameworks MVC2</a></li>
+    <div class="well well-sm">
+        <ol>
+            <li><a href="partie-5/tps/spring-mvc/index.html">Spring MVC</a></li>
+            <li><a href="partie-5/slides/mvc2/index.html">Les frameworks MVC2</a> <em class="text-muted"><small>Slides</small></em></li>
         </ol>
+    </div>
 
-        <h2>Partie 6 : Test driven dévelopment</h2>
+    <h2>Partie 6 : Test driven dévelopment</h2>
 
-        <p>Red light, green light, refactor.</p>
+    <p>Red light, green light, refactor.</p>
 
-        <ol class="toc">
-            <li><a href="partie-6/tps/junit/index.html">JUnit</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-6/slides/test-unitaires/index.html">Le développement par les tests</a></li>
+    <div class="well well-sm">
+        <ol>
+            <li><a href="partie-6/tps/junit/index.html">JUnit</a></li>
+            <li><a href="partie-6/slides/test-unitaires/index.html">Le développement par les tests</a> <em class="text-muted"><small>Slides</small></em></li>
         </ol>
+    </div>
 
-        <h2>Partie 7 : Les services</h2>
+    <h2>Partie 7 : Les services</h2>
 
-        <p>La mise en place des services et de la persistance.</p>
+    <p>La mise en place des services et de la persistance.</p>
 
-        <ol class="toc">
-            <li><a href="partie-7/tps/hibernate/index.html">Hibernate</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-7/slides/persistance/index.html">Base de données et persistance</a></li>
-            <li><a href="partie-7/tps/spring/index.html">Spring</a><span class="note">Travaux pratiques</span></li>
+    <div class="well well-sm">
+        <ol>
+            <li><a href="partie-7/tps/hibernate/index.html">Hibernate</a></li>
+            <li><a href="partie-7/slides/persistance/index.html">Base de données et persistance</a> <em class="text-muted"><small>Slides</small></em></li>
+            <li><a href="partie-7/tps/spring/index.html">Spring</a></li>
         </ol>
+    </div>
 
-        <h2>Partie 8 : La fin de l'application</h2>
+    <h2>Partie 8 : La fin de l'application</h2>
 
-        <p>On branche tout ensemble.</p>
+    <p>On branche tout ensemble.</p>
 
-        <ol class="toc">
+    <div class="well well-sm">
+        <ol>
             <li><a href="partie-8/tps/spring-mvc/index.html">Spring MVC (bis)</a></li>
-            <li><a href="partie-8/slides/ioc/index.html">L'injection de dépendances</a></li>
-            <li><a href="partie-8/tps/spring-mvc-more/index.html">Plus de Mappings</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-8/tps/spring-mvc-forms/index.html">Formulaires</a><span class="note">Travaux pratiques</span></li>
+            <li><a href="partie-8/slides/ioc/index.html">L'injection de dépendances</a> <em class="text-muted"><small>Slides</small></em></li>
+            <li><a href="partie-8/tps/spring-mvc-more/index.html">Plus de Mappings</a></li>
+            <li><a href="partie-8/tps/spring-mvc-forms/index.html">Formulaires</a></li>
         </ol>
+    </div>
 
-        <h2>Partie 9 : Variations</h2>
+    <h2>Partie 9 : Variations</h2>
 
-        <p>On se sert de l'application web afin d'explorer d'autres sujets.</p>
+    <p>On se sert de l'application web afin d'explorer d'autres sujets.</p>
 
-        <p>Il est conseillé de faire des branches git afin de pouvoir repartir simplement d'un projet fonctionnel pour chaque tp.</p>
+    <p>Il est conseillé de faire des branches git afin de pouvoir repartir simplement d'un projet fonctionnel pour chaque tp.</p>
 
-        <ol class="toc">
+    <div class="well well-sm">
+        <ol>
             <li>@ManyToOne @OneToMany...</li>
             <li>groovy</li>
-            <li><a href="partie-9/slides/jee/index.html">JEE</a></li>
-            <li><a href="partie-9/tps/jpa/index.html">JEE : JPA</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/ejb/index.html">JEE : Session beans (EJBs)</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/jndi/index.html">JEE : Jndi</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/mysql/index.html">Mysql</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/spring-security/index.html">Spring security</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/spring-aop/index.html">Spring AOP</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/slides/web-services/index.html">Web services</a></li>
-            <li><a href="partie-9/tps/jax-ws/index.html">JAX-WS</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/jax-rs/index.html">JAX-RS</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/selenium/index.html">Selenium</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="partie-9/tps/mongodb/index.html">mongoDB</a><span class="note">Travaux pratiques</span></li>
+            <li><a href="partie-9/slides/jee/index.html">JEE</a> <em class="text-muted"><small>Slides</small></em></li>
+            <li><a href="partie-9/tps/jpa/index.html">JEE : JPA</a></li>
+            <li><a href="partie-9/tps/ejb/index.html">JEE : Session beans (EJBs)</a></li>
+            <li><a href="partie-9/tps/jndi/index.html">JEE : Jndi</a></li>
+            <li><a href="partie-9/tps/mysql/index.html">Mysql</a></li>
+            <li><a href="partie-9/tps/spring-security/index.html">Spring security</a></li>
+            <li><a href="partie-9/tps/spring-aop/index.html">Spring AOP</a></li>
+            <li><a href="partie-9/slides/web-services/index.html">Web services</a> <em class="text-muted"><small>Slides</small></em></li>
+            <li><a href="partie-9/tps/jax-ws/index.html">JAX-WS</a></li>
+            <li><a href="partie-9/tps/jax-rs/index.html">JAX-RS</a></li>
+            <li><a href="partie-9/tps/selenium/index.html">Selenium</a></li>
+            <li><a href="partie-9/tps/mongodb/index.html">mongoDB</a></li>
         </ol>
+    </div>
 
-        <h2>TODO : /</h2>
+    <h2>TODO : /</h2>
 
-        <ol class="toc">
-            <li><a href="todo/tps/spring-java-based/index.html">java based configuration</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="todo/tps/logging/index.html">logging</a><span class="note">Travaux pratiques</span></li>
-            <li><a href="todo/tps/graddle/index.html">graddle</a><span class="note">Travaux pratiques</span></li>
+    <div class="well well-sm">
+        <ol>
+            <li><a href="todo/tps/spring-java-based/index.html">java based configuration</a></li>
+            <li><a href="todo/tps/logging/index.html">logging</a></li>
+            <li><a href="todo/tps/graddle/index.html">graddle</a></li>
         </ol>
-
-        <br/>
     </div>
 </div>
 <!-- presentation -->
+
+<script src="common/jquery/jquery-1.10.2.min.js"></script>
+<script src="common/bootstrap3/js/bootstrap.min.js"></script>
 </body>
 </html>

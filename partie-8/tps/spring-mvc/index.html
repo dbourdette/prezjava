@@ -1,42 +1,35 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Spring MVC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Spring MVC</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC</h1>
+<body>
+<div class="container">
+    <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;">Spring MVC</h1>
 
-        <p>Si tout va bien, notre projet ressemble à la structure suivante.</p>
+    <p>Si tout va bien, notre projet ressemble à la structure suivante.</p>
 
-        <img src="img/project.png" alt="project tree" style="margin: 0 200px"/>
+    <p><img src="img/project.png" alt="project tree" class="img-responsive" style="margin: auto"/></p>
 
-        <p>Nous avons quasiment tous les éléments pour notre application, il nous reste à les assembler.</p>
+    <p>Nous avons quasiment tous les éléments pour notre application, il nous reste à les assembler.</p>
 
-        <h2>Contexte spring</h2>
+    <h2>Contexte spring</h2>
 
-        <p>Comme pour les tests unitaires, nous allons remplir un contexte spring avec nos beans.</p>
+    <p>Comme pour les tests unitaires, nous allons remplir un contexte spring avec nos beans.</p>
 
-        <p>Nous avons déjà un premier contexte pour nos controllers (spring-servlet.xml).</p>
+    <p>Nous avons déjà un premier contexte pour nos controllers (<b>spring-servlet.xml</b>).</p>
 
-        <p>Pour les services, il est mieux d'en déclarer un second. Celui-ci va contenir nos services et la connexion à la base de données.</p>
+    <p>Pour les services, il est mieux d'en déclarer un second. Celui-ci va contenir nos services et la connexion à la base de données.</p>
 
-        <p>On commence par rajouter un appel dans le web.xml</p>
+    <p>On commence par rajouter un appel dans le <b>web.xml</b></p>
 
         <pre class="prettyprint">&lt;!-- Spring context --&gt;
 &lt;listener&gt;
@@ -47,7 +40,7 @@
     &lt;param-value&gt;/WEB-INF/spring-context.xml&lt;/param-value&gt;
 &lt;/context-param&gt;</pre>
 
-        <p>Et le spring-context.xml dans WEB-INF correspondant :</p>
+    <p>Et le spring-context.xml dans WEB-INF correspondant :</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
@@ -99,32 +92,32 @@
 
 &lt;/beans&gt;</pre>
 
-        <p>Nous avons : nos 2 services, une DataSource, la SessionFactory hibernate et un gestionnaire de transaction.</p>
+    <p>Nous avons : nos 2 services, une <code>DataSource</code>, la <code>SessionFactory</code> hibernate et un gestionnaire de transaction.</p>
 
-        <p>Pour une application réelle, nous n'utiliserions pas une base embarquée.</p>
+    <p>Pour une application réelle, nous n'utiliserions pas une base embarquée.</p>
 
-        <p>Nous utiliserions une url qui pointe vers la base comme par exemple : jdbc:mysql://host:3306/taskdb.</p>
+    <p>Nous utiliserions une url qui pointe vers la base comme par exemple : <code>jdbc:mysql://host:3306/taskdb</code>.</p>
 
-        <h2>Component scan</h2>
+    <h2>Component scan</h2>
 
-        <p>Comme pour les controllers, il va être plus simple de remplacer les déclarations de services par un component scan.</p>
+    <p>Comme pour les controllers, il va être plus simple de remplacer les déclarations de services par un component scan.</p>
 
         <pre class="prettyprint"><s>&lt;bean class="fr.todooz.service.TaskServiceImpl" /&gt;
 &lt;bean class="fr.todooz.service.TagCloudServiceImpl" /&gt;</s>
-            
+
 &lt;!-- Découverte des services --&gt;
 &lt;context:component-scan base-package="fr.todooz.service"/&gt;</pre>
 
-        <p>Et les 2 implémentations des services doivent être annoté avec @Service</p>
+    <p>Et les 2 implémentations des services doivent être annoté avec <code>@Service</code></p>
 
         <pre class="prettyprint">@Service
 public class TaskServiceImpl implements TaskService</pre>
 
-        <p>Ainsi les services du package seront chargés dans le contexte spring au démarrage de l'application.</p>
+    <p>Ainsi les services du package seront chargés dans le contexte spring au démarrage de l'application.</p>
 
-        <h2>Bootstrap</h2>
+    <h2>Bootstrap</h2>
 
-        <p>Il est maintenant possible d'injecter un service dans le contrôleur et d'en profiter.</p>
+    <p>Il est maintenant possible d'injecter un service dans le contrôleur et d'en profiter.</p>
 
         <pre class="prettyprint">@Controller
 public class IndexController {
@@ -139,32 +132,35 @@ public class IndexController {
   }
 }</pre>
 
-        <p>Désormais la page <a href="http://localhost:8080/" class="external">http://localhost:8080/</a> est un peu vide mais elle utilise bien le service.</p>
+    <p>Désormais la page <a href="http://localhost:8080/" class="external">http://localhost:8080/</a> est un peu vide mais elle utilise bien le service.</p>
 
-        <p>On va donc remplir un peu la base au démarrage de l'application en attendant d'avoir un formulaire d'édition.</p>
+    <p>On va donc remplir un peu la base au démarrage de l'application en attendant d'avoir un formulaire d'édition.</p>
 
-        <p>Dans la classe IndexController on rajoute une méthode bootstrap</p>
+    <p>Dans la classe <b>IndexController</b> on rajoute une méthode bootstrap</p>
 
         <pre class="prettyprint">@PostConstruct
 public void bootstrap() {
 
 }</pre>
 
-        <p>@PostConstruct est une annotation standard qui demande au conteneur d'appeler la méthode.</p>
+    <p><code>@PostConstruct</code> est une annotation standard qui demande au conteneur d'appeler la méthode.</p>
 
-        <p>L'appel est fait après injection des dépendances.</p>
+    <p>L'appel est fait après injection des dépendances.</p>
 
-        <p>L'alter ego de @PostConstruct est @PreDestroy, appelé juste avant la destruction du composant.</p>
+    <p>L'alter ego de <code>@PostConstruct</code> est <code>@PreDestroy</code>, appelé juste avant la destruction du composant.</p>
 
-        <p>En utilisant le TaskService, implémentez le pseudo code suivant :</p>
+    <p>En utilisant le <b>TaskService</b>, implémentez le pseudo code suivant :</p>
 
         <pre class="prettyprint">if (pas de tâche) {
     créer 3 tâches différentes
 }</pre>
 
-        <p>En jouant un peu avec cette méthode, il est possible d'avoir un peu de richesse sur la page de home.</p>
-
-    </div>
+    <p>En jouant un peu avec cette méthode, il est possible d'avoir un peu de richesse sur la page de home.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

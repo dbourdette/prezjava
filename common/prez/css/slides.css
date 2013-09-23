@@ -1,0 +1,188 @@
+body {
+    overflow: hidden;
+}
+
+.slides {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+    display: none;
+    -webkit-transition: -webkit-transform 1s ease-in-out;
+    -moz-transition: -moz-transform 1s ease-in-out;
+    -o-transition: -o-transform 1s ease-in-out;
+    transition: transform 1s ease-in-out;
+}
+
+.slide {
+    font-size: 20px;
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    width: 900px;
+    height: 700px;
+    left: 50%;
+    top: 50%;
+    margin-top: -350px;
+    -webkit-transition: margin 0.25s ease-in-out;
+    -moz-transition: margin 0.25s ease-in-out;
+    -o-transition: margin-left 0.25s ease-in-out;
+    transition: margin 0.25s ease-in-out;
+    background-color: #FFF;
+    border-width: 1px;
+    border-color: #DDD;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 0 20px #222;
+}
+
+.slide:nth-child(even) {
+    -moz-border-radius: 20px 0;
+    -khtml-border-radius: 20px 0;
+    border-radius: 20px 0; /* includes Opera 10.5+ */
+    -webkit-border-top-left-radius: 20px;
+    -webkit-border-bottom-right-radius: 20px;
+}
+
+.slide:nth-child(odd) {
+    -moz-border-radius: 0 20px;
+    -khtml-border-radius: 0 20px;
+    border-radius: 0 20px;
+    -webkit-border-top-right-radius: 20px;
+    -webkit-border-bottom-left-radius: 20px;
+}
+
+.slide .counter {
+    color: #222;
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+    display: block;
+    font-size: 12px;
+}
+
+.slide.title > .counter,
+.slide.segue > .counter,
+.slide.mainTitle > .counter {
+    display: none;
+}
+
+.slide.transitionSlide h2 {
+    font-size: 40px;
+    margin: 0;
+    line-height: 10px;
+}
+
+.slide.transitionSlide p {
+    margin: 0;
+}
+
+.vbox {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+}
+
+.hbox {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-align: stretch;
+
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+    -moz-box-align: stretch;
+
+    display: box;
+    box-orient: horizontal;
+    box-align: stretch;
+}
+
+.flex {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
+.noflex {
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    box-flex: 0;
+}
+
+.boxcenter {
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+}
+
+.slide.far-past {
+    display: block;
+    margin-left: -2400px;
+}
+
+.slide.past {
+    visibility: visible;
+    display: block;
+    margin-left: -1500px;
+}
+
+.slide.current {
+    visibility: visible;
+    display: block;
+    margin-left: -450px;
+}
+
+.slide.future {
+    visibility: visible;
+    display: block;
+    margin-left: 600px;
+}
+
+.slide.far-future {
+    display: block;
+    margin-left: 1600px;
+}
+
+section {
+    margin: 20px 30px 0;
+    display: block;
+    overflow: hidden;
+}
+
+h1 {
+    margin-top: 100px;
+}
+
+h2 {
+    margin: 25px 30px 0 30px;
+    font-size: 50px;
+}
+
+img {
+    margin: auto;
+}
+
+/* currently webkit-only */
+
+.center {
+    text-align: center;
+}
+
+#presentation-counter {
+    color: #ccc;
+    font-size: 100px;
+    letter-spacing: 1px;
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}

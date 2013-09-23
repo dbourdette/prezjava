@@ -1,40 +1,31 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>JUnit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>JUnit</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1><B><span style="color:#00cc00">J</span><span style="color:#ff0000">U</span><span style="color:#000000">nit </span></B></h1>
+<body>
+<div class="container">
+<h1><B><span style="color:#00cc00">J</span><span style="color:#ff0000">U</span><span style="color:#000000">nit </span></B></h1>
 
-        <h2>Introduction</h2>
+<p>Nous allons commencer à rajouter des services et nous aimerions avoir la garantie qu'ils fonctionnent.</p>
 
-        <p>Nous allons commencer à rajouter des services et nous aimerions avoir la garantie qu'ils fonctionnent.</p>
+<p>Pour ce faire, nous allons utiliser la technique de développement par les tests.</p>
 
-        <p>Pour ce faire, nous allons utiliser la technique de développement par les tests.</p>
+<p>JUnit est une librairie de tests unitaires pour java qui va nous aider dans ce but.</p>
 
-        <p>JUnit est une librairie de tests unitaires pour java qui va nous aider dans ce but.</p>
+<p>Elle appartient à la famille des librairies <a href="http://en.wikipedia.org/wiki/XUnit" target="_blank">xUnit</a> initiée par Kent Beck et Erich Gamma.</p>
 
-        <p>Elle appartient à la famille des librairies <a href="http://en.wikipedia.org/wiki/XUnit" class="external">xUnit</a> initiée par Kent Beck et Erich Gamma.</p>
+<p>Elle permet d'écrire simplement des tests unitaires qui valident le fonctionnement du code.</p>
 
-        <p>Elle permet d'écrire simplement des tests unitaires qui valident le fonctionnement du code.</p>
-
-        <p>Elle fonctionne en utilisant des <b>assertions</b> qui valident le comportement du code testé.</p>
+<p>Elle fonctionne en utilisant des <b>assertions</b> qui valident le comportement du code testé.</p>
 
         <pre class="prettyprint">public class PersonTest {
    @Test
@@ -45,15 +36,15 @@
    }
 }</pre>
 
-        <p>Lors de l'écriture du code, c'est une aide à la conception.</p>
+<p>Lors de l'écriture du code, c'est une aide à la conception.</p>
 
-        <p>Une fois le code écrit, c'est une protection contre les risques de regressions.</p>
+<p>Une fois le code écrit, c'est une protection contre les risques de regressions.</p>
 
-        <p>Pour nous exercer, nous allons coder une classe TagCloud par les tests.</p>
+<p>Pour nous exercer, nous allons coder une classe TagCloud par les tests.</p>
 
-        <h2>Mise à jour de junit</h2>
+<h2>Ajout de junit</h2>
 
-        <p>Avant de pouvoir écrire du code, nous devons ajouter junit</p>
+<p>Avant de pouvoir écrire du code, nous devons ajouter junit</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
   &lt;groupId&gt;junit&lt;/groupId&gt;
@@ -62,49 +53,49 @@
   &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>La version 4 de junit supporte les annotations qui permettent d'écrire les tests plus simplement.</p>
+<p>La version 4 de junit supporte les annotations qui permettent d'écrire les tests plus simplement.</p>
 
-        <p>Il est possible de chercher la dernière version disponible via <a href="http://search.maven.org" class="external">search.maven.org</a> en recherchant junit.</p>
+<p>Il est possible de chercher la dernière version disponible via <a href="http://search.maven.org" target="_blank">search.maven.org</a> en recherchant junit.</p>
 
-        <h2>TagCloud</h2>
+<h2>TagCloud</h2>
 
-        <p>Nous allons ajouter une classe TagCloud dans le package fr.todooz.util</p>
+<p>Nous allons ajouter une classe TagCloud dans le package fr.todooz.util</p>
 
         <pre class="prettyprint">public class TagCloud {
 
 }</pre>
 
-        <p>Cette classe nous servira afin d'afficher le tag cloud en colonne de droite du site.</p>
+<p>Cette classe nous servira afin d'afficher le tag cloud en colonne de droite du site.</p>
 
-        <p>Voici ce que nous voudrions qu'elle fasse pour le moment :</p>
+<p>Voici ce que nous voudrions qu'elle fasse pour le moment :</p>
 
-        <ul>
-            <li>Pouvoir ajouter un tag.</li>
-            <li>Savoir combien il y a de tags dans le cloud.</li>
-            <li>Pouvoir obtenir les n premiers tags.</li>
-        </ul>
+<ul>
+    <li>Pouvoir ajouter un tag.</li>
+    <li>Savoir combien il y a de tags dans le cloud.</li>
+    <li>Pouvoir obtenir les n premiers tags.</li>
+</ul>
 
-        <p>Nous allons rajouter tout cela au fil des tests unitaires.</p>
+<p>Nous allons rajouter tout cela au fil des tests unitaires.</p>
 
-        <h2>TagCloudTest</h2>
+<h2>TagCloudTest</h2>
 
-        <p>Par convention, une classe de test porte le nom de la classe testée, suffixée par "Test".</p>
+<p>Par convention, une classe de test porte le nom de la classe testée, suffixée par "Test".</p>
 
-        <p>Si il n'existe pas, on crée le répertoire src/test/java dans notre projet.</p>
+<p>Si il n'existe pas, on crée le répertoire src/test/java dans notre projet.</p>
 
-        <p>On ajoute la classe TagCloudTest dans le package fr.todooz.util mais coté sources de test (src/test/java).</p>
+<p>On ajoute la classe TagCloudTest dans le package fr.todooz.util mais coté sources de test (src/test/java).</p>
 
-        <p>On peut faire ça rappidemebt avec le raccourcis Alt + Entrée depuis la classe :</p>
+<p>On peut faire ça rapidement avec le raccourcis Alt + Entrée depuis la classe :</p>
 
-        <img src="img/create-test.png" style="padding: 0 250px;" />
+<p><img src="img/create-test.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>Ce qui donne :</p>
+<p>Ce qui donne :</p>
 
-        <img src="img/create-test-dialog.png" style="padding: 0 150px;" />
+<p><img src="img/create-test-dialog.png" class="img-responsive" style="margin: auto" /></p>
 
-        <h2>add</h2>
+<h2>add</h2>
 
-        <p>Nous allons commencer par la méthode add. On écrit le unitaire suivant.</p>
+<p>Nous allons commencer par la méthode add. On écrit le unitaire suivant.</p>
 
         <pre class="prettyprint">public class TagCloudTest {
    @Test
@@ -115,15 +106,15 @@
    }
 }</pre>
 
-        <p>On exécute le test en faisant un click droit sur la classe puis Run TagCloudTest.</p>
+<p>On exécute le test en faisant un click droit sur la classe puis Run TagCloudTest.</p>
 
-        <img src="img/launch-test.png" style="padding: 0 200px" />
+<p><img src="img/launch-test.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>Actuellement, ce test ne passe pas car la méthode add n'existe pas dans notre TagCloud.</p>
+<p>Actuellement, ce test ne passe pas car la méthode add n'existe pas dans notre TagCloud.</p>
 
-        <img src="img/cannot-find-symbol.png" style="padding: 0 100px" />
+<p><img src="img/cannot-find-symbol.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>Il suffit donc de la créer.</p>
+<p>Il suffit donc de la créer.</p>
 
         <pre class="prettyprint">public class TagCloud {
    public void add(String tag) {
@@ -131,11 +122,11 @@
    }
 }</pre>
 
-        <img src="img/test-ok.png" style="padding: 0 40px" />
+<p><img src="img/test-ok.png" class="img-responsive" style="margin: auto" /></p>
 
-        <p>Elle ne fait rien, mais le test passe. Ajoutons un autre test.</p>
+<p>Elle ne fait rien, mais le test passe. Ajoutons un autre test.</p>
 
-        <h2>size</h2>
+<h2>size</h2>
 
         <pre class="prettyprint">@Test
 public void size() {
@@ -146,9 +137,9 @@ public void size() {
     Assert.assertEquals(1, tagCloud.size());
 }</pre>
 
-        <p>Nous pourrions implémenter cette méthode avec un simple compteur incrémenté lors de l'appel de add().</p>
+<p>Nous pourrions implémenter cette méthode avec un simple compteur incrémenté lors de l'appel de add().</p>
 
-        <p>Nous allons plutôt utiliser une List dès à présent.</p>
+<p>Nous allons plutôt utiliser une List dès à présent.</p>
 
         <pre class="prettyprint">public class TagCloud {
     private List&lt;String&gt; tags = new ArrayList&lt;&gt;();
@@ -162,13 +153,13 @@ public void size() {
     }
 }</pre>
 
-        <p>Avec ce code, les 2 tests passent.</p>
+<p>Avec ce code, les 2 tests passent.</p>
 
-        <h2>add(String...)</h2>
+<h2>add(String...)</h2>
 
-        <p>Afin de pouvoir écrire plus facilement nos tests, on ajoute une méthode add(String...) avec un vararg.</p>
+<p>Afin de pouvoir écrire plus facilement nos tests, on ajoute une méthode add(String...) avec un vararg.</p>
 
-        <div class="note">A partir de maintenant, seuls les tests seront décrit ici, l'implémentation étant libre.</div>
+<div class="note">A partir de maintenant, seuls les tests seront décrit ici, l'implémentation étant libre.</div>
 
         <pre class="prettyprint">@Test
 public void addMutiple() {
@@ -177,7 +168,7 @@ public void addMutiple() {
    tagCloud.add("java", "ruby", "python");
 }</pre>
 
-        <p>Sans oublier de tester les cas limites.</p>
+<p>Sans oublier de tester les cas limites.</p>
 
         <pre class="prettyprint">@Test
 public void addEmpty() {
@@ -193,11 +184,11 @@ public void addNull() {
    tagCloud.add((String[]) null);
 }</pre>
 
-        <h2>doublons et contains</h2>
+<h2>doublons et contains</h2>
 
-        <p>Actuellement, nous pouvons avoir plusieurs fois le même tag dans la collection.</p>
+<p>Actuellement, nous pouvons avoir plusieurs fois le même tag dans la collection.</p>
 
-        <p>Nous ajoutons donc une méthode contains qui servira à répondre à ce besoin.</p>
+<p>Nous ajoutons donc une méthode contains qui servira à répondre à ce besoin.</p>
 
         <pre class="prettyprint">@Test
 public void contains() {
@@ -208,7 +199,7 @@ public void contains() {
    Assert.assertTrue(tagCloud.contains("java"));
 }</pre>
 
-        <p>On modifie le test size() afin de vérifier que le même tag ne compte pas 2 fois.</p>
+<p>On modifie le test size() afin de vérifier que le même tag ne compte pas 2 fois.</p>
 
         <pre class="prettyprint">@Test
 public void size() {
@@ -219,7 +210,7 @@ public void size() {
    Assert.assertEquals(2, tagCloud.size());
 }</pre>
 
-        <p>De même, les tags vides ou null ne devraient pas compter.</p>
+<p>De même, les tags vides ou null ne devraient pas compter.</p>
 
         <pre class="prettyprint">@Test
 public void size() {
@@ -230,13 +221,13 @@ public void size() {
    Assert.assertEquals(2, tagCloud.size());
 }</pre>
 
-        <div class="note">Ecrire les tests unitaires en premier permet d'avoir un objectif clair.</div>
+<div class="note">Ecrire les tests unitaires en premier permet d'avoir un objectif clair.</div>
 
-        <h2>top(int) et shuffle()</h2>
+<h2>top(int) et shuffle()</h2>
 
-        <p>C'est le dernier élément de notre liste de besoins initiaux.</p>
+<p>C'est le dernier élément de notre liste de besoins initiaux.</p>
 
-        <p>Lorsque nous utiliserons notre tagCloud, il se peut qu'il y ait des centaines de tags définis et nous voudrons en afficher qu'un jeu réduit.</p>
+<p>Lorsque nous utiliserons notre tagCloud, il se peut qu'il y ait des centaines de tags définis et nous voudrons en afficher qu'un jeu réduit.</p>
 
         <pre class="prettyprint">@Test
 public void top() {
@@ -248,7 +239,7 @@ public void top() {
    Assert.assertEquals(3, tagCloud.size());
 }</pre>
 
-        <p>Avec les conditions aux limites.</p>
+<p>Avec les conditions aux limites.</p>
 
         <pre class="prettyprint">@Test
 public void topTooFew() {
@@ -270,7 +261,7 @@ public void topNegative() {
    Assert.assertEquals(0, tagCloud.size());
 }</pre>
 
-        <p>Afin de pas toujours avoir les mêmes n premier tags, nous allons mélanger notre tagCloud.</p>
+<p>Afin de pas toujours avoir les mêmes n premier tags, nous allons mélanger notre tagCloud.</p>
 
         <pre class="prettyprint">@Test
 public void shuffle() {
@@ -287,22 +278,26 @@ public void shuffle() {
    Assert.assertTrue(tagCloud.contains("groovy"));
 }</pre>
 
-        <p>On pourrait réfléchir à un algorithme pour implémenter cette méhtode, mais java.util.Collections.shuffle() va nous suffire.</p>
+<p>On pourrait réfléchir à un algorithme pour implémenter cette méhtode, mais <code>java.util.Collections.shuffle()</code> va nous suffire.</p>
 
-        <p>Nous avons ici un problème intéressant pour nos tests unitaires : comment tester le résultat d'un traitement aléatoire ?</p>
+<p>Nous avons ici un problème intéressant pour nos tests unitaires : comment tester le résultat d'un traitement aléatoire ?</p>
 
-        <p>Il n'y a pas de solution simple et nous souhaitons garder nos tests simples.</p>
+<p>Il n'y a pas de solution simple et nous souhaitons garder nos tests simples.</p>
 
-        <p>On se contente donc de tester quelques invariants : la taille et le contenu.</p>
+<p>On se contente donc de tester quelques invariants : la taille et le contenu.</p>
 
-        <p>Si il devenait important de tester la bonne distribution de la méthode shuffle, comment pourrait on procéder ?</p>
+<p>Si il devenait important de tester la bonne distribution de la méthode shuffle, comment pourrait on procéder ?</p>
 
-        <h2>Et maintenant</h2>
+<h2>Et maintenant</h2>
 
-        <p>Il s'agit d'une introduction à JUnit qui a permis de jetter les bases de notre classe TagCloud.</p>
+<p>Il s'agit d'une introduction à JUnit qui a permis de jetter les bases de notre classe TagCloud.</p>
 
-        <p>Nous ajouterons donc d'autres tests au fur et à mesure des besoins à venir.</p>
-    </div>
+<p>Nous ajouterons donc d'autres tests au fur et à mesure des besoins à venir.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

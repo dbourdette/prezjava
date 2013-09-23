@@ -1,38 +1,31 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Le template html</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Le template html</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1 style="line-height: 60px;"><img src="img/wireframe.jpeg" style="float: left; margin-right: 10px;width: 120px"> Le template html</h1>
+<body>
+<div class="container">
+<h1 style="line-height: 80px;"><img src="img/wireframe.jpeg" style="float: left; margin: 0 10px;width: 120px"> Le template html</h1>
 
-        <div style="clear: both"></div>
+<div style="clear: both"></div>
 
-        <p>Nous allons mettre en place le template html pour notre application.</p>
+<p>Nous allons mettre en place le template html pour notre application.</p>
 
-        <h2>Bootstrap</h2>
+<h2>Bootstrap</h2>
 
-        <p>Nous utilisons <a href="http://getbootstrap.com/" class="external">twitter bootstrap</a> qui est un framework css / javascript pour html 5.</p>
+<p>Nous utilisons <a href="http://getbootstrap.com/" target="_blank">twitter bootstrap</a> qui est un framework css / javascript pour html 5.</p>
 
-        <p>Cela nous permet de construire rapidement notre <a href="html/template.html" class="external">template</a>.</p>
+<p>Cela nous permet de construire rapidement notre <a href="html/template.html" target="_blank">template</a>.</p>
 
-        <p>Le code html est le suivant :</p>
+<p>Le code html est le suivant :</p>
 
         <pre class="prettyprint">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -155,48 +148,48 @@
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 
-        <p>Intrégrons ce template dans notre projet.</p>
+<p>Intrégrons ce template dans notre projet.</p>
 
-        <h2>maven</h2>
+<h2>maven</h2>
 
-        <p>La première étape consiste a informer maven que nous allons construire un war (web application archive).</p>
+<p>La première étape consiste a informer maven que nous allons construire un war (web application archive).</p>
 
-        <p>Dans le fichier pom.xml :</p>
+<p>Dans le fichier pom.xml :</p>
 
         <pre class="prettyprint">&lt;project ...&gt;
     &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
     &lt;groupId&gt;fr.todooz&lt;/groupId&gt;
     &lt;artifactId&gt;todooz&lt;/artifactId&gt;
     <s>&lt;packaging&gt;jar&lt;/packaging&gt;</s>
-    &lt;packaging&gt;<em>war</em>&lt;/packaging&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
     &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
     &lt;name&gt;todooz&lt;/name&gt;
 
     ...
 &lt;/project&gt;</pre>
 
-        <h2>src/main/webapp</h2>
+<h2>src/main/webapp</h2>
 
-        <p>Dans la structure d'un .war, les fichiers publics (html, css, images, javascripts) vont à la racine de l'archive.</p>
+<p>Dans la structure d'un .war, les fichiers publics (html, css, images, javascripts) vont à la racine de l'archive.</p>
 
-        <p>Dans un projet maven, ces fichiers sont dans le répertoire src/main/webapp.</p>
+<p>Dans un projet maven, ces fichiers sont dans le répertoire src/main/webapp.</p>
 
-        <p>Les fichiers de ce répertoire seront donc recopiés à la racine du war lors du build.</p>
+<p>Les fichiers de ce répertoire seront donc recopiés à la racine du war lors du build.</p>
 
-        <p>Avec l'IDE, nous créons donc ce répertoire et le fichier index.html dedans.</p>
+<p>Avec l'IDE, nous créons donc ce répertoire et le fichier index.html dedans.</p>
 
-        <p>Il reste à copier les fichiers de <a href="http://getbootstrap.com/" class="external">bootstrap</a> (css, img, js dans le répertoire dist) et <a href="http://jquery.com/" class="external">jquery.min.js</a> au bon endroit.</p>
+<p>Il reste à copier les fichiers de <a href="http://getbootstrap.com/" target="_blank">bootstrap</a> (css, img, js dans le répertoire dist) et <a href="http://jquery.com/" target="_blank">jquery.min.js</a> au bon endroit.</p>
 
-        <h2>tomcat7:run</h2>
+<h2>tomcat7:run</h2>
 
-        <p>Il ne nous reste plus qu'a démarrer un serveur web afin de tester notre application.</p>
+<p>Il ne nous reste plus qu'a démarrer un serveur web afin de tester notre application.</p>
 
-        <p>Nous allons donc ajouter le <a href="http://tomcat.apache.org/maven-plugin.html" class="external">plugin tomcat</a> pour maven afin de nous faciliter la tâche.</p>
+<p>Nous allons donc ajouter le <a href="http://tomcat.apache.org/maven-plugin.html" target="_blank">plugin tomcat</a> pour maven afin de nous faciliter la tâche.</p>
 
         <pre class="prettyprint">&ltbuild&gt
     &ltplugins&gt
         ...
-        
+
         &ltplugin&gt
             &ltgroupId&gtorg.apache.tomcat.maven&lt/groupId&gt
             &ltartifactId&gttomcat7-maven-plugin&lt/artifactId&gt
@@ -205,7 +198,7 @@
     &lt/plugins&gt
 &lt/build&gt</pre>
 
-        <p>La commande mvn tomcat7:run permet de lancer un serveur tomcat 7.</p>
+<p>La commande mvn tomcat7:run permet de lancer un serveur tomcat 7.</p>
 
         <pre class="shell">todooz $ <b>mvn tomcat7:run</b>
 [INFO] Scanning for projects...
@@ -238,19 +231,19 @@ INFO: Starting Servlet Engine: Apache Tomcat/7.0.37
 août 29, 2013 10:50:09 PM org.apache.coyote.AbstractProtocol start
 INFO: Starting ProtocolHandler ["http-bio-<b>8080</b>"]</pre>
 
-        <p>Si tout c'est bien passé, le résultat est disponible sur <a href="http://localhost:8080/todooz/index.html" class="external">http://localhost:8080/todooz/index.html</a></p>
+<p>Si tout c'est bien passé, le résultat est disponible sur <a href="http://localhost:8080/todooz/index.html" target="_blank">http://localhost:8080/todooz/index.html</a></p>
 
-        <h2>ROOT</h2>
+<h2>ROOT</h2>
 
-        <p>Les conteneurs de servlets permettent de déployer plusieurs application en même temps.</p>
+<p>Les conteneurs de servlets permettent de déployer plusieurs application en même temps.</p>
 
-        <p>Par défaut, mvn tomcat7:run déploie notre application dans le contexte correspondant au nom du projet.</p>
+<p>Par défaut, mvn tomcat7:run déploie notre application dans le contexte correspondant au nom du projet.</p>
 
-        <pre>http://localhost:8080/<b>todooz</b>/...</pre>
+<pre>http://localhost:8080/<b>todooz</b>/...</pre>
 
-        <p>Nous n'avons qu'une seule application, nous souhaitons avoir notre application à la racine.</p>
+<p>Nous n'avons qu'une seule application, nous souhaitons avoir notre application à la racine.</p>
 
-        <p>On paramètre donc le plugin tomcat.</p>
+<p>On paramètre donc le plugin tomcat.</p>
 
         <pre class="prettyprint">&lt;build&gt;
     &lt;plugins&gt;
@@ -267,8 +260,12 @@ INFO: Starting ProtocolHandler ["http-bio-<b>8080</b>"]</pre>
     &lt;/plugins&gt;
 &lt;/build&gt;</pre>
 
-        <p>Cette fois, le résultat est disponible sur <a href="http://localhost:8080/index.html" class="external">http://localhost:8080/index.html</a></p>
-    </div>
+<p>Cette fois, le résultat est disponible sur <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a></p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

@@ -1,33 +1,28 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Eclipse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Eclipse</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
+<body>
+<div class="container">
     <div id="project">
-        <h1 style="line-height:50px;padding-left:10px;"><img src="img/eclipse_icon.png" height="50" style="float:left;"/> Eclipse</h1>
+        <h1 style="line-height:50px;"><img src="img/eclipse_icon.png" style="float:left;height: 50px;margin: 0 10px"/> Eclipse</h1>
 
         <p>Un IDE est un environnement complet qui permet de travailler plus vite en regroupant de multiples outils de développement dans une même interface.</p>
 
         <p>Eclipse est l'IDE java le plus utilisé au monde. Il est extrêmement populaire car il est très complet, modulaire et gratuit.</p>
 
-        <p>Il dispose d'une myriade de plugins et est aussi la base (<a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform" class="external" target="_blank">eclipse rcp</a>) pour des environnements de développement spécialisés.</p>
+        <p>Il dispose d'une myriade de plugins et est aussi la base (<a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform" target="_blank">eclipse rcp</a>) pour des environnements de développement spécialisés.</p>
 
-        <p>En <a href="http://www.eclipse.org/downloads/" class="external" target="_blank">téléchargement</a>, il existe plusieurs bundles : eclipse classic + une sélection de plugins.</p>
+        <p>En <a href="http://www.eclipse.org/downloads/" target="_blank">téléchargement</a>, il existe plusieurs bundles : eclipse classic + une sélection de plugins.</p>
 
         <p>L'une des 2 versions ci-dessous convient pour les manipulations à venir :</p>
 
@@ -39,8 +34,8 @@
         <p>Les autres IDEs les plus utilisés sont : </p>
 
         <ul>
-            <li>Netbeans : c'est l'IDE de référence développé par Sun. Il est gratuit et suit très bien les spécifications jee. Ce n'est pourtant pas l'environnement de choix pour les utilisateurs avancés.</li>
-            <li>Intellij : Un IDE payant (la version communautaire est gratuite) de très bonne qualité. Contrairement à eclipse qui se nourrit de plugins issus de la communauté, les plugins intellij sont mieux intégrés à l'environnement de base.</li>
+            <li><b>Netbeans</b> : c'est l'IDE de référence développé par Sun. Il est gratuit et suit très bien les spécifications jee. Ce n'est pourtant pas l'environnement de choix pour les utilisateurs avancés.</li>
+            <li><b>Intellij</b> : Un IDE payant (la version communautaire est gratuite) de très bonne qualité. Contrairement à eclipse qui se nourrit de plugins issus de la communauté, les plugins intellij sont mieux intégrés à l'environnement de base.</li>
         </ul>
 
         <p>Le but de ce tp est de se familiariser avec l'interface d'eclipse.</p>
@@ -49,7 +44,7 @@
 
         <p>Au démarrage d'éclipse, on peut choisir son <b>workspace</b>.</p>
 
-        <img src="img/workspace.png" style="margin:0 100px;"/>
+        <p><img src="img/workspace.png" class="img-responsive" style="margin:auto;"/></p>
         
         <p>Le workspace est le répertoire de travail d'eclipse qui contient tous les projets manipulées.</p>
 
@@ -67,7 +62,7 @@
 
         <img src="img/view.png" style="margin:10px 10px;float:left"/>
 
-        <p>Une vue est une sous partie de spécialisé l'interface : explorateur de projet, editeurs, serveurs, explorateur de repository svn...</p>
+        <p>Une <b>vue</b> est une sous partie de spécialisé l'interface : explorateur de projet, editeurs, serveurs, explorateur de repository svn...</p>
 
         <p>Il existe beaucoup de vues au sein d'eclipse.</p>
 
@@ -77,7 +72,7 @@
 
         <img src="img/perspective.png" style="margin:10px 10px;float:left"/>
 
-        <p>Une perpective est une distribution particulière de vues dans le workbench : java, debug, database explorer, </p>
+        <p>Une <b>perpective</b> est une distribution particulière de vues dans le workbench : java, debug, database explorer, </p>
 
         <p>En changeant de perspective, on passe donc à une organisation adaptée à la tâche en cours.</p>
 
@@ -103,9 +98,9 @@
 
         <p>Afin de tester quelques fonctionnalités d'eclipse, nous allons créer un projet java.</p>
 
-        <p>Un projet java se crée via le menu File &gt; New &gt; Project... et en choisissant le type Java &gt; Java Project.</p>
+        <p>Un projet java se crée via le menu <b>File &gt; New &gt; Project...</b> et en choisissant le type <b>Java &gt; Java Project</b>.</p>
 
-        <img src="img/new-java-project.png" style="margin: 0 150px" />
+        <p><img src="img/new-java-project.png" class="img-responsive" style="margin: auto" /></p>
 
         <p>On entre un nom de projet "test" et on clique sur finish.</p>
 
@@ -115,11 +110,11 @@
 
         <p>En faisant un click droit sur le répertoire, on peut créer une classe java Person dans le package fr.test</p>
 
-        <img src="img/new-java-class.png" style="margin: 0 120px" />
+        <p><img src="img/new-java-class.png" class="img-responsive" style="margin: auto" /></p>
 
         <p>On obtient le code suivant :</p>
 
-        <pre class="prettyprint language-java">package fr.test;
+        <pre class="prettyprint">package fr.test;
 
 public class Person {
 
@@ -129,13 +124,13 @@ public class Person {
 
         <p>On ajoute les attributs suivants dans la classe.</p>
 
-        <pre class="prettyprint language-java">private String firstname;
+        <pre class="prettyprint">private String firstname;
 
 private String lastname;</pre>
 
-        <p>Eclipse est capable de générer les getters et setters pour ces attributs. Il suffit de faire un click droit dans l'éditeur et d'utiliser le menu Source &gt; Generate Getters and Setters...</p>
+        <p>Eclipse est capable de générer les getters et setters pour ces attributs. Il suffit de faire un click droit dans l'éditeur et d'utiliser le menu <b>Source &gt; Generate Getters and Setters...</b></p>
 
-        <pre class="prettyprint language-java">public String getFirstname() {
+        <pre class="prettyprint">public String getFirstname() {
     return firstname;
 }
 
@@ -155,9 +150,9 @@ public void setLastname(String lastname) {
 
         <h2>toString</h2>
 
-        <p>La méthode toString() est la méthode qui transforme un Object en chaîne de caractères. Elle sert principalement à faire du débug car pour la serialisation il existe des mécaniques bidirectionnelles (objet &lt;-&gt; string) plus complètes.</p>
+        <p>La méthode <code>toString()</code> est la méthode qui transforme un Object en chaîne de caractères. Elle sert principalement à faire du débug car pour la serialisation il existe des mécaniques bidirectionnelles (objet &lt;-&gt; string) plus complètes.</p>
 
-        <p>Eclipse peut également générer cette méthode via le menu contextuel Source &gt; Generate toString()...</p>
+        <p>Eclipse peut également générer cette méthode via le menu contextuel <b>Source &gt; Generate toString()...</b></p>
 
         <pre class="prettyprint language-java">@Override
 public String toString() {
@@ -168,13 +163,13 @@ public String toString() {
 
         <p>Ces 2 méthodes marchent en couple et sont capitales.</p>
 
-        <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur eclipse mais une description détaillée est disponible dans le <a href="http://fr.scribd.com/doc/36454091/Effective-Java-Chapter3" class="external">chapitre 3 de effective java</a></p>
+        <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur eclipse mais une description détaillée est disponible dans le <a href="http://fr.scribd.com/doc/36454091/Effective-Java-Chapter3" target="_blank">chapitre 3 de effective java</a></p>
 
         <p>Les méthodes equals et hashCode permettent de comparer des objets 2 à 2. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
 
         <p>Elles sont difficiles à bien implémenter et une mauvaise implémentation peut être fatale.</p>
 
-        <p>Avec eclipse, il suffit de demander la génération de ces méthodes via Source &gt; Generate hashCode() and equals()...</p>
+        <p>Avec eclipse, il suffit de demander la génération de ces méthodes via <b>Source &gt; Generate hashCode() and equals()...</b></p>
 
         <pre class="prettyprint language-java">@Override
 public int hashCode() {
@@ -225,7 +220,7 @@ public class Main {
 
         <p>C'est un point de départ obligé pour toute application java.</p>
 
-        <div class="note">En pratique, dans des environnements managés, cette méthode est déjà implémentée pour nous.</div>
+        <div class="alert alert-warning">En pratique, dans des environnements managés, cette méthode est déjà implémentée pour nous.</div>
 
         <p>Afin de la tester un peu, on ajoute une écriture dans la sortie standard (stdout).</p>
 
@@ -233,7 +228,7 @@ public class Main {
 
         <p>On peut lancer cette méthode via le menu contextuel de la classe.</p>
 
-        <img src="img/run-java-main.png" style="margin: 0 120px" />
+        <p><img src="img/run-java-main.png" class="img-responsive" style="margin: auto" /></p>
 
         <p>On peut utiliser notre class Person depuis le main.</p>
 
@@ -270,9 +265,9 @@ System.out.println(person);</pre>
         <p>Les capacités de navigation au sein de l'IDE sont nombreuses. Voici quelques façons de trouver ce que l'on cherche :</p>
 
         <ul>
-            <li>control-click sur une référence ou une variable afin d'aller à la définition.</li>
-            <li>control-shift-T (Open Type) afin de rechercher une classe via un moteur de recherche.</li>
-            <li>click droit sur une classe puis References &gt; Project pour avoir toutes les utilisations de cette classe dans le cadre du projet.</li>
+            <li><b>control-click</b> sur une référence ou une variable afin d'aller à la définition.</li>
+            <li><b>control-shift-T</b> (Open Type) afin de rechercher une classe via un moteur de recherche.</li>
+            <li>click droit sur une classe puis <b>References &gt; Project</b> pour avoir toutes les utilisations de cette classe dans le cadre du projet.</li>
         </ul>
 
         <p>Par exemple, si on tape control-shift-T puis "People", on peut ouvrir rapidement le fichier contenant la classe sans utiliser la souris.</p>
@@ -282,21 +277,26 @@ System.out.println(person);</pre>
         <p>Les raccourcis clavier sont indispensables afin d'être plus productif. En voici quelques uns :</p>
 
         <ul>
-            <li>Ctrl+Space : invoquer l'assistant de complétion</li>
-            <li>Ctrl+W ou Ctrl+F4 : fermer l'éditeur courant</li>
-            <li>Close All : fermer toutes les éditeurs</li>
-            <li>Ctrl+N : assistant de création</li>
-            <li>Ctrl+Shift+S : tout sauver</li>
-            <li>Ctrl+L : aller à la ligne</li>
-            <li>Alt+Left : fichier précédent de l'historique</li>
-            <li>Alt+Right : fichier précédent de l'historique</li>
-            <li>Ctrl+Shift+T : ouvrir la classe</li>
-            <li>Ctrl+Alt+H : voir tous les appels sur une méthode</li>
-            <li>F4 : voir la hiérarchie d'héritage d'une classe</li>
-            <li>Ctrl+Shift+F : formatter le code</li>
+            <li><b>Ctrl+Space</b> : invoquer l'assistant de complétion</li>
+            <li><b>Ctrl+W</b> ou <b>Ctrl+F4</b> : fermer l'éditeur courant</li>
+            <li><b>Ctrl+N</b> : assistant de création</li>
+            <li><b>Ctrl+Shift+S</b> : tout sauver</li>
+            <li><b>Ctrl+L</b> : aller à la ligne</li>
+            <li><b>Alt+Left</b> : fichier précédent de l'historique</li>
+            <li><b>Alt+Right</b> : fichier précédent de l'historique</li>
+            <li><b>Ctrl+Shift+T</b> : ouvrir la classe</li>
+            <li><b>Ctrl+Alt+H</b> : voir tous les appels sur une méthode</li>
+            <li><b>F4</b> : voir la hiérarchie d'héritage d'une classe</li>
+            <li><b>Ctrl+Shift+F</b> : formatter le code</li>
         </ul>
 
-        <p>Il est facile de trouver des listes de raccourcis sur le web. Par exemple, <a href="http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf" class="external">en suivant ce lien</a></p>
+        <p>Il est facile de trouver des listes de raccourcis sur le web. Par exemple, <a href="http://eclipse-tools.sourceforge.net/Keyboard_shortcuts_(3.0).pdf" target="_blank">en suivant ce lien</a></p>
 </div>
+</div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js" type="text/javascript"></script>
 </body>
 </html>

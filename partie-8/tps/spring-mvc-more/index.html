@@ -1,108 +1,101 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Spring MVC Mappings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Spring MVC Mappings</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;position: relative;top:6px;">Spring MVC mappings</h1>
+<body>
+<div class="container">
+    <h1><img src="img/spring.png" alt="" style="margin-right:5px;height:40px;">Spring MVC mappings</h1>
 
-        <p>Il va maintenant être plus simple d'ajouter des services sur nos contrôleurs</p>
+    <p>Il va maintenant être plus simple d'ajouter des points d'entrée sur nos contrôleurs</p>
 
-        <p>Nous allons ajouter quelques méthodes afin de pouvoir naviguer un peu plus dans nos tâches.</p>
+    <p>Nous allons ajouter quelques méthodes afin de pouvoir naviguer un peu plus dans nos tâches.</p>
 
-        <p>L'interface html nous propose 3 entrées que nous allons implémenter :</p>
+    <p>L'interface html nous propose 3 entrées que nous allons implémenter :</p>
 
-        <ul>
-            <li>Le moteur de recherche dans le header</li>
-            <li>La navigation par tags</li>
-            <li>La navigation par date</li>
-        </ul>
+    <ul>
+        <li>Le moteur de recherche dans le header</li>
+        <li>La navigation par tags</li>
+        <li>La navigation par date</li>
+    </ul>
 
-        <h2>La recherche</h2>
+    <h2>La recherche</h2>
 
-        <p>Notre service propose déjà une méthode pour faire de la recheche.</p>
+    <p>Notre service propose déjà une méthode pour faire de la recheche.</p>
 
-        <pre class="prettyprint">public List&lt;Task&gt; findByQuery(String query);</pre>
+    <pre class="prettyprint">public List&lt;Task&gt; findByQuery(String query);</pre>
 
-        <p>Nous pouvons donc l'utiliser afin de proposer simplement le mapping suivant dans notre Controller</p>
+    <p>Nous pouvons donc l'utiliser afin de proposer simplement le mapping suivant dans notre Controller</p>
 
-        <pre class="prettyprint">@RequestMapping("/search")
+    <pre class="prettyprint">@RequestMapping("/search")
 public String search(String query, Model model) {
     <span class="comment">...</span>
 }</pre>
 
-        <p>Le paramètre query de la méthode correspond à un paramètre de la requête GET http.</p>
+    <p>Le paramètre query de la méthode correspond à un paramètre de la requête <b>GET HTTP</b>.</p>
 
-        <p>Configurer le formulaire du header afin qu'il aboutisse sur cette méthode.</p>
+    <p>Configurer le formulaire du header afin qu'il aboutisse sur cette méthode.</p>
 
-        <p>Faire l'implémentation de cette méthode.</p>
+    <p>Faire l'implémentation de cette méthode.</p>
 
-        <h2>Le filtre par tag</h2>
+    <h2>Le filtre par tag</h2>
 
-        <p>La colonne de droite contient un tag cloud.</p>
+    <p>La colonne de droite contient un tag cloud.</p>
 
-        <p>Les liens sur les tags sont de la forme /tag/{tag}.</p>
+    <p>Les liens sur les tags sont de la forme /tag/{tag}.</p>
 
-        <p>Le mapping dans le controller peut s'écrire comme suit :</p>
+    <p>Le mapping dans le controller peut s'écrire comme suit :</p>
 
-        <pre>@RequestMapping("/tag/{tag}")
+        <pre class="prettyprint">@RequestMapping("/tag/{tag}")
 public String tag(@PathVariable String tag, Model model) {
     <span class="comment">...</span>
 }</pre>
 
-        <div class="note">@PathVariable permet d'extraire une variable depuis le path</div>
+    <p><code>@PathVariable</code> permet d'extraire une variable depuis le path.</p>
 
-        <p>Il reste donc à :</p>
+    <p>Il reste donc à :</p>
 
-        <ul>
-            <li>Ajouter le tag cloud dans le model</li>
-            <li>Formatter le tag cloud dans la jsp à partir des données fournies par le controller</li>
-            <li>Ajouter la méthode utile findByTag (avec un test unitaire) dans le service</li>
-            <li>Implémenter la méthode du controller</li>
-        </ul>
+    <ul>
+        <li>Ajouter le tag cloud dans le model</li>
+        <li>Formatter le tag cloud dans la jsp à partir des données fournies par le controller</li>
+        <li>Ajouter la méthode utile findByTag (avec un test unitaire) dans le service</li>
+        <li>Implémenter la méthode du controller</li>
+    </ul>
 
-        <p>On peut rajouter la méthode suivante dans le tag cloud afin de pouvoir écrire le c:forEach du tag cloud</p>
+    <p>On peut rajouter la méthode suivante dans le tag cloud afin de pouvoir écrire le <code>c:forEach</code> du tag cloud</p>
 
         <pre class="prettyprint">public List&lt;String&gt; getTags() {
     return tags;
 }</pre>
 
-        <div class="note">
-            La feuille de style css/bootstrap.min.css est en relatif et le mapping /tag/{tag} est un cran plus bas dans l'arborescence.
-            <br>
-            Il peut donc être nécessaire d'utiliser un chemin absolu : /css/bootstrap.min.css
-        </div>
+    <div class="note">
+        La feuille de style <b>css/bootstrap.min.css</b> est en relatif et le mapping <b>/tag/{tag}</b> est un cran plus bas dans l'arborescence.
+        <br>
+        Il peut donc être nécessaire d'utiliser un chemin absolu : <b>/css/bootstrap.min.css</b>
+    </div>
 
-        <h3>Le filtre par intervalle</h3>
+    <h3>Le filtre par intervalle</h3>
 
-        <p>En colonne de droite, il reste 2 liens qui ont pour but de filtrer par intervalle.</p>
+    <p>En colonne de droite, il reste 2 liens qui ont pour but de filtrer par intervalle.</p>
 
         <pre class="prettyprint">&lt;ul&gt;
     &lt;li&gt;&lt;a href="/today"&gt;Today's&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href="/tomorrow"&gt;Tomorrow's&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</pre>
 
-        <p>Implémenter tout ce qu'il faut afin que ces 2 liens fonctionnent.</p>
+    <p>Implémenter tout ce qu'il faut afin que ces 2 liens fonctionnent.</p>
 
-        <p>Pour manipuler des dates et des intervalles en java, le mieux est d'utiliser <a href="http://www.joda.org/joda-time/" class="external">joda time</a> (artefact joda-time sur le <a href="http://search.maven.org" class="external">repository central</a>)</p>
+    <p>Pour manipuler des dates et des intervalles en java, le mieux est d'utiliser <a href="http://www.joda.org/joda-time/" target="_blank">joda time</a> (artefact joda-time sur le <a href="http://search.maven.org" target="_blank">repository central</a>)</p>
 
-        <p>Par exemple, pour aujourd'hui :</p>
+    <p>Par exemple, pour aujourd'hui :</p>
 
         <pre class="prettyprint">private Interval todayInterval() {
     DateTime today = new DateTime().withTimeAtStartOfDay();
@@ -110,13 +103,13 @@ public String tag(@PathVariable String tag, Model model) {
     return new Interval(today, today.plusDays(1));
 }</pre>
 
-        <div class="note">new DateTime().withTimeAtStartOfDay() est aujourd'hui a 00h00</div>
+    <p><code>new DateTime().withTimeAtStartOfDay()</code> est aujourd'hui a 00h00</p>
 
-        <p>Coté service, il existe une Restrictions.between afin de construire la requête.</p>
+    <p>Coté service, il existe une méthode <code>Restrictions.between</code> afin de construire la requête.</p>
 
-        <h3>@ModelAttribute</h3>
+    <h3>@ModelAttribute</h3>
 
-        <p>Normalement, le code de notre controller ressemble au code suivant :</p>
+    <p>Normalement, le code de notre controller ressemble au code suivant :</p>
 
         <pre class="prettyprint">@RequestMapping({ "/", "/index" })
 public String index(Model model) {
@@ -141,23 +134,25 @@ public String tag(@PathVariable String tag, Model model) {
 
 ...</pre>
 
-        <p>Pour ce genre duplication, spring MVC propose la factorisation suivante :</p>
+    <p>Pour ce genre duplication, spring MVC propose la factorisation suivante :</p>
 
         <pre class="prettyprint">@ModelAttribute
 public TagCloud tagCloud() {
     return tagCloudService.buildTagCloud();
 }</pre>
 
-        <p>Ainsi un attribut tagCloud va être ajouté au modèle quelle que soit la méthode appelée.</p>
+    <p>Ainsi un attribut tagCloud va être ajouté au modèle quelle que soit la méthode appelée.</p>
 
-        <p>Suite à l'ajout de cette méthode, il faut supprimer tous les appels inutiles.</p>
+    <p>Suite à l'ajout de cette méthode, il faut supprimer tous les appels inutiles.</p>
 
-        <h3>Et ?</h3>
+    <h3>Et ?</h3>
 
-        <p>Y a t il une autre duplication / optimisation que l'on peut proposer pour notre controller ?</p>
-
-
-    </div>
+    <p>Y a t il une autre duplication / optimisation que l'on peut proposer pour notre controller ?</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>
