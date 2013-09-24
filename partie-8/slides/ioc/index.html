@@ -1,52 +1,38 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-	    <title>L'injection de dépendances</title>
-	    
-		<link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+		<title>L'injection de dépendances</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
+        <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+        <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prez/css/slides.css" class="theme" rel="stylesheet">
 
-        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-        <script src="../../../common/js/code.js"></script>
-        <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-        <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-        <script src="../../../common/js/prez.js"></script>
-
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
   	</head>
-  	<body onload="prettyPrint();">
+  	<body>
     <div class="presentation">
       <div id="presentation-counter">Chargement...</div>
       <div style="display: block;" class="slides">
 
               <div class="slide">
-                <style>
-                  #landing-slide p {
-                    font-size: 35px;
-                  }
-                </style>
                 <section id="landing-slide" class="middle">
-                  <p>L'injection de dépendances</p>
+                  <h1>L'injection de dépendances</h1>
                 </section>
               </div>
 
               <div class="slide">
-                  <header>L'application comme un graphe d'objets</header>
+                  <h2>L'application comme un graphe d'objets</h2>
                   <section>
-                      <img src="img/class-diagram.png" style="margin-left:150px;margin-top: 80px;">
+                      <p><img src="img/class-diagram.png" class="img-responsive" style="margin-left:auto"></p>
                       <p>Une application est un réseau riche de composants qui dépendent les uns des autres.</p>
                   </section>
               </div>
 
               <div class="slide">
-                <header>Comment gérer les dépendances ?</header>
+                <h2>Comment gérer les dépendances ?</h2>
                 <section>
                     <p>Si le composant instancie lui même ses dépendances.</p>
                     <pre>
@@ -73,7 +59,7 @@ public class SimpleService {
               </div>
 
               <div class="slide">
-                <header>L'application en 2 temps</header>
+                <h2>L'application en 2 temps</h2>
                 <section>
                     <p>On divise la vie de l'application en 2 temps</p>
                     <ul>
@@ -90,21 +76,21 @@ public class SimpleService {
               </div>
 
               <div class="slide">
-                <header>Inversion of control</header>
+                <h2>Inversion of control</h2>
                 <section>
                     <p>Il existe plusieurs techniques afin de mettre en place l'IoC.</p>
-                    <img alt="" src="img/ioc.png" width="500px" style="margin:50px 150px;">
+                    <p><img alt="" src="img/ioc.png" class="img-responsive" style="margin:auto; max-height: 260px"></p>
                     <ul>
                         <li>Le <b>service locator</b> permet d'obtenir des références à partir d'un registre centralisé
                         <li>L'<b>injection par constructeur</b> apporte les dépendances lors de l'appel au constructeur
                         <li>L'<b>injection par setter</b> apporte les dépendances en utilisant les accesseurs (setters)
                     </ul>
-                    <p>Une explication plus longue sur ces différentes options est disponible sur la page <a href="http://martinfowler.com/articles/injection.html" class="external">Inversion of Control</a> du site de Martin Fowler.</p>
+                    <p>Une explication plus longue sur ces différentes options est disponible sur la page <a href="http://martinfowler.com/articles/injection.html" target="_blank">Inversion of Control</a> du site de Martin Fowler.</p>
                 </section>
               </div>
 
               <div class="slide">
-                <header>En java</header>
+                <h2>En java</h2>
                 <section>
                     <p>Jee a poussé le Service Locator (registre jndi) et les descripteur de déploiements.</p>
                     <p>Les conteneurs d'application tournait autour de ces patterns.</p>
@@ -124,28 +110,30 @@ public class SimpleService {
               </div>
 
               <div class="slide">
-                <header>POJOs</header>
+                <h2>POJOs</h2>
                 <section>
                     <p>Les conteneurs légers glorifient les Plain Old Java Objects (<b>POJOs</b>).</p>
-                    <p style="font-size: 26px;margin:100px 0 0 20px;">Nous nous sommes demandés pourquoi tout le monde était autant contre l'utilisation d'objets simples dans leurs systèmes et nous avons conclu que c'était parce que ces objets simples n'avaient pas un nom sympa. Alors, on leur en a donné un et ça a pris tout de suite</a></p>
-                    <p style="float:right;margin:10px 20px 80px 0px;"><i>Martin Fowler, Rebecca Parsons et Josh MacKenzie</i></p>
+                    <blockquote>
+                        <p>Nous nous sommes demandés pourquoi tout le monde était autant contre l'utilisation d'objets simples dans leurs systèmes et nous avons conclu que c'était parce que ces objets simples n'avaient pas un nom sympa. Alors, on leur en a donné un et ça a pris tout de suite</p>
+                        <small>Martin Fowler, Rebecca Parsons et Josh MacKenzie</small>
+                    </blockquote>
                     <div style="clear:both;"></div>
                     <p>C'est de la bonne vieille conception objet (comprendre hors jee).</p>
                 </section>
               </div>
 
               <div class="slide">
-                  <header>Spring framework</header>
+                  <h2>Spring framework</h2>
                   <section>
-                      <p><a href="http://www.springsource.org/" target="_blank" class="external">Spring</a> est un conteneur léger par injection de dépendances.</p>
-                      <img alt="" src="img/spring-overview.png" width="500px" style="margin:0 150px;">
+                      <p><a href="http://www.springsource.org/" target="_blank">Spring</a> est un conteneur léger par injection de dépendances.</p>
+                      <p><img alt="" src="img/spring-overview.png" class="img-responsive" style="margin:auto; max-height: 400px"></p>
                       <p>En plus de l'IoC, c'est une boite à outils riche pour les applications jee.</p>
-                      <p>Une vision rapide de ce que fait spring est disponible sur la page d'<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/overview.html" class="external">introduction à spring</a></p>
+                      <p>Une vision rapide de ce que fait spring est disponible sur la page d'<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/overview.html" target="_blank">introduction à spring</a></p>
                   </section>
               </div>
 
               <div class="slide">
-                <header>Démarrage d'un contexte spring</header>
+                <h2>Démarrage d'un contexte spring</h2>
                 <section>
                     <p>La configuration canonique de spring se fait via un fichier xml définissant le context spring.</p>
                     <pre>
@@ -167,10 +155,10 @@ ApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");</pre
               </div>
 
               <div class="slide">
-                <header>Des beans spring</header>
+                <h2>Des beans spring</h2>
                 <section>
                     <p>Imaginons deux services qui collaborent.</p>
-                    <img src="img/spring-beans.png" style="margin-left: 220px;">
+                    <p><img src="img/spring-beans.png" class="img-responsive" style="margin: auto;"></p>
                     <p>Voici la configuration spring nécessaire.</p>
                     <pre>
 &lt;bean id="simpleService" class="x.y.z.SimpleService"&gt;
@@ -184,7 +172,7 @@ ApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");</pre
               </div>
 
               <div class="slide">
-                <header>@Inject</header>
+                <h2>@Inject</h2>
                 <section>
                     <p>Il est possible d'activiter les annotations afin d'injecter les dépendances.</p>
                     <pre>
@@ -202,12 +190,12 @@ ApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");</pre
 &lt;bean id="serviceA" class="x.y.z.ServiceAImpl" /&gt;
 
 &lt;bean id="serviceB" class="x.y.z.ServiceB" /&gt;</pre>
-                    <p><b>@Inject</b> est le standard jee, spring supporte aussi sa propre annotation <b>@Autowired</b> et une autre annotation standard <b>@Resource</b>.</p>
+                    <p><code>@Inject</code> est le standard jee, spring supporte aussi sa propre annotation <code>@Autowired</code> et une autre annotation standard <code>@Resource</code>.</p>
                 </section>
               </div>
 
               <div class="slide">
-                <header>@Component</header>
+                <h2>@Component</h2>
                 <section>
                     <p>On peut aussi demander à spring de chercher les composants dans le classpath.</p>
                     <pre>
@@ -228,16 +216,16 @@ public class SimpleService {
 
    public void call() { otherService.doSomethingUseful(); }
 }</pre>
-                    <p><b>@Component</b> est l'annotation générique.</p>
-                    <p><b>@Service</b>, <b>@Repository</b> ou bien <b>@Controller</b> sont plus précis sémantiquement.</p>
+                    <p><code>@Component</code> est l'annotation générique.</p>
+                    <p><code>@Service</code>, <code>@Repository</code> ou bien <code>@Controller</code> sont plus précis sémantiquement.</p>
                 </section>
               </div>
 
               <div class="slide">
-                <header>Aspect Oriented Programming</header>
+                <h2>Aspect Oriented Programming</h2>
                 <section>
                     <p>La délégation du wiring à spring offre la possibilté d'intercaler du code entre les appels.</p>
-                    <img alt="" src="img/aop-proxy.png" width="500px" style="margin:0 150px;">
+                    <p><img alt="" src="img/aop-proxy.png" class="img-responsive" style="margin:auto; max-height: 140px"></p>
                     <p>Cette approche est appelée <b>Aspect Oriented Programming</b> et peut être mis en place de plusieurs façons :</p>
                     <ul>
                         <li>Création d'un <b>proxy dynamique</b> : création d'une classe à partir d'un interface (jdk)
@@ -250,7 +238,7 @@ public class SimpleService {
               </div>
 
               <div class="slide">
-                <header>Exemple AOP : les transactions</header>
+                <h2>Exemple AOP : les transactions</h2>
                 <section>
                     <p>La gestion des transactions est lourde.</p>
                     <pre>
@@ -278,7 +266,7 @@ public class SimpleService {
               </div>
 
               <div class="slide">
-                <header>@Transactional</header>
+                <h2>@Transactional</h2>
                 <section>
                     <p>Grâce à l'AOP et un gestionnaire de transaction, on peut simplifier le code précédent.</p>
                     <pre>
@@ -304,7 +292,7 @@ public void doSomethingUseful() {
               </div>
 
               <div class="slide">
-                <header>Autres services</header>
+                <h2>Autres services</h2>
                 <section>
                     <p>Spring c'est un conteneur léger mais aussi une boite à outils.</p>
                     <ul>
@@ -325,13 +313,13 @@ public void doSomethingUseful() {
               </div>
 
               <div class="slide">
-                <header>A Lire</header>
+                <h2>A Lire</h2>
                 <section>
                     <p>Spring est un facilitateur des technologies jee.</p>
                     <p>Sa documentation apporte des solutions aux problèmes courants mais aussi une cartographie assez complète du monde jee.</p>
                     <p>Sa lecture est donc un bon point de départ pour l'univers "entreprise" de java.</p>
-                    <p><a href="http://www.springsource.org/documentation" class="external">Toutes les projets spring source</a></p>
-                    <p><a href="http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/" class="external">Le framework</a></p>
+                    <p><a href="http://www.springsource.org/documentation" target="_blank">Toutes les projets spring source</a></p>
+                    <p><a href="http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/" target="_blank">Le framework</a></p>
                 </section>
               </div>
 
@@ -339,6 +327,11 @@ public void doSomethingUseful() {
           <!-- slides -->
 
         </div> <!-- presentation -->
-    
+
+    <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+    <script src="../../../common/prez/js/prez.js"></script>
+    <script src="../../../common/prez/js/slides.js"></script>    `
   	</body>
   </html>

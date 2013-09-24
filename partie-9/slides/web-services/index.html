@@ -1,41 +1,30 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>Web services</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+        <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prez/css/slides.css" class="theme" rel="stylesheet">
+
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-        <title>Web services</title>
-
-        <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-
-        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-
-        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-        <script src="../../../common/js/code.js"></script>
-        <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
   	</head>
-  	<body onload="prettyPrint();">
+  	<body>
     <div class="presentation">
       <div id="presentation-counter">Chargement...</div>
       <div style="display: block;" class="slides">
       
 	      <div class="slide">
-			<style>
-			  #landing-slide p {
-			    font-size: 35px;
-			  }
-			</style>
 			<section id="landing-slide" class="middle">
-			  <p>Web services</p>
+			  <h1>Web services</h1>
 			</section>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Définition</header>
+	        <h2>Définition</h2>
 	        <section>
 	        	<p>Un service web est :</p>
 	        	<ul>
@@ -43,18 +32,17 @@
 	        		<li><b>web</b> : il utilise un protocole supporté par internet (principalement HTTP)
 	        	</ul>
 	        	<p>Il existe 2 grandes familles.</p>
-	        	<img alt="" src="img/web-services.png" width="450px" style="margin:0 180px">
+	        	<p><img alt="" src="img/web-services.png" class="img-responsive" style="margin: auto;max-height: 180px"></p>
 	        	<ul>
 	        		<li><b>RPC</b> (Remote Procedure Call) est l'appel d'une méthode distante comme si elle était locale.
 	        		<li><b>REST</b> (Representational State Transfer) est un modèle de conception qui repose intégralement sur le HTTP.
 	        	</ul>
                 <p>Entre les 2, nous avons des services hybrides tout à fait viables.</p>
 	        </section>
-	        <p class="source">http://www.clever-age.com/veille/clever-link/soap-vs.-rest-choisir-la-bonne-architecture-web-services.html</p>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>XML-RPC</header>
+	        <h2>XML-RPC</h2>
 	        <section>
 	        	<p>XML-RPC est un protocole RPC permettant à des processus s'exécutant dans des environnements différents de faire des appels de méthodes à travers un réseau.</p>
 	        	<p>Les processus d'invocation repose sur le protocole HTTP pour le transport et le XML pour le codage des données.</p>
@@ -63,7 +51,7 @@
 	      </div>
 	      
 	      <div class="slide">
-	        <header>SOAP</header>
+	        <h2>SOAP</h2>
 	        <section>
 	        	<p>SOAP est un mécanisme RPC basés sur 3 technologies.</p>
 	        	<ul>
@@ -71,7 +59,7 @@
 	        		<li><b>WSDL</b> (Web Service Description Language) : descripteur d'un service SAOP, permet de générer un client
 	        		<li>UDDI (Universal Description Discovery and Integration) : un mécanisme d'annuaire
 	        	</ul>
-	        	<img alt="" src="img/soap-message.png" width="200px" style="margin:10px 20px;float:left">
+	        	<img alt="" src="img/soap-message.png" width="200px" style="margin:10px 30px 10px 10px;float:left">
 	        	<p>Un message SAOP</p>
 	        	<ul>
 	        		<li>enveloppe : contient le header et le body
@@ -86,7 +74,7 @@
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Requête SOAP</header>
+	        <h2>Requête SOAP</h2>
 	        <section>
                 <p>Le code</p>
                 <pre class="prettyprint">service.GetStockPrice("IBM")</pre>
@@ -112,7 +100,7 @@ Content-Length: nnn
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Réponse SOAP</header>
+	        <h2>Réponse SOAP</h2>
 	        <section>
 				<p>Le contenu XML de la réponse</p>
 				<pre class="prettyprint">
@@ -135,7 +123,7 @@ Content-Length: nnn
 	      </div>
 	      
 	      <div class="slide">
-	        <header>REST (Representational State Transfer)</header>
+	        <h2>REST (Representational State Transfer)</h2>
 	        <section>
 	        	<p>Un service REST est un service web qui repose intensivement sur le protocole HTTP.</p>
 				<ul>
@@ -154,7 +142,7 @@ Content-Length: nnn
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Les 3 niveaux du REST</header>
+	        <h2>Les 3 niveaux du REST</h2>
 	        <section>
 	        	<p>Les services REST ont une <b>interface uniforme</b> : GET, POST, PUT, DELETE...</p>
 	        	<p>REST impose un design exigeant. On peut définir une échelle de pureté.</p>
@@ -177,15 +165,14 @@ Content-Length: nnn
 	        	<p>REST est donc du web semantique pour les clients non humains.</p>
                 <p>L'équivalent des pages web HTML mais pour des machines.</p>
 	        </section>
-	        <p class="source">http://www.crummy.com/writing/speaking/2008-QCon/act3.html</p>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Un exemple de service REST</header>
+	        <h2>Un exemple de service REST</h2>
 	        <section>
 	        	<p>Le service <b>Amazon S3</b> (Simple Storage Service) propose des APIs <a href="http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?APIRest.html" class="external" target="_blank">REST</a> et <a href="http://docs.amazonwebservices.com/AmazonS3/latest/API/APISoap.html" class="external" target="_blank">SOAP</a>.</p>
 	        	<p>Le service S3 permet de générer des conteneurs (<b>buckets</b>) et des données (<b>objects</b>)</p>
-	        	<table class="refTable">
+	        	<table class="table table-striped">
                     <tr style="text-align: center;">
                         <td></td>
                         <td style="white-space: nowrap;">La liste des buckets</td>
@@ -227,7 +214,7 @@ Content-Length: nnn
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Requête / Réponse REST</header>
+	        <h2>Requête / Réponse REST</h2>
 	        <section>
 				<p>Une création de bucket</p>
 				<pre>
@@ -251,7 +238,7 @@ Server: AmazonS3</pre>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Erreur REST</header>
+	        <h2>Erreur REST</h2>
 	        <section>
 				<p>Une réponse avec une erreur</p>
 				<pre>
@@ -275,7 +262,7 @@ Server: AmazonS3
 	      </div>
 	      
 	      <div class="slide">
-	        <header>A lire</header>
+	        <h2>A lire</h2>
 	        <section>
 	        	<p>RESTful web services</p>
 	        	<img alt="" src="img/restful-web-services.gif" style="margin:10px 300px;">
@@ -287,6 +274,11 @@ Server: AmazonS3
       <!-- slides -->
 
     </div> <!-- presentation -->
-    
+
+    <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+    <script src="../../../common/prez/js/prez.js"></script>
+    <script src="../../../common/prez/js/slides.js"></script>    `
   	</body>
   </html>

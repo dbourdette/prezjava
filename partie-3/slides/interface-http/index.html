@@ -1,46 +1,34 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-        <title>L'interface HTTP</title>
+<head>
+    <title>L'interface HTTP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prez/css/slides.css" class="theme" rel="stylesheet">
 
-        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-
-        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-        <script src="../../../common/js/code.js"></script>
-        <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-
-  	</head>
-  	<body>
-    <div class="presentation">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="presentation">
       <div id="presentation-counter">Chargement...</div>
       <div style="display: block;" class="slides">
       
 	      <div class="slide">
-			<style>
-			  #landing-slide p {
-			    font-size: 35px;
-			  }
-			</style>
 			<section id="landing-slide" class="middle">
-			  <p>L'interface HTTP</p>
+			  <h1>L'interface HTTP</h1>
 			</section>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Requêtes et Réponses HTTP</header>
+	      	<h2>Requêtes et Réponses HTTP</h2>
 	        <section>
 				<p>Un serveur HTTP traite des requêtes entrantes et génère des réponses.</p>
-				<img alt="" src="img/request-response.png" style="margin:0 140px" />
-				<p>Il permet de transférer tous types de données classifiés en <b><a href="http://fr.wikipedia.org/wiki/Type_MIME" class="external" target="_blank">types mime</a></b> (text/html, audio/mpeg, application/json...)</p>
+				<p><img alt="" src="img/request-response.png" class="img-responsive" style="margin:auto" /></p>
+				<p>Il permet de transférer tous types de données classifiés en <b><a href="http://fr.wikipedia.org/wiki/Type_MIME" target="_blank">types mime</a></b> (text/html, audio/mpeg, application/json...)</p>
 				<p>Dans le cas de contenus textes, l'<b>encoding</b> est très important.</p>
 				<p>Le protocole HTTP est un protocole <b>sans état</b> (non connecté).<br>
 				Les serveurs http dynamiques palie à ce manque via la gestion de sessions.</p>
@@ -49,15 +37,15 @@
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Curl, wget et consoles web</header>
+	      	<h2>Curl, wget et consoles web</h2>
 	        <section>
 				<p>En dehors des browsers web, il existe de nombreux outils et librairies afin de forger des requêtes http.</p>
 				<ul>
-					<li><a href="http://fr.wikipedia.org/wiki/Wget" class="external" target="_blank">wget</a> permet de faire un GET sur une url.
+					<li><a href="http://fr.wikipedia.org/wiki/Wget" target="_blank">wget</a> permet de faire un GET sur une url.
 				</ul>
 				<pre>wget http://www.exemple.fr/</pre>
 				<ul>
-					<li><a href="http://fr.wikipedia.org/wiki/CURL" class="external" target="_blank">culr</a> est beaucoup plus flexible et supporte toutes les méthodes HTTP
+					<li><a href="http://fr.wikipedia.org/wiki/CURL" target="_blank">culr</a> est beaucoup plus flexible et supporte toutes les méthodes HTTP
 				</ul>
 				<pre>curl http://www.exemple.fr/</pre>
 				<p>La liste des librairies clientes serait impossible à maintenir.</p>
@@ -66,7 +54,7 @@
 	      </div>
 	       
 	      <div class="slide">
-	        <header>Une requête HTTP</header>
+	        <h2>Une requête HTTP</h2>
 	        <section>
 	        	<p></p>
 	        	<div>Une requête HTTP contient :</div>
@@ -75,7 +63,7 @@
 	        		<li>des <b>en-têtes</b> : des clés / valeurs donnant des indications supplémentaires.
 	        		<li>un <b>corps</b> : des blocs de données supplémentaires utiles pour envoyer du contenu.
 	        	</ul>
-				<p>Par exemple, dans le cas d'une requête vers http://www.rtl.fr/actualites</p>
+				<p>Par exemple, dans le cas d'une requête vers <a href="http://www.rtl.fr/actualites" target="_blank">http://www.rtl.fr/actualites</a></p>
 				<pre>
 GET /actualites HTTP/1.1
 Host: www.rtl.fr
@@ -99,16 +87,16 @@ Referer: http://www.rtl.fr/
 	      			text-align: center;
 	      		}
 	      	</style>
-	      	<header>Les méthodes HTTP</header>
+	      	<h2>Les méthodes HTTP</h2>
 	        <section>
-	        	<p>La <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html" class="external" target="_blank">méthode</a> indique le type d'action souhaité. Les plus courantes sont <b>GET</b> et <b>POST</b>.</p>
-	        	<table id="httpMethods" class="refTable">
+	        	<p>La <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html" target="_blank">méthode</a> indique le type d'action souhaité. Les plus courantes sont <b>GET</b> et <b>POST</b>.</p>
+	        	<table id="httpMethods" class="table table-striped">
 	        		<thead>
 	        			<tr>
 	        				<td>méthode</td>
 	        				<td>description</td>
 	        				<td>sûre</td>
-	        				<td><a href="http://en.wikipedia.org/wiki/Idempotence" class="external" target="_blank">idempotente</a></td>
+	        				<td>idempotente</td>
 	        			</tr>
 	        		</thead>
 	        		<tr>
@@ -158,14 +146,14 @@ Referer: http://www.rtl.fr/
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Quelques headers HTTP</header>
+	        <h2>Quelques headers HTTP</h2>
 	        <section>
-	        	<p>Voici quelques <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields" class="external" target="_blank">headers HTTP</a> parmis les principaux pour les requêtes.</p>
-				<table class="refTable">
+	        	<p>Voici quelques <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields" target="_blank">headers HTTP</a> parmis les principaux pour les requêtes.</p>
+				<table class="table table-striped">
 					<colgroup>
-						<col width="180px"></col>
-						<col ></col>
-						<col width="220px" style="text-align: left;"></col>
+						<col width="180px" />
+						<col />
+						<col width="220px" style="text-align: left;" />
 					</colgroup>
 	        		<thead>
 	        			<tr>
@@ -211,13 +199,11 @@ Referer: http://www.rtl.fr/
 	        		</tr>
 	        	</table>
 	        	<p>La liste des headers standards est longue et <b>peut être étendue</b>.</p>
-	        	<p>Ces headers accompagnent la requête tout au long de son voyage sur le réseau.</p>
-	        	<p>Certains équipements intermédiaires peuvent donc lire et modifier ces headers en fonction de leur rôle.</p>
 	        </section>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Une réponse HTTP</header>
+	        <h2>Une réponse HTTP</h2>
 	        <section>
 	        	<div>Une réponse HTTP contient :</div>
 	        	<ul>
@@ -246,10 +232,10 @@ Connection: keep-alive
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Le code de retour</header>
+	        <h2>Le code de retour</h2>
 	        <section>
-	        	<p>Il est le résultat synthétique de la réponse.</p>
-	        	<table class="refTable">
+	        	<p>Il est le <a href="http://fr.wikipedia.org/wiki/Liste_des_codes_HTTP" target="_blank">code synthétique</a> de la réponse (les plus courants sont 200, 301, 302, 404 et 500).</p>
+	        	<table class="table table-striped table-condensed">
 	        		<thead>
 	        			<tr>
 	        				<td>code</td>
@@ -318,20 +304,18 @@ Connection: keep-alive
 	        			<td>Erreur interne du serveur</td>
 	        		</tr>
 	        	</table>
-	        	<p>Les codes les plus utilisés sont 200, 301, 302, 404 et 500.</p>
 	        </section>
-	        <p class="source">http://fr.wikipedia.org/wiki/Liste_des_codes_HTTP</p>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Quelques headers HTTP</header>
+	        <h2>Quelques headers HTTP</h2>
 	        <section>
-	        	<p>Voici quelques <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields" class="external" target="_blank">headers HTTP</a> parmis les principaux pour les réponses.</p>
-	        	<table class="refTable">
+	        	<p>Voici quelques <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields" target="_blank">headers HTTP</a> parmis les principaux pour les réponses.</p>
+	        	<table class="table table-striped">
 					<colgroup>
-						<col width="160px"></col>
-						<col ></col>
-						<col width="320px" style="text-align: left;"></col>
+						<col width="160px" />
+						<col />
+						<col width="320px" style="text-align: left;" />
 					</colgroup>
 	        		<thead>
 	        			<tr>
@@ -376,15 +360,15 @@ Connection: keep-alive
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Le header Cache-Control</header>
+	        <h2>Le header Cache-Control</h2>
 	        <section>
 	        	<p>Le calcul de la réponse sur un serveur peut être une opération coûteuse en temps ou en cpu.</p>
 	        	<p>Le header Cache-Control permet de piloter le navigateur et les caches intermédiaires.</p>
-	        	<table class="refTable">
+	        	<table class="table table-striped ">
 					<colgroup>
-						<col width="160px"></col>
-						<col ></col>
-						<col width="260px" style="text-align: left;"></col>
+						<col width="160px" />
+						<col />
+						<col width="260px" style="text-align: left;" />
 					</colgroup>
 	        		<tr>
 	        			<td>Cache-Control</td>
@@ -394,13 +378,12 @@ Connection: keep-alive
 	        	</table>
 	        	<p>Les valeurs possibles sont : <b>no-cache</b>, <b>max-age</b>, no-store, max-stale, no-transform, min-fresh, min-vers, only-if-cached</p>
 	        	<p>Il est donc possible de jouer entre fraîcheur de l'information et performance afin d'offrir le meilleur service.</p>
-	        	<p>Par exemple <a href="http://en.wikipedia.org/wiki/Varnish_(software)" class="external" target="_black">Varnish</a> est un accélérateur HTTP (proxy cache) qui peut être configuré afin de cacher les document en fonction de ce header.</p>
+	        	<p>Par exemple <a href="http://en.wikipedia.org/wiki/Varnish_(software)" target="_blank">Varnish</a> est un accélérateur HTTP (proxy cache) qui peut être configuré afin de cacher les document en fonction de ce header.</p>
 	        </section>
-	        <p class="source">http://tools.ietf.org/html/rfc2616#section-14.9</p>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Les cookies</header>
+	        <h2>Les cookies</h2>
 	        <section>
 	        	<p>Un cookie est un couple clé / valeur stoqué par le navigateur. Il a une date d'expiration et n'est valide que pour un domaine.</p>
 	        	<p>Le serveur envoie des cookies au navigateur grâce au header HTTP Set-Cookie.</p>
@@ -417,12 +400,12 @@ Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103;
   vote-5937621514="14042010 221016";
   vote-5953180085="02102010 180702"
 	        	</pre>
-	        	<p>Les cookies pouvant être lu par un tiers (<a href="http://fr.wikipedia.org/wiki/Attaque_de_l%27homme_du_milieu" class="external" target="_blank">man in the middle attack</a>), il ne faut pas y stoquer d'information sensibles.</p>
+	        	<p>Les cookies pouvant être lu par un tiers (<a href="http://fr.wikipedia.org/wiki/Attaque_de_l%27homme_du_milieu" target="_blank">man in the middle attack</a>), il ne faut pas y stoquer d'information sensibles.</p>
 	        </section>
 	      </div>
 	      
 	      <div class="slide">
-	        <header>La gestion de sessions</header>
+	        <h2>La gestion de sessions</h2>
 	        <section>
 	        	<p>Le protocole HTTP étant sans état, ce sont les cookies qui sont généralement utilisés afin gérer le suivi d'état entre les requêtes.</p>
 	        	<p>Afin de pouvoir retrouver la bonne session pour chaque client, le serveur écrit un cookie dans lequel il note l'identifiant de la session.</p>
@@ -433,10 +416,10 @@ Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103;
 	      </div>
 	      
 	      <div class="slide">
-	        <header>Principaux serveurs web</header>
+	        <h2>Principaux serveurs web</h2>
 	        <section>
 	        	<p>La liste des serveurs web est en perpétuelle évolution, en voici quelques uns.</p>
-	        	<table class="refTable">
+	        	<table class="table table-striped table-condensed">
 					<thead>
 	        			<tr>
 	        				<td>nom</td>
@@ -506,11 +489,16 @@ Cookie: __utma=106559260.234280132.1272276115.1286917061.1288820261.103;
 	        		</tr>
 	        	</table>
 	        </section>
-	        <p class="source">http://en.wikipedia.org/wiki/Comparison_of_web_servers</p>
 	      </div>
       <!-- slides -->
 
     </div> <!-- presentation -->
-    
-  	</body>
-  </html>
+</div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
+<script src="../../../common/prez/js/slides.js"></script>
+</body>
+</html>

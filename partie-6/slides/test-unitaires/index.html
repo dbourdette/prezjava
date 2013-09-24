@@ -1,27 +1,18 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
 	<title>Test unitaires</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-	<link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prez/css/slides.css" class="theme" rel="stylesheet">
 
-	<link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-	<link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-
-	<script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-	<script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-	<script src="../../../common/js/code.js"></script>
-	<script src="../../../common/js/prettify.js"></script>
-    <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-    <script src="../../../common/js/prez.js"></script>
-
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
 </head>
-<body onload="prettyPrint();">
+<body>
 	<div class="presentation">
 		<div id="presentation-counter">Chargement...</div>
 
@@ -29,12 +20,12 @@
 
 			<div class="slide">
 				<section id="landing-slide" class="middle">
-					<p>Le développement par les tests</p>
+					<h1>Le développement par les tests</h1>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Une pratique agile</header>
+				<h2>Une pratique agile</h2>
 				<section>
 					<p>En pratique, on écrit un code de test avant d'écrire le code de l'application.</p>
                     <p>En anglais, c'est le <b>Test Driven Development</b> (TDD) ou le Test First Development.</p>
@@ -51,7 +42,7 @@
 			</div>
 
 			<div class="slide">
-				<header>Le cycle d'ajout de fonctionnalités</header>
+				<h2>Le cycle d'ajout de fonctionnalités</h2>
 				<section>
 					<p>En développant par les tests, la technique est immuable :</p>
                     <ul>
@@ -59,14 +50,14 @@
                         <li>Faire passer le test (green light pattern).</li>
                         <li>Améliorer le code sans casser les tests (refactoring).</li>
                     </ul>
-                    <img src="img/red-green-refactoring.png" height="200px" style="margin: 20px 0px 20px 250px">
+                    <p><img src="img/red-green-refactoring.png" class="img-responsive" style="margin: auto;"></p>
                     <p>On répète ce cycle jusqu'a obtenir le niveau de fonctionnalités souhaité.</p>
                     <p>Les test couvrent idéalement tout le code.</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>xUnit</header>
+				<h2>xUnit</h2>
 				<section>
                     <p>Il existe beaucoup de librairies de test unitaires.</p>
                     <p>En java, c'est JUnit (de la famille des xUnit) initiée par Kent beck et Erich Gamma qui est la plus répandue.</p>
@@ -83,7 +74,7 @@
 			</div>
 
 			<div class="slide">
-				<header>Un terrain de d'apprentissage</header>
+				<h2>Un terrain de d'apprentissage</h2>
 				<section>
                     <p>Lorsque l'on découvre une nouvelle librairie, il est possible d'écrire quelques tests unitaires afin d'apprendre à l'utiliser.</p>
                     <p>C'est une façon simple de découvrir une nouvelle API et de vérifier qu'elle répond bien au besoin.</p>
@@ -93,7 +84,7 @@
 			</div>
 
 			<div class="slide">
-				<header>La maintenance</header>
+				<h2>La maintenance</h2>
 				<section>
                     <p>En cas de bug en production, le premier réflexe est d'arriver à le reproduire systématiquement.</p>
                     <p>La meilleure méthode possible est l'écriture d'un test unitaire.</p>
@@ -103,7 +94,7 @@
 			</div>
 
 			<div class="slide">
-				<header>Extensions</header>
+				<h2>Extensions</h2>
 				<section>
                     <p>En complément de junit, voici quelques possibilités de compléments :</p>
                     <ul>
@@ -117,14 +108,20 @@
 			</div>
 
 			<div class="slide">
-                <header>Le livre de référence</header>
-				<section>
-                    <img src="img/test-driven-development.jpg" style="margin: 50px 0 50px 240px;"/>
-					<p style="margin-left: 180px;">Une étude de cas simple et claire par Kent Beck.</p>
+                <h2>Le livre de référence</h2>
+				<section style="text-align: center;">
+                    <p><img src="img/test-driven-development.jpg" class="img-responsive" style="margin: auto;margin-top: 100px"/></p>
+					<p>Une étude de cas simple et claire par Kent Beck.</p>
 				</section>
 			</div>
 
 		</div> <!-- slides -->
 	</div> <!-- presentation -->
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
+<script src="../../../common/prez/js/slides.js"></script>    `
 </body>
 </html>

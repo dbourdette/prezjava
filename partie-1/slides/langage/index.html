@@ -1,43 +1,30 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-		<title>Le langage java</title>
+<head>
+    <title>Le langage java</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-		<link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prez/css/slides.css" class="theme" rel="stylesheet">
 
-		<link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-		<link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-
-		<script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-		<script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-		<script src="../../../common/js/code.js"></script>
-		<script src="../../../common/js/prettify.js" ></script>
-
-        <script src="../../../common/js/prez.js"></script>
-  	</head>
-  	<body onload="prettyPrint();">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+</head>
+<body>
     <div class="presentation">
       <div id="presentation-counter">Chargement...</div>
       
       <div style="display: block;" class="slides">
 			<div class="slide">
-                <style type="text/css">
-					#landing-slide p {
-						font-size: 35px;
-					}
-				</style>
-				<section id="landing-slide" class="middle">
-					<p>Le langage java</p>
+                <section id="landing-slide" class="middle">
+					<h1>Le langage java</h1>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Le langage Java</header>
+				<h2>Le langage Java</h2>
 				<section>
 					<p>Le Java est un langage orienté objet :</p>
 					<ul>
@@ -47,21 +34,21 @@
 						<li>appels dynamiques</li>
 					</ul>
 					<p>Java n'est pas un language objet pur car il inclut des types de base (int, long...) et on ne peut pas surcharger certains opérateurs (+, -...).</p>
+                    <blockquote><p>http://en.wikipedia.org/wiki/Object-oriented_programming</p></blockquote>
 					<p>C'est un language <b>fortement typé</b> : les contrôles sont effecutés à la compilation.</p>
 					<p>Le code source est compilé en <b>bytecode</b> portable.</p>
-					<p>La version courante est la version 1.7 (java 1.7 équivalent à java 7.0).</p>
+					<p>La version courante est la version 1.7.</p>
                     <p>Ces quelques slides font un rappel rapide du language et des ses mécaniques.</p>
 				</section>
-				<p class="source">http://en.wikipedia.org/wiki/Object-oriented_programming</p>
 			</div>
 
 			<div class="slide">
-				<header>Compilation</header>
+				<h2>Compilation</h2>
 				<section>
                     <p>Java est un langage <b>compilé</b>. Mais contrairement au C qui est compilé en instructions natives, Java est compilé en <b>bytecode</b>.</p>
-                    <img src="img/compilation.png" alt="" style="margin-left: 120px;">
+                    <p><img src="img/compilation.png" alt="" class="img-responsive"></p>
                     <p>Cela lui permet d'être <b>portable</b> et exécutable sur toutes les machines où tourne une <b>machine virtuelle java</b> (jvm).</p>
-                    <p style="font-size: 30px;font-style: italic;margin: 10px 220px">Write once, run everywhere</p>
+                    <blockquote><p>Write once, run everywhere</p></blockquote>
                     <p>La compilation se fait avec la commande javac</p>
                     <pre><b>javac</b> -classpath lib1.jar;lib2.jar Hello.java</pre>
                     <p>Elle tranforme les fichiers .java en fichiers .class contenant le bytecode.</p>
@@ -69,18 +56,18 @@
 			</div>
 
 			<div class="slide">
-				<header>Méthode main et exécution</header>
+				<h2>Méthode main et exécution</h2>
 				<section>
                     <p>L'exécution d'une classe java se fait avec la commande java</p>
                     <pre><b>java</b> -classpath lib1.jar;lib2.jar Hello</pre>
                     <p>Afin de pouvoir être exécutée, cette classe Hello doit posséder une méthode main.</p>
-                    <pre>public static void <b>main</b>(String[] args) {
+                    <pre class="prettyprint">public static void <b>main</b>(String[] args) {
     ...
 }</pre>
                     <p>Le chargement du code java est dynamique : il est chargé au fur et à mesure du besoin.</p>
                     <p>La machine virtuelle regarde dans le <b>classpath</b> afin de charger les classes.</p>
                     <p>Si une classe demandée n'est pas définie dans le classpath alors une erreur est remontée.</p>
-                    <pre>java.lang.ClassNotFoundException: path.to.my.unknown.Code
+                    <pre class="prettyprint">java.lang.ClassNotFoundException: path.to.my.unknown.Code
 Erreur
  at java.net.URLClassLoader$1.run(URLClassLoader.java:198)
 ...</pre>
@@ -88,61 +75,63 @@ Erreur
 			</div>
 
 			<div class="slide">
-				<header>package, class et import</header>
+				<h2>package, class et import</h2>
 				<section>
                     <p>Les <b>classes</b> sont organisées en <b>packages</b> correspondants à l'arborescence des répertoires.</p>
-                    <pre><b>package</b> edu.fr.test
+                    <pre class="prettyprint"><b>package</b> edu.fr.test
 
 public <b>class</b> Test {
    ...
 }</pre>
                     <p>Si on souhaite utiliser une classe depuis une autre, il suffit de faire un import de la classe</p>
-                    <pre><b>import</b> edu.fr.test.Test</pre>
+                    <pre class="prettyprint"><b>import</b> edu.fr.test.Test</pre>
                     <p>Ou de tout le package.</p>
-                    <pre><b>import</b> edu.fr.test.*</pre>
+                    <pre class="prettyprint"><b>import</b> edu.fr.test.*</pre>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>Classe Object</header>
+				<h2>Classe Object</h2>
 				<section>
                     <p>Toutes les classes héritent de la classe Object qui définit les méthodes suivantes :</p>
-                    <table style="margin-left: 70px;border: 1px black solid;border-collapse: collapse;" border="1px" >
-                        <tr>
-                            <td style="text-align: center">Object</td>
-                        </tr>
-                        <tr>
-                            <td style="padding:5px;">
-                                <ul>
-                                    <li>getClass : la classe de l'object</li>
-                                    <li>toString : une représentation en chaîne de caractères de l'objet</li>
-                                    <li>equals : test d'égalité</li>
-                                    <li>hashCode : une valeur de hash (un entier qui représente l'état de l'objet)</li>
-                                    <li>clone : retourne un copie</li>
-                                    <li>wait / notify : permet de bloquer ou débloquer le thread courant</li>
-                                    <li>finalize : appelé quand l'objet va être supprimé de la mémoire</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
+                    <p>
+                        <table style="margin-left: 70px;border: 1px black solid;border-collapse: collapse;" border="1px" >
+                            <tr>
+                                <td style="text-align: center">Object</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px;">
+                                    <ul>
+                                        <li>getClass : la classe de l'object</li>
+                                        <li>toString : une représentation en chaîne de caractères de l'objet</li>
+                                        <li>equals : test d'égalité</li>
+                                        <li>hashCode : une valeur de hash (un entier qui représente l'état de l'objet)</li>
+                                        <li>clone : retourne un copie</li>
+                                        <li>wait / notify : permet de bloquer ou débloquer le thread courant</li>
+                                        <li>finalize : appelé quand l'objet va être supprimé de la mémoire</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
 
                     <p>En pratique :</p>
                     <ul>
-                        <li>Les méthodes <b>equals et hashCode</b>, qui vont de pair, sont fréquemment surchargées</li>
-                        <li>La méthode <b>toString</b> est pratique pour du debugging</li>
-                        <li><b>getClass</b> permet d'accéder aux méta données de l'objet. On parle d'introspection.</li>
+                        <li>Les méthodes <code>equals</code> et <code>hashCode</code>, qui vont de pair, sont fréquemment surchargées</li>
+                        <li>La méthode <code>toString</code> est pratique pour du debugging</li>
+                        <li><code>getClass</code> permet d'accéder aux méta données de l'objet. On parle d'introspection.</li>
                         <li>Il est très rare d'utiliser les autres méthodes.</li>
                     </ul>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>interface</header>
+				<h2>interface</h2>
 				<section>
                     <p>Une interface définit un contrat (une API) auquel une classe peut adhérer.</p>
                     <p>On dit alors qu'une classe <b>implémente</b> une interface.</p>
                     <p>Une interface peut contenir des <b>signatures</b> de méthodes et des constantes</p>
-                    <pre>public <b>interface</b> MailService {
+                    <pre class="prettyprint">public <b>interface</b> MailService {
    public static final int SOME_NAME = 10;
 
    public void send(Mail mail);
@@ -154,7 +143,7 @@ public <b>class</b> Test {
 			</div>
 
 			<div class="slide">
-				<header>enum</header>
+				<h2>enum</h2>
 				<section>
                     <p>Un enum est une classe qui ne possède qu'un <b>nombre prédéfini</b> d'instances</p>
                     <pre>public <b>enum</b> Gender {
@@ -172,16 +161,16 @@ gender1 == gender2; <span class="comment">// true</span></pre>
 			</div>
 
 			<div class="slide">
-				<header>Annotations</header>
+				<h2>Annotations</h2>
 				<section>
                     <p>Une annotation est un marqueur qui a valeur de qualificatif.</p>
                     <p>Elle s'utilise simplement en annotant les classes, les attributs ou les méthodes.</p>
-                    <pre>@LookAtMe(why = "why not")
+                    <pre class="prettyprint">@LookAtMe(why = "why not")
 public void save() {
    ...
 }</pre>
                     <p>Sa définition à la forme suivante.</p>
-                    <pre>public <b>@interface</b> LookAtMe {
+                    <pre class="prettyprint">public <b>@interface</b> LookAtMe {
     String why();
 
     String comments() default "none";
@@ -195,14 +184,14 @@ public void save() {
 			</div>
 
 			<div class="slide">
-				<header>Les stacktraces</header>
+				<h2>Les stacktraces</h2>
 				<section>
                     <p>Quand une erreur survient, une exception est levée (en anglais <b>thrown</b>).</p>
                     <p>Une exception est une classe java héritant de la classe Throwable.</p>
                     <p>On peut lever une exception via la synthaxe :</p>
-                    <pre>throw new IllegalArgumentException("param can not be null");</pre>
+                    <pre class="prettyprint">throw new IllegalArgumentException("param can not be null");</pre>
                     <p>La méthode printStackTrace d'une exception permet d'obtenir la <b>stacktrace</b> :</p>
-                    <pre>java.io.FileNotFoundException: test.txt
+                    <pre class="prettyprint">java.io.FileNotFoundException: test.txt
    at java.io.FileInputStream.&lt;init&gt;(FileInputStream.java)
    at java.io.FileInputStream.&lt;init&gt;(FileInputStream.java)
    at Test.readFile(Test.java:19)
@@ -213,19 +202,19 @@ public void save() {
 			</div>
 
 			<div class="slide">
-				<header>La gestion de la mémoire</header>
+				<h2>La gestion de la mémoire</h2>
 				<section>
-                    <p>Une machine virtuelle java réserve et gère la mémoire en masse.</p>
-                    <p>Il n'y a donc pas besoin d'écrire du code afin de réserver ou libérer de la mémoire.</p>
-                    <p>La machine virtuelle segmente la mémoire en fonction de la durée de vie des objets.</p>
-                    <p>Des stragtégies complexes pilotent les données en mémoire.</p>
-                    <img src="img/gc.jpg" style="margin:0 100px" />
+                    <p>La machine virtuelle java réserve et libère la mémoire.</p>
+                    <p>Nous sommes dans un environnement managé.</p>
+                    <p>La mémoire est segmentée afin d'y répartir les objets chargés.</p>
+                    <p>Des stratégies complexes pilotent les données en mémoire.</p>
+                    <p><img src="img/gc.jpg" class="img-responsive" style="margin:auto" /></p>
                     <p>La <b>garbage collector</b> surveille les objets devenus inutiles et libère la mémoire correspondante.</p>
 				</section>
 			</div>
 
 			<div class="slide">
-				<header>java et jee</header>
+				<h2>java et jee</h2>
 				<section>
                     <p>JEE est un ensemble de librairies et outils facilitant l'usage de java en entreprise.</p>
                     <p>C'est un panel de services vaste dont en voici quelques élements :</p>
@@ -249,10 +238,10 @@ public void save() {
 			</div>
 
 			<div class="slide">
-				<header>Environnements managés</header>
+				<h2>Environnements managés</h2>
 				<section>
                     <p>Une application jee est déployée dans un <b>conteneur d'applications</b>.</p>
-                    <p>Il fait tourner des applications qui utilisent les librairies jee</p>
+                    <p>Il fait tourner des applications qui utilisent les librairies jee.</p>
                     <p>Une application jee est constituée de <b>composants</b>.</p>
                     <p>Le conteneur charge les composants et les sollicite en fonction du besoin.</p>
                     <p>La déclaration des composants se fait dans un <b>descripteurs de déploiement</b>.</p>
@@ -262,10 +251,10 @@ public void save() {
 			</div>
 
 			<div class="slide">
-				<header>Et pour finir</header>
+				<h2>Et pour finir</h2>
 				<section>
                     <p><b>Effective java</b> : le guide des bonnes pratiques java et objet par Joshua Bloch.</p>
-                    <img alt="" src="img/effective-java.jpg" width="200px;" style="margin-left:300px">
+                    <p><img alt="" src="img/effective-java.jpg" class="img-responsive" style="margin:auto; max-height: 300px;"></p>
                     <p>Un catalogue de bonnes pratiques <b>essentielles</b>, simples et efficaces.</p>
                     <p>Un livre à lire après avoir pris un peu d'expérience en java.</p>
                     <p>Disponible sur <a href="http://www.amazon.fr/Effective-Java-Joshua-Bloch/dp/0321356683/ref=sr_1_1?ie=UTF8&qid=1312385429&sr=8-1" class="external" target="_blank">amazon</a></p>
@@ -275,6 +264,11 @@ public void save() {
      </div> <!-- slides -->
 
     </div> <!-- presentation -->
-    
-  	</body>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
+<script src="../../../common/prez/js/slides.js"></script>
+</body>
 </html>

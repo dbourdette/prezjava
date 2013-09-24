@@ -1,24 +1,16 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>JEE</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+        <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prez/css/slides.css" class="theme" rel="stylesheet">
+
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-        <title>JEE</title>
-
-        <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-
-        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-
-        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-        <script src="../../../common/js/code.js"></script>
-        <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-        <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-        <script src="../../../common/js/prez.js"></script>
   	</head>
   	<body onload="prettyPrint();">
     <div class="presentation">
@@ -26,18 +18,13 @@
       <div style="display: block;" class="slides">
       
 	      <div class="slide">
-			<style>
-			  #landing-slide p {
-			    font-size: 35px;
-			  }
-			</style>
 			<section id="landing-slide" class="middle">
-			  <p>JEE</p>
+			  <h1>JEE</h1>
 			</section>
 	      </div>
 
           <div class="slide">
-	      	<header>The one stop shop</header>
+	      	<h2>The one stop shop</h2>
 	        <section>
                 <p>Les spécifications jee sont censées couvrir tous les besoins "entreprise".</p>
                 <ul>
@@ -58,7 +45,7 @@
 	        	</ul>
             </section>
           </div><div class="slide">
-	      	<header>Les EJBs</header>
+	      	<h2>Les EJBs</h2>
 	        <section>
 	         	<p>Les <b>enterprise java beans</b> sont au coeur des serveurs d'application : ils composent les couches métier de l'application.</p>
 	         	<p>La version 3.1 (jee 6) facilite énormément l'écriture d'EJBs.</p>
@@ -78,18 +65,18 @@
 	      </div>
 
 	      <div class="slide">
-	      	<header>Les types d'EJBs</header>
+	      	<h2>Les types d'EJBs</h2>
 	        <section>
                 <ul>
-                    <li>Entity beans (@Entity) : les entités pour la persistance de données (lié a JPA)</li>
+                    <li>Entity beans (<code>@Entity</code>) : les entités pour la persistance de données (lié a JPA)</li>
                     <li>Session beans : les services
                         <ul>
-                            <li>@Singleton : les services sans état</li>
-                            <li>@Stateless : les services sans état (disponibles dans un pool)</li>
-                            <li>@Stateful : les services avec état conversationel (gestion de session)</li>
+                            <li><code>@Singleton</code> : les services sans état</li>
+                            <li><code>@Stateless</code> : les services sans état (disponibles dans un pool)</li>
+                            <li><code>@Stateful</code> : les services avec état conversationel (gestion de session)</li>
                         </ul>
                     </li>
-                    <li>Message driven beans (@MessageDriven) : consommateurs de messages asynchrones</li>
+                    <li>Message driven beans (<code>@MessageDriven</code>) : consommateurs de messages asynchrones</li>
                 </ul>
 
                 <p>Les EJBs ont longtemps été une spécification lourde à respecter.</p>
@@ -101,7 +88,7 @@
 	      </div>
 
 	      <div class="slide">
-	      	<header>EJB Lite</header>
+	      	<h2>EJB Lite</h2>
 	        <section>
                 <p>La sous spécification EJB Lite (EJB 3.1) est une version édulcorée des EJBs.</p>
 
@@ -225,7 +212,7 @@
 	      </div>
 
           <div class="slide">
-              <header>Packaging</header>
+              <h2>Packaging</h2>
               <section>
                 <p>Avant les EJBs 3.1, il était obligatoirement compliqué.</p>
 
@@ -243,6 +230,11 @@
       <!-- slides -->
 
     </div> <!-- presentation -->
-    
+
+    <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+    <script src="../../../common/prez/js/prez.js"></script>
+    <script src="../../../common/prez/js/slides.js"></script>    `
   	</body>
 </html>

@@ -1,47 +1,33 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>MVC 2</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+        <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+        <link href="../../../common/prez/css/slides.css" class="theme" rel="stylesheet">
+
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-        <title>MVC 2</title>
-
-        <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-        <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-
-        <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-        <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-
-        <script src="../../../common/jquery/jquery-1.4.4.min.js"></script>
-        <script src="../../../common/jquery/jquery-ui-1.8.7.custom.min.js"></script>
-
-        <script src="../../../common/js/code.js"></script>
-        <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-        <script src="../../../common/jquery/jquery-1.8.3.min.js"></script>
-        <script src="../../../common/js/prez.js"></script>
-
   	</head>
-  	<body onload="prettyPrint();">
+  	<body>
     <div class="presentation">
       <div id="presentation-counter">Chargement...</div>
       <div style="display: block;" class="slides">
       
 	      <div class="slide">
-			<style>
-			  #landing-slide p {
-			    font-size: 35px;
-			  }
-			</style>
 			<section id="landing-slide" class="middle">
-			  <p>Les frameworks MVC 2</p>
+			  <h1>Les frameworks MVC 2</h1>
 			</section>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Les frameworks MVC</header>
+	      	<h2>Les frameworks MVC</h2>
 	        <section>
 	        	<p>Un framework MVC est un conteneur dans le conteneur jee.</p>
-	        	<img alt="" src="img/jee-mvc2-container.png" width="300px" style="margin:0 250px;"/>
+	        	<p><img alt="" src="img/jee-mvc2-container.png" class="img-responsive" style="margin:auto;max-height: 240px"/></p>
 	        	<p>Il offre des services supplémentaires facilitant la création d'applications web :</p>
 	        	<ul>
 	        		<li><b>Request dispatching</b> (URL mapping) : routage de la requête vers le bon traitement.</li>
@@ -53,24 +39,24 @@
 	      </div>
 	
 	      <div class="slide">
-	      	<header>L'architecture MVC 2</header>
+	      	<h2>L'architecture MVC 2</h2>
 	        <section>
 	        	<p>L'architecture d'un framwork MVC 2 repose sur la séparation des responsabilités.</p>
-	        	<img alt="" src="img/mvc2.png" width="600px" style="margin:0 100px;"/>
+	        	<img alt="" src="img/mvc2.png" class="img-responsive" style="margin:auto;max-height: 460px"/>
 	        	<p>Le MVC 2 se distingue du MVC par l'introduction d'un <b>front controller</b> (<b>Dispatcher</b>).</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Quelques frameworks</header>
+	      	<h2>Quelques frameworks</h2>
 	        <section>
 	        	<p>Une brève histoire de l'écosystème des frameworks web :</p>
-	        	<img alt="" src="img/frameworks.png" width="840px"/>
+	        	<p><img alt="" src="img/frameworks.png" class="img-responsive" style="margin: auto"/></p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Spring MVC</header>
+	      	<h2>Spring MVC</h2>
 	        <section>
 	        	<p>Spring MVC est un pur framework MVC 2 dont la configuration repose sur spring.</p>
 	        	<p>Depuis spring 2.5, il est fortement basé sur les annotations.</p>
@@ -83,7 +69,7 @@
 	      </div>
 	
 	      <div class="slide">
-	      	<header>web.xml</header>
+	      	<h2>web.xml</h2>
 	        <section>
 	        	<p>Le descripteur de déploiement comporte ce qu'il faut afin de charger le contexte spring</p>
 	        	<pre style="font-size:15px;">
@@ -104,7 +90,7 @@
 	      </div>
 	
 	      <div class="slide">
-	      	<header>spring-servlet.xml</header>
+	      	<h2>spring-servlet.xml</h2>
 	        <section>
 	        	<p>C'est un contexte spring classique auquel se rajoute les éléments mvc.</p>
 	        	<pre>
@@ -134,7 +120,7 @@
 	      </div>
 	
 	      <div class="slide">
-	      	<header>HelloWorldController</header>
+	      	<h2>HelloWorldController</h2>
 	        <section>
 	          <p>Un contrôleur est un composant spring spécial dédié aux traitements des requêtes HTTP.</p>
 	          <pre>
@@ -147,13 +133,13 @@ public class HelloWorldController {
  }
 }</pre>
 				<p>Grâce au scan de composants, on peut donc déclarer facilement de nouveaux contrôleurs.</p>
-				<p>L'annotation @RequestMapping permet de mapper une méthode sur une uri.</p>
+				<p>L'annotation <code>@RequestMapping</code> permet de mapper une méthode sur une uri.</p>
 				<p>Tout se fait par annotations et conventions.</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Paramètres</header>
+	      	<h2>Paramètres</h2>
 	        <section>
 	          <p>Les paramètres de la requête peuvent être déclarés comme des paramètres de la méthode.</p>
               <pre>http://localhost:8080/hello?name=Steven</pre>
@@ -162,17 +148,16 @@ public class HelloWorldController {
 @Controller
 public class HelloWorldController {
  @RequestMapping("/hello")
- public void hello(HttpServletResponse response, <b>String name</b>)
-   throws IOException {
+ public void hello(HttpServletResponse response, String name) throws IOException {
   response.getWriter().write("Hello " + name + " !");
  }
 }</pre>
-              <p>L'annotation @RequestParam permet de d'ajuster le mapping du paramètre.</p>
+              <p>L'annotation <code>@RequestParam</code> permet de d'ajuster le mapping du paramètre.</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>La conversion automatique</header>
+	      	<h2>La conversion automatique</h2>
 	        <section>
 	          <p>Le framework est capable de convertir les paramètres vers le bon type de données</p>
               <pre>http://localhost:8080/hello?value=10</pre>
@@ -181,8 +166,7 @@ public class HelloWorldController {
 @Controller
 public class HelloWorldController {
  @RequestMapping("/hello")
- public void hello(HttpServletResponse response, <b>Integer value</b>)
-    throws IOException {
+ public void hello(HttpServletResponse response, Integer value) throws IOException {
   response.getWriter().write("Hello " + value + " !");
  }
 }</pre>
@@ -191,7 +175,7 @@ public class HelloWorldController {
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Le parsing du chemin</header>
+	      	<h2>Le parsing du chemin</h2>
 	        <section>
 	          <p>Il est aussi possible de découper le chemin de la requête et de s'en servir comme paramètres.</p>
                 <pre>http://localhost:8080/hello/Steven</pre>
@@ -200,8 +184,7 @@ public class HelloWorldController {
 @Controller
 public class HelloWorldController {
  @RequestMapping("/hello/{name}")
- public void hello(HttpServletResponse response, <b>@PathVariable String name</b>)
-  throws IOException {
+ public void hello(HttpServletResponse response, @PathVariable String name<) throws IOException {
   response.getWriter().write("Hello " + name + " !");
  }
 }</pre>
@@ -210,7 +193,7 @@ public class HelloWorldController {
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Paramètres injectés</header>
+	      	<h2>Paramètres injectés</h2>
 	        <section>
 	        	<p>Les liste des paramètres injectables :</p>
                 <ul style="float:left;width: 220px;">
@@ -244,12 +227,12 @@ public class HelloWorldController {
   <b>writer</b>.write("Hello " + name + "!");
  }
 }</pre>
+                <p>La <a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/mvc.html#mvc-ann-requestmapping-arguments" target="_blank">doc complète</a></p>
 	        </section>
-	        <p class="source">http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/mvc.html#mvc-ann-requestmapping-arguments</p>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Retours supportés</header>
+	      	<h2>Retours supportés</h2>
 	        <section>
 	        	<p>Les retours possibles :</p>
 	        	<ul style="float:left;width: 200px;">
@@ -266,7 +249,7 @@ public class HelloWorldController {
 	        		<li>@ModelAttribute</li>
 	        	</ul>
 	        	<div style="clear:both;"></div>
-	          	<p>Ce qui nous permet de simplifier encore notre code avec @ResponseBody</p>
+	          	<p>Ce qui nous permet de simplifier encore notre code avec <code>@ResponseBody</code></p>
 	          	<pre>
 @Controller
 public class HelloWorldController {
@@ -276,12 +259,12 @@ public class HelloWorldController {
   return "Hello " + name + "!";
  }
 }</pre>
-                <p>Avec @ResponseBody, spring comprend que le retour de la méthode est directement le corps de la réponse.</p>
+                <p>Avec <code>@ResponseBody,</code> spring comprend que le retour de la méthode est directement le corps de la réponse.</p>
 	        </section>
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Le forward vers la vue</header>
+	      	<h2>Le forward vers la vue</h2>
 	        <section>
               <p>Dans un conteneur de servlet, un forward consiste a passer la main à un autre composant.</p>
 	          <p>Pour demander à spring de passer la main à une jsp, on peut retourner le nom du fichier.</p>
@@ -299,7 +282,7 @@ public class HelloWorldController {
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Le modèle et la vue</header>
+	      	<h2>Le modèle et la vue</h2>
 	        <section>
               <p>Le rôle du controller est d'interagir avec les services et de préparer le modèle.</p>
 	          <pre>
@@ -325,7 +308,7 @@ public class HelloWorldController {
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Les formulaires</header>
+	      	<h2>Les formulaires</h2>
 	        <section>
 	        	<p>Spring mvc propose un gestion assez classique des formulaires.</p>
                 <p>Nous allons prendre le formulaire suivant comme exemple.</p>
@@ -342,7 +325,7 @@ public class HelloWorldController {
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Le bean du formulaire</header>
+	      	<h2>Le bean du formulaire</h2>
 	        <section>
 	        	<p>Pour le code html précédent, nous allons définir la classe suivante.</p>
 	        	<pre>
@@ -363,7 +346,7 @@ public class PersonForm {
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Le contrôleur du formulaire</header>
+	      	<h2>Le contrôleur du formulaire</h2>
 	        <section>
 	        	<p>Le contrôleur supporte l'affichage et la modification de la donnée</p>
 	        	<pre>
@@ -390,7 +373,7 @@ public class PersonController {
 	      </div>
 	
 	      <div class="slide">
-	      	<header>Binding et validation</header>
+	      	<h2>Binding et validation</h2>
 	        <section>
 	        	<p>Le framework aide à la gestion des formulaires sur 2 points essentiels</p>
 	        	<ul>
@@ -416,7 +399,7 @@ public String post(@ModelAttribute("person") @Valid PersonForm form,
 	      </div>
 	      
 	      <div class="slide">
-	      	<header>Redirect after POST</header>
+	      	<h2>Redirect after POST</h2>
 	        <section>
 	          <p>Lors du POST du formulaire, des données sont envoyées au serveur.</p>
 	          <p>L'état de la base de données change.</p>
@@ -433,5 +416,10 @@ public String post(@ModelAttribute("person") @Valid PersonForm form,
 
     </div> <!-- presentation -->
     
+    <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+    <script src="../../../common/prez/js/prez.js"></script>
+    <script src="../../../common/prez/js/slides.js"></script>    `
   	</body>
   </html>
