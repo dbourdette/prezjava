@@ -31,9 +31,9 @@
 
 <p>On crée la branche ejb à partir de la branche master.</p>
 
-        <pre class="shell">&gt; git checkout master
+        <pre class="shell">$ git checkout master
 Switched to branch 'master'
-&gt; git checkout -b ejb
+$ git checkout -b ejb
 Switched to a new branch 'ejb'</pre>
 
 <h2>Embedded Glassfish</h2>
@@ -62,7 +62,7 @@ Switched to a new branch 'ejb'</pre>
 
 <p>La ligne de commande pour démarrer glassfish en embedded est : </p>
 
-<pre class="shell">mvn embedded-glassfish:run</pre>
+<pre class="shell">$ mvn embedded-glassfish:run</pre>
 
 <div class="alert alert-warning">Il se peut qu'il y ait besoin de faire un <b>mvn clean</b> puis <b>mvn package</b> avant de lancer cette commande</div>
 
@@ -74,7 +74,7 @@ Switched to a new branch 'ejb'</pre>
 
 <p>Vu le fonctionnement du plugin, il vaut mieux monter un peu la taille mémoire de la jvm et définir :</p>
 
-<pre class="shell">export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
+<pre class="shell">$ export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"</pre>
 
 <p>Les options Xmx et XX:MaxPermSize sont les zones indiqués sur le schéma suivant :</p>
 

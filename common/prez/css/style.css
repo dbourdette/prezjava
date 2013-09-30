@@ -42,3 +42,9 @@ pre.shell {
     border-radius: 4px 4px 0 0;
     box-shadow: 0 0 20px #222;
 }
+
+.added {
+    background-color: #d1fba8;
+    border-radius: 2px;
+    padding: 0 2px;
+}
