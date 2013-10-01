@@ -1,94 +1,82 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Java API for RESTful Web Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Java API for RESTful Web Services</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1>Java API for RESTful Web Services</h1>
+<body>
+<div class="container">
+<h1>Java API for RESTful Web Services</h1>
 
-        <h2>Introduction</h2>
+<p>Les services REST ne sont pas une technologie mais un pattern exigeant.</p>
 
-        <p>Les services REST ne sont pas une technologie mais un pattern parfois difficile a respecter.</p>
+<p>Il a fallu attendre longtemps avant d'avoir une spécification jee pour les services REST.</p>
 
-        <p>Il a fallu attendre avant d'avoir une spécification jee pour les services REST.</p>
+<p>Plus simple, ils prennent une partie de la place occupée il y a peu par SOAP.</p>
 
-        <p>Aujourd'hui, ils sont en pleine expansion, prenant parfois la place des services SOAP.</p>
+<p>L'approche REST est radicale :</p>
 
-        <p>L'approche REST est radicale :</p>
+<ul>
+    <li>Les <b>URIs</b> pointent vers des ressources (ex : /products/45671 )</li>
+    <li>Les <b>headers HTTP</b> sont capitaux (ex : Content-Type: application/json)</li>
+    <li>Le <b>contenu</b> des requêtes et réponses HTTP est le message (format ouvert mais souvant json ou xml)</li>
+</ul>
 
-        <ul>
-            <li>Les URIs pointent vers des ressources (ex : /products/45671 )</li>
-            <li>Les headers HTTP sont capitaux (ex : Content-Type: application/json)</li>
-            <li>Le contenu des requêtes et réponses HTTP est le message (format ouvert mais souvant json ou xml)</li>
-        </ul>
+<p>=&gt; Ils sont liés au <b>protocole HTTP</b>.</p>
 
-        <p>=&gt; Ils sont liés au protocole HTTP.</p>
+<p>Ils sont simples à mettre en place mais on fait souvent quelques entorses à la pureté du principe.</p>
 
-        <p>Ils sont simples à mettre en place mais il est difficile d'être REST jusqu'au bout.</p>
+<h2>Branche git</h2>
 
-        <h2>Branche git</h2>
+<p>On crée la branche jax-rs à partir de la branche master.</p>
 
-        <p>On crée la branche jax-rs à partir de la branche master.</p>
-
-        <pre class="shell">&gt; git checkout master
+        <pre class="shell">$ git checkout master
 Switched to branch 'master'
-&gt; git checkout -b jax-rs
+$ git checkout -b jax-rs
 Switched to a new branch 'jax-rs'</pre>
 
-        <h2>Jersey</h2>
+<h2>Jersey</h2>
 
-        <p><a href="http://jersey.java.net/" class="external" target="_blank">Jersey</a> est l'implémentation standard java pour les services REST.</p>
+<p><a href="http://jersey.java.net/" target="_blank">Jersey</a> est l'implémentation standard java pour les services REST.</p>
 
-        <p>Coté serveur, il suffit d'annoter les méthodes avec quelques annotations :</p>
+<p>Coté serveur, il suffit d'annoter les méthodes avec quelques annotations :</p>
 
-        <ul>
-            <li>@Path : le chemin de la ressource (ex : /rest/tasks)</li>
-            <li>@GET, @PUT, @POST, @DELETE : les actions de l'interface uniforme</li>
-            <li>@Consumes : routage en fonction du type mime de la requête</li>
-            <li>@Produces : type de données de la réponse</li>
-        </ul>
+<ul>
+    <li><code>@Path</code> : le chemin de la ressource (ex : /rest/tasks)</li>
+    <li><code>@GET</code>, <code>@PUT</code>, <code>@POST</code>, <code>@DELETE</code> : les actions de l'interface uniforme</li>
+    <li><code>@Consumes</code> : routage en fonction du type mime de la requête</li>
+    <li><code>@Produces</code> : type de données de la réponse</li>
+</ul>
 
-        <p>Il existe d'autres framework comme <a href="http://www.jboss.org/resteasy" class="external" target="_blank">Resteasy</a> et <a href="http://www.restlet.org/" class="external" target="_blank">restlet</a>.</p>
+<p>Il existe d'autres framework comme <a href="http://www.jboss.org/resteasy" target="_blank">Resteasy</a> et <a href="http://www.restlet.org/" target="_blank">restlet</a>.</p>
 
-        <p>Il est même possible de faire du REST avec spring MVC.</p>
+<p>Il est même possible (et assez simple) de faire du REST avec spring MVC.</p>
 
-        <p>Nous allons partir avec Jersey</p>
+<p>Nous allons partir avec Jersey</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
-    &lt;groupId&gt;com.sun.jersey&lt;/groupId&gt;
+    &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-server&lt;/artifactId&gt;
-    &lt;version&gt;1.15&lt;/version&gt;
+    &lt;version&gt;2.3.1&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
-    &lt;groupId&gt;com.sun.jersey&lt;/groupId&gt;
-    &lt;artifactId&gt;jersey-servlet&lt;/artifactId&gt;
-    &lt;version&gt;1.15&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;com.sun.jersey&lt;/groupId&gt;
-    &lt;artifactId&gt;jersey-grizzly2&lt;/artifactId&gt;
-    &lt;version&gt;1.15&lt;/version&gt;
+    &lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-container-servlet&lt;/artifactId&gt;
+    &lt;version&gt;2.3.1&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-        <h2>Hello world</h2>
+<h2>Hello world</h2>
 
-        <p>Nous allons construire un service factice qui dit bonjour.</p>
+<p>Nous allons construire un service factice qui dit bonjour.</p>
 
-        <p>La première classe à mettre en place est la ressource, dans le package fr.todooz.rest.</p>
+<p>La première classe à mettre en place est la ressource, dans le package fr.todooz.rest.</p>
 
         <pre class="prettyprint">import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -107,24 +95,25 @@ public class HelloWorldResource {
    }
 }</pre>
 
-        <p>Ensuite, il faut déclarer une application REST dans le même package.</p>
+<p>Ensuite, il faut déclarer une application REST dans le même package.</p>
 
-        <pre class="prettyprint">import com.sun.jersey.api.core.PackagesResourceConfig;
+        <pre class="prettyprint">import org.glassfish.jersey.server.ResourceConfig;
 
-public class TodoozApplication extends PackagesResourceConfig {
-   public TodoozApplication() {
-       // scan des ressources dans fr.todooz.rest
-       super("fr.todooz.rest");
-   }
+public class TodoozApplication extends ResourceConfig {
+    public TodoozApplication() {
+        // scan des ressources dans fr.todooz.rest
+        packages("fr.todooz.rest");
+    }
 }</pre>
 
-        <p>Cette application enregistre toutes les ressources de notre service en faisant un scan de package.</p>
+<p>Cette application enregistre toutes les ressources de notre service en faisant un scan de package.</p>
 
-        <p>Le dernier point est la déclaration de l'application REST dans le web.xml</p>
+<p>Le dernier point est la déclaration de l'application REST dans le web.xml</p>
 
-        <pre class="prettyprint">&lt;servlet&gt;
+        <pre class="prettyprint">&lt;!-- Jersey servlet --&gt;
+&lt;servlet&gt;
    &lt;servlet-name&gt;rest&lt;/servlet-name&gt;
-   &lt;servlet-class&gt;com.sun.jersey.spi.container.servlet.ServletContainer&lt;/servlet-class&gt;
+   &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
    &lt;init-param&gt;
       &lt;param-name&gt;javax.ws.rs.Application&lt;/param-name&gt;
       &lt;param-value&gt;<b>fr.todooz.rest.TodoozApplication</b>&lt;/param-value&gt;
@@ -135,74 +124,77 @@ public class TodoozApplication extends PackagesResourceConfig {
     &lt;url-pattern&gt;/rest/*&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>Avec le serveur tomcat démarré, le service répond sur http://localhost:8080/rest/hi/you</p>
+<p>Avec le serveur tomcat démarré, le service répond sur <a href="http://localhost:8080/rest/hi/you" target="_blank">http://localhost:8080/rest/hi/you</a></p>
 
-        <h3>Le client</h3>
+<h3>Le client</h3>
 
-        <p>Nous allons mettre en place un test d'intégration qui va valider le bon fonctionnement de notre service.</p>
+<p>Nous allons mettre en place un test d'intégration qui va valider le bon fonctionnement de notre service.</p>
 
-        <p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
+<p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
 
-        <ul>
-            <li>Placer ces tests dans un package fr.todooz.integration</li>
-            <li>Exclure ce package lors des tests unitaires
+<ul>
+    <li>Placer ces tests dans un package fr.todooz.integration</li>
+    <li>Exclure ce package lors des tests unitaires
                 <pre class="prettyprint">&lt;plugin&gt;
     &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
     &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.16&lt;/version&gt;
     &lt;configuration&gt;
         &lt;excludes&gt;
             &lt;exclude&gt;**/integration/*Test.java&lt;/exclude&gt;
         &lt;/excludes&gt;
     &lt;/configuration&gt;
 &lt;/plugin&gt;</pre>
-            </li>
-        </ul>
+    </li>
+</ul>
 
-        <p>On crée donc la classe HelloWorldResourceTest dans le package fr.todooz.integration de src/test/java.</p>
+<p>On crée donc la classe <b>HelloWorldResourceTest</b> dans le package <b>fr.todooz.integration</b> de <b>src/test/java</b>.</p>
 
-        <p>Il n'y a pas de génération de client comme pour les services web mais juste un jar.</p>
+<p>Il n'y a pas de génération de client comme pour les services SOAP mais juste un jar.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
-   &lt;groupId&gt;com.sun.jersey&lt;/groupId&gt;
+   &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
    &lt;artifactId&gt;jersey-client&lt;/artifactId&gt;
-   &lt;version&gt;1.15&lt;/version&gt;
+   &lt;version&gt;2.3.1&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Après quoi on peut écrire.</p>
+<p>Après quoi on peut écrire.</p>
 
-        <pre class="prettyprint">import org.junit.Assert;
+        <pre class="prettyprint">import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+
+import org.junit.Assert;
 import org.junit.Test;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
 
 public class HelloWorldResourceTest {
     @Test
     public void hi() {
-        Client client = Client.create();
-        WebResource resource = client.resource("http://localhost:8080/rest/hi/jax-rs");
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:8080").path("/rest/hi/jax-rs");
 
-        Assert.assertEquals("Hello jax-rs", resource.get(String.class));
+        Assert.assertEquals("Hello jax-rs", target.request(MediaType.TEXT_PLAIN_TYPE).get(String.class));
     }
 }</pre>
 
-        <h3>Un peu de recul</h3>
+<h3>Un peu de recul</h3>
 
-        <p>La mise en place d'un web service REST est relativement aisée.</p>
+<p>La mise en place d'un web service REST est relativement aisée.</p>
 
-        <p>D'une implémentation à l'autre, il peut y avoir quelques différences pour la mise en place des ressources.</p>
+<p>D'une implémentation à l'autre, il peut y avoir quelques différences pour la mise en place des ressources.</p>
 
-        <p>Appeler un service REST est simple.</p>
+<p>Appeler un service REST est simple.</p>
 
-        <p>L'api des services REST est uniforme (toujours la même) : GET, POST, PUT et DELETE.</p>
+<p>L'api des services REST est uniforme (toujours la même) : GET, POST, PUT et DELETE.</p>
 
-        <p>L'implémentation de REST est exigeante si l'on respecte les 3 niveaux du pattern.</p>
+<p>L'implémentation de REST est exigeante si l'on respecte les 3 niveaux du pattern. Mais même si on ne le fait pas, on peut se servir de bonnes pratiques liées à REST afin construire son service.</p>
 
-        <h2>La liste des tâches</h2>
+<h2>La liste des tâches</h2>
 
-        <p>Comme pour le service web, nous allons exposer nos tâches.</p>
+<p>Comme pour le service SOAP, nous allons exposer nos tâches.</p>
 
-        <p>Afin de réutiliser notre service de tâches, nous aimerions pouvoir écrire :</p>
+<p>Afin de réutiliser notre service de tâches, nous aimerions pouvoir écrire :</p>
 
         <pre class="prettyprint">@Path("/tasks")
 public class TasksResource {
@@ -216,98 +208,29 @@ public class TasksResource {
    }
 }</pre>
 
-        <p>On rajoute les librairies pour le binding json.</p>
+<p>On rajoute la librairy (MOXy) pour la transformation en json.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
-    &lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
-    &lt;artifactId&gt;jackson-jaxrs&lt;/artifactId&gt;
-    &lt;version&gt;1.9.2&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;com.sun.jersey&lt;/groupId&gt;
-    &lt;artifactId&gt;jersey-json&lt;/artifactId&gt;
-    &lt;version&gt;1.15&lt;/version&gt;
+    &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-media-moxy&lt;/artifactId&gt;
+    &lt;version&gt;2.3.1&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Et comme pour les services web, il existe un pont entre jersey et spring.</p>
+<p class="alert alert-warning">JSON binding support via MOXy is a default and preferred way of supporting JSON binding in your Jersey applications since Jersey 2.0. When JSON MOXy module is on the class-path, Jersey will automatically discover the module and seamlessly enable JSON binding support via MOXy in your applications.</p>
 
-        <p>Il faut utiliser l'extension spring de jersey et jackson pour le binding json.</p>
+<p>Et comme pour les services web, il existe un pont entre jersey et spring.</p>
+
+<p>Il faut utiliser l'<a href="https://jersey.java.net/documentation/latest/spring.html" target="_blank">extension spring</a> de jersey.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
-   &lt;groupId&gt;com.sun.jersey.contribs&lt;/groupId&gt;
-   &lt;artifactId&gt;jersey-spring&lt;/artifactId&gt;
-   &lt;version&gt;1.15&lt;/version&gt;
+    &lt;groupId&gt;org.glassfish.jersey.ext&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-spring3&lt;/artifactId&gt;
+    &lt;version&gt;2.3.1&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Et changer la servlet de notre service rest</p>
+<p class="alert alert-warning">Jersey provides an extension to support Spring DI. This enables Jersey to use Spring beans as JAX-RS components (e.g. resources and providers) and also allows Spring to inject into Jersey managed components.</p>
 
-        <pre class="prettyprint">&lt;servlet&gt;
-    &lt;servlet-name&gt;rest&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;<b>com.sun.jersey.spi.spring.container.servlet.SpringServlet</b>&lt;/servlet-class&gt;
-    <span style="text-decoration: line-through;">&lt;init-param&gt;</span>
-        <span style="text-decoration: line-through;">&lt;param-name&gt;javax.ws.rs.Application&lt;/param-name&gt;</span>
-        <span style="text-decoration: line-through;">&lt;param-value&gt;fr.todooz.rest.TodoozApplication&lt;/param-value&gt;</span>
-    <span style="text-decoration: line-through;">&lt;/init-param&gt;</span>
-    <span class="comment">&lt;!-- autorise le mime type application/json avec jackson --&gt;</span>
-    <b>&lt;init-param&gt;
-        &lt;param-name&gt;com.sun.jersey.api.json.POJOMappingFeature&lt;/param-name&gt;
-        &lt;param-value&gt;true&lt;/param-value&gt;
-    &lt;/init-param&gt;</b>
-&lt;/servlet&gt;
-&lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;rest&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/rest/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</pre>
-
-        <p>Au lieu de charger une application, notre servlet va maintenant aller chercher ses ressources dans le contexte spring.</p>
-
-        <p>Comme pour le service web, il est nécessaire de rajouter un listener spring afin de charger le post service dans le <a href="../../tps/jax-ws/index.html#spring-context">contexte père</a></p>
-
-        <p>Dans le contexte père, il suffit de rajouter un scan des composants :</p>
-
-        <pre class="prettyprint">&lt;!-- Découverte des ressources REST --&gt;
-&lt;context:component-scan base-package="fr.todooz.rest"/&gt;</pre>
-
-        <p>Et de déclarer nos resources comme des composants spring.</p>
-
-        <pre class="prettyprint">@Component
-public class TasksResource {
-    //...
-}</pre>
-
-        <p>Comme rien ne pourrait jamais vraiment marcher du premier coup, il se trouve que l'extension spring de jersey vient avec une dépendance vers spring 2.5.x, ce qui pose des problèmes au démarrage du tomcat (2 versions de spring dans le classpath).</p>
-
-        <p>Maven permet d'exclure des dépendances transitives de jersey-spring :</p>
-
-        <pre class="prettyprint">&lt;dependency&gt;
-   &lt;groupId&gt;com.sun.jersey.contribs&lt;/groupId&gt;
-   &lt;artifactId&gt;jersey-spring&lt;/artifactId&gt;
-   &lt;version&gt;1.15&lt;/version&gt;
-   &lt;exclusions&gt;
-       &lt;exclusion&gt;
-          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-          &lt;artifactId&gt;spring&lt;/artifactId&gt;
-       &lt;/exclusion&gt;
-       &lt;exclusion&gt;
-          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-          &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
-       &lt;/exclusion&gt;
-       &lt;exclusion&gt;
-          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-          &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
-       &lt;/exclusion&gt;
-       &lt;exclusion&gt;
-          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-          &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
-       &lt;/exclusion&gt;
-       &lt;exclusion&gt;
-          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-          &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
-       &lt;/exclusion&gt;
-   &lt;/exclusions&gt;
-&lt;/dependency&gt;</pre>
-
-        <p>Ce qui donne sur http://localhost:8080/rest/tasks</p>
+<p>Ce qui donne sur <a href="http://localhost:8080/rest/tasks" target="_blank">http://localhost:8080/rest/tasks</a></p>
 
         <pre class="prettyprint">[
     {"id":42,"createdAt":1352199458514,"title":"Read Test Driven Development","text":null,"date":1352199458514,
@@ -320,10 +243,12 @@ public class TasksResource {
             "tags":"scm,git","tagArray":["scm","git"]}
 ]</pre>
 
-        <p>En se basant sur la <a href="http://jersey.java.net/nonav/documentation/latest/json.html" class="external" target="_blank">documentation de Jersey</a>, ecrire un test d'intégration très simple pour ce service.</p>
-
-        <p>Coté client, jersey va mapper le retour vers une liste de map. Si on souhaitait récupérer une liste de Task, il faudrait configurer jackson un peu plus en avant.</p>
-    </div>
+<p>En se basant sur la <a href="https://jersey.java.net/documentation/latest/index.html" target="_blank">documentation de Jersey</a> et ce <a href="http://slackspace.de/articles/jersey-client-retrieve-list-of-entities/" target="_blank">post sur les listes d'entités</a>, ecrire un test d'intégration très simple pour ce service.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

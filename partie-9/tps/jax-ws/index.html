@@ -1,60 +1,54 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Java API for XML Web Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Java API for XML Web Services</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1 style="line-height: 60px"><img src="img/javaxml-duke.gif" alt="" style="float: left;height: 60px;margin-right: 10px;"> Java API for XML Web Services</h1>
+<body>
+<div class="container">
+<h1 style="line-height: 60px"><img src="img/javaxml-duke.gif" alt="" style="float: left;height: 60px;margin-right: 10px;"> Java API for XML Web Services</h1>
 
-        <h2>Introduction</h2>
+<p>La spécification JEE jax-ws permet de construire des services web SOAP.</p>
 
-        <p>La spécification JEE jax-ws permet de construire des services web SOAP.</p>
+<p>Elle permet de faire des appels de méthodes distantes, comme ci (presque) elles étaient locales.</p>
 
-        <p>Elle permet de faire des appels de méthodes distantes, comme ci (presque) elles étaient locales.</p>
+<p>Il existe des frameworks antérieurs à jax-ws : ils sont similaires mais plus complexes à mettre en oeuvre.</p>
 
-        <p>Il existe des frameworks antérieurs à jax-ws : ils sont similaires mais plus complexes à mettre en oeuvre.</p>
+<p>La force de SOAP est l'interopérabilité : un client .NET peut parler à un serveur java.</p>
 
-        <p>La force de SOAP est l'interopérabilité : un client .NET peut parler à un serveur java.</p>
+<h2>Branche git</h2>
 
-        <h2>Branche git</h2>
+<p>On crée la branche jax-ws à partir de la branche master.</p>
 
-        <p>On crée la branche jax-ws à partir de la branche master.</p>
-
-        <pre class="shell">&gt; git checkout master
+        <pre class="shell">$ git checkout master
 Switched to branch 'master'
-&gt; git checkout -b jax-ws
+$ git checkout -b jax-ws
 Switched to a new branch 'jax-ws'</pre>
 
-        <h2>Metro</h2>
+<h2>Metro</h2>
 
-        <p><a href="http://metro.java.net/" class="external" target="_blank">Metro</a> est l'implémentation de référence pour les services web en java.</p>
+<p><a href="http://metro.java.net/" target="_blank">Metro</a> est l'implémentation de référence pour les services web en java.</p>
 
-        <p>On commence donc par ajouter toutes les librairies à notre projet.</p>
+<p>On commence donc par ajouter toutes les librairies à notre projet.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
    &lt;groupId&gt;com.sun.xml.ws&lt;/groupId&gt;
    &lt;artifactId&gt;jaxws-rt&lt;/artifactId&gt;
-   &lt;version&gt;2.2.5&lt;/version&gt;
+   &lt;version&gt;2.2.8&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Cela permet de récupérer metro et ses dépendances.</p>
+<p>Cela permet de récupérer metro et ses dépendances.</p>
 
-        <h2>Hello world</h2>
+<h2>Hello world</h2>
 
-        <p>Dans le package fr.todooz.webservice, on crée la classe TodoozWebService.</p>
+<p>Dans le package <b>fr.todooz.webservice</b>, on crée la classe <b>TodoozWebService</b>.</p>
 
         <pre class="prettyprint">@WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)
@@ -64,14 +58,14 @@ public class TodoozWebService {
     }
 }</pre>
 
-        <p>Pour metro, il faut un fichier sun-jaxws.xml dans src/main/webapp/WEB-INF</p>
+<p>Pour metro, il faut un fichier <b>sun-jaxws.xml</b> dans <b>src/main/webapp/WEB-INF</b></p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0"&gt;
     &lt;endpoint name="TodoozWs" implementation="fr.todooz.webservice.TodoozWebService" url-pattern="<b>/ws/todooz</b>" /&gt;
 &lt;/endpoints&gt;</pre>
 
-        <p>Et la déclaration du mapping dans le web.xml</p>
+<p>Et la déclaration du mapping dans le web.xml</p>
 
         <pre class="prettyprint">&lt;!-- Metro listener and servlet --&gt;
 &lt;listener&gt;
@@ -86,44 +80,45 @@ public class TodoozWebService {
    &lt;url-pattern&gt;<b>/ws/todooz</b>&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</pre>
 
-        <p>Et si on démarre tomcat, le service répond sur <a href="http://localhost:8080/ws/todooz" class="external" target="_blank">http://localhost:8080/ws/todooz</a></p>
+<p>Si on démarre tomcat, le service répond sur <a href="http://localhost:8080/ws/todooz" target="_blank">http://localhost:8080/ws/todooz</a></p>
 
-        <img src="img/web-services.png" alt="" style="width: 840px">
+<img src="img/web-services.png" alt="" class="img-responsive" style="margin: auto">
 
-        <p>En quelques lignes de configuration, nous avons mis en place notre service web.</p>
+<p>En quelques lignes de configuration, nous avons mis en place notre service web.</p>
 
-        <p>Le WSDL <a href="http://localhost:8080/ws/todooz?wsdl">http://localhost:8080/ws/todooz?wsdl</a> est déjà très verbeux alors que notre service est simple.</p>
+<p>Le WSDL <a href="http://localhost:8080/ws/todooz?wsdl" target="_blank">http://localhost:8080/ws/todooz?wsdl</a> est déjà très verbeux alors que notre service est simple.</p>
 
-        <p>Mais ce format apporte l'interopérabilité.</p>
+<p>Mais ce format apporte l'interopérabilité.</p>
 
-        <h3>Le client</h3>
+<h3>Le client</h3>
 
-        <p>Nous allons mettre en place un test d'intégration qui va valider le bon fonctionnement de notre service.</p>
+<p>Nous allons mettre en place un test d'intégration qui va valider le bon fonctionnement de notre service.</p>
 
-        <p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
+<p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
 
-        <ul>
-            <li>Placer ces tests dans un package fr.todooz.integration</li>
-            <li>Exclure ce package lors des tests unitaires
+<ul>
+    <li>Placer ces tests dans un package <b>fr.todooz.integration</b></li>
+    <li>Exclure ce package lors des tests unitaires
             <pre class="prettyprint">&lt;plugin&gt;
     &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
     &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.16&lt;/version&gt;
     &lt;configuration&gt;
         &lt;excludes&gt;
             &lt;exclude&gt;**/integration/*Test.java&lt;/exclude&gt;
         &lt;/excludes&gt;
     &lt;/configuration&gt;
 &lt;/plugin&gt;</pre>
-            </li>
-        </ul>
+    </li>
+</ul>
 
-        <p>On crée donc la classe TodoozWebServiceTest dans le package fr.todooz.integration de src/test/java.</p>
+<p>On crée donc la classe <b>TodoozWebServiceTest</b> dans le package <b>fr.todooz.integration</b> de <b>src/test/java</b>.</p>
 
-        <p>Pour pouvoir appeler le webservice (présent dans le jdk), il nous faut générer un client à partir du WSDL.</p>
+<p>Pour pouvoir appeler le webservice, il nous faut générer un client à partir du WSDL.</p>
 
-        <p>On utilise l'outil wsimport qui permet cela. A la racine du projet :</p>
+<p>On utilise l'outil <b>wsimport</b> (présent dans le jdk) qui permet cela. A la racine du projet :</p>
 
-        <pre class="shell">&gt; <b>wsimport -s src/test/java -d target -p fr.todooz.integration.generated http://localhost:8080/ws/todooz?wsdl</b>
+        <pre class="shell">$ wsimport -s src/test/java -d target -p fr.todooz.integration.generated http://localhost:8080/ws/todooz?wsdl
 
 parsing WSDL...
 
@@ -131,9 +126,9 @@ generating code...
 
 compiling code...</pre>
 
-        <p>Les classes TodoozWebService et TodoozWebServiceService sont générées dans fr.todooz.integration.generated</p>
+<p>Les classes <b>TodoozWebService</b> et <b>TodoozWebServiceService</b> sont générées dans <b>fr.todooz.integration.generated</b></p>
 
-        <p>Ce qui nous permet d'écrire et faire passer le test suivant.</p>
+<p>Ce qui nous permet d'écrire et faire passer le test suivant.</p>
 
         <pre class="prettyprint">@Test
 public void hi() {
@@ -143,37 +138,37 @@ public void hi() {
     Assert.assertEquals("Hello jax-ws", webService.hi("jax-ws"));
 }</pre>
 
-        <h3>Un peu de recul</h3>
+<p>On appelle la méthode du web service extrêmement simplement.</p>
 
-        <p>La mise en place d'un web service est relativement aisée.</p>
+<h3>Un peu de recul</h3>
 
-        <p>En quelques manipulations, on appelle un service distants.</p>
+<p>La mise en place d'un web service est relativement aisée.</p>
 
-        <p>Coté client on repose sur de la génération de code, ce qui rend notre client fragile face à une évolution de l'api.</p>
+<p>En quelques manipulations, on appelle un service distant.</p>
 
-        <p>Les types des paramètres et les types de retour des méthodes font également partie de l'api. On a donc souvent des classes spécialisées juste pour le webservice.</p>
+<p>Coté client on repose sur de la génération de code, ce qui rend notre client fragile face à une évolution du serveur.</p>
 
-        <p>Le point positif est que notre service est accessible depuis beaucoup de languages.</p>
+<p>Le point positif est que notre service est accessible depuis beaucoup de languages.</p>
 
-        <h2>La liste des tâches</h2>
+<h2>La liste des tâches</h2>
 
-        <p>Nous souhaitons maintenant faire quelque chose d'un peu plus utile : exposer la liste des tâches.</p>
+<p>Nous souhaitons maintenant faire quelque chose d'un peu plus utile : exposer la liste des tâches.</p>
 
-        <p>On aimerait reposer sur le TaskService et écrire :</p>
+<p>On aimerait reposer sur le TaskService et écrire :</p>
 
         <pre class="prettyprint">public List&lt;Task&gt; getTasks() {
     return taskService.findAll();
 }</pre>
 
-        <p>Cependant, comment obtenir une référence vers le TaskService de notre application ?</p>
+<p>Cependant, comment obtenir une référence vers le TaskService de notre application ?</p>
 
-        <p>Spring dispose d'un <a href="http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/remoting.html#remoting-web-services-jaxws-export-servlet" class="external" target="_blank">support pour les services web</a> permettant l'injection des dépendances</p>
+<p>Spring dispose d'un <a href="http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/remoting.html#remoting-web-services-jaxws-export-servlet" target="_blank">support pour les services web</a> permettant l'injection des dépendances</p>
 
-        <p>Avec le support spring, on peut écrire :</p>
+<p>Avec le support spring, on peut écrire :</p>
 
         <pre class="prettyprint">@WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)
-public class TaskWebService extends SpringBeanAutowiringSupport {
+public class TaskWebService <span class="added">extends SpringBeanAutowiringSupport</span> {
     @Inject
     private TaskService taskService;
 
@@ -182,7 +177,7 @@ public class TaskWebService extends SpringBeanAutowiringSupport {
     }
 }</pre>
 
-        <p>Cependant, si on relance le tomcat, on obtient l'erreur :</p>
+<p>Cependant, si on relance le tomcat, on obtient l'erreur :</p>
 
         <pre class="shell">...
 Caused by: java.security.PrivilegedActionException: com.sun.xml.bind.v2.runtime.IllegalAnnotationsException:
@@ -192,17 +187,17 @@ java.util.List is an interface, and JAXB can't handle interfaces.
                 at java.util.List
         ...</pre>
 
-        <p>JAXB est la librairie qui transforme les objets java en xml.</p>
+<p>JAXB est la librairie qui transforme les objets java en xml.</p>
 
-        <p>Visiblement JAXB n'accepte pas une interface comme type de retour de notre méthode.</p>
+<p>Visiblement JAXB n'accepte pas une interface comme type de retour de notre méthode.</p>
 
-        <p>Une solution possible est d'utiliser une classe de wrapping afin que la signature de notre méthode soit :</p>
+<p>Une solution possible est d'utiliser une classe de wrapping afin que la signature de notre méthode soit :</p>
 
         <pre class="prettyprint">public Tasks getTasks() {
     return new Tasks(taskService.findAll());
 }</pre>
 
-        <p>Et donc la classe en question.</p>
+<p>Et donc la classe en question.</p>
 
         <pre class="prettyprint">public class Tasks {
     private List&lt;Task&gt; tasks;
@@ -223,9 +218,9 @@ java.util.List is an interface, and JAXB can't handle interfaces.
     }
 }</pre>
 
-        <p>Et cette fois tomcat démarre.</p>
+<p>Et cette fois tomcat démarre.</p>
 
-        <p>En regénérant le client du service web, on peut écrire le test suivant :</p>
+<p>En regénérant le client du service web, on peut écrire le test suivant :</p>
 
         <pre class="prettyprint">@Test
 public void getTasks() {
@@ -236,7 +231,7 @@ public void getTasks() {
     Assert.assertTrue(webService.getTasks().getTasks().get(0).getTitle().length() > 0);
 }</pre>
 
-        <p>Malheureusement, ce test échoue avec l'erreur suivante :</p>
+<p>Malheureusement, ce test échoue avec l'erreur suivante :</p>
 
         <pre class="shell">java.lang.NullPointerException
     at fr.todooz.webservice.TodoozWebService.getTasks(TodoozWebService.java:24)
@@ -244,47 +239,36 @@ public void getTasks() {
     at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
     ...</pre>
 
-        <p>Malgré nos efforts, le TaskService n'est pas correctement injecté dans notre service web.</p>
+<p>Malgré nos efforts, le TaskService n'est pas correctement injecté dans notre service web.</p>
 
-        <h2 id="spring-context">context spring père</h2>
+<h2>absolute-ordering</h2>
 
-        <p>L'explication est un peu technique et est liée au fonctionnement des contextes spring dans un environnement web.</p>
+<p>Nous utilisons un tomcat 7 avec un niveau de compatibilité de servlet 3.0</p>
 
-        <p>Pour corriger cela, le plus simple est de rajouter les lignes suivantes dans le web.xml :</p>
+<pre class="prettyprint">&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;</pre>
 
-        <pre class="prettyprint">&lt;listener&gt;
-   &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
-&lt;/listener&gt;
-&lt;context-param&gt;
-   &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-   &lt;param-value&gt;WEB-INF/spring-context.xml&lt;/param-value&gt;
-&lt;/context-param&gt;</pre>
+<p>En 3.0, il est possible de définir des fragments du web.xml et de la mettre dans les jars.</p>
 
-        <p>Et de copier le fichier WEB-INF/spring-servlet.xml vers WEB-INF/spring-context.xml</p>
+<p>Ainsi, une librairie peut amener un morceau du web.xml et configurer une partie de l'application.</p>
 
-        <p>Cette fois, le test passe.</p>
+<p>Oui, mais dans quel ordre sont chargés les différents morceaux ?</p>
 
-        <div class="note">
-            Au sein d'une application web avec spring, il y a plusieurs contextes :
-            <ul>
-                <li>Un contexte père construit par le ContextLoaderListener</li>
-                <li>Un contexte fils par servlet spring définie dans le web.xml</li>
-            </ul>
-            Le contexte père est accessible depuis toute l'application.
-            <br>
-            Un contexte fils attaché à une servlet n'est accessible que pour les requêtes qui traversent cette servlet.
-            <br><br>
-            Dans notre cas, afin d'avoir accès au TaskService pour des requêtes passant par la WSServlet (/ws/todooz), il faut que le service soit défini dans le contexte père ou dans le contexte lié à cette servlet.
-            <br><br>
-            La bonne pratique est la suivante :
-            <br>
-            Définir les services dans le contexte global (ContextLoaderListener)
-            <br>
-            Ce qui est spécifique à une servlet spring (controllers, localeResolver, viewResolver...) dans le contexte associé à la servlet.
-            <br><br>
-            Actuellement, nos beans sont déclarés en double, ce qui n'est pas correct.
-        </div>
-   </div>
+<p>Visiblement, notre service web est chargé avant que le contexte spring ne soit monté.</p>
+
+<p>Nous ne sommes pas seuls à avoir ce problème : réponse sur <a href="http://stackoverflow.com/questions/12805745/wsservletcontainerinitializer-and-springbeanautowiringsupport" target="_blank">stackoverflow</a></p>
+
+<p>C'est lié à un <a href="https://issues.apache.org/bugzilla/show_bug.cgi?id=53619" target="_blank">bug tomcat</a>.</p>
+
+<p>La solution est simple, ajouter le tag suivant dans le <b>web.xml</b></p>
+
+<pre class="prettyprint">&lt;absolute-ordering/&gt;</pre>
+
+<p>Et ainsi, normalement, tout passe.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>
