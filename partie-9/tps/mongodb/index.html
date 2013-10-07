@@ -1,98 +1,99 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+
+    <title>Mongodb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Mongodb</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
-
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1>
-            <img src="img/mongodb.jpeg" alt="" style="width: 250px;">
-        </h1>
+<body>
+<div class="container">
+<h1>
+    <img src="img/mongodb.jpeg" alt="" style="width: 250px;">
+</h1>
 
-        <h2>Introduction</h2>
+<p>Les bases de données relationnelles ont longtemps été largement dominantes.</p>
 
-        <p>Mongo DB est une base de données orientée documents.</p>
+<p>Mais les contraintes du web et du big data ont poussé d'autres systèmes sur le devant.</p>
 
-        <p>Elle participe au mouvement NoSQL : les bases de données non SQL (non relationnelles)</p>
+<p>Les architectures sont désormais NoSQL : Not only SQL.</p>
 
-        <p>D'autres bases NoSQL populaire sont :</p>
+<p>Mongo DB est une base de données NoSQL orientée documents.</p>
 
-        <ul>
-            <li>BigTable (Google)</li>
-            <li>Cassandra (Facebook, Twitter, Digg)</li>
-            <li>CouchDB</li>
-            <li>HBase</li>
-            <li>Neo4j</li>
-            <li>Redis</li>
-            <li>Riak</li>
-        </ul>
+<p>D'autres bases NoSQL populaires sont :</p>
 
-        <h2>Principes</h2>
+<ul>
+    <li>BigTable (Google)</li>
+    <li>Cassandra (Facebook, Twitter, Digg)</li>
+    <li>CouchDB</li>
+    <li>HBase</li>
+    <li>Neo4j</li>
+    <li>Redis</li>
+    <li>Riak</li>
+</ul>
 
-        <p>Mongo stoque des documents json.</p>
+<h2>Principes</h2>
 
-        <pre class="prettyprint">{name: {first: 'John', last: 'Doe'}}</pre>
+<p>Mongo stoque des documents <b>json</b> (en fait en bson : binary json).</p>
 
-        <p>Les requêtes sont aussi en json. Cela rend certaines requêtes plus simple que du SQL et d'autres beaucoup plus compliquées.</p>
+<pre class="prettyprint">{name: {first: 'John', last: 'Doe'}}</pre>
 
-        <p>L'équivalent d'une table est une collection de documents.</p>
+<p>Les requêtes sont aussi en json. Cela rend certaines requêtes plus simple que du SQL et d'autres beaucoup plus compliquées.</p>
 
-        <p>Comme toutes les bases NoSQL, mongoDB met en avant sa performance et sa scalabilité.</p>
+<p>L'équivalent d'une table en sql est une collection de documents.</p>
 
-        <p>Cela se fait au détriment du respect de l'ACIDité : (<b>Atomicité</b>, <b>Consistance</b>, <b>Isolation</b>, <b>Durabilité</b>)</p>
+<p>Comme toutes les bases NoSQL, mongoDB met en avant sa performance et sa scalabilité.</p>
 
-        <p>Pour atteindre ses objectifs, mongoDB n'a pas de foreign key ni de transaction.</p>
+<p>Cela se fait au détriment du respect de l'ACIDité : (<b>Atomicité</b>, <b>Consistance</b>, <b>Isolation</b>, <b>Durabilité</b>)</p>
 
-        <p>C'est donc une base simple, performante mais avec des domaines d'application différents des bases SQL.</p>
+<p>Pour atteindre ses objectifs, mongoDB n'a pas de <b>foreign key</b> ni de <b>transaction</b>.</p>
 
-        <p>Elle brille notamment pour le web et les gros volumes de données.</p>
+<p>C'est donc une base simple, performante mais avec des domaines d'application différents des bases SQL.</p>
 
-        <div class="note">MongoDB wasn’t designed in a lab. We built MongoDB from our own experiences building large scale, high availability, robust systems. We didn’t start from scratch, we really tried to figure out what was broken, and tackle that. So the way I think about MongoDB is that if you take MySql, and change the data model from relational to document based, you get a lot of great features: embedded docs for speed, manageability, agile development with schema-less databases, easier horizontal scalability because joins aren’t as important. There are lots of things that work great in relational databases: indexes, dynamic queries and updates to name a few, and we haven’t changed much there. For example, the way you design your indexes in MongoDB should be exactly the way you do it in MySql or Oracle, you just have the option of indexing an embedded field.
+<p>Elle brille notamment pour le web et les gros volumes de données.</p>
 
-        <br><br>– Eliot Horowitz, 10gen CTO and Co-founder</div>
+    <blockquote>
+        <p>MongoDB wasn’t designed in a lab. We built MongoDB from our own experiences building large scale, high availability, robust systems. We didn’t start from scratch, we really tried to figure out what was broken, and tackle that. So the way I think about MongoDB is that if you take MySql, and change the data model from relational to document based, you get a lot of great features: embedded docs for speed, manageability, agile development with schema-less databases, easier horizontal scalability because joins aren’t as important. There are lots of things that work great in relational databases: indexes, dynamic queries and updates to name a few, and we haven’t changed much there. For example, the way you design your indexes in MongoDB should be exactly the way you do it in MySql or Oracle, you just have the option of indexing an embedded field.</p>
+        <small>Eliot Horowitz, <cite>10gen CTO and Co-founder</cite></small>
+    </blockquote>
 
-        <h2>Installation</h2>
+<h2>Installation</h2>
 
-        <p>Installer mongoDB en suivant la <a href="http://docs.mongodb.org/manual/installation/" class="external" target="_blank">documentation d'installation</a></p>
+<p>Installer mongoDB en suivant la <a href="http://docs.mongodb.org/manual/installation/" target="_blank">documentation d'installation</a></p>
 
-        <p>Un fois installée, on peut se connecter à la base via la commande mongo.</p>
+<div class="alert alert-warning">Il est aussi possible de faire un "brew install mongo" sous mac</div>
 
-        <p>Il existe aussi des interfaces graphiques dont <a href="http://code.google.com/p/mongohub/" class="external" target="_blank">mongohub</a></p>
+<p>Un fois installée et lancée via <code>mongod</code>, on peut se connecter à la base via la commande <code>mongo</code>.</p>
 
-        <h2>Branche git</h2>
+<p>Il existe aussi des interfaces graphiques dont <a href="http://www.robomongo.org/" target="_blank">robomongo</a></p>
 
-        <p>On crée la branche mongo à partir de la branche master.</p>
+<h2>Branche git</h2>
 
-        <pre class="shell">&gt; git checkout master
+<p>On crée la branche mongo à partir de la branche master.</p>
+
+        <pre class="shell">$ git checkout master
 Switched to branch 'master'
-&gt; git checkout -b mongo
+$ git checkout -b mongo
 Switched to a new branch 'mongo'</pre>
 
-        <h2>Libs</h2>
+<h2>Libs</h2>
 
-        <p>Afin de pouvoir se connecter à la base, on ajoute le driver mongoDB</p>
+<p>Afin de pouvoir se connecter à la base, on ajoute le driver mongoDB</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.mongodb&lt;/groupId&gt;
     &lt;artifactId&gt;mongo-java-driver&lt;/artifactId&gt;
-    &lt;version&gt;2.10.0&lt;/version&gt;
+    &lt;version&gt;2.11.3&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Le driver permet de faire des appels de la forme</p>
+<p>Le driver permet de faire des appels de la forme</p>
 
         <pre class="prettyprint">// {"name": "MongoDB", "type": "database", "count": 1, "info" : {"x": 203, "y": 102}}
 BasicDBObject doc = new BasicDBObject();
@@ -108,53 +109,50 @@ doc.put("info", info);
 
 collection.insert(doc);</pre>
 
-        <p>Et on voit tout de suite que faire du json en java est assez verbeux.</p>
+<p>Et on voit tout de suite que faire du json en java est assez verbeux.</p>
 
-        <p>On choisit donc un ORM (ODM ?) pour mongoDB qui va nous simplifier l'écriture</p>
+<p>On choisit donc un ORM (ODM ?) pour mongoDB qui va nous simplifier l'écriture</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
-    &lt;groupId&gt;com.google.code.morphia&lt;/groupId&gt;
+    &lt;groupId&gt;org.mongodb.morphia&lt;/groupId&gt;
     &lt;artifactId&gt;morphia&lt;/artifactId&gt;
-    &lt;version&gt;0.99&lt;/version&gt;
+    &lt;version&gt;0.105&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p><a href="http://code.google.com/p/morphia/" class="external" target="_blank">Morphia</a> est un équivalent d'hibernate, moins complet mais plus simple.</p>
+<p><a href="https://github.com/mongodb/morphia" target="_blank">Morphia</a> est un équivalent d'hibernate, moins complet mais plus simple.</p>
 
-        <h2>MongoTask</h2>
+<h2>MongoTask</h2>
 
-        <p>Comme pour hibernate et jpa, nous devons annoter notre classe du domaine.</p>
+<p>Comme pour hibernate et jpa, morphia travaille directement avec le bean.</p>
 
-        <p>Cependant, vu la nature des ids, nous sommes obligés de créer une nouvelle classe.</p>
+<p>Cependant, vu la nature des ids, nous sommes obligés de créer une nouvelle classe.</p>
+
+<div class="alert alert-warning">Les id dans mongo sont des ObjectId alors que hibernate travaille habituellement avec des numériques (Long)</div>
 
         <pre class="prettyprint">// entité persitée dans la collection "tasks"
-@com.google.code.morphia.annotations.Entity(value = "tasks", noClassnameStored = true)
+@org.mongodb.morphia.annotations.Entity(value = "tasks", noClassnameStored = true)
 public class MongoTask {
-    @com.google.code.morphia.annotations.Id
+    @Id
     private ObjectId id;
 
-    @Column
     private Date createdAt = new Date();
 
-    @Column
     @NotBlank
     @Size(min = 1, max = 255)
     private String title;
 
-    @Column(length = 4000, nullable = true)
     @Size(max = 4000)
     private String text;
 
-    @Column
     @NotNull
     private Date date = new Date();
 
-    @Column(nullable = true)
     private String tags;
 
     public String[] getTagArray() {
-		return StringUtils.split(tags, ",");
-	}
+        return StringUtils.split(tags, ",");
+    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -205,16 +203,18 @@ public class MongoTask {
     }
 }</pre>
 
-        <h2>Configuration Spring</h2>
+<h2>Configuration Spring</h2>
 
-        <p>Spring propose un support pour mongodb (spring data) mais c'est assez complexe pour rien.</p>
+<p>Spring propose un support pour mongodb (spring data) mais c'est assez complexe pour rien.</p>
 
-        <p>Nous allons utilser la possibilité de configurer les beans via du code java.</p>
+<p>Nous allons utiliser la possibilité de configurer les beans via du code java.</p>
 
-        <p>Dans le package fr.todooz.service :</p>
+<p>En effet, il est possible de définir des beans en java plutôt qu'au travers de fichiers xml.</p>
+
+<p>Dans le package <b>fr.todooz.service</b> :</p>
 
         <pre class="prettyprint">@Configuration // indique que cette classe contient des définitions de beans
-public class SpringConfig {
+public class MorphiaSpringConfig {
     @Bean // équivalent du &lt;bean name="datastore"&gt;...&lt;/bean&gt; dans le xml
     public Datastore datastore() throws MongoException, UnknownHostException {
         Morphia morphia = new Morphia();
@@ -225,23 +225,23 @@ public class SpringConfig {
     }
 }</pre>
 
-        <p>Avec spring 3, on pourrait faire toute notre configuration de cette façon.</p>
+<p>Avec spring 3, on pourrait faire toute notre configuration de cette façon à la place du xml.</p>
 
-        <p>Elle a l'avantage d'être typée (facilant le refactoring) et de laisser de coté les lourdeurs du xml.</p>
+<p>Elle a l'avantage d'être typée (facilant le refactoring) et de laisser de coté les lourdeurs du xml.</p>
 
-        <p>Il faut quand même rajouter cglib afin de permettre à spring de manipuler cette classe</p>
-        
+<p>Il faut quand même rajouter cglib afin de permettre à spring de manipuler cette classe</p>
+
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;cglib&lt;/groupId&gt;
     &lt;artifactId&gt;cglib-nodep&lt;/artifactId&gt;
     &lt;version&gt;2.2.2&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Nous avons ainsi un Datastore morphia disponible dans le contexte spring.</p>
+<p>Nous avons ainsi un Datastore morphia disponible dans le contexte spring.</p>
 
-        <h2>TaskServiceMorphia</h2>
+<h2>TaskServiceMorphia</h2>
 
-        <p>Nous créons un service TaskServiceMorphia qui va utiliser morphia</p>
+<p>Nous créons un service TaskServiceMorphia qui va utiliser morphia</p>
 
         <pre class="prettyprint">public class TaskServiceMorphia {
 
@@ -265,13 +265,15 @@ public class SpringConfig {
     public MongoTask findById(ObjectId id) { return null; }
 }</pre>
 
-        <p>Ce service ne peut implémenter TaskService car les id et classes Task ne sont pas compatibles</p>
+<p>Ce service ne peut implémenter TaskService car les id et classes Task ne sont pas compatibles.</p>
 
-        <h2>TaskServiceMorphiaTest</h2>
+<p>Comme il n'y a pas besoin de transaction en mongodb, il n'y a pas besoin d'interface du tout.</p>
 
-        <p>Pour avancer sereinement, nous allons passer par des tests unitaires.</p>
+<h2>TaskServiceMorphiaTest</h2>
 
-        <p>On commence par la méthode save.</p>
+<p>Pour valider notre service, nous allons passer par des tests unitaires.</p>
+
+<p>On commence par la méthode save.</p>
 
         <pre class="prettyprint">@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -284,7 +286,7 @@ public class TaskServiceMorphiaTest {
 
     @After
     public void cleanDb() {
-        editoDataStore.delete(editoDataStore.find(Task.class));
+        datastore.delete(datastore.find(MongoTask.class));
     }
 
     @Test
@@ -314,7 +316,7 @@ public class TaskServiceMorphiaTest {
     }
 }</pre>
 
-        <p>Et la config spring TaskServiceMorphiaTest-context.xml associée</p>
+<p>Et la config spring <b>TaskServiceMorphiaTest-context.xml</b> associée</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
@@ -323,45 +325,49 @@ public class TaskServiceMorphiaTest {
    http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
 
-    &lt;bean class="fr.todooz.service.SpringConfig" /&gt;
+    &lt;bean class="fr.todooz.service.MorphiaSpringConfig" /&gt;
 
     &lt;bean class="fr.todooz.service.TaskServiceMorphia" /&gt;
 
 &lt;/beans&gt;</pre>
 
-        <p>Un peu de mise en place mais il devient assez simple d'implémenter cette méthode save :</p>
+<p>Un peu de mise en place mais il devient assez simple d'implémenter cette méthode save :</p>
 
         <pre class="prettyprint">public void save(MongoTask task) {
     datastore.save(task);
 }</pre>
 
-        <p>L'api de morphia est extrêmement simple et agréable (fluent) à utiliser.</p>
+<p>L'api de morphia est extrêmement simple et agréable (fluent) à utiliser.</p>
 
-        <p>L'absence de transactions et de session à fermer simplifie aussi énormément le code.</p>
+<p>L'absence de transactions et de session à fermer simplifie aussi énormément le code.</p>
 
-        <h2>Les autres méthodes</h2>
+<h2>Les autres méthodes</h2>
 
-        <p>En regardant les possibilités du <a href="http://code.google.com/p/morphia/wiki/Datastore" class="external" target="_blank">datastore</a> et de <a href="http://code.google.com/p/morphia/wiki/Query" class="external" target="_blank">requêtes</a> implémenter les autres méthodes.</p>
+<p>En regardant les possibilités du <a href="https://github.com/mongodb/morphia/wiki/Datastore" target="_blank">datastore</a> et des <a href="https://github.com/mongodb/morphia/wiki/Query" target="_blank">requêtes</a>, implémenter les autres méthodes.</p>
 
-        <p>La plupart des méthodes tiennent en une ligne.</p>
+<p>La plupart des méthodes tiennent en une ligne.</p>
 
-        <p>On peut donc faire concis et lisible en java : )</p>
+<p>On peut donc faire concis et lisible en java : )</p>
 
-        <h2>Et le reste ?</h2>
+<h2>Et le reste ?</h2>
 
-        <p>Finaliser le tout et afficher ces MongoTask demanderait un peu plus de travail au niveau des controllers et jsp.</p>
+<p>Finaliser le tout et afficher ces MongoTask demanderait un peu plus de travail au niveau des controllers et jsp.</p>
 
-        <p>Principalement, c'est l'id (ObjectId) qui pose problème :</p>
+<p>Principalement, c'est l'id (ObjectId) qui pose problème :</p>
 
-        <ul>
-            <li>Avec une base relationnelle, c'est la base qui calcule l'id afin d'assurer l'unicité.</li>
-            <li>Avec mongoDB, l'id est calculé coté client (sorte de hash), ce qui permet de gagner en performance.</li>
-        </ul>
+<ul>
+    <li>Avec une base relationnelle, c'est la base qui calcule l'id afin d'assurer l'unicité.</li>
+    <li>Avec mongoDB, l'id est calculé coté client (sorte de hash), ce qui permet de gagner en performance.</li>
+</ul>
 
-        <p>Même dans notre cas simple, base de données relationnelles et orientée document présentent des différences fondamentales.</p>
+<p>Même dans notre cas simple, base de données relationnelles et orientée document présentent des différences fondamentales.</p>
 
-        <p>Il n'est donc pas aisé de passer d'un modèle à l'autre et il faut bien choisir en début de projet.</p>
-    </div>
+<p>Il n'est donc pas aisé de passer d'un modèle à l'autre et il faut bien choisir en début de projet.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>

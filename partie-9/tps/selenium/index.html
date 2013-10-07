@@ -1,68 +1,64 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title>Selenium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../../../common/prez/css/style.css" rel="stylesheet" media="screen">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-    <title>Selenium</title>
-
-    <link href="../../../common/css/css.css" rel="stylesheet" type="text/css">
-    <link href="../../../common/css/prettify.css" rel="stylesheet" id="prettify-link">
-    <link href="../../../common/css/default.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/dev.css" class="theme" rel="stylesheet">
-    <link href="../../../common/css/project.css" class="theme" rel="stylesheet">
-
-    <script src="../../../common/js/prettify.js" onload="prettyPrint();"></script>
 </head>
-<body onload="prettyPrint();">
-<div class="presentation">
-    <div id="project">
-        <h1 style="line-height: 80px;"><img src="img/webdriver.png" alt="" style="float: left;"> Selenium</h1>
+<body>
+<div class="container">
+    <h1 style="line-height: 80px;"><img src="img/webdriver.png" alt="" style="float: left;"> Selenium</h1>
 
-        <h2>Introduction</h2>
+    <p><a href="http://seleniumhq.org/" target="_blank">Selenium</a> est un projet pour l'automatisation des tests au travers d'un browser.</p>
 
-        <p><a href="http://seleniumhq.org/" class="external" target="_blank">Selenium</a> est un projet pour l'automatisation des tests au travers d'un browser.</p>
+    <p>On se place comme un utilisateur qui vient sur le site web.</p>
 
-        <p>Il se décline en 2 parties :</p>
+    <p>Il se décline en 2 parties :</p>
 
-        <ul>
-            <li>Selenium IDE : un plugin pour firefox qui permet d'enregistrer ses actions dans le navigateur.</li>
-            <li>Selenium WebDriver : une librairie permettant de piloter le navigateur via une API.</li>
-        </ul>
+    <ul>
+        <li>Selenium IDE : un plugin pour firefox qui permet d'enregistrer ses actions dans le navigateur.</li>
+        <li>Selenium WebDriver : une librairie permettant de piloter le navigateur via une API.</li>
+    </ul>
 
-        <p>Nous allons utiliser la librairie afin d'écrire des tests d'interface.</p>
+    <p>Nous allons utiliser la librairie afin d'écrire des tests d'interface.</p>
 
-        <h2>Branche git</h2>
+    <h2>Branche git</h2>
 
-        <p>On crée la branche selenium à partir de la branche master.</p>
+    <p>On crée la branche selenium à partir de la branche master.</p>
 
-        <pre class="shell">&gt; git checkout master
+        <pre class="shell">$ git checkout master
 Switched to branch 'master'
-&gt; git checkout -b selenium
+$ git checkout -b selenium
 Switched to a new branch 'selenium'</pre>
 
-        <h2>Mise en place</h2>
+    <h2>Mise en place</h2>
 
-        <p>Afin d'utiliser la librairie, il suffit de la rajouter dans le pom.</p>
+    <p>Afin d'utiliser la librairie, il suffit de la rajouter dans le pom.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
    &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
    &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
-   &lt;version&gt;2.26.0&lt;/version&gt;
+   &lt;version&gt;2.35.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>Cependant les tests selenium ne sont pas des tests unitaires classiques.</p>
+    <p>Cependant les tests selenium ne sont pas des tests unitaires classiques.</p>
 
-        <p>On parle de <b>test d'intégration</b> : l'application tourne et est connectée à la base de données</p>
+    <p>On parle plutôt de test d'<b>intégration</b> ou d'<b>interface</b> : l'application tourne et est connectée à la base de données</p>
 
-        <p>Les test d'interface sont plus long à l'exécution.</p>
+    <p>Les test d'interface sont plus long à l'exécution.</p>
 
-        <p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
+    <p>Afin que jenkins n'éxécute pas ces tests avec les tests unitaires, nous pouvons :</p>
 
-        <ul>
-            <li>Placer ces tests dans un package fr.todooz.selenium</li>
-            <li>Exclure ce package lors des tests unitaires
+    <ul>
+        <li>Placer ces tests dans un package <b>fr.todooz.selenium</b></li>
+        <li>Exclure ce package lors des tests unitaires
                 <pre class="prettyprint">&lt;plugin&gt;
    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
@@ -72,68 +68,68 @@ Switched to a new branch 'selenium'</pre>
        &lt;/excludes&gt;
    &lt;/configuration&gt;
 &lt;/plugin&gt;</pre>
-             </li>
-        </ul>
+        </li>
+    </ul>
 
-        <p>Il existe d'autres possibilités plus riches mais cela suffit pour notre besoin.</p>
+    <p>Il existe d'autres possibilités mais celle ci suffit pour notre besoin.</p>
 
-        <h2>Un premier test</h2>
+    <h2>Un premier test</h2>
 
-        <p>Nous créons la classe GoogleTest dans le package fr.todooz.selenium, dans src/test/java</p>
+    <p>Nous créons la classe GoogleTest dans le package <b>fr.todooz.selenium,</b> dans <b>src/test/java</b></p>
 
         <pre class="prettyprint">public class GoogleTest {
    private WebDriver webDriver;
 
    @Before
    public void init() {
-       <span class="comment">// création du pilote firefox</span>
+       // création du pilote firefox
        webDriver = new FirefoxDriver();
    }
 
    @After
    public void close() {
-       <span class="comment">// fermeture du navigateur</span>
-       webDriver.close();
+       // fermeture du navigateur
+       webDriver.quit();
    }
 }</pre>
 
-        <p>Nous pouvons ajouter un test de recherche sur google.fr</p>
+    <p>Nous pouvons ajouter un test de recherche sur google.fr</p>
 
         <pre class="prettyprint">@Test
 public void search() throws InterruptedException {
-   <span class="comment">// naviguer vers google.fr</span>
+   // naviguer vers google.fr
    webDriver.navigate().to("http://google.fr");
 
-   <span class="comment">// remplir le champs de recherche</span>
+   // remplir le champs de recherche
    WebElement input = webDriver.findElement(By.name("q"));
 
    input.sendKeys("selenium");
 
-   <span class="comment">// post du formulaire contenant l'input</span>
+   // post du formulaire contenant l'input
    input.submit();
 
-   <span class="comment">// on attends le chargement de la page</span>
+   // on attends le chargement de la page
    WebElement link = new WebDriverWait(webDriver, 5).until(new ExpectedCondition&lt;WebElement&gt;() {
       public WebElement apply(WebDriver input) {
-         <span class="comment">// on doit trouver le lien vers le site</span>
+         // on doit trouver le lien vers le site
          return webDriver.findElement(By.partialLinkText("Web Browser Automation"));
       }
    });
 
-   Assert.assertEquals("http://seleniumhq.org/", link.getAttribute("href"));
+   Assert.assertEquals("http://docs.seleniumhq.org/", link.getAttribute("href"));
 }</pre>
 
-        <p>Le test est assez simple mais le bloc lié au wait est un peu verbeux.</p>
+    <p>Le test est assez simple mais le bloc lié au wait est un peu verbeux.</p>
 
-        <p>Les tests selenium reposent sur des assertions lié à l'arbre DOM.</p>
+    <p>Les tests selenium reposent sur des assertions lié à l'arbre DOM.</p>
 
-        <h2>Ajout d'une tâche</h2>
+    <h2>Ajout d'une tâche</h2>
 
-        <p>Nous allons maintenant nous tourner vers notre propre site.</p>
+    <p>Nous allons maintenant nous tourner vers notre propre site.</p>
 
-        <p>Nous créons une classe TodoozTest dans le même package.</p>
+    <p>Nous créons une classe <b>TodoozTest</b> dans le même package.</p>
 
-        <p>Faire un premier test home() qui vérifie que la page d'index répond correctement.</p>
+    <p>Faire un premier test <b>home()</b> qui vérifie que la page d'index répond correctement.</p>
 
         <pre class="prettyprint">@Test
 public void home() {
@@ -142,13 +138,13 @@ public void home() {
    // on vérifie le title
 }</pre>
 
-        <p>En pratique les pages sont beaucoup plus riches que notre page et il y a beaucoup plus d'éléments que l'on peut tester.</p>
+    <p>En pratique les pages sont beaucoup plus riches que notre page et il y a beaucoup plus d'éléments que l'on peut tester.</p>
 
-        <p>Il faut cependant garder les tests simples : lisibles et résistants au changement.</p>
+    <p>Il faut cependant garder les tests simples : lisibles et résistants au changement.</p>
 
-        <p>Ensuite, on test l'ajout d'un billet via l'url http://localhost:8080/add.</p>
+    <p>Ensuite, on test l'ajout d'un billet via l'url http://localhost:8080/add.</p>
 
-        <p>Pour réaliser ce test, on implémente le pseudo code suivant.</p>
+    <p>Pour réaliser ce test, on implémente le pseudo code suivant.</p>
 
         <pre class="prettyprint">@Test
 public void add() {
@@ -161,51 +157,61 @@ public void add() {
    // vérifier que le billet a bien été ajouté en home page
 }</pre>
 
-        <p>Comme pour les tests unitaires, les tests selenium accompagnent l'évolution du code.</p>
+    <p>Comme pour les tests unitaires, les tests selenium accompagnent l'évolution du code.</p>
 
-        <h2>Refactoring</h2>
+    <h2>Refactoring</h2>
 
-        <p>Nos tests fonctionnent mais le code de test est un peu verbeux.</p>
+    <p>Nos tests fonctionnent mais le code de test est un peu verbeux.</p>
 
-        <p>Afin d'écrire de les rendre plus simple, nous allons utiliser la librairie <a href="https://github.com/FluentLenium/FluentLenium" class="external" target="_blank">FluentLenium</a>.</p>
+    <p>Afin de les rendre plus simple, nous allons utiliser la librairie <a href="https://github.com/FluentLenium/FluentLenium" target="_blank">FluentLenium</a>.</p>
 
-        <p>La librairie dans le pom.</p>
+    <p>La librairie dans le pom.</p>
 
         <pre class="prettyprint">&lt;dependency&gt;
-   &lt;groupId&gt;fr.javafreelance.fluentlenium&lt;/groupId&gt;
-   &lt;artifactId&gt;fluentlenium&lt;/artifactId&gt;
-   &lt;version&gt;0.5.3&lt;/version&gt;
-   &lt;scope&gt;test&lt;/scope&gt;
+    &lt;groupId&gt;org.fluentlenium&lt;/groupId&gt;
+    &lt;artifactId&gt;fluentlenium-core&lt;/artifactId&gt;
+    &lt;version&gt;0.9.1&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-        <p>L'heritage de la classe FluentTest</p>
+    <p>L'heritage de la classe FluentTest</p>
 
-        <pre class="prettyprint">public class TodoozTest extends FluentTest { ... }</pre>
+    <pre class="prettyprint">public class TodoozTest extends FluentTest { ... }</pre>
 
-        <p>On peut alors supprimer les méthodes @Before et @After, car le driver est géré par la classe mère.</p>
+    <p>On peut alors supprimer les méthodes <code>@Before</code> et <code>@After,</code> car le driver est géré par la classe mère.</p>
 
-        <p>FluentLenium permet d'écrire les tests sous la forme :</p>
+    <p>FluentLenium permet d'écrire les tests sous la forme :</p>
 
         <pre class="prettyprint">goTo("http://mywebpage/");
 fill("#firstName").with("toto");
 click("#create-button");
 assertThat(title()).isEqualTo("Hello toto");</pre>
 
-        <p>Fluent lenium utilise des sélecteurs css afin de simplifier les recherches.</p>
+    <p>Ou même avec un synthaxe proche de celle de jquery :</p>
 
-        <p>Ce qui donne pour notre test home() :</p>
+    <pre class="prettyprint">goTo("http://mywebpage/");
+$("#firstName").text("toto");
+$("#create-button").click();
+assertThat(title()).isEqualTo("Hello toto");</pre>
+
+    <p>Fluent lenium utilise des sélecteurs css afin de simplifier les recherches.</p>
+
+    <p>Ce qui donne pour notre test home() :</p>
 
         <pre class="prettyprint">goTo("http://localhost:8080/");
 
-Assert.assertEquals("Mon blog", $(".title").first().getText());</pre>
+Assert.assertEquals("Todooz", title());</pre>
 
-        <p>Même en java, on peut écrire du code lisible et synthétique.</p>
+    <p>Même en java, on peut écrire du code lisible et synthétique.</p>
 
-        <p>Il reste a faire de même pour l'autre test.</p>
+    <p>Il reste a faire de même pour l'autre test.</p>
 
-        <p>Au même titre que le code, il est important de garder des tests lisibles et concis.</p>
-
-    </div>
+    <p>Au même titre que le code, il est important de garder des tests lisibles et concis.</p>
 </div>
+
+<script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../../../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../../../common/prez/js/prez.js"></script>
 </body>
 </html>
