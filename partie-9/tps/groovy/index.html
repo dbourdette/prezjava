@@ -14,11 +14,533 @@
 </head>
 <body>
 <div class="container">
-<h1>
-    <img src="img/groovy.png" alt="" style="height: 80px;"> A dynamic language for the Java platform
-</h1>
+    <h1>
+        <img src="img/groovy.png" alt="" style="height: 80px;"> A dynamic language for the Java platform
+    </h1>
 
+    <p>Groovy est un language alternatif qui tourne sur la jvm. Il profite ainsi de la plateforme et des librairies.</p>
 
+    <p>C'est un language dynamique dont la synthaxe est proche de java. C'est assez simple d'apprendre le groovy à partir du java.</p>
+
+    <p>L'intérêt d'un language dynamique est sa grande souplesse. Groovy intègre aussi de nombreuse fonctionnalité qui permettent d'avoir une très grande productivité.</p>
+
+    <p>Il existe de nombreux autres languages alternatifs pour la jvm</p>
+
+    <ul>
+        <li>Scala</li>
+        <li>Clojure</li>
+        <li>Jython</li>
+        <li>JRuby</li>
+    </ul>
+
+    <p>Nous allons voir les forces de groovy.</p>
+
+    <h2>Branche git</h2>
+
+    <p>On crée la branche mongo à partir de la branche master.</p>
+
+    <pre class="shell">$ git checkout master
+Switched to branch 'master'
+$ git checkout -b groovy
+Switched to a new branch 'groovy'</pre>
+
+    <h2>Script groovy</h2>
+
+    <p>Pour démarrer nous allons utiliser la capacité de groovy à exécuter du code à la volée.</p>
+
+    <p>On installe groovy avec le gestionnaire de package</p>
+
+    <pre class="shell">$ brew install groovy
+$ groovy -version
+Groovy Version: 2.1.6 JVM: 1.7.0_21 Vendor: Oracle Corporation OS: Mac OS X</pre>
+
+    <p>Maintenant on peut exécuter du code</p>
+
+    <pre class="shell">$ echo "println 'hello groovy'" > hello.groovy
+$ groovy hello.groovy
+hello groovy</pre>
+
+    <div class="alert alert-warning">println est un raccourçi pour System.out.println</div>
+
+    <p>La command groovy compile le code groovy et l'exécute.</p>
+
+    <p>Voici un exemple un peu plus riche</p>
+
+    <pre class="shell">$ echo "def fib(n) {n<2 ? 1 : fib(n-1)+fib(n-2)}" > fib.groovy
+$ echo "(0..10).eachWithIndex { it, i -> println ((' ' * i) + fib(it)) }" >> fib.groovy
+$ groovy count.groovy
+...</pre>
+
+    <h2>Plugin groovy</h2>
+
+    <p>Afin de pouvoir intégrer du groovy dans notre projet, nous allons utiliser le plugin <a href="http://groovy.codehaus.org/Groovy-Eclipse+compiler+plugin+for+Maven" target="_blank">Groovy-Eclipse</a>.</p>
+
+    <pre class="prettyprint">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;compilerId&gt;groovy-eclipse-compiler&lt;/compilerId&gt;
+    &lt;/configuration&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+            &lt;artifactId&gt;groovy-eclipse-compiler&lt;/artifactId&gt;
+            &lt;version&gt;2.8.0-01&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+            &lt;artifactId&gt;groovy-eclipse-batch&lt;/artifactId&gt;
+            &lt;version&gt;2.1.5-03&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/plugin&gt;</pre>
+
+    <p>Et il faut aussi ajouter la librairie contenant groovy</p>
+
+    <pre class="prettyprint">&lt;dependency&gt;
+    &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+    &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
+    &lt;version&gt;2.1.7&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+
+    <p>A partir de là, la documentation du plugin dit</p>
+
+    <blockquote>
+        <p>The simplest way to set up your source folders is to do nothing at all: add all of your Groovy files to <b>src/main/java</b> and <b>src/test/java</b>. This requires absolutely no extra configuration and is easy to implement. However, this is not a standard maven approach to setting up your project.</p>
+    </blockquote>
+
+    <p>Nous ne serons pas vraiment dans les clous maven, mais cela sera plus pratique.</p>
+
+    <h2>TagCloudTest.groovy</h2>
+
+    <p>Nous allons en premier Transformer notre test <code>TagCloudTest</code></p>
+
+    <p>La première chose à faire est de renommer <code>TagCloudTest.java</code> en <code>TagCloudTest.groovy</code></p>
+
+    <p>Après ça, on note que les tests passent toujours sous intellij et maven</p>
+
+    <pre class="shell">$ mvn -Dtest=TagCloudTest test
+...
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running fr.todooz.util.TagCloudTest
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.642 sec
+...</pre>
+
+    <p>Simplement, les classes java sont 100% compatibles avec la synthaxe groovy.</p>
+
+    <h3>assert</h3>
+
+    <p>On peut changer les <code>Assert</code> de junit en utilisant le mot clé <code>assert</code> de groovy</p>
+
+    <pre class="prettyprint">Assert.assertEquals(2, tagCloud.size());</pre>
+
+    <p>devient</p>
+
+    <pre class="prettyprint">assert tagCloud.size() == 2</pre>
+
+    <p>C'est plus simple et en cas d'erreur, le log est plus lisible</p>
+
+    <pre class="prettyprint">Assertion failed:
+
+assert tagCloud.size() == 3
+       |        |      |
+       |        2      false
+       TagCloud{tags=[java, python]}</pre>
+
+    <p>Faites de même avec toutes les assertions (on note au passage que les ; en fin de ligne sont optionnels).</p>
+
+    <h3>Visibilité</h3>
+
+    <p>En groovy, il n'y a que 3 modificateurs de visibilité possibles :</p>
+
+    <ul>
+        <li>rien ou public : accessible par tous</li>
+        <li>protected : accessible par les sous classes</li>
+        <li>private : uniquement accessible par la classe courante</li>
+    </ul>
+
+    <p>Il n'y a donc pas de notion de package protected comme en java et public est le modificateur par défaut.</p>
+
+    <p><code>public class TagCloudTest</code> devient donc simplement <code>class TagCloudTest</code></p>
+
+    <p>Faites de même pour toutes les méthodes.</p>
+
+    <h3>def</h3>
+
+    <p>Le mot clé <code>def</code> permet d'omettre le type.</p>
+
+    <p>Par exemple, au lieu de <code>String value = "sampe"</code>, on peut écrire <code>def value = "sample</code>.</p>
+
+    <p><code>def</code> est une sorte de synonyme pour Object.</p>
+
+    <p>Cela permet d'omettre le type. On peut donc appeler une méthode sur un objet sans vraiment savoir son type.</p>
+
+    <blockquote>
+        <p>If it walks like a duck and quacks like a duck, then it's a duck</p>
+        <small>Duck typing</small>
+    </blockquote>
+
+    <p>Il faut attendre le runtime afin de savoir si appel est valide.</p>
+
+    <p>Par exemple pour le test <code>add()</code></p>
+
+    <pre class="prettyprint">@Test
+void add() {
+    TagCloud tagCloud = new TagCloud();
+
+    tagCloud.add();
+}</pre>
+
+    <p>On peut écrire</p>
+
+    <pre class="prettyprint">@Test
+void add() {
+    def tagCloud = new TagCloud()
+
+    tagCloud.add()
+}</pre>
+
+    <p>Ici le gain est faible, mais intellij continue de proposer de la complétion car il est capable d'inférer le type de tagCloud.</p>
+
+    <p>En pratique, il est déconseillé de l'utiliser pour les paramètres de méthodes, car cela peut rendre le code plus complexe à lire.</p>
+
+    <h2>TagCloud.groovy</h2>
+
+    <p>Comme pour le test, on passe le <code>TagCloud</code> en groovy</p>
+
+    <p>Appliquez tous les points mis en place pour le tests.</p>
+
+    <h3>[ ]</h3>
+
+    <p><code>[]</code> est une notation qui en fait indique un <code>ArrayList&lt;Object&gt;</code></p>
+
+    <p>On peut changer la déclaration de la liste des tags</p>
+
+    <pre class="prettyprint">private def tags = []</pre>
+
+    <h3>La vérité</h3>
+
+    <p>Les tests booléens sont simplifiés (voir <a href="http://docs.codehaus.org/display/GROOVY/Groovy+Truth" target="_blank">Groovy Truth</a>)</p>
+
+    <p>Par exemple, au lieu de</p>
+
+    <pre class="prettyprint">if (tags == null) {
+    return;
+}</pre>
+
+    <p>On peut écrire</p>
+
+    <pre class="prettyprint">if (!tags) {
+    return;
+}</pre>
+
+    <h3>each() { }</h3>
+
+    <p>Pour parcourir une liste, au lieu de faire un <code>for</code>, on peut utiliser un <code>each</code></p>
+
+    <pre class="prettyprint">tags.each {
+    if (canAddTag(it)) {
+        this.tags.add(it);
+    }
+}</pre>
+
+    <p><code>it</code> est le nom par défaut de la variable d'itération.</p>
+
+    <p>On peut le changer pour plus de lisibilité</p>
+
+    <pre class="prettyprint">tags.each { <span class="added">tag</span> -&gt;
+    if (canAddTag(tag)) {
+        this.tags.add(tag);
+    }
+}</pre>
+
+    <h3>@ToString</h3>
+
+    <p>Il est possible de demander a groovy de générer la méthode <code>toString()</code> en annotant la classe avec <code>@ToString</code></p>
+
+    <pre class="prettyprint">@ToString
+class TagCloud { ... }</pre>
+
+    <h3>==</h3>
+
+    <p>En groovy, <code>==</code> est un équivalent de equals null safe.</p>
+
+    <p>Au lieu de</p>
+
+    <pre class="prettyprint">private boolean canAddTag(String tag) {
+    return !contains(tag) && tag != null && !"".equals(tag);
+}</pre>
+
+    <p>On peut donc écrire</p>
+
+    <pre class="prettyprint">private boolean canAddTag(String tag) {
+    return !contains(tag) && tag != null && <span class="added">tag != ""</span>
+}</pre>
+
+    <p>Mais comme <code>null</code> et <code>""</code> sont faux en groovy</p>
+
+    <pre class="prettyprint">private boolean canAddTag(String tag) {
+    return !contains(tag) && <span class="added">tag</span>
+}</pre>
+
+    <h3>return</h3>
+
+    <p>Le mot clé <code>return</code> est optionnel. En son absence, groovy retourne la dernière valeur évaluée de la méthode.</p>
+
+    <p>Par exemple, pour ma méthode <code>size()</code></p>
+
+    <pre class="prettyprint">int size() { tags.size() }</pre>
+
+    <p>Faites de même lorsque c'est approprié.</p>
+
+    <h3>Au résultat</h3>
+
+    <p>Ma classe finale est la suivante</p>
+
+    <pre class="prettyprint">@ToString
+class TagCloud {
+    def tags = []
+
+    void add(String... tags) {
+        tags?.each {
+            if (canAddTag(it)) {
+                this.tags.add(it)
+            }
+        }
+    }
+
+    int size() { tags.size() }
+
+    boolean contains(String tag) { tags.contains(tag) }
+
+    void top(int count) {
+        count = Math.max(count, 0)
+        count = Math.min(count, tags.size())
+
+        tags = tags.subList(0, count)
+    }
+
+    void shuffle() { Collections.shuffle(tags) }
+
+    private boolean canAddTag(String tag) { tag && !contains(tag) }
+}</pre>
+
+    <p>En gagnant en lisibilité, la version groovy est aussi plus courte.</p>
+
+    <h2>TagCloudServiceTest.groovy</h2>
+
+    <p>Nous allons faire de même avec le <code>TagCloudServiceTest</code> et <code>TagCloudService</code></p>
+
+    <p>Utilisez déjà les simplifications suivantes : point virgule, assert et each {}</p>
+
+    <h3>Constructeur [:]</h3>
+
+    <p>Pour construire une <code>Task</code>, on peut utiliser le code suivant</p>
+
+    <pre class="prettyprint">new Task(date: new Date(), title: 'Read Effective Java', text: "Read Effective Java before it's too late", tags: tags)</pre>
+
+    <p>C'est équivalent à</p>
+
+    <pre class="prettyprint">Task task = new Task()
+task.date = new Date()
+task.title = 'Read Effective Java'
+task.text = "Read Effective Java before it's too late"
+task.tags = tags</pre>
+
+    <p>La notation [prop: 'value'] construit en fait une <code>Map</code></p>
+
+    <p>Lorsque l'on passe une Map à un constructeur, groovy va affecter les propriétés de la classe en lisant la Map.</p>
+
+    <h3>Accès aux propriétés</h3>
+
+    <p>En groovy, l'accès aux propriétés est simplifiée. Par exemple, au lieu d'écrire :</p>
+
+    <pre class="prettyprint">sessionFactory.getCurrentSession()</pre>
+
+    <p>on peut écrire</p>
+
+    <pre class="prettyprint">sessionFactory.currentSession</pre>
+
+    <p>Automatiquement, groovy va utiliser l'accesseur (getXXX())</p>
+
+    <p>En fait, voici tout ce que fait groovy pour les <a href="http://groovy.codehaus.org/Groovy+Beans" target="_blank">beans (Groovy beans)</a></p>
+
+    <ul>
+        <li>If the name is declared with an access modifier (public, private or protected) then a field is generated.</li>
+        <li>A name declared with no access modifier generates a private field with public getter and setter (i.e. a property).</li>
+        <li>If a property is declared final the private field is created final and no setter is generated.</li>
+        <li>You can declare a property and also declare your own getter or setter.</li>
+        <li>You can declare a property and a field of the same name, the property will use that field then.</li>
+        <li>If you want a private or protected property you have to provide your own getter and setter which must be declared private or protected.</li>
+        <li>If you access a property from within the class the property is defined in at compile time with implicit or explicit this (for example this.foo, or simply foo), Groovy will access the field directly instead of going though the getter and setter.</li>
+        <li>If you access a property that does not exist using the explicit or implicit foo, then Groovy will access the property through the meta class, which may fail at runtime.</li>
+    </ul>
+
+    <h3>Closures</h3>
+
+    <p>Une closure est comme un bloc de code ou un pointeur sur une méthode. Par exemple</p>
+
+    <pre class="prettyprint">def addOne = { param -> param + 1 }
+assert addOne(2) == 3</pre>
+
+    <p>Il est donc facile de déclarer un morceau de code et de l'appeler.</p>
+
+    <p>C'est comme ça que fonctionne <code>each</code> :</p>
+
+    <blockquote>
+        <p>Iterates through an aggregate type or data structure, passing each item to the given closure. Custom types may utilize this method by simply providing an "iterator()" method. The items returned from the resulting iterator will be passed to the closure.</p>
+    </blockquote>
+
+    <p>C'est ce que nous avons fait dans le <code>TagCloudServiceImpl.buildTagCloud()</code>.</p>
+
+    <pre class="prettyprint">public TagCloud buildTagCloud() {
+    TagCloud tagCloud = new TagCloud()
+
+    findTags().each {
+        tagCloud.add(StringUtils.split(it, ","))
+    }
+
+    tagCloud
+}</pre>
+
+    <p>Comme <code>each</code>, il existe une méthode <code>collect</code> (voir le <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html" target="_blank">gdk</a>) qui collecte les valeurs retournées et retourne une liste.</p>
+
+    <p>On essaye donc d'écrire</p>
+
+    <pre class="prettyprint">findTags().collect { StringUtils.split(it, ",") }</pre>
+
+    <p>Mais comme split renvoie un tableau de string, on ne peut pas injecter directement le résultat dans le TagCloud</p>
+
+    <p>En s'aidant des méthodes <code>flatten()</code> et <code>unique()</code> et en utilisant <code>tokenize()</code> on obtient le résutlat suivant</p>
+
+    <pre class="prettyprint">public TagCloud buildTagCloud() {
+    new TagCloud(tags: findTags().collect { it.tokenize(',') }.flatten().unique())
+}</pre>
+
+    <p>On fini donc avec un one liner dont la lisibilité peut être débatue : )</p>
+
+    <h2>Task.groovy</h2>
+
+    <p>Coté objet du domaine, on peut profiter à plein des Groovy Beans.</p>
+
+    <pre class="prettyprint">@Entity
+@Table(name = "task")
+@ToString
+public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id
+
+    @Column
+    Date createdAt = new Date()
+
+    @Column
+    @NotBlank
+    @Size(min = 1, max = 255)
+    String title
+
+    @Column(length = 4000, nullable = true)
+    @Size(max = 4000)
+    String text
+
+    @Column
+    @NotNull
+    Date date = new Date()
+
+    @Column(nullable = true)
+    String tags
+
+    String[] getTagArray() { tags.tokenize(',') }
+}</pre>
+
+    <p>Tous les setters et getters sont générés automatiquement et notre classe est beaucoup plus synthétique.</p>
+
+    <h2>Intérêt de groovy</h2>
+
+    <p>Avec groovy, il est possible d'écrire beaucoup moins de code et d'être plus productif.</p>
+
+    <p>Mais cela vient avec un prix :</p>
+
+    <ul>
+        <li>La performance est légèrement moins bonne</li>
+        <li>Il est plus facile d'introduire des bugs à cause du typage dynamique</li>
+    </ul>
+
+    <p>Un volume de code important en groovy est donc plus difficile à maintenir et à faire évoluer.</p>
+
+    <p>Il demande alors une plus grande maitrise individuelle et une meilleure couverture de tests</p>
+
+    <p>Il est un point ou groovy excelle : l'écriture de script</p>
+
+    <p>Voici un exemple de script utilisé en production pour mettre à jour les applications</p>
+
+    <pre class="prettyprint">def war = new File(tempDir, "ROOT.war")
+
+new NexusArtifact(name: name, version: version, extension: 'war').downloadTo(war)
+
+stopTomcat()
+
+updateTomcatConf(version, tomcatConfResolver)
+
+new File("$webappDir/webapps").deleteDir()
+new File("$webappDir/work").deleteDir()
+
+new File("$webappDir/webapps").mkdirs()
+new File("$webappDir/work").mkdirs()
+
+log "Copying war to $webappDir/webapps/ROOT.war"
+
+new AntBuilder().move(file: war, toFile: new File(webappDir, "webapps/ROOT.war"), overwrite: true)
+
+startTomcat()</pre>
+
+    <h2>Fonctionnalités du language</h2>
+
+    <p>Le labguage groovy est plus riche que le language java.</p>
+
+    <p>Voici un guide du language <a href="http://groovy.codehaus.org/Groovy+style+and+language+feature+guidelines+for+Java+developers" target="_blank">groovy pour les développeurs java</a></p>
+
+    <p>On y retrouve les points suivants :</p>
+
+    <ul>
+        <li>point virgule optionnel</li>
+        <li>return optionnel</li>
+        <li>mot clé "def"</li>
+        <li>public est la visibilité par défaut</li>
+        <li>parenthèses optionnelles</li>
+        <li>.class optionnel pour désigner une classe</li>
+        <li>groovy beans et propriétés</li>
+        <li>Contructeur avec une map</li>
+        <li>with() pour éviter de répéter la même variable</li>
+        <li>Equals et ==</li>
+        <li>GString et l'interpolation</li>
+        <li>Synthaxe native pour les listes, maps, ranges et expression régulière</li>
+        <li>le GDK</li>
+        <li>switch amélioré</li>
+        <li>Aliasing d'import</li>
+        <li>La vérité en groovy</li>
+        <li>Navigation pointée sûre</li>
+        <li>mot clé assert</li>
+        <li>opérateur Elvis</li>
+        <li>catch any exception</li>
+    </ul>
+
+    <p>La liste est déjà longue et on peut rajouter la surcharge de certains opérateurs et le méta programming</p>
+
+    <h2>L'ecosystème groovy</h2>
+
+    <p>A partir du language est né toute une famille d'outils</p>
+
+    <ul>
+        <li><a href="http://grails.org/" target="_blank">grails</a> : un framework pour produire des applications web</li>
+        <li><a href="http://www.gradle.org/" target="_blank">graddle</a> : un système de build concurrent à maven</li>
+        <li><a href="http://griffon.codehaus.org/" target="_blank">griffon</a> : un framework pour construire des applications swing</li>
+        <li><a href="http://gpars.codehaus.org/" target="_blank">GPARS</a> : un framework pour gérer simplement la <a href="http://fr.wikipedia.org/wiki/Programmation_concurrente" target="_blank">programmation concurrence</a></li>
+        <li><a href="http://groovy.codehaus.org/Grape">@Grab</a> : permet de récupérer des dépendances à la volée</li>
+    </ul>
 </div>
 
 <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
