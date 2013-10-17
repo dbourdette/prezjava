@@ -75,7 +75,7 @@ INFO: Completed initialization
 INFO: JNLP slave agent listener started on TCP port 54703
         </pre>
 
-    <p>Jenkins tourne et sa configuration est dans $user.home/.jenkins</p>
+    <p>Jenkins tourne et sa configuration est dans <b>$user.home/.jenkins</b></p>
 
     <img src="img/jenkin-ui.png" class="img-responsive" style="margin: auto" />
 
@@ -83,7 +83,7 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
     <p>Afin de pouvoir récupérer notre projet sur github, nous allons installer le plugin nécessaire.</p>
     <p>Les plugins sont accessibles via <b>Administrer Jenkins > Gestion des plugins > Disponibles</b>.</p>
-    <p>Il faut installer le plugin github.</p>
+    <p>Installez le plugin github.</p>
 
     <p><img src="img/jenkins-github.png" class="img-responsive" style="margin: auto; width: 700px"/></p>
 
@@ -124,11 +124,13 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
     <p><img src="img/jenkins-cron.png" class="img-responsive" style="margin: auto;" /></p>
 
-    <p>Jenkins est maintenant configuré pour exécuter le build à chaque modification.</p>
+    <p>Jenkins est maintenant configuré pour regarder régulièrement si il y a eut un changement.</p>
+
+    <div class="alert alert-warning">Il est possible aussi de demander à github de venir informer jenkins lorsqu'il y a eut un commit</div>
 
     <h2>Jenkins dans la forge logicielle</h2>
 
-    <p>Les capacités de Jenkins sont bien plus grandes que ce court exemple mais la configuration reste simple et rapide.</p>
+    <p>Les capacités de Jenkins sont bien plus grandes que ce court exemple, mais la configuration reste simple et rapide.</p>
 
     <p>Grâce aux plugins il est possible de faire communiquer Jenkins avec d'autres éléments de la forge logicielle.</p>
 
@@ -138,7 +140,7 @@ INFO: JNLP slave agent listener started on TCP port 54703
 
     <p>Configurez un job qui build ce projet comme il le fait avec le projet de référence.</p>
 
-    <p>Faire une modification dans le répository github et voir que jenkins relance bien le build.</p>
+    <p>Faites une modification dans le répository github et vérifiez que jenkins relance bien le build.</p>
 
     <p>Une fois ce projet intégré dans jenkins, on peut supprimer le job pour le projet "presentation-jenkins".</p>
 </div>

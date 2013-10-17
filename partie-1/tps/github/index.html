@@ -24,11 +24,11 @@
 
     <p>Tous types de sources peuvent être stoqués dans un VCS : code, fichiers de configuration, scritps utilitaires...</p>
 
-    <p>Les principaux gestionnaires de sources sont les suivants :</p>
+    <p>Les principaux gestionnaires de sources libres sont les suivants :</p>
 
     <ul>
         <li><b>CVS</b> : Le gestionnaire de sources gratuit "historique". Il est aujourd'hui très dépassé par des solutions comme subversion ou git.</li>
-        <li><b>Subversion</b> : Il reprend les mêmes principes que CVS mais en corrige les principaux défauts. Il propose des conventions simples et faciles à manipuler. Si il est installé derrière un serveur http apache 2, il est possible de naviguer dans les sources avec un browser.</li>
+        <li><b>Subversion</b> : Il reprend les mêmes principes que CVS mais en corrige les défauts. Il propose des conventions simples et faciles à manipuler. Si il est installé derrière un serveur http apache 2, il est possible de naviguer dans les sources avec un browser.</li>
         <li><b>Git</b> : Git est un distributed VCS (DVCS) et suit donc une philosophie différente. Il multiplie les capacités de travail dans des branches (locales ou distantes) permettant de travailler simultanément sur plusiseurs sujets en parallèle. Il est particulièrement adapté à du travail sur des projets open source où les bureaux sont dématérialisés et les collaborateurs multiples.</li>
     </ul>
 
@@ -38,11 +38,11 @@
 
     <p>C'est l'outils que nous allons utiliser pour notre projet.</p>
 
-    <p>Créer un compte github et configurer une clée ssh en suivant le tutorial <a href="https://github.com/" target="_blank">github</a></p>
+    <p>Créez un compte github et configurez une clée ssh en suivant le tutorial <a href="https://github.com/" target="_blank">github</a></p>
 
     <h2>Création du repository todooz sur github</h2>
 
-    <p>Depuis le dashboard, créer un repository todooz.</p>
+    <p>Depuis le dashboard, créez un repository <b>todooz</b>.</p>
 
     <p>On doit donc obtenir un repository de la forme <code>git@github.com:{user}/todooz.git</code></p>
 
@@ -59,7 +59,7 @@ Initialized empty Git repository in /path/to/projects/todooz/.git/</pre>
 
     <p>Certains fichiers ne doivent pas être envoyé vers le VCS : les fichiers générés lors de la compilation ou bien les fichiers générés par maven ne font pas partie des sources.</p>
 
-    <p>On crée le fichier .gitignore à la racine du projet afin de les exclure.</p>
+    <p>On crée le fichier <b>.gitignore</b> à la racine du projet afin de les exclure.</p>
 
         <pre># maven
 target/*
@@ -74,15 +74,15 @@ target/*
 
     <p>Le répertoire target contient le résultat de la compilation et autres fichiers générés lors du build.</p>
 
-    <p>.idea et .iml sont la définition du module sous intellij.</p>
+    <p><b>.idea</b> et <b>.iml</b> sont la définition du module sous intellij.</p>
 
-    <p>.project et .classpath sont la définition du projet eclipse et sont générés par maven (maven eclipse:eclipse).</p>
+    <p><b>.project</b> et <b>.classpath</b> sont la définition du projet eclipse et sont générés par maven (<code>mvn eclipse:eclipse</code>).</p>
 
     <p>Il faudra ajouter d'éventuels autres patterns si le besoin se présentait.</p>
 
     <h2>git add</h2>
 
-    <p>La command git status doit donc afficher à peu près cela.</p>
+    <p>La commande git status doit donc afficher à peu près cela.</p>
 
         <pre class="shell">todooz $ <b>git status</b>
 # On branch master
@@ -121,7 +121,7 @@ toddoz $ <b>git commit -m "initial commit"</b></pre>
 
     <pre class="shell">toddoz $ <b>git config branch.master.merge refs/heads/master</b></pre>
 
-    <p>Maintenant git push et pit pull feront automatiqment le lien avec origin. La commande de push devient donc simplement :</p>
+    <p>Maintenant <code>git push</code> et <code>pit pull</code> feront automatiqment le lien avec origin. La commande de push devient donc simplement :</p>
 
     <pre class="shell">toddoz $ <b>git push</b></pre>
 

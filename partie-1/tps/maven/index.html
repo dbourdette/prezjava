@@ -21,13 +21,17 @@
 
 <p>Généralement le produit est une librairie java (.jar) ou une application web (.war).</p>
 
-<p>En ligne de commande, le build est facilement automatisable, le produit peut être numéroté (ex : build-1.1.3.zip) et archivé.</p>
+<p>Maven s'exécute en ligne de commande, ainsi, le build est facilement automatisable.</p>
+
+<p>Le produit peut être numéroté (ex : build-1.1.3.zip) et archivé.</p>
 
 <p>Idéalement, le build éxécute les tests et produit des rapports.</p>
 
-<p>Pour construire le produit, on a besoin de librairies : les <b>dépendances</b>.</p>
+<h4>Les dépendances</h4>
 
-<p>Maven va les chercher dans des <b>repositories</b>.</p>
+<p>Pour construire le produit, on a besoin de librairies : les <b>dépendances</b> (.jar en java).</p>
+
+<p>Maven va les chercher dans des <b>repositories</b> et compile notre source avec :</p>
 
 <p><img src="img/maven.png" alt="build" class="img-responsive" style="width: 400px;margin: auto"></p>
 
@@ -59,11 +63,12 @@
 </ol>
 
         <pre class="shell">~ $ <b>mvn --version</b>
-Apache Maven 2.1.0 (r755702; 2009-03-18 20:10:27+0100)
-Java version: 1.6.0_20
-Java home: /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
-Default locale: fr_FR, platform encoding: MacRoman
-OS name: "mac os x" version: "10.6.4" arch: "x86_64" Family: "mac"</pre>
+Apache Maven 3.0.3 (r1075438; 2011-02-28 18:31:09+0100)
+Maven home: /usr/share/maven
+Java version: 1.7.0_21, vendor: Oracle Corporation
+Java home: /Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre
+Default locale: fr_FR, platform encoding: UTF-8
+OS name: "mac os x", version: "10.8.2", arch: "x86_64", family: "mac"</pre>
 
 <h2>10 minutes test</h2>
 
@@ -148,9 +153,9 @@ Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
 [INFO] Final Memory: 9M/126M
 [INFO] ------------------------------------------------------------------------</pre>
 
-<p>Le build passe et produit le jar target/todooz-1.0-SNAPSHOT.jar.</p>
+<p>Le build passe et produit le jar <b>target/todooz-1.0-SNAPSHOT.jar</b>.</p>
 
-<div class="alert alert-warning">Lors de la première exécution, le téléchargement de ressources génère beaucoup plus de logs.</div>
+<div class="alert alert-warning">Lors de la première exécution, le téléchargement de librairies génère beaucoup plus de logs.</div>
 
 <p>Comme nous l'indique le log, le jar est presque vide car nous n'avons pas de fichier .java</p>
 
@@ -215,7 +220,7 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
 <h2>lifecycles</h2>
 
-<p>mvn package est la commande de base qui construit tout le projet et génère le package produit.</p>
+<p>mvn package est la commande de base qui construit tout le projet et génère la jar (java archive).</p>
 
 <p>Il est existe d'<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html" target="_blank">autres lifecycles</a>, comme mvn clean ou mvn site.</p>
 
@@ -225,7 +230,7 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
 <p>Il contient les librairies qui servent à l'application mais aussi les plugins de maven.</p>
 
-<p>Par défaut il est dans le répertoire ~/.m2/repository.</p>
+<p>Par défaut il est dans le répertoire <b>~/.m2/repository</b>.</p>
 
 <h2>maven central</h2>
 
@@ -233,23 +238,25 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
 <p><img src="img/search-maven.png" alt="search.maven.org" class="img-responsive" style="width: 800px;margin: auto" /></p>
 
+<p>C'est un espace de stockage bien rangé où l'on trouve beaucoup de librairie.</p>
+
 <h2>settings.xml</h2>
 
-<p>Pour des cas simples, les réglages par défaut sont suffisant.</p>
+<p>Pour des cas simples, les réglages par défaut sont suffisants.</p>
 
-<p>En entreprise, il n'est pas rare d'avoir à ajouter des repositories distants</p>
+<p>En entreprise, il n'est pas rare d'avoir besoin d'autres repositories distants</p>
 
-<p>Cela se fait en éditant le fichier ~/.m2/settings.xml</p>
+<p>Cela se fait en éditant le fichier <b>~/.m2/settings.xml</b></p>
 
 <p>Dans notre cas simple, nous n'utiliserons pas ce fichier.</p>
 
 <h2>Avec intellij</h2>
 
-<p>Il suffit de faire un click droit sur le pom.xml et de choisir "Add as a Maven Project".</p>
+<p>Il suffit de faire un click droit sur le <b>pom.xml</b> et de choisir "Add as a Maven Project".</p>
 
 <p>Intellij nous indique que l'on est passé en java 1.7 et nous demande de recharger le projet.</p>
 
-<p>Les réperoires src/main/java et src/main/test sont indiquer respectivement comme répertoires de source et de test.</p>
+<p>Les réperoires <b>src/main/java</b> et <b>src/main/test</b> sont indiqués respectivement comme répertoires de source et de test.</p>
 
 <p>Dans les settings, on opte pour l'import automatique des modifications apportées au pom.xml</p>
 
@@ -269,7 +276,7 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
 <p>A chaque modification du pom, il faut également relancer la commande et rafraichir le projet.</p>
 
-<p>En fait cette commande génère le .project</p>
+<p>En fait cette commande génère le <b>.project</b></p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;projectDescription&gt;
@@ -286,7 +293,7 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
     &lt;/natures&gt;
 &lt;/projectDescription&gt;</pre>
 
-<p>et le .classpath</p>
+<p>et le <b>.classpath</b></p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;classpath&gt;
@@ -299,15 +306,15 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
 <h3>M2_REPO</h3>
 
-<p>Dans le .classpath, eclipse à des références vers des librairies dans le répertoire M2_REPO.</p>
+<p>Dans le <b>.classpath</b>, eclipse à des références vers des librairies dans le répertoire M2_REPO.</p>
 
-<p>Maven évite les chemin absolus en dur lors de la production du .classpath pour eclipse.</p>
+<p>Maven évite les chemin absolus en dur lors de la production du <b>.classpath</b> pour eclipse.</p>
 
 <p>Il reste donc a configurer eclipse dans Eclipse &gt; Préférence &gt; Classpath Variables.</p>
 
 <p><img src="img/classpath-variables.png" alt="classpath variables" class="img-responsive" style="margin: auto;"></p>
 
-<p>On ajoute l'entrée M2_REPO qui pointe vers le répertoire .m2/repository dans le home.</p>
+<p>On ajoute l'entrée M2_REPO qui pointe vers le répertoire <b>.m2/repository</b> dans le home.</p>
 
 <p>Enfin on autorise eclipse a faire un rebuild du project suite à la modification du classpath.</p>
 

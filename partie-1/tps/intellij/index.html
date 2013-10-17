@@ -44,15 +44,15 @@
 
     <p>Il définit un sdk et un niveau de compatibilité du language java (1.5, 1.6...).</p>
 
-    <p>Il contient 1 ou plusieurs modules. Un module contient des fichiers sources</p>
+    <p>Il contient 1 ou plusieurs modules. Un module contient des fichiers sources.</p>
 
-    <p>Un module peut avoir ses propres dépendances et sa propre structure</p>
+    <p>Un module peut avoir ses propres dépendances et sa propre structure.</p>
 
     <h2>Préférences</h2>
 
     <p>Les préférences sont accessibles via le menu <b>File &gt; Other settings &gt; Default Settings...</b></p>
 
-    <p>Elles sont aussi disponibles via l'icône <img src="img/settings.png" alt="settings"/> de la barre d'outils ou bien via le raccourcis <b>&#x2318; ,</b></p>
+    <p>Elles sont aussi disponibles via l'icône <img src="img/settings.png" alt="settings"/> de la barre d'outils ou bien via le raccourcis <code>&#x2318; ,</code></p>
 
     <p>Elles permettent de régler beaucoup des aspects de l'IDE : formattage des sources, environnement java...</p>
 
@@ -118,9 +118,11 @@ public void setLastname(String lastname) {
     this.lastname = lastname;
 }</pre>
 
-    <p>Les getters et setters sont aussi appelés accesseurs.</p>
+    <p>Les getters et setters sont aussi appelés accesseurs et mutateurs.</p>
 
-    <p>Les getters permettent de muter l'état interne de l'objet (mutators).</p>
+    <p>Les getters permettent d'accéder à l'état de l'objet.</p>
+
+    <p>Les setters permettent de muter l'état interne de l'objet (mutators).</p>
 
     <h2>toString</h2>
 
@@ -144,7 +146,7 @@ public String toString() {
 
     <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur intellij mais une description détaillée est disponible dans le <a href="http://fr.scribd.com/doc/36454091/Effective-Java-Chapter3" target="_blank">chapitre 3 de effective java</a></p>
 
-    <p>Les méthodes equals et hashCode permettent de comparer des objets 2 à 2. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
+    <p>Les méthodes <code>equals</code> et <code>hashCode</code> permettent de comparer 2 objets. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
 
     <p>Elles sont difficiles à bien implémenter et une mauvaise implémentation peut être fatale.</p>
 
@@ -188,7 +190,7 @@ public class Main {
 
     <p>C'est le point d'entrée pour toute application java.</p>
 
-    <div class="alert alert-warning">En pratique, pour le web, cette méthode est déjà écrite pour nous.</div>
+    <div class="alert alert-warning">En pratique, pour le web, il est rare d'avoir à écrire celle-ci. On écrit des composants qui sont sollicités par les requêtes http.</div>
 
     <p>Afin de la tester un peu, on écrit dans la sortie standard (stdout).</p>
 

@@ -15,19 +15,17 @@
 <div class="container">
     <h1 style="line-height: 55px;"><img src="img/java.png" style="float:left;height:50px;margin: 0 10px"/>Java</h1>
 
-    <h2>Quelques classes</h2>
-
     <p>Notre projet est géré avec maven et il est stoqué sous github.</p>
 
     <p>Nous allons pouvoir commencer à écrire du code java.</p>
 
-    <p>Nous allons juste mettre en place notre modèle de données pour les tps à venir.</p>
+    <p>Nous allons juste mettre en place notre modèle de données pour les étapes à venir.</p>
 
     <h2>Création du modèle de données</h2>
 
-    <p>Le code source java va dans src/main/java.</p>
+    <p>Le code source java va dans <b>src/main/java</b>.</p>
 
-    <p>Pour notre modèle, nous définissons une classe dans le package fr.todooz.domain : Task.</p>
+    <p>Pour notre modèle, nous définissons une classe dans le package <b>fr.todooz.domain</b> : <b>Task</b>.</p>
 
     <p>On utilise l'IDE afin de générer les getters et les setters.</p>
 
@@ -87,7 +85,7 @@ public class Task {
     }
 }</pre>
 
-    <p>Cette classe ne présente que peu d'intêret techniquement, c'est un simple java Bean.</p>
+    <p>Cette classe ne présente que peu d'intêret techniquement, c'est un simple <a href="http://en.wikipedia.org/wiki/JavaBeans" target="_blank">java Bean</a>.</p>
 
     <p>Elle est importante car elle représente notre domain métier.</p>
 
@@ -103,13 +101,13 @@ public class Task {
         </li>
         <li>java 1.5 / 5.0 (2004)
             <ul>
-                <li>generiques <span class="comment">List&lt;T&gt;</span></li>
-                <li>annotations <span class="comment">@Annotation</span></li>
-                <li>autoboxing / unboxing <span class="comment">Integer i = 10; int j = i;</span></li>
-                <li>enum <span class="comment">enum Sign {BELIER, LION...}</span></li>
-                <li>varargs <span class="comment">public void tags(String... tags)</span></li>
-                <li>imports statiques <span class="comment">import static org.junit.Assert.assertEquals</span></li>
-                <li>for each loops <span class="comment">for (String tag : tags) {...}</span></li>
+                <li>generiques <code>List&lt;T&gt;</code></li>
+                <li>annotations <code>@Annotation</code></li>
+                <li>autoboxing / unboxing <code>Integer i = 10; int j = i;</code></li>
+                <li>enum <code>enum Sign {BELIER, LION...}</code></li>
+                <li>varargs <code>public void tags(String... tags)</code></li>
+                <li>imports statiques <code>import static org.junit.Assert.assertEquals</code></li>
+                <li>for each loops <code>for (String tag : tags) {...}</code></li>
             </ul>
         </li>
         <li>java 6.0 (2006)
@@ -118,10 +116,10 @@ public class Task {
         <li>java 7.0 (projet coin)
             <ul>
                 <li>strings dans les switch</li>
-                <li>notation plus lisible pour les numériques <span class="comment">int value = 100_000;</span></li>
-                <li>multi catch <span class="comment">try { ... } catch (FirstException | SecondException ex) { ... }</span></li>
-                <li>opérateur diamant <span class="comment">List&lt;String&gt; values = new ArrayList&lt;&gt;()</span></li>
-                <li>try with resources <span class="comment">try (Statement stmt = con.createStatement()) { stmt.executeQuery(query); }</span></li>
+                <li>notation plus lisible pour les numériques <code>int value = 100_000;</code></li>
+                <li>multi catch <code>try { ... } catch (FirstException | SecondException ex) { ... }</code></li>
+                <li>opérateur diamant <code>List&lt;String&gt; values = new ArrayList&lt;&gt;()</code></li>
+                <li>try with resources <code>try (Statement stmt = con.createStatement()) { stmt.executeQuery(query); }</code></li>
                 <li>varargs simplifiés</li>
             </ul>
         </li>
