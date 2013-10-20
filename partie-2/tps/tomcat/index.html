@@ -18,8 +18,8 @@
     <p>Les serveurs jee se divisent en 2 grandes familles :</p>
 
     <ul>
-        <li>Les <b>conteneurs de servlets</b> : serveur http + sous partie des specs jee (servlets, jsp, jndi, jdbc...).</li>
-        <li>Les <b>conteneurs d'applications</b> : support de toutes les spécifications jee.</li>
+        <li>Les <b>conteneurs de servlets</b> : serveur http + une partie des apis jee (servlets, jsp, jndi, jdbc...).</li>
+        <li>Les <b>conteneurs d'applications</b> : toutes les spécifications jee sont disponibles.</li>
     </ul>
 
     <p>Nous allons nous intéresser uniquement aux conteneurs de servlets : Il sont suffisants pour notre besoin.</p>
@@ -36,11 +36,11 @@
 
         <pre class="shell">$ <b>cd ~/apache-tomcat-6.0.xx</b>
 $ <b>./bin/startup.sh</b>
-Using CATALINA_BASE:   "/home/user/apache-tomcat-6.0.32"
-Using CATALINA_HOME:   "/home/user/apache-tomcat-6.0.32"
-Using CATALINA_TMPDIR: "/home/user/apache-tomcat-6.0.32/temp"
+Using CATALINA_BASE:   "/home/user/apache-tomcat-6.0.xx"
+Using CATALINA_HOME:   "/home/user/apache-tomcat-6.0.xx"
+Using CATALINA_TMPDIR: "/home/user/apache-tomcat-6.0.xx/temp"
 Using JRE_HOME:        "/path/to/java/jdk1.6.0_17"
-Using CLASSPATH:       /home/user/apache-tomcat-6.0.32/bin/bootstrap.jar"</pre>
+Using CLASSPATH:       /home/user/apache-tomcat-6.0.xx/bin/bootstrap.jar"</pre>
 
     <p>Et aller sur la page <a href="http://localhost:8080/">http://localhost:8080/</a></p>
 
@@ -71,14 +71,14 @@ d----        16/06/2011     21:30            work           <span class="comment
     <p>Et la signification des variables d'environnement qui apparaissent au démarrage :</p>
 
     <ul>
-        <li>CATALINA_HOME : c'est le répertoire d'installation de tomcat (bin, conf tomcat, lib)</li>
-        <li>CATALINA_BASE : c'est le répertoire où sont les applications (webapps, conf applications)</li>
+        <li>CATALINA_HOME : c'est la où est installé tomcat (bin, conf tomcat, lib)</li>
+        <li>CATALINA_BASE : c'est le répertoire des applications (webapps, conf applications)</li>
         <li>CATALINA_TMPDIR : c'est le répertoire de travail</li>
     </ul>
 
     <p>Tomcat peut donc être installé dans un répertoire et les applications peuvent être ailleurs.</p>
 
-    <p>On peut donc lancer plusieurs process tomcat, chacun avec un CATALINA_BASE différent.</p>
+    <p>Pour cela, il suffit de jouer avec ces variables d'environnement.</p>
 
     <p>Par défaut, HOME et BASE sont au même endroit.</p>
 
@@ -101,7 +101,7 @@ d----        16/06/2011     21:28            ROOT</pre>
 
     <p>L'application <b>ROOT</b> est particulière, c'est celle qui répond à la racine <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>.</p>
 
-    <p>Tomcat charge toutes les applications de se répertoire au démarrage.</p>
+    <p>Tomcat charge toutes les applications de ce répertoire au démarrage.</p>
 
     <p>Dans ce répertoire, on peut trouver :</p>
 
@@ -136,11 +136,11 @@ d----        16/06/2011     21:28            ROOT</pre>
         </div>
     </div>
 
-    <p>Cette structure peut paraitre un peu complexe mais, avec maven ou un IDE beaucoup de choses sont automatisées.</p>
+    <p>Cette structure peut paraitre un peu complexe mais, avec maven ou un IDE la construction de l'archive est automatisée.</p>
 
     <h2>Sécurité</h2>
 
-    <p>Certaines de ces applications sont protégées par autentification de type BASIC (popup navigateur quand on tente d'aller sur l'application.)</p>
+    <p>Certaines de ces applications sont protégées par autentification de type BASIC (popup login / password navigateur quand on tente d'aller sur l'application.)</p>
 
     <p>C'est le cas de l'application manager qui nécessite un utilisateur avec un rôle manager-gui.</p>
 
@@ -162,11 +162,11 @@ d----        16/06/2011     21:28            ROOT</pre>
 
     <p>On peut donc installer et désinstaller des applications depuis cette interface.</p>
 
-    <p>Le fichier tomcat-users.xml définit un ensemble d'utilisateurs valable pour toutes les applications déployées.</p>
+    <p>Le fichier <b>tomcat-users.xml</b> définit un ensemble d'utilisateurs valable pour toutes les applications déployées.</p>
 
-    <p>En sécurité, cet ensemble est appelé realm (domaine).</p>
+    <p>En sécurité, cet ensemble est appelé un realm (domaine).</p>
 
-    <p>Le fichier tomcat-user.xml est le fichier de configuration par défaut du <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/realm.html" target="_blank">Memory Based Realm</a> de tomcat.</p>
+    <p>Le fichier <b>tomcat-user.xml</b> est le fichier de configuration par défaut du <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/realm.html" target="_blank">Memory Based Realm</a> de tomcat.</p>
 </div>
 
 <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>

@@ -19,13 +19,13 @@
 
     <img src="img/container.png" alt="" style="margin: 0 160px">
 
-    <p>Les servlets sont les composants qui répondent aux requête http.</p>
+    <p>Les servlets sont les composants (classes java) qui répondent aux requête http.</p>
 
     <h2>web.xml</h2>
 
-    <p>Pour déployer un war il faut un <b>descripteur de déploiement</b> : le web.xml</p>
+    <p>Pour déployer un war il faut un <b>descripteur de déploiement</b> : le <b>web.xml</b></p>
 
-    <p>Il configure l'application web.</p>
+    <p>Il liste et configure les composants de l'application web.</p>
 
     <p>Si on essaye de faire un package, maven nous le dira aussi :</p>
 
@@ -88,9 +88,9 @@ on project todooz: Error assembling WAR: <b>webxml attribute is required
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException</pre>
 
-    <p>Ce fichier web.xml va dans répertoire WEB-INF, à la racine du war.</p>
+    <p>Ce fichier <b>web.xml</b> va dans répertoire <b>WEB-INF</b>, à la racine du war.</p>
 
-    <p>Dans notre source, il va dans le répertoire src/main/webapp/WEB-INF.</p>
+    <p>Dans notre source, il va dans le répertoire <b>src/main/webapp/WEB-INF</b>.</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
@@ -101,15 +101,15 @@ on project todooz: Error assembling WAR: <b>webxml attribute is required
 
     <p>Ce fichier ne dit pas grand chose : nous sommes en version 3.0 de la spécification des servlets et notre application s'appelle todooz.</p>
 
-    <p>Avec ce fichier en place, on peut maitenant faire un mvn package et obtenir notre war, versionné, dans le répertoire target.</p>
+    <p>Avec ce fichier en place, on peut maitenant faire un <code>mvn package</code> et obtenir notre war, versionné, dans le répertoire target.</p>
 
         <pre class="shell">todooz $ ls target
 classes			maven-archiver		surefire		todooz-1.0-SNAPSHOT.war
 generated-sources	maven-status		todooz-1.0-SNAPSHOT</pre>
 
-    <p>mvn tomcat7:run permet de tester notre application.</p>
+    <p><code>mvn tomcat7:run</code> permet de tester notre application.</p>
 
-    <p>mvn package permet d'obtenir le fichier à installer en production.</p>
+    <p><code>mvn package</code> permet d'obtenir le fichier à installer en production.</p>
 
     <h2>Servlet API</h2>
 
@@ -126,16 +126,16 @@ generated-sources	maven-status		todooz-1.0-SNAPSHOT</pre>
     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
     &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
     &lt;version&gt;2.5&lt;/version&gt;
-    &lt;scope&gt;<em>provided</em>&lt;/scope&gt;
+    &lt;scope&gt;<span class="added">provided</span>&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
     &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
     &lt;version&gt;2.0&lt;/version&gt;
-    &lt;scope&gt;<em>provided</em>&lt;/scope&gt;
+    &lt;scope&gt;<span class="added">provided</span>&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-    <p>Ces dépendances sont en provided : elles sont disponibles pour la compilaton mais ne seront pas dans le war.</p>
+    <p>Ces dépendances sont en <code>provided</code> : elles sont disponibles pour la compilaton mais ne seront pas dans le war.</p>
 
     <h2>HelloWorldServlet</h2>
 
@@ -165,7 +165,7 @@ public class HelloWorldServlet extends HttpServlet {
 
     <p>La servlet écrit simple un message comme réponse.</p>
 
-    <p>Il faut ensuite ajouter le mapping dans le web.xml</p>
+    <p>Il faut ensuite ajouter le mapping dans le <b>web.xml</b></p>
 
         <pre class="prettyprint">&lt;servlet&gt;
    &lt;servlet-name&gt;HelloWorldServlet&lt;/servlet-name&gt;
@@ -180,11 +180,11 @@ public class HelloWorldServlet extends HttpServlet {
 
     <h2>Le forward</h2>
 
-    <p>La servlet contient du code java.</p>
+    <p>On peut écrire beaucoup de choses dans une servlet.</p>
 
-    <p>C'est bien pour aller chercher des données en base mais peu adapté pour du html.</p>
+    <p>On peut aller chercher des données en base, traiter des données il reste difficile de générer du html.</p>
 
-    <p>Pour faire du html, la servlet passe la main : elle forwarde la requête.</p>
+    <p>Pour le html, elle passe la main à des composants plus adaptés : elle forwarde la requête.</p>
 
         <pre class="prettyprint">public class HelloWorldServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;

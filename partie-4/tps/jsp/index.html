@@ -17,25 +17,25 @@
 
 <p>Les fichiers jsp sont les composants spécialisés dans la génération de html.</p>
 
-<p>Ils permettent de produire du html en mélant un peu de logique conditionnelle.</p>
+<p>Ils permettent de produire du html tout en acceptant un peu de logique conditionnelle.</p>
 
 <p>Ainsi, ils sont un bon complément des servlets pour la génération de la page web.</p>
 
 <h2>Dans notre projet</h2>
 
-<p>Par convention, les fichiers jsp sont dans le répertoire WEB-INF/jsp du war.</p>
+<p>Par convention, les fichiers jsp sont dans le répertoire <b>WEB-INF/jsp</b> du war.</p>
 
-<p>Sous maven, ils sont donc dans src/main/webapp/WEB-INF/jsp.</p>
+<p>Sous maven, ils sont donc dans <b>src/main/webapp/WEB-INF/jsp</b>.</p>
 
 <p>Les fichiers jsp sont compilés à la volée par tomcat.</p>
 
 <p>Un peu à l'image d'un fichier php, les fichiers jsp sont donc interprétés par le conteneur.</p>
 
-<p>En test avec mvn tomcat7:run, les modifications sont prises en compte à la volée.</p>
+<p>En test avec <code>mvn tomcat7:run</code>, les modifications sont prises en compte à la volée.</p>
 
 <h2>Notre template</h2>
 
-<p>Pour commencer, on déplace notre index.html vers WEB-INF/jsp/index.jsp.</p>
+<p>Pour commencer, on déplace notre index.html vers <b>WEB-INF/jsp/index.jsp</b>.</p>
 
 <p>Avant la déclaration du DOCTYPE, on ajoute :</p>
 
@@ -43,7 +43,7 @@
 
 <p>Cela indique au container que le code source est en utf-8 et que cela produit une page en utf-8.</p>
 
-<p>On rajoute la servlet IndexServlet</p>
+<p>On rajoute la servlet <code>IndexServlet</code></p>
 
         <pre  class="prettyprint">public class IndexServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
@@ -54,7 +54,7 @@
   }
 }</pre>
 
-<p>Que l'on déclare dans le web.xml</p>
+<p>Que l'on déclare dans le <b>web.xml</b></p>
 
         <pre  class="prettyprint">&lt;servlet&gt;
     &lt;servlet-name&gt;index&lt;/servlet-name&gt;
@@ -78,7 +78,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
     request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
 }</pre>
 
-<p>Et la classe DummyData que l'on place juste a coté.</p>
+<p>Et la classe <code>DummyData</code> que l'on place juste a coté.</p>
 
         <pre class="prettyprint">public class DummyData {
   private static final int TASK_COUNT = 10;
@@ -132,13 +132,13 @@ fr.todooz.domain.Task@65087be0]</pre>
 
 <p>Les expressions suivantes sont valides.</p>
 
-        <pre class="prettyprint">${tasks[0].title}
-${empty tasks}
-${not empty task.date ? task.date : 'no date'}</pre>
+        <pre class="prettyprint">${tasks[0].title} // le titre de la 1ère tâche
+${empty tasks} // est ce que la collections tasks est vide ?
+${not empty task.date ? task.date : 'no date'} // si la tâche a une date alors on l'affiche, on affiche 'no date' sinon</pre>
 
 <p>L'EL est une notation simple et puissante par rapport a du code java.</p>
 
-<pre class="prettyprint">${cart.items[2].name} // cart est un shopping cart en session</pre>
+<pre class="prettyprint">${cart.items[2].name} // par exemple, si cart est un shopping cart en session</pre>
 
 <p>Synthétise un appel qui pourrait être écrit comme suit en java.</p>
 
@@ -171,7 +171,7 @@ response.getWriter().write(name);</pre>
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency></pre>
 
-<p>Et on déclare les taglibs utilisées en haut du fichier jsp (sous la directive &lt;%@ page ... ).</p>
+<p>Et on déclare les taglibs utilisées en haut du fichier jsp (sous la directive <code>&lt;%@ page ...</code> ).</p>
 
         <pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
 &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;</pre>
@@ -180,7 +180,7 @@ response.getWriter().write(name);</pre>
 
 <h2>Notre liste de tâches</h2>
 
-<p>En utilisant les notations suivantes, mettre en forme la jsp afin qu'elle produise la liste des tâches.</p>
+<p>En utilisant les notations suivantes, mettez en forme la jsp afin qu'elle produise la liste des tâches.</p>
 
 <p>L'itération :</p>
 
@@ -211,7 +211,7 @@ response.getWriter().write(name);</pre>
 
 <p>Et l'utiliser dans notre jsp.</p>
 
-<p>On obtient le même résultat mais c'est un peu plus dynamique.</p>
+<p>Une fois cela fait, on obtient le même résultat mais c'est un peu plus dynamique.</p>
 
 <div class="note">En développement, il n'est pas nécessaire de relancer le serveur tomcat en cas de modification d'une jsp</div>
 
@@ -219,9 +219,11 @@ response.getWriter().write(name);</pre>
 
 <p>Les tags files permettent de factoriser du code jsp.</p>
 
-<p>C'est très simple a mettre en place mais malheureusement on ne peut les mettres dans des librairies.</p>
+<p>C'est très simple a mettre en place mais malheureusement on ne peut les mettre dans des librairies (.jar).</p>
 
-<p>Par exemple, si on ajoute le fichier navbar.tag dans le répertoire WEB-INF/tags/widget.</p>
+<p>Ces fichiers sont donc locaux à notre projet.</p>
+
+<p>Par exemple, si on ajoute le fichier <b>navbar.tag</b> dans le répertoire <b>WEB-INF/tags/widget</b>.</p>
 
         <pre  class="prettyprint">&lt;%@ tag language="java" pageEncoding="UTF-8"%&gt;
 

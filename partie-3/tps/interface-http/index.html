@@ -68,7 +68,7 @@ X-Object-ID: 1676037310 1676027370
     &lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
 ...</pre>
 
-<p>Nous avons forgé une requête http et obtenu une réponse du serveur.</p>
+<p>Nous avons forgé une requête http et obtenu une réponse du serveur. La manipulation reste peu pratique.</p>
 
 <h2>curl</h2>
 
@@ -126,7 +126,7 @@ Content-Length: 300860</pre>
 
 <pre class="shell">$ curl -i -X POST -H "Content-Type: application/json" -d '{"key": "value"}' http://mon.site.fr/page</pre>
 
-<p>Avec l'avènement de REST, il est devenu très utile de pouvoir forger ses requêtes afin de tester ses services.</p>
+<p>Avec la montée en force des servcices web, il est devenu très utile de pouvoir forger ses requêtes afin de les tester.</p>
 
 <h2>Les navigateurs</h2>
 
@@ -187,7 +187,7 @@ Content-Length: 300860</pre>
 
 <p>Coté code, on peut aussi forger des requêtes http.</p>
 
-<p>Le plus simple est d'utiliser une librairie cliente telle que la lib <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" target="_blank">HttpClient de la fondation apache</a></p>
+<p>En java, il est possible d'utiliser une librairie cliente telle que la lib <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" target="_blank">HttpClient de la fondation apache</a></p>
 
 <p>Pour faire un test, nous commençons par ajouter la dépendance dans le pom.xml</p>
 

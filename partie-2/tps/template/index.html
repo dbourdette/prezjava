@@ -19,7 +19,7 @@
 
 <p>Nous allons mettre en place le template html pour notre application.</p>
 
-<h2>Bootstrap</h2>
+<h2>Twitter Bootstrap</h2>
 
 <p>Nous utilisons <a href="http://getbootstrap.com/" target="_blank">twitter bootstrap</a> qui est un framework css / javascript pour html 5.</p>
 
@@ -161,7 +161,7 @@
     &lt;groupId&gt;fr.todooz&lt;/groupId&gt;
     &lt;artifactId&gt;todooz&lt;/artifactId&gt;
     <s>&lt;packaging&gt;jar&lt;/packaging&gt;</s>
-    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;packaging&gt;<span class="added">war</span>&lt;/packaging&gt;
     &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
     &lt;name&gt;todooz&lt;/name&gt;
 
@@ -172,19 +172,19 @@
 
 <p>Dans la structure d'un .war, les fichiers publics (html, css, images, javascripts) vont à la racine de l'archive.</p>
 
-<p>Dans un projet maven, ces fichiers sont dans le répertoire src/main/webapp.</p>
+<p>Dans un projet maven, ces fichiers sont dans le répertoire <b>src/main/webapp</b>.</p>
 
 <p>Les fichiers de ce répertoire seront donc recopiés à la racine du war lors du build.</p>
 
-<p>Avec l'IDE, nous créons donc ce répertoire et le fichier index.html dedans.</p>
+<p>Avec l'IDE, nous créons donc ce répertoire et le fichier <b>index.html</b> dedans.</p>
 
-<p>Il reste à copier les fichiers de <a href="http://getbootstrap.com/" target="_blank">bootstrap</a> (css, img, js dans le répertoire dist) et <a href="http://jquery.com/" target="_blank">jquery.min.js</a> au bon endroit.</p>
+<p>Il reste à copier les fichiers de <a href="http://getbootstrap.com/" target="_blank">bootstrap</a> (css, img, js du répertoire dist) et <a href="http://jquery.com/" target="_blank">jquery.min.js</a> au bon endroit.</p>
 
 <h2>tomcat7:run</h2>
 
 <p>Il ne nous reste plus qu'a démarrer un serveur web afin de tester notre application.</p>
 
-<p>Nous allons donc ajouter le <a href="http://tomcat.apache.org/maven-plugin.html" target="_blank">plugin tomcat</a> pour maven afin de nous faciliter la tâche.</p>
+<p>Nous allons donc ajouter le <a href="http://tomcat.apache.org/maven-plugin.html" target="_blank">plugin tomcat 7</a> pour maven afin de nous faciliter la tâche.</p>
 
         <pre class="prettyprint">&ltbuild&gt
     &ltplugins&gt
@@ -198,7 +198,7 @@
     &lt/plugins&gt
 &lt/build&gt</pre>
 
-<p>La commande mvn tomcat7:run permet de lancer un serveur tomcat 7.</p>
+<p>La commande <code>mvn tomcat7:run</code> permet de lancer un serveur tomcat 7 avec notre application déployée.</p>
 
         <pre class="shell">todooz $ <b>mvn tomcat7:run</b>
 [INFO] Scanning for projects...
@@ -237,7 +237,7 @@ INFO: Starting ProtocolHandler ["http-bio-<b>8080</b>"]</pre>
 
 <p>Les conteneurs de servlets permettent de déployer plusieurs application en même temps.</p>
 
-<p>Par défaut, mvn tomcat7:run déploie notre application dans le contexte correspondant au nom du projet.</p>
+<p>Par défaut, <code>mvn tomcat7:run</code> déploie notre application dans le contexte correspondant au nom du projet.</p>
 
 <pre>http://localhost:8080/<b>todooz</b>/...</pre>
 
@@ -254,7 +254,7 @@ INFO: Starting ProtocolHandler ["http-bio-<b>8080</b>"]</pre>
             &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
             &lt;version&gt;2.1&lt;/version&gt;
             &lt;configuration&gt;
-                &lt;path&gt;<em>/</em>&lt;/path&gt;
+                &lt;path&gt;<sman class="added">/</sman>&lt;/path&gt;
             &lt;/configuration&gt;
         &lt;/plugin&gt;
     &lt;/plugins&gt;
