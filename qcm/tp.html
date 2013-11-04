@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Calcul du chemin le plus court</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../common/bootstrap3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../common/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="../common/prez/css/style.css" rel="stylesheet" media="screen">
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="container">
+<h1>Calcul du chemin le plus court</h1>
+
+    <img src="graph.png" alt="graph" class="pull-left" style="margin: 20px"/>
+
+    <p>Cet exercice porte sur le calcul du chemin le plus court dans un graphe orienté.</p>
+
+    <p>Le but est de mettre en pratique les techniques étudiées dans un cas un peu plus complexe qu'un simple site.</p>
+
+    <p>Il existe de nombreuses solutions disponibles sur le web qui implémentent l'<a href="http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm" target="_blank">algorithme de Dijkstra</a>.</p>
+
+    <p>Le but n'est pas de transcrire l'une de ces solutions mais de construire une solution simple en faisant du TDD.</p>
+
+    <p>Il est fort probable que l'on ne trouve pas la solution la plus performante, mais nous aurons : </p>
+
+    <ul>
+        <li>Une solution simple et lisible</li>
+        <li>Un code couvert par des tests</li>
+        <li>Une grande facilité de refactoring</li>
+    </ul>
+
+    <div class="clearfix"></div>
+
+    <h2>Premier test</h2>
+
+    <p>On commence par écrire notre premier test afin de déterminer notre API.</p>
+
+    <pre class="prettyprint">public class GraphTest {
+    private Vertex lille = new Vertex("Lille");
+    private Vertex paris = new Vertex("Paris");
+    private Vertex reims = new Vertex("Reims");
+    private Vertex nancy = new Vertex("Nancy");
+    private Vertex lyon = new Vertex("Lyon");
+    private Vertex marseille = new Vertex("Marseille");
+    private Vertex lemans = new Vertex("Le Mans");
+    private Vertex nantes = new Vertex("Nantes");
+    private Vertex bordeaux = new Vertex("Bordeaux");
+    private Vertex toulouse = new Vertex("Toulouse");
+    private Vertex clermont = new Vertex("Clermont Ferrant");
+    private Vertex montpellier = new Vertex("Montpellier");
+
+    @Before
+    public void setup() {
+        lille.connectTo(reims, 206);
+        lille.connectTo(paris, 222);
+        lille.connectTo(nancy, 418);
+
+        reims.connectTo(paris, 144);
+        reims.connectTo(nancy, 245);
+        reims.connectTo(lyon, 489);
+
+        paris.connectTo(lyon, 465);
+        paris.connectTo(lemans, 208);
+        paris.connectTo(clermont, 423);
+
+        lyon.connectTo(clermont, 166);
+        lyon.connectTo(marseille, 313);
+        lyon.connectTo(montpellier, 304);
+
+        lemans.connectTo(nantes, 189);
+        lemans.connectTo(bordeaux, 443);
+
+        nantes.connectTo(bordeaux, 347);
+
+        bordeaux.connectTo(toulouse, 243);
+
+        toulouse.connectTo(montpellier, 245);
+
+        montpellier.connectTo(marseille, 169);
+        montpellier.connectTo(toulouse, 245);
+
+        marseille.connectTo(montpellier, 169);
+
+        clermont.connectTo(lyon, 166);
+        clermont.connectTo(montpellier, 333);
+        clermont.connectTo(marseille, 474);
+    }
+
+    @Test
+    public void getDistanceForTwoAdjacentVertices() {
+        Graph graph = new Graph(paris, lyon);
+
+        assertEquals(graph.getDistance("Paris", "Lyon"), 465);
+    }
+}</pre>
+
+    <h2>Modèle de données</h2>
+
+    <p>Il en découle la base du modèle de données suivant :</p>
+
+    <pre class="prettyprint">public class Vertex {
+    private String name;
+
+    private List&lt;Edge&gt; edges = new ArrayList&lt;Edge&gt;();
+
+    public Vertex(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void connectTo(Vertex target, int distance) {
+        edges.add(new Edge(target, distance));
+    }
+}</pre>
+
+    <pre class="prettyprint">public class Edge {
+    private Vertex target;
+
+    private int distance;
+
+    public Edge(Vertex target, int distance) {
+        this.target = target;
+        this.distance = distance;
+    }
+
+    public Vertex getTarget() {
+        return target;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+}</pre>
+
+    <pre class="prettyprint">public class Graph {
+    private List&lt;Vertex&gt; vertices = new ArrayList&lt;Vertex&gt;();
+
+    public Graph(Vertex... vertices) {
+        this.vertices.addAll(Arrays.asList(vertices));
+    }
+
+    public int getDistance(String from, String to) {
+        return 0;
+    }
+}</pre>
+
+    <p>Il est assez simple, mais pour le moment, c'est une coquille vide.</p>
+
+    <p>Il vous reste a faire passer le premier test.</p>
+
+    <h2>Tests suivants</h2>
+
+    <p>Le but maintenant est de rajouter des tests, un à un, et de les faire passer.</p>
+
+    <p>Chaque test doit apporter une nouvelle contrainte qui fait progresser l'implémentation de l'algorithme.</p>
+
+    <p>Plus il y aura de tests en place, plus il sera possible de changer les mécaniques en toute confiance.</p>
+
+    <p>En construisant à chaque fois un graphe approprié, voici des idées de test :</p>
+
+    <ul>
+        <li>Chercher une distance en passant par une ville intermédiaire.</li>
+        <li>Chercher une distance en passant par 2 villes intermédiaires.</li>
+        <li>Cherche une distance en choisissant parmis plusieurs chemins possibles</li>
+        <li>Chercher une distance en évitant les cycles.</li>
+        <li>...</li>
+    </ul>
+
+    <p>Et aussi des idées de test aux limites :</p>
+
+    <ul>
+        <li>Calcul avec un graph vide</li>
+        <li>Calcul de distance alors qu'il n'y a pas de chemin possible</li>
+        <li>Aller vers une ville qui n'existe pas</li>
+    </ul>
+
+    <h2>Elements de notation</h2>
+
+    <p>L'ensemble des sources doivent être disponibles sous github</p>
+
+    <p>La forme du projet est ouverte : il faut pouvoir ouvrir les sources sous intellij et pouvoir faire tourner les tests unitaires.</p>
+
+    <p>Afin de noter, je ferai attention à un code (l'algorithme et les tests) simples et lisibles.</p>
+
+    <p>Pour valider le fonctionnement, le code devra passer les tests que j'ai écrit de mon coté.</p>
+
+    <p>Il ne faut donc pas modifier les premiers éléments du modèle tels que définis par le premier test.</p>
+
+    <p>La performance n'est pas un point important.</p>
+</div>
+
+<script src="../common/jquery/jquery-1.10.2.min.js"></script>
+<script src="../common/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../common/prettify/run_prettify.js" type="text/javascript"></script>
+<script src="../common/prez/js/prez.js"></script>
+</body>
+</html>

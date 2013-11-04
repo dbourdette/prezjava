@@ -4,34 +4,17 @@
     <meta charset="UTF-8">
 
     <link rel="stylesheet" href="../common/boostrap/css/bootstrap.min.css">
-    <script type="text/javascript" src="../common/jquery/jquery-1.8.3.min.js"></script>
 
-    <style type="text/css">
-        label.radio {
-            display: inline-block;
-            margin-right: 20px;
-            margin-bottom: 30px;
-        }
-
-        .radio input[type="radio"] {
-            margin-left: -15px;
-            margin-right: 5px;
-        }
-
-        input[type=submit] {
-            margin-left: 30px;
-            margin-bottom: 30px;
-        }
-    </style>
+    <link rel="stylesheet" href="qcm.css"/>
 </head>
 <body>
 
     <div class="container">
-        <form action="#">
+        <form action="#" data-day="2">
             <legend>QCM</legend>
 
-            <label>Votre nom ou email ou callsign</label>
-            <input type="text" name="user">
+            <label>Prénom nom</label>
+            <input type="text" name="user" placeholder="prénom nom">
 
             <label>Quel est le composant de base d'une application web jee ?</label>
             <label class="radio">
@@ -108,13 +91,13 @@
                 <input type="radio" name="jdbc-connects-to">A une boite vocale
             </label>
             <label class="radio">
-                <input type="radio" name="jdbc-connects-to">Au filesystem
+                <input type="radio" name="jdbc-connects-to">A une base de données
             </label>
             <label class="radio">
                 <input type="radio" name="jdbc-connects-to">Au cloud
             </label>
             <label class="radio">
-                <input type="radio" name="jdbc-connects-to">A une base de données
+                <input type="radio" name="jdbc-connects-to">Au filesystem
             </label>
 
             <label>Les 4 opérations de création, lecture, mise à jour et suppression sont regroupées sous l'acronyme</label>
@@ -190,40 +173,13 @@
                 <input type="radio" name="tbbt">Rajesh Ramayan Koothrappali
             </label>
 
-            <div style="clear: both;"/>
+            <div style="clear: both;"></div>
             <input type="submit" class="btn" value="Envoyer" />
             <div id="message"></div>
         </form>
     </div>
 
-    <script type="text/javascript">
-        $(function() {
-            $("form").submit(function() {
-                var qcm = {};
-                qcm.answers = {};
-
-                $("input:radio:checked").each(function(index, input) {
-                    qcm.answers[input.name] = $.trim($(input).parent().text());
-                });
-
-                qcm.user = $("input[name=user]").val();
-                qcm.day = 2;
-                qcm.date = new Date();
-
-                $("input[type=submit]").hide();
-                $("#message").html('<div class="alert">Envoi en cours...</div>');
-
-                $.ajax({ url: "https://api.mongolab.com/api/1/databases/prezjava/collections/qcm?apiKey=4e4562755e4c1f31ad38855d",
-                    data: JSON.stringify( qcm ),
-                    type: "POST",
-                    contentType: "application/json"
-                }).done(function( msg ) {
-                    $("#message").html('<div class="alert alert-success">Merci</div>');
-                });
-
-                return false;
-            });
-        });
-    </script>
+    <script type="text/javascript" src="../common/jquery/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="qcm.js"></script>
 </body>
 </html>
