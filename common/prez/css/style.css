@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'lobster';
+    src: url('../fonts/Lobster 1.4.otf');
+}
+
 body {
     background-color: #858FB3;
 }
@@ -5,12 +10,15 @@ body {
 h1 {
     border-bottom: 1px solid #BBB;
     padding-bottom: 10px;
+    font-family: lobster;
+    font-size: 48px;
 }
 
 h2 {
     border-bottom: 1px solid #DDD;
     padding-bottom: 4px;
-    font-size: 24px;
+    font-size: 26px;
+    font-family: lobster;
 }
 
 a[target='_blank']::after {
