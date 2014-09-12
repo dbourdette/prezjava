@@ -41,7 +41,7 @@
 
 <ul>
     <li><b>ant</b> : le premier outils de build en java pour java. Ce sont des scripts en xml.</li>
-    <li><b>gradle</b> : un mix entre ant et maven mais qui utilise le language groovy.</li>
+    <li><b>gradle</b> : un outils de build basé sur le language groovy.</li>
 </ul>
 
 <h2>Installation</h2>
@@ -230,21 +230,23 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
 <p>Il contient les librairies qui servent à l'application mais aussi les plugins de maven.</p>
 
-<p>Par défaut il est dans le répertoire <b>~/.m2/repository</b>.</p>
+<p>Par défaut, il est dans le répertoire <code>~/.m2/repository</code>.</p>
 
 <h2>maven central</h2>
 
-<p>Par défaut, maven télécharge ses librairies à partir du repository central <a href="http://repo1.maven.org" target="_blank">http://repo1.maven.org</a>.</p>
+<p>Par défaut, maven télécharge ses librairies à partir du repository central http://repo1.maven.org.</p>
+
+<p>Un moteur de recherche permet de trouver facilement une librairie <a href="http://search.maven.org" target="_blank">http://search.maven.org</a>.</p>
 
 <p><img src="img/search-maven.png" alt="search.maven.org" class="img-responsive" style="width: 800px;margin: auto" /></p>
 
-<p>C'est un espace de stockage bien rangé où l'on trouve beaucoup de librairie.</p>
+<p>C'est un espace de stockage indexé où l'on trouve beaucoup de librairies.</p>
 
 <h2>settings.xml</h2>
 
 <p>Pour des cas simples, les réglages par défaut sont suffisants.</p>
 
-<p>En entreprise, il n'est pas rare d'avoir besoin d'autres repositories distants</p>
+<p>En entreprise, il est utile de définir un dépot local qui sert de proxy et de lieu de stockage pour les librairies.</p>
 
 <p>Cela se fait en éditant le fichier <b>~/.m2/settings.xml</b></p>
 
@@ -256,7 +258,7 @@ META-INF/maven/fr.todooz/todooz/pom.properties</pre>
 
 <p>Intellij nous indique que l'on est passé en java 1.7 et nous demande de recharger le projet.</p>
 
-<p>Les réperoires <b>src/main/java</b> et <b>src/main/test</b> sont indiqués respectivement comme répertoires de source et de test.</p>
+<p>Les répertoires <b>src/main/java</b> et <b>src/main/test</b> sont indiqués respectivement comme répertoires de source et de test.</p>
 
 <p>Dans les settings, on opte pour l'import automatique des modifications apportées au pom.xml</p>
 

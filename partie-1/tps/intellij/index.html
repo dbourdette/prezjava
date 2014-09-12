@@ -19,34 +19,32 @@
 
     <p>Intellij est développé par <a href="http://www.jetbrains.com/" target="_blank">JetBrains</a> qui maitient tout une suite de logiciels pour divers languages : php, python, ruby...</p>
 
-    <p>Intellij est un IDE qui existe en 2 versions : communautaire et ultimate.</p>
+    <p>Intellij existe en 2 versions : communautaire et ultimate.</p>
 
     <p>La version communautaire est suffisante pour faire du java, du groovy ou du scala.</p>
 
     <p>La version ultimate rajoute le web, jee et d'avantages de languages et plateformes (<a href="http://www.jetbrains.com/idea/features/index.html" target="_blank">feature list</a>).</p>
 
-    <p>Il assez peu souvent nécessaire d'installer des plugins car intellij arrive tout équipé.</p>
-
-    <p>Intellij n'est pas gratuit mais ses qualités justifient amplement un tarif qui n'est pas très élevé.</p>
+    <p>Intellij ultimate n'est pas gratuit mais ses qualités justifient amplement un tarif qui n'est pas très élevé.</p>
 
     <p>Les autres IDEs les plus utilisés sont : </p>
 
     <ul>
         <li><b>Eclipse</b> : l'IDE le plus utilisé car il est extrêmement complet et gratuit. Ses nombreux plugins font sa richesse.</li>
-        <li><b>Netbeans</b> : c'est l'IDE de référence développé par Sun. Il est gratuit et suit très bien les spécifications jee. Ce n'est pourtant pas l'environnement de choix pour les utilisateurs avancés.</li>
+        <li><b>Netbeans</b> : c'est l'IDE de référence développé par Oracle. Il est gratuit et suit très bien les spécifications jee. Ce n'est pourtant pas l'environnement de choix pour les utilisateurs avancés.</li>
     </ul>
 
-    <p>Le but de ce tp est de se familiariser avec l'interface d'intellij.</p>
+    <p>Le but de ce tp est de se familiariser avec l'interface d'Intellij.</p>
 
     <h2>Projets et modules</h2>
 
     <p>Un projet est la structure de base. C'est tout ce qu'on voit dans la fenêtre.</p>
 
-    <p>Il définit un sdk et un niveau de compatibilité du language java (1.5, 1.6...).</p>
+    <p>Il définit un sdk et un niveau de compatibilité du language java (1.6, 1.7...).</p>
 
     <p>Il contient 1 ou plusieurs modules. Un module contient des fichiers sources.</p>
 
-    <p>Un module peut avoir ses propres dépendances et sa propre structure.</p>
+    <p>Chaque module est indépendant et possède ses fichiers et des librairies.</p>
 
     <h2>Préférences</h2>
 
@@ -74,11 +72,11 @@
 
     <h2>Une classe</h2>
 
-    <p>En faisant un clique droit sur le répertoire src, on peut créer le package fr.test</p>
+    <p>En faisant un clique droit sur le répertoire src, on peut créer le package <code>fr.test</code></p>
 
     <p><img src="img/new-package.png" class="img-responsive" style="margin: auto" /></p>
 
-    <p>En faisant un clique droit sur le package fr.test, on peut créer la classe Person</p>
+    <p>En faisant un clique droit sur le package fr.test, on peut créer la classe <code>Person</code></p>
 
     <p><img src="img/new-java-class.png" class="img-responsive" style="margin: auto" /></p>
 
@@ -126,7 +124,7 @@ public void setLastname(String lastname) {
 
     <h2>toString</h2>
 
-    <p>La méthode <code>toString()</code> donne une représentation litérale (chaine de caractères) d'un Object.</p>
+    <p>La méthode <code>toString()</code> donne une représentation litérale (une chaine de caractères) d'un Object.</p>
 
     <p>Elle sert principalement à faire du débug mais peut être utile pour l'affichage dans des cas simples.</p>
 
@@ -142,9 +140,9 @@ public String toString() {
 
     <h2>equals et hashCode</h2>
 
-    <p>Ces 2 méthodes marchent en couple et sont capitales.</p>
+    <p>Ces 2 méthodes marchent en couple et sont CAPITALES.</p>
 
-    <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur intellij mais une description détaillée est disponible dans le <a href="http://fr.scribd.com/doc/36454091/Effective-Java-Chapter3" target="_blank">chapitre 3 de effective java</a></p>
+    <p>Le contrat et le lien entre ces méthodes dépasse le cadre d'un simple exercice sur intellij mais une description détaillée est disponible dans le chapitre 3 de <a href="http://www.amazon.fr/Effective-Java-Edition-Joshua-Bloch/dp/0321356683" target="_blank">Effective java</a></p>
 
     <p>Les méthodes <code>equals</code> et <code>hashCode</code> permettent de comparer 2 objets. Elles sont particulièrement utiles pour des mécaniques de cache ou des tables de hash.</p>
 
@@ -172,7 +170,9 @@ public int hashCode() {
     return result;
 }</pre>
 
-    <p>Les capacités de génération d'intellij vont bien au delà de ces simples exemples. Nous aurions pu faire tout ce code à la main et parfois cela est nécessaire.</p>
+    <p>Les capacités de génération d'intellij vont bien au delà de ces simples exemples.</p>
+
+    <p>Peu souvent, il est nécessaire de faire des méthodes à la main.</p>
 
     <p>Cependant, java est un language verbeux et chaque fois que cela est possible, il est bon de pouvoir compter sur l'IDE.</p>
 
@@ -209,7 +209,7 @@ person.setLastname("luthor");
 
 System.out.println(person);</pre>
 
-    <p>Le menu Debug permet d'exécuter le même code en placant des points d'arret et en maitrisant l'éxécution pas à pas.</p>
+    <p>Le menu Debug permet d'exécuter le même code en plaçant des points d'arrêt et en maitrisant l'éxécution pas à pas.</p>
 
     <h2>Refactoring</h2>
 
