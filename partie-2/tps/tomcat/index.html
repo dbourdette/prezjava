@@ -28,19 +28,19 @@
 
     <p>Nous allons utiliser le serveur de la fondation apache : <a href="http://tomcat.apache.org/" target="_blank">tomcat</a>.</p>
 
-    <p>On commence par télécharger la dernière version <a href="http://tomcat.apache.org/download-60.cgi" target="_blank">6.0.x de tomcat</a></p>
+    <p>On commence par télécharger la dernière version <a href="http://tomcat.apache.org/download-70.cgi" target="_blank">7.0.x de tomcat</a></p>
 
-    <p>On décompresse l'archive et on copie le répertoire apache-tomcat-6.0.xx dans son home directory.</p>
+    <p>On décompresse l'archive et on copie le répertoire apache-tomcat-7.0.xx dans son home directory.</p>
 
     <p>On peut dès à présent lancer le serveur</p>
 
-        <pre class="shell">$ <b>cd ~/apache-tomcat-6.0.xx</b>
+        <pre class="shell">$ <b>cd ~/apache-tomcat-7.0.xx</b>
 $ <b>./bin/startup.sh</b>
-Using CATALINA_BASE:   "/home/user/apache-tomcat-6.0.xx"
-Using CATALINA_HOME:   "/home/user/apache-tomcat-6.0.xx"
-Using CATALINA_TMPDIR: "/home/user/apache-tomcat-6.0.xx/temp"
-Using JRE_HOME:        "/path/to/java/jdk1.6.0_17"
-Using CLASSPATH:       /home/user/apache-tomcat-6.0.xx/bin/bootstrap.jar"</pre>
+Using CATALINA_BASE:   "/home/user/apache-tomcat-7.0.xx"
+Using CATALINA_HOME:   "/home/user/apache-tomcat-7.0.xx"
+Using CATALINA_TMPDIR: "/home/user/apache-tomcat-7.0.xx/temp"
+Using JRE_HOME:        "/path/to/java/jdk1.7.0_17"
+Using CLASSPATH:       /home/user/apache-tomcat-7.0.xx/bin/bootstrap.jar"</pre>
 
     <p>Et aller sur la page <a href="http://localhost:8080/">http://localhost:8080/</a></p>
 
@@ -54,7 +54,7 @@ Using CLASSPATH:       /home/user/apache-tomcat-6.0.xx/bin/bootstrap.jar"</pre>
 
     <p>Voici les répertoires à la racine de tomcat :</p>
 
-        <pre class="shell">$ <b>cd ~/apache-tomcat-6.0.xx</b>
+        <pre class="shell">$ <b>cd ~/apache-tomcat-7.0.xx</b>
 $ <b>ls</b>
 d----        16/06/2011     21:27            bin            <span class="comment">les exécutables</span>
 d----        16/06/2011     21:30            conf           <span class="comment">la configuration de tomcat et des applications</span>
@@ -76,11 +76,9 @@ d----        16/06/2011     21:30            work           <span class="comment
         <li>CATALINA_TMPDIR : c'est le répertoire de travail</li>
     </ul>
 
-    <p>Tomcat peut donc être installé dans un répertoire et les applications peuvent être ailleurs.</p>
-
-    <p>Pour cela, il suffit de jouer avec ces variables d'environnement.</p>
-
     <p>Par défaut, HOME et BASE sont au même endroit.</p>
+
+    <p>Une même installation de tomcat peut donc être lancée plusieurs fois sur des ports différents afin de faire tourner différents lots d'applicaitons.</p>
 
     <h2>Contrôler tomcat</h2>
 
@@ -90,7 +88,7 @@ d----        16/06/2011     21:30            work           <span class="comment
 
     <p>Une installation de tomcat vient avec quelques applications de démonstration</p>
 
-<pre class="shell">$ <b>ls ~/apache-tomcat-6.0.xx/webapps</b>
+<pre class="shell">$ <b>ls ~/apache-tomcat-7.0.xx/webapps</b>
 d----        16/06/2011     21:28            docs
 d----        16/06/2011     21:28            examples
 d----        16/06/2011     21:28            host-manager
@@ -107,12 +105,12 @@ d----        16/06/2011     21:28            ROOT</pre>
 
     <ul>
         <li>des répertoires d'applications</li>
-        <li>des fichiers .war : ce sont des applications zippées (packagées)</li>
+        <li>des fichiers .war : ce sont des applications packagées (zippées)</li>
     </ul>
 
     <h2>Structure d'une application</h2>
 
-    <p>Simplement, les applications web java sont des archiches (zip) structurées avec l'extension .war.</p>
+    <p>Simplement, les applications web java sont des archiches (zip) structurées portant l'extension .war.</p>
 
     <div class="row">
         <div class="col-lg-5">
@@ -166,7 +164,7 @@ d----        16/06/2011     21:28            ROOT</pre>
 
     <p>En sécurité, cet ensemble est appelé un realm (domaine).</p>
 
-    <p>Le fichier <b>tomcat-user.xml</b> est le fichier de configuration par défaut du <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/realm.html" target="_blank">Memory Based Realm</a> de tomcat.</p>
+    <p>Le fichier <b>tomcat-user.xml</b> est le fichier de configuration par défaut du <a href="http://tomcat.apache.org/tomcat-7.0-doc/config/realm.html" target="_blank">Memory Based Realm</a> de tomcat.</p>
 </div>
 
 <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>

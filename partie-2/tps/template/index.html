@@ -156,17 +156,13 @@
 
 <p>Dans le fichier pom.xml :</p>
 
-        <pre class="prettyprint">&lt;project ...&gt;
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-    &lt;groupId&gt;fr.todooz&lt;/groupId&gt;
-    &lt;artifactId&gt;todooz&lt;/artifactId&gt;
-    <s>&lt;packaging&gt;jar&lt;/packaging&gt;</s>
-    &lt;packaging&gt;<span class="added">war</span>&lt;/packaging&gt;
-    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-    &lt;name&gt;todooz&lt;/name&gt;
-
-    ...
-&lt;/project&gt;</pre>
+        <pre class="prettyprint">&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+&lt;groupId&gt;fr.todooz&lt;/groupId&gt;
+&lt;artifactId&gt;todooz&lt;/artifactId&gt;
+<s>&lt;packaging&gt;jar&lt;/packaging&gt;</s>
+&lt;packaging&gt;<span class="added">war</span>&lt;/packaging&gt;
+&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+&lt;name&gt;todooz&lt;/name&gt;</pre>
 
 <h2>src/main/webapp</h2>
 
@@ -182,9 +178,9 @@
 
 <h2>tomcat7:run</h2>
 
-<p>Il ne nous reste plus qu'a démarrer un serveur web afin de tester notre application.</p>
+<p>Il ne nous reste plus qu'a démarrer tomcat afin de tester notre application.</p>
 
-<p>Nous allons donc ajouter le <a href="http://tomcat.apache.org/maven-plugin.html" target="_blank">plugin tomcat 7</a> pour maven afin de nous faciliter la tâche.</p>
+<p>Pour nous faciliter la tâche, nous ajoutons le <a href="http://tomcat.apache.org/maven-plugin.html" target="_blank">plugin tomcat 7</a> pour maven.</p>
 
         <pre class="prettyprint">&ltbuild&gt
     &ltplugins&gt
@@ -193,7 +189,7 @@
         &ltplugin&gt
             &ltgroupId&gtorg.apache.tomcat.maven&lt/groupId&gt
             &ltartifactId&gttomcat7-maven-plugin&lt/artifactId&gt
-            &ltversion&gt2.1&lt/version&gt
+            &ltversion&gt2.2&lt/version&gt
         &lt/plugin&gt
     &lt/plugins&gt
 &lt/build&gt</pre>

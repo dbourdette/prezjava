@@ -88,7 +88,7 @@ on project todooz: Error assembling WAR: <b>webxml attribute is required
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException</pre>
 
-    <p>Ce fichier <b>web.xml</b> va dans répertoire <b>WEB-INF</b>, à la racine du war.</p>
+    <p>Ce fichier <b>web.xml</b> va dans répertoire protégé <b>WEB-INF</b>, à la racine du war.</p>
 
     <p>Dans notre source, il va dans le répertoire <b>src/main/webapp/WEB-INF</b>.</p>
 
@@ -135,7 +135,7 @@ generated-sources	maven-status		todooz-1.0-SNAPSHOT</pre>
     &lt;scope&gt;<span class="added">provided</span>&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
-    <p>Ces dépendances sont en <code>provided</code> : elles sont disponibles pour la compilaton mais ne seront pas dans le war.</p>
+    <p>Ces dépendances sont en <code>provided</code> : nous en avons besoin à la compilation, mais elles ne seront pas dans le package war.</p>
 
     <h2>HelloWorldServlet</h2>
 
@@ -182,9 +182,9 @@ public class HelloWorldServlet extends HttpServlet {
 
     <p>On peut écrire beaucoup de choses dans une servlet.</p>
 
-    <p>On peut aller chercher des données en base, traiter des données il reste difficile de générer du html.</p>
+    <p>Mais écrire une page html en faisant des <code>response.getWriter().write("...")</code> serait fastidieux.</p>
 
-    <p>Pour le html, elle passe la main à des composants plus adaptés : elle forwarde la requête.</p>
+    <p>Heureusement, elle peut passer la main (forwarder) à des composants plus adaptés :</p>
 
         <pre class="prettyprint">public class HelloWorldServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -201,11 +201,9 @@ public class HelloWorldServlet extends HttpServlet {
 
     <h2>Une collaboration de composants</h2>
 
-    <p>Les servlets sont des composants rapidement limités.</p>
+    <p>Les servlets sont assez simples mais manquent de flexibilité.</p>
 
-    <p>L'API est lourde et il manque de nombreux éléments</p>
-
-    <p>Cependant, pour la génération de html, elles peuvent compter sur d'autres éléments, accessibles via le forward.</p>
+    <p>Pour la génération de html, elles peuvent compter sur d'autres éléments, accessibles via le forward.</p>
 </div>
 
 <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>

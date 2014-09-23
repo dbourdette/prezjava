@@ -93,7 +93,7 @@
 
 <p><img src="img/create-test-dialog.png" class="img-responsive" style="margin: auto" /></p>
 
-<h2>add</h2>
+<h2>add(String)</h2>
 
 <p>Nous allons commencer par la méthode add. On écrit le unitaire suivant.</p>
 
@@ -126,7 +126,7 @@
 
 <p>Elle ne fait rien, mais le test passe. Ajoutons un autre test.</p>
 
-<h2>size</h2>
+<h2>size()</h2>
 
         <pre class="prettyprint">@Test
 public void size() {
@@ -137,9 +137,9 @@ public void size() {
     Assert.assertEquals(1, tagCloud.size());
 }</pre>
 
-<p>Nous pourrions implémenter cette méthode avec un simple compteur incrémenté lors de l'appel de add().</p>
+<p>Nous pourrions faire passer ce test avec un simple compteur incrémenté lors de l'appel de add().</p>
 
-<p>Nous allons plutôt utiliser une List dès à présent.</p>
+<p>Mais cela n'irait pas très loin, nous utilisons donc une liste.</p>
 
         <pre class="prettyprint">public class TagCloud {
     private List&lt;String&gt; tags = new ArrayList&lt;&gt;();
@@ -221,7 +221,7 @@ public void size() {
    Assert.assertEquals(2, tagCloud.size());
 }</pre>
 
-<div class="note">Ecrire les tests unitaires en premier permet d'avoir un objectif clair.</div>
+<div class="note">Ecrire les tests unitaires en premier permet d'avancer par petits objectifs simples.</div>
 
 <h2>top(int) et shuffle()</h2>
 
@@ -278,7 +278,7 @@ public void shuffle() {
    Assert.assertTrue(tagCloud.contains("groovy"));
 }</pre>
 
-<p>On pourrait réfléchir à un algorithme pour implémenter cette méhtode, mais <code>java.util.Collections.shuffle()</code> va nous suffire.</p>
+<p>On pourrait réfléchir à un algorithme pour implémenter cette méthode, mais <code>java.util.Collections.shuffle()</code> va nous suffire.</p>
 
 <p>Nous avons ici un problème intéressant pour nos tests unitaires : comment tester le résultat d'un traitement aléatoire ?</p>
 

@@ -17,13 +17,13 @@
 
     <p>Les servlets sont assez limitées et fastidieuses à configurer (web.xml).</p>
 
-    <p>Une application riche avec beaucoup de servlets serait douloureuse.</p>
+    <p>Une application riche avec beaucoup de servlets serait longue à écrire.</p>
 
     <p>Les frameworks MVC java pour le web apportent la facilité et la puissance manquante.</p>
 
     <p><img src="img/container.png" alt="" class="img-responsive" style="margin: auto;"></p>
 
-    <p>Il n'existe pas de technologie jee pour faire du MVC sur le web.</p>
+    <p>Il n'existe pas de technologie standard jee pour faire du MVC sur le web.</p>
 
     <p>Nous allons travailler avec spring MVC, le module MVC du framework spring.</p>
 
@@ -35,7 +35,7 @@
 &lt;dependency&gt;
    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
    &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
-   &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+   &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
@@ -120,13 +120,13 @@ public class IndexController {
 
     <p>L'annotation <code>@Controller</code> indique a spring qu'il s'agit d'un composant qui répond aux requêtes http.</p>
 
-    <p>L'annotation <code>@RequestMapping</code> fait la liaison entre une réquête et la bonne méthode.</p>
+    <p>L'annotation <code>@RequestMapping</code> fait la liaison entre une requête et la bonne méthode.</p>
 
-    <p>Le Model est ce qui est transmis à la vue jsp.</p>
+    <p>Le Model est ce qui est transmis vers le fichier jsp.</p>
 
     <p>Le retour "<b>index</b>" indique la vue qui doit être utilisée (soit <b>/WEB-INF/jsp/index.jsp</b>).</p>
 
-    <p>Cela donne beaucoup de configuration pour un simple controller. Mais à partir de maintenant, on peut rajouter des nouveaux mappings sans toucher au web.xml.</p>
+    <p>Le fichier de configuration est assez long pour un simple controller. Mais à partir de maintenant, on peut rajouter des nouveaux mappings sans toucher au web.xml.</p>
 
     <p>Le Controller devrait répondre sur <a href="http://localhost:8080/index.html" target="_blank">http://localhost:8080/index.html</a> comme le faisait la servlet.</p>
 

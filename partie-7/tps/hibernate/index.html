@@ -70,7 +70,7 @@ public void createSessionFactory() {
 
 <h2>Les classes du domaine</h2>
 
-<p>Nous souhaitons sauver des Tasks, il faut donc configurer cette classe pour d'hibernate.</p>
+<p>Nous souhaitons sauver des Tasks, il faut donc configurer cette classe pour hibernate.</p>
 
 <p>La façon la plus simple est de le faire via des annotations dans nos classes du domaine.</p>
 
@@ -182,7 +182,9 @@ public void saveTask() {
     session.close();
 }</pre>
 
-<p>Afin de pouvoir écrire ce test il faut avoir passé le test précédent (createSessionFactory) en <code>@Before</code> au lieu de <code>@Test</code>. On passe ainsi la variable sessionFactory en attribut de classe.</p>
+<p>Afin de pouvoir écrire ce test il faut avoir passé le test précédent (createSessionFactory) en <code>@Before</code> (exécuté avant chaque test unitaire) au lieu de <code>@Test</code>.</p>
+
+<p>On passe également la variable sessionFactory en attribut de classe afin qu'elle soit accessible depuis les tests.</p>
 
 <p>Hibernate nous permet donc de sauver un objet dans une table sans que nous ayons à manipuler de SQL.</p>
 
@@ -233,7 +235,7 @@ public void findTask() {
     Assert.assertEquals("Read Effective Java", tasks.get(0).getTitle());
 }</pre>
 
-<p>hibernate convertit donc nos objets en écriture et en lecture de la base.</p>
+<p>Hibernate se charge donc de convertir nos requêtes et nos objets afin que nous n'ayons pas de SQL a faire.</p>
 
 <p>En plus du HQL, il existe une autre API encore plus orientée objet : la <a href="http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/querycriteria.html" target="_blank">Criteria API</a></p>
 
@@ -433,7 +435,7 @@ public void count() {
 
 <p>Tout ce que nous avons écrit aurait été très verbeux en SQL.</p>
 
-<p>Hibernate est une aide précieuse lorsque l'on travaille avec des objets et une base de données relationelles.</p>
+<p>Hibernate est une aide précieuse lorsque l'on travaille avec des objets et une base de données relationelle.</p>
 
 <p>Il ne faut pas se tromper non plus, le mapping base de données - objet est un sujet complexe.</p>
 

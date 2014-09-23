@@ -17,7 +17,7 @@
 
 <p>Les fichiers jsp sont les composants spécialisés dans la génération de html.</p>
 
-<p>Ils permettent de produire du html tout en acceptant un peu de logique conditionnelle.</p>
+<p>Ils permettent de produire du html tout en acceptant un peu de code java (if / then, boucles...).</p>
 
 <p>Ainsi, ils sont un bon complément des servlets pour la génération de la page web.</p>
 
@@ -176,15 +176,15 @@ response.getWriter().write(name);</pre>
         <pre class="prettyprint">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
 &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;</pre>
 
-<p>Un <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" target="_blank">bon tutorial sur la jstl</a> est disponible sur le site de developpez.com</p>
+<p>Une <a href="http://adiguba.developpez.com/tutoriels/j2ee/jsp/jstl/" target="_blank">bonne référence sur la jstl</a> est disponible sur le site de developpez.com</p>
 
 <h2>Notre liste de tâches</h2>
 
-<p>En utilisant les notations suivantes, mettez en forme la jsp afin qu'elle produise la liste des tâches.</p>
+<p>En utilisant les notations suivantes, mettez en forme la jsp afin qu'elle produise la liste des tâches qui a été préparée dans la servlet.</p>
 
 <p>L'itération :</p>
 
-<pre class="prettyprint">&lt;c:forEach var="task" items="${tasks}"&gt;...&lt;/c:forEach&gt;</pre>
+<pre class="prettyprint">&lt;c:forEach var="task" items="${tasks}"&gt;   &lt;/c:forEach&gt;</pre>
 
 <p>L'expression language :</p>
 
@@ -293,8 +293,6 @@ response.getWriter().write(name);</pre>
     <li>les customs tags (tag et fonctions)</li>
     <li>les tags files</li>
 </ul>
-
-<p>Mais elles sont très inefficaces pour aller chercher des données en base ou bien écrire un algorithme.</p>
 </div>
 
 <script src="../../../common/jquery/jquery-1.10.2.min.js"></script>
