@@ -27,13 +27,15 @@
 
 <h2>L'injection de dépendances</h2>
 
-<p>Les relations entre les composants sont appelées dépendances.</p>
+<p>Dans une application, les objets discutent entre eux pour accomplir des tâches.</p>
+
+<p>Les relations entre ces composants sont appelées dépendances.</p>
 
 <p>Dans les applications, cela peut devenir rapidement complexe.</p>
 
 <p><img src="img/class-diagram.png" alt="" class="img-responsive" style="margin: auto;"></p>
 
-<p>Spring prend en charge cette gestion des dépendances.</p>
+<p>Spring aide à construire des applications en prenant en charge la gestion des dépendances.</p>
 
 <p>Il nous reste donc à nous concentrer sur l'écriture des composants.</p>
 
@@ -44,31 +46,31 @@
         <pre class="prettyprint">&lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
-  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
-  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
-  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
-  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
   &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
   &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
-  &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
   &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
@@ -81,11 +83,11 @@
 
 <h2>Mise en place du contexte spring</h2>
 
-<p>Nous mettons en place un contexte spring : c'est la définition l'ensemble des composants gérés par spring.</p>
+<p>Nous allons ajouter un contexte spring : c'est la définition l'ensemble des composants gérés par spring.</p>
 
 <p>Comme d'habitude, nous commencons par les tests.</p>
 
-<p>La première étape consiste à définir un fichier <b>TaskServiceTest-context.xml</b> dans le package <b>fr.todooz.service</b> dans le répertoire source des tests.</p>
+<p>La première étape consiste à définir un fichier <b>TaskServiceTest-context.xml</b> dans le package <b>fr.todooz.service</b> dans le répertoire source des <b>tests</b>.</p>
 
         <pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -122,9 +124,9 @@ public class TaskServiceTest {
    ...
 }</pre>
 
-<p>L'annotation <code>@RunWith</code> indique à JUnit que les tests tournent avec le plugin SpringJUnit4ClassRunner.</p>
+<p>L'annotation <code>@RunWith</code> indique à JUnit d'utiliser le plugin SpringJUnit4ClassRunner.</p>
 
-<p>L'annotation <code>@ContextConfiguration</code> active le chargement du contexte spring.</p>
+<p>L'annotation <code>@ContextConfiguration</code> active le chargement du contexte xml spring.</p>
 
 <p>Si on relance les tests, on voit que le contexte spring est chargé mais cela ne perturbe pas son exécution.</p>
 
@@ -187,7 +189,7 @@ private SessionFactory sessionFactory;</pre>
 
 <p>L'annotation <code>@Inject</code> permet de demander à spring d'injecter une dépendance dans notre composant.</p>
 
-<p>C'est l'activité de base du wiring : injecter les dépendances.</p>
+<p>On récupère donc une session factory mais on ne sait plus comment elle a été instanciée.</p>
 
 <p>Et nous n'avons plus besoin de fermer la SessionFactory nous même.</p>
 
@@ -206,7 +208,7 @@ public void cleanDb() {
   <s>sessionFactory.close();</s>
 }</pre>
 
-<p>Du code java contre du xml, pour le moment nous n'avons pas encore gagné grand chose.</p>
+<p>On a échangé du code java contre du xml, ce qui ne semble pas un grand gain pour le moment.</p>
 
 <p>Cependant, nous avons désormais clairement identifié le composant sessionFactory.</p>
 
@@ -218,30 +220,37 @@ public void cleanDb() {
 
 <pre class="prettyprint">&lt;bean class="fr.todooz.service.TaskService" /&gt;</pre>
 
-<p>Au démarrage du contexte spring, une instance de la classe TaskService sera donc instanciée.</p>
+<p>Au démarrage du contexte spring, un objet de type TaskService sera donc instancié.</p>
 
-<p>Nous avons une SessionFactory et un TaskService dans le contexte spring.</p>
+<p>Nous avons maintenant une SessionFactory et un TaskService dans le contexte spring.</p>
 
-<p>Il est donc possible d'inject la SessionFactory dans le TaskService.</p>
+<p>Il est donc possible de demander a spring de faire le tarvail pour nous.</p>
 
-        <pre class="prettyprint"><b>@Inject</b>
-private SessionFactory sessionFactory;
+        <pre class="prettyprint">public class TaskService {
 
-<s>public void setSessionFactory(SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
-    }</s></pre>
+    <b>@Inject</b>
+    private SessionFactory sessionFactory;
+
+    <s>public void setSessionFactory(SessionFactory sessionFactory) {</s>
+        <s>this.sessionFactory = sessionFactory;</s>
+    <s>}</s>
+
+    ...
+}</pre>
 
 <p>Et dans le test unitaire, plus besoin d'instancier notre service nous même. On échange donc tous nos :</p>
 
         <pre class="prettyprint"><s>TaskService taskService = new TaskService();
-            taskService.setSessionFactory(sessionFactory);</s></pre>
+taskService.setSessionFactory(sessionFactory);</s></pre>
 
-<p>contre un seul</p>
+<p>contre un seul @Inject en haut du test.</p>
 
         <pre class="prettyprint">@Inject
 private TaskService taskService;</pre>
 
-<p>Les tests passent encore, on commencer a gagner en lignes de code.</p>
+<p>Les tests passent encore.</p>
+
+<p>Le gain en ligne de code commence à être plus intéressant.</p>
 
 <h2>TaskService v2.0</h2>
 
@@ -263,11 +272,13 @@ private TaskService taskService;</pre>
 
 <p>Il faut sélectionner les 5 méthodes et choisir "Rename original class and use interface where possible".</p>
 
-<p>Intellij a changé la définition du bean à instancier dans le contexte.</p>
+<p>Le nom de la nouvelle implémentation est TaskServiceImpl.</p>
+
+<p>Intellij a changé également la définition du bean dans le contexte de test.</p>
 
 <pre class="prettyprint">&lt;bean class="fr.todooz.service.TaskServiceImpl" /&gt;</pre>
 
-<p>En effet TaskService est maintenant une interface, donc on ne peut pas l'instancier.</p>
+<p>En effet TaskService est maintenant l'interface et TaskServiceImpl l'implémentation (la classe à instancier).</p>
 
 <p>Une interface plus tard, les tests passent toujours.</p>
 
@@ -278,9 +289,17 @@ private TaskService taskService;</pre>
         <pre class="prettyprint">@Override
 @Transactional
 public void save(Task task) {
+    <s>Session session = sessionFactory.openSession();</s>
+
+    <s>Transaction transaction = session.beginTransaction();</s>
+
     Session session = sessionFactory.<b>getCurrentSession()</b>;
 
     session.save(task);
+
+    <s>transaction.commit();</s>
+
+    <s>session.close();</s>
 }</pre>
 
 <p>Faites de même avec les autres méthodes.</p>
@@ -320,6 +339,8 @@ public void save(Task task) {
 
 &lt;!-- active le support des annotations @Transactional --&gt;
 &lt;tx:annotation-driven transaction-manager="transactionManager"/&gt;</pre>
+
+<p>Pour que le namespace tx: soit valide il suffit de se faire aider par Intellij afin qu'il ajoute la déclaration nécessaire.</p>
 
 <p>Et ajouter la dépendance :</p>
 

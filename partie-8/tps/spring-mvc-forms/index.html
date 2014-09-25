@@ -113,7 +113,7 @@ public String add(Model model) {
 
 <p>Elle utilise la <a href="http://getbootstrap.com/css/#forms" target="_blank">css de bootstrap</a> afin d'afficher un formulaire aéré et lisible.</p>
 
-<p>Il faut porter ce formulaire faire une jsp (<b>edit.jsp</b>) vers laquelle pointe le controller.</p>
+<p>Il faut faire une jsp (<b>edit.jsp</b>) vers laquelle pointe le controller.</p>
 
 <p>Le + dans le header affiche donc maintenant un formulaire vide.</p>
 
@@ -218,11 +218,11 @@ nested exception is org.springframework.core.convert.ConversionFailedException:
 Unable to convert value "" from type java.lang.String to type java.util.Date; nested exception is
 java.lang.IllegalArgumentException</pre>
 
-<p>Il serait possible de configurer un meilleur message dans un fichier de localisation mais pour notre besoin, nous pouvons faire simplement.</p>
+<p>Il serait possible de configurer un meilleur message dans un fichier de localisation mais pour notre besoin, nous pouvons faire simplement :</p>
 
 <pre class="prettyprint">&lt;form:errors path="date"&gt;&lt;span style="color:#B94A48" class="help-block"&gt;La date n'est pas correcte&lt;/span&gt;&lt;/form:errors&gt;</pre>
 
-<p>C'est plus court et plus clair.</p>
+<p>Pour notre besoin, c'est suffisant.</p>
 
 <h3>Un binding qui marche</h3>
 
@@ -413,7 +413,7 @@ private Date date = new Date();</pre>
 <p>Notre modèle est maintenant annoté pour la validation et cela pourrait reservir dans un cadre plus large que juste notre controller.</p>
 
 <p>
-    Sur la documentation d'hibernate,
+    A voir sur la documentation d'hibernate :
     <a href="http://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/chapter-bean-constraints.html#validator-defineconstraints-spec" target="_blank">les annotations standards</a>
     et
     <a href="http://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/chapter-bean-constraints.html#validator-defineconstraints-hv-constraints" target="_blank">les extensions</a>
@@ -429,7 +429,7 @@ private Date date = new Date();</pre>
 
 <h3>Un peu d'ordre</h3>
 
-<p>En jouant avec l'édition des tâches, on observe qu'ils ne sont pas classés par date.</p>
+<p>En jouant avec l'édition des tâches, on observe qu'elles ne sont pas classés par date.</p>
 
 <p>Cela se corrige simplement en ajoutant une clause order dans les méthodes du service :</p>
 
@@ -466,7 +466,7 @@ public String post(@ModelAttribute @Valid Task task, BindingResult result, Redir
     return "redirect:/";
 }</pre>
 
-<p>Dans <b>index.jsp</b>, après le redirect, on a donc accès a un attribut "flashMessage"</p>
+<p>Dans <b>index.jsp</b>, après le redirect, il y a donc attribut <b>"flashMessage"</b> disponible.</p>
 
         <pre class="prettyprint">&lt;c:if test="${not empty flashMessage}"&gt;
     &lt;div class="alert alert-success"&gt;${flashMessage}&lt;/div&gt;
