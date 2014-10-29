@@ -35,7 +35,7 @@
 	        	<p><img alt="" src="img/web-services.png" class="img-responsive" style="margin: auto;max-height: 180px"></p>
 	        	<ul>
 	        		<li><b>RPC</b> (Remote Procedure Call) est l'appel d'une méthode distante comme si elle était locale.
-	        		<li><b>REST</b> (Representational State Transfer) est un modèle de conception qui propose une interface uniforme permettant de modifier des ressources.
+	        		<li><b>REST</b> (Representational State Transfer) repose sur les méthodes HTTP.
 	        	</ul>
                 <p>Entre les 2, il est possible de construire des services hybrides tout à fait viables.</p>
 	        </section>
@@ -77,8 +77,8 @@
 	        <h2>Requête SOAP</h2>
 	        <section>
                 <p>Le code</p>
-                <pre class="prettyprint">service.GetStockPrice("IBM")</pre>
-	        	<p>Cela génère le message suivant</p>
+                <pre class="prettyprint">GetStockPriceResponse response = service.GetStockPrice("IBM")</pre>
+	        	<p>Cela génère le message suivant vers le service distant</p>
 	        	<pre class="prettyprint">
 POST /InStock HTTP/1.1
 Host: www.example.org

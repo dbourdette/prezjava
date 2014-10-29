@@ -15,18 +15,18 @@
 <div class="container">
 <h1>Java API for RESTful Web Services</h1>
 
-<p>Les services REST ne sont pas une technologie mais un pattern exigeant.</p>
+<p>Les services REST sont un ensemble de règle afin de construire des services.</p>
 
 <p>Il a fallu attendre longtemps avant d'avoir une spécification jee pour les services REST.</p>
 
-<p>Plus simple, ils prennent une partie de la place occupée il y a peu par SOAP.</p>
+<p>Il sont plus simple que les services SOAP.</p>
 
 <p>L'approche REST est radicale :</p>
 
 <ul>
     <li>Les <b>URIs</b> pointent vers des ressources (ex : /products/45671 )</li>
     <li>Les <b>headers HTTP</b> sont capitaux (ex : Content-Type: application/json)</li>
-    <li>Le <b>contenu</b> des requêtes et réponses HTTP est le message (format ouvert mais souvant json ou xml)</li>
+    <li>Le <b>contenu</b> des requêtes et réponses HTTP est le message (format ouvert mais souvent json ou xml)</li>
 </ul>
 
 <p>=&gt; Ils sont liés au <b>protocole HTTP</b>.</p>
@@ -64,12 +64,12 @@ Switched to a new branch 'jax-rs'</pre>
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-server&lt;/artifactId&gt;
-    &lt;version&gt;2.3.1&lt;/version&gt;
+    &lt;version&gt;2.13&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-container-servlet&lt;/artifactId&gt;
-    &lt;version&gt;2.3.1&lt;/version&gt;
+    &lt;version&gt;2.13&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
 <h2>Hello world</h2>
@@ -155,7 +155,7 @@ public class TodoozApplication extends ResourceConfig {
         <pre class="prettyprint">&lt;dependency&gt;
    &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
    &lt;artifactId&gt;jersey-client&lt;/artifactId&gt;
-   &lt;version&gt;2.3.1&lt;/version&gt;
+   &lt;version&gt;2.13&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
 <p>Après quoi on peut écrire.</p>
@@ -213,7 +213,7 @@ public class TasksResource {
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-media-moxy&lt;/artifactId&gt;
-    &lt;version&gt;2.3.1&lt;/version&gt;
+    &lt;version&gt;2.13&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
 <p class="alert alert-warning">JSON binding support via MOXy is a default and preferred way of supporting JSON binding in your Jersey applications since Jersey 2.0. When JSON MOXy module is on the class-path, Jersey will automatically discover the module and seamlessly enable JSON binding support via MOXy in your applications.</p>
@@ -225,7 +225,7 @@ public class TasksResource {
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.ext&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-spring3&lt;/artifactId&gt;
-    &lt;version&gt;2.3.1&lt;/version&gt;
+    &lt;version&gt;2.13&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
 <p class="alert alert-warning">Jersey provides an extension to support Spring DI. This enables Jersey to use Spring beans as JAX-RS components (e.g. resources and providers) and also allows Spring to inject into Jersey managed components.</p>

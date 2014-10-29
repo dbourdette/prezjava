@@ -22,18 +22,18 @@
     <li>Autorisation : vérification des permissions</li>
 </ul>
 
-<p>Durant l'authentification, on prend les données fournies par l'utilisateur (login/pass, token...) et on tente de charger un profil à partir d'un espace d'utilisateurs (realm).</p>
+<p>Durant l'authentification, on prend les données fournies par l'utilisateur (login/pass, token...) et on tente de charger un profil à partir d'un domaine (realm).</p>
 
 <p>Spring security est un framework qui permet :</p>
 
 <ul>
     <li>D'aller vite pour mettre en place une mécanique d'authentification</li>
     <li>De pouvoir définir simplement une politique d'autorisation</li>
-    <li>De pouvoir se connecter à presque tous les systèmes de gestion d'utilisateur</li>
-    <li>D'être sûr d'adhérer aux standard jee</li>
+    <li>De pouvoir se connecter à presque tous les systèmes de gestion d'utilisateurs</li>
+    <li>D'être sûr d'adhérer aux standards jee</li>
 </ul>
 
-<p>Pour autant, à l'image de la sécurity, ce n'est pas un outils toujours simple à manipuler.</p>
+<p>Pour autant, à l'image de la sécurité, ce n'est pas toujours simple à manipuler.</p>
 
 <p>Spring security se configure via un contexte spring, mais de dépend pas de spring mvc.</p>
 
@@ -41,11 +41,11 @@
 
 <ul>
     <li>Realm : un système content des utilisateurs</li>
-    <li>Principal : entité réprésentant l'utilisateur et qui est chargée lors du processus d'authentification</li>
+    <li>Principal : entité réprésentant l'utilisateur et qui est créée lors du processus d'authentification</li>
     <li>Authority : un rôle donné à un Principal</li>
 </ul>
 
-<p>La façon la plus simple de contrôler les accès est d(utiliser les authorities (roles).</p>
+<p>La façon la plus simple de contrôler les accès est d'utiliser les authorities (roles).</p>
 
 <h2>Branche git</h2>
 
@@ -63,19 +63,19 @@ Switched to a new branch 'security'</pre>
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
     &lt;artifactId&gt;spring-security-core&lt;/artifactId&gt;
-    &lt;version&gt;3.1.4.RELEASE&lt;/version&gt;
+    &lt;version&gt;3.1.6.RELEASE&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
     &lt;artifactId&gt;spring-security-config&lt;/artifactId&gt;
-    &lt;version&gt;3.1.4.RELEASE&lt;/version&gt;
+    &lt;version&gt;3.1.6.RELEASE&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
     &lt;artifactId&gt;spring-security-web&lt;/artifactId&gt;
-    &lt;version&gt;3.1.4.RELEASE&lt;/version&gt;
+    &lt;version&gt;3.1.6.RELEASE&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 

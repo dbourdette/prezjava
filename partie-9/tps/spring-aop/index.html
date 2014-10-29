@@ -17,11 +17,9 @@
 
 <p>La programmation orientée aspect est une technique de factorisation du code.</p>
 
-<p>Une module (un aspect) peut être injecté à différents endroits dans une application.</p>
+<p>Elle permet d'adresser des problèmes transverses a toute l'application comme la sécurité, le logging ou la gestion des transactions.</p>
 
 <p>Ces apects sont des morceaux de logique (concerns) qui sont souvent orthogonaux à l'éxecution de l'application.</p>
-
-<p>Le logging est l'exemple par excellence. On peut aussi citer la sécurité et la gestion des transactions.</p>
 
 <h2>Branche git</h2>
 
@@ -46,7 +44,7 @@ Switched to a new branch 'aop'</pre>
    log.trace("Leaving doSomething()");
 }</pre>
 
-<p>Imaginons que nous ayons des dizaines des services et donc des centaines de méthodes : )</p>
+<p>Imaginons que nous ayons des dizaines de services et donc des centaines de méthodes : )</p>
 
 <p>Il n'y a pas de mécanisme en java afin de faire cela simplement.</p>
 
@@ -60,7 +58,7 @@ Switched to a new branch 'aop'</pre>
    log.trace("Leaving " + method.getSignature());
 }</pre>
 
-<p>Il reste donc a savoir comment faire en pratique.</p>
+<p>la programmation orientée aspect permet de faire cela.</p>
 
 <h2>Aspectj</h2>
 
@@ -71,7 +69,7 @@ Switched to a new branch 'aop'</pre>
 <p>En java, il existe 3 façons de le faire :</p>
 
 <ul>
-    <li>à la compilation : <b>compile time</b></li>
+    <li>au moment de la compilation : <b>compile time</b></li>
     <li>au chargement des classes : <b>load time</b></li>
     <li>pendant l'exécution : <b>runtime</b></li>
 </ul>
@@ -98,7 +96,7 @@ Switched to a new branch 'aop'</pre>
         <pre class="prettyprint">&lt;dependency&gt;
    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
    &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
-   &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+   &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
@@ -158,7 +156,7 @@ public class TraceAspect {
 
 <p><code>@Around</code> indique que notre aspect doit s'exécuter autour des méthodes des classes de <b>fr.todooz</b>.</p>
 
-<p><code>ProceedingJoinPoint</code> est un objet qui décrit l'appel de méthode en cours.</p>
+<p><code>ProceedingJoinPoint</code> est une classe qui décrit l'appel de méthode en cours.</p>
 
 <p>Avec cet aspect en place, on obtient le log suivant lors de l'appel de http://localhost:8080/index.</p>
 
@@ -201,8 +199,6 @@ Executed List fr.todooz.service.TaskService.findAll() in 38ms</pre>
     <li>Seules les méthodes de l'interface (publiques par nature) peuvent être annotées.</li>
 </ul>
 
-<p>Spring a donc nativement des capacités d'AOP mais elle sont limitées.</p>
-
 <h2>Lexique</h2>
 
 <p>Les termes liés à l'AOP sont complexes mais respectés par spring.</p>
@@ -244,13 +240,13 @@ Executed List fr.todooz.service.TaskService.findAll() in 38ms</pre>
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;org.springframework&lt;/groupId&gt;
     &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
-    &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+    &lt;version&gt;4.1.0.RELEASE&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
-   &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
+   &lt;groupId&gt;net.sf.ehcache.internal&lt;/groupId&gt;
    &lt;artifactId&gt;ehcache-core&lt;/artifactId&gt;
-   &lt;version&gt;2.4.6&lt;/version&gt;
+   &lt;version&gt;2.6.9&lt;/version&gt;
    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
@@ -360,7 +356,7 @@ public class CacheAspect {
 
 <p>Proposer une implémentation pour ces 2 méthodes.</p>
 
-<p>La javadoc est disponible sur <a href="http://ehcache.org/apidocs/" target="_blank">ehcache.org</a></p>
+<p>La javadoc est disponible sur <a href="http://www.ehcache.org/apidocs/2.9/" target="_blank">ehcache.org</a></p>
 
 <p>En ajoutant quelques traces, on peut voir le cache en action.</p>
 
@@ -386,7 +382,7 @@ found in cache</pre>
 
 <p>Ce que nous avons mis en place est simple et peut évoluer facilement.</p>
 
-<p>Mais depuis peu, spring propose une <a href="http://static.springsource.org/spring/docs/3.1.0.M1/spring-framework-reference/html/cache.html" target="_blank">abstraction pour le cache</a></p>
+<p>Mais spring déjà propose une <a href="http://docs.spring.io/spring-framework/docs/4.0.x/spring-framework-reference/html/cache.html" target="_blank">abstraction pour le cache</a></p>
 
 <p>Elle propose ce que nous venons d'implémenter en beaucoup plus souple.</p>
 </div>

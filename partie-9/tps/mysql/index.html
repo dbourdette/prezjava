@@ -19,13 +19,13 @@
 
     <p>Elles ont survécues aux bases de données objets et aux bases xml.</p>
 
-    <p>Parmis celle-ci Mysql a toujours eut une place a part : la base libre, simple et performante.</p>
+    <p>Mysql et postgreSQL sont 2 bases libres open source simples populaires.</p>
 
-    <p>Cependant, avec le rachat par Oracle, postgreSQL a pris cette place.</p>
+    <p>Il y a quelques années, Mysql a été racheté par Oracle.</p>
 
     <h2>Installation</h2>
 
-    <p>L'installation de myqsl est simple, il suffit de suivre les instructions disponibles sur <a href="http://www.mysql.fr/downloads/mysql/" target="_blank" class="external">www.mysql.fr/</a></p>
+    <p>L'installation de Mysql est simple, il suffit de suivre les instructions disponibles sur <a href="http://www.mysql.fr/downloads/mysql/" target="_blank" class="external">www.mysql.fr/</a></p>
 
     <p>Une fois installée, il suffit de démarrer mysql.</p>
 
@@ -59,7 +59,7 @@ Switched to a new branch 'mysql'</pre>
         <pre class="prettyprint">&lt;dependency&gt;
     &lt;groupId&gt;mysql&lt;/groupId&gt;
     &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
-    &lt;version&gt;5.1.26&lt;/version&gt;
+    &lt;version&gt;5.1.33&lt;/version&gt;
     &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</pre>
 
@@ -129,11 +129,11 @@ Switched to a new branch 'mysql'</pre>
 
     <p>En production, perdre une colonne au déploiement d'une nouvelle version peut être désastreux.</p>
 
-    <p>Pour ne pas faire d'erreur, on passe donc le hbm2ddl (Hibernate model to data definition language) en none.</p>
+    <p>Pour ne pas faire d'erreur, on passe donc le hbm2ddl (Hibernate model to data definition language) en validate.</p>
 
-    <pre class="prettyprint">&lt;prop key="hibernate.hbm2ddl.auto"&gt;<span class="added">none</span>&lt;/prop&gt;</pre>
+    <pre class="prettyprint">&lt;prop key="hibernate.hbm2ddl.auto"&gt;<span class="added">validate</span>&lt;/prop&gt;</pre>
 
-    <p>Oui mais comment demander a hibernate de nous aider quand même un peu ?</p>
+    <p>Oui mais comment demander a hibernate de nous aider quand même un peu lors de mise à jour ?</p>
 
     <p>En fait, on peut utiliser le code d'hibernate pour générer le sql nécessaire.</p>
 
@@ -159,9 +159,11 @@ for (String string : configuration.generateSchemaCreationScript(new MySQL5Dialec
             primary key (id)
 );</pre>
 
+    <p>Ainsi, lors de mises à jour, on peut maitriser ce que l'on fait et transmettre ces informations à un DBA.</p>
+
     <h2>Jdbc et jndi</h2>
 
-    <p>Jdbc utilise un url afin de désigner une base de données. Il est alors simple de pointer vers un base ou une autre.</p>
+    <p>Jdbc utilise une url afin de désigner une base de données. Il est alors simple de pointer vers une base ou une autre.</p>
 
     <p>Avec hibernate, théoriquement, il est aussi simple de changer de mysql vers posgres ou oracle.</p>
 
