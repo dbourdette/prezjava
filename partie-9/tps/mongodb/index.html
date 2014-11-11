@@ -221,7 +221,7 @@ public class MorphiaSpringConfig {
 
         morphia.map(MongoTask.class);
 
-        return morphia.createDatastore(new Mongo(), "todooz");
+        return morphia.createDatastore(new MongoClient(), "todooz");
     }
 }</pre>
 
